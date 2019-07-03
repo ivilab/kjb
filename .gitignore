@@ -1,0 +1,15 @@
+.svn
+.rsync
+*.org
+*.org-2
+*.org-3
+/*.pdf
+*.log
+*.aux
+*.toc
+*.blg
+*.bbl
+*.aux
+*.o
+*.a 
+*.swp
