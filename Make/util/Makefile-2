@@ -1,0 +1,72 @@
+#
+# We usually build the make utils from build-2 when the target is "doc", etc.
+#
+
+################################################################################
+#                             Options
+
+# Uncomment the following line to request a C99 compile. This is not necessarily
+# recomended, as C99 capability is far from universal.
+# CC_BASE_FLAGS = $(CC_C99_BASE_FLAGS)
+
+# Uncomment and modify the following line to add arbitrary compile flags. At UA,
+# in the case of include dirs, this should be used only as a temporary measure,
+# until we add the library to those automatically included. 
+# EXTRA_CC_FLAGS = 
+
+# Uncomment and modify the following line to add arbitrary load flags. At UA, in
+# the case of adding libraries, this should be used only as a temporary measure
+# until we add the library to those automatically included. 
+# EXTRA_LOAD_FLAGS = 
+
+################################################################################
+
+PROGRAM_CC_WARNING_FLAGS = $(CC_KJB_WARNINGS) 
+PROGRAM_CXX_WARNING_FLAGS = $(CXX_KJB_WARNINGS) 
+
+################################################################################
+
+all         : program
+depend      : depend_program
+doc         : doc_program
+misc_doc    : misc_doc_program
+lint        : lint_program
+proto       : proto_program
+
+include $(MAKE_DIR)Makefile-program
+
+################################################################################
+
+# Special hand crafted bit. Should be automated eventually. 
+#
+
+MAKE_UTILS = \
+        ../bin/$(MACHINE)/term_tee \
+        ../bin/$(MACHINE)/remove_empty_def \
+        ../bin/$(MACHINE)/remove_double_blank \
+        ../bin/$(MACHINE)/remove_double_jagged \
+        ../bin/$(MACHINE)/c2man_in \
+        ../bin/$(MACHINE)/c2man_out \
+        ../bin/$(MACHINE)/c2man_out_html \
+        ../bin/$(MACHINE)/writeup_to_man \
+        ../bin/$(MACHINE)/help_to_man \
+        ../bin/$(MACHINE)/index_man \
+        ../bin/$(MACHINE)/index_html_man \
+        ../bin/$(MACHINE)/skip_def \
+        ../bin/$(MACHINE)/skip_def_head \
+        ../bin/$(MACHINE)/include_def
+
+../bin/$(MACHINE):
+	$(KJB_MKDIR) $@
+
+../bin/$(MACHINE)/%: $(LD_OBJ_DIR)%
+	$(KJB_CP) $< $@
+	$(KJB_PERMIT_EXECUTION) $@
+ 
+make_bin: ../bin/$(MACHINE) $(MAKE_UTILS)
+
+
+
+
+
+

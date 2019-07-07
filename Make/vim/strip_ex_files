@@ -1,0 +1,17 @@
+#!/bin/csh -f
+
+if ("$#argv" != 2) then
+   echo "Script strip_ex_files needs exactly two parameters."
+   exit 1
+endif 
+
+if (! -e "$1") then
+   echo "First argument to script strip_ex_files does not exist."
+   exit 1
+else if (-e $2) then
+    chmod u+w $2
+endif 
+
+cat $1 | sed '/^:* *$/d' | sed '/^:*\"/d' > $2
+chmod u-w $2
+

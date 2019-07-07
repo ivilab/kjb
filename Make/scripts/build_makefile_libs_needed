@@ -1,0 +1,85 @@
+#!/bin/csh -f
+
+###############################################################################
+#
+# Identification:
+#     A script to build the file Makefile-libs-needed
+#
+# Description:
+#     This script builds the file Makefile-libs-needed" in the directory given
+#     by the first parameter, or the current directory if there are no
+#     parameters. In this description we will simply refer to "this directory." 
+#
+#     Makefile-libs-needed contains symbols for all all optional external
+#     libraries needed by the code in this directory, as well as symbols for
+#     propagating what is needed by code that depends on this directory.
+#
+#     The file Makefile-libs-needed in a given library sub-dir is included by
+#     the file Makefile-include in the sub-dir. Sub-dir Makefile-includes that
+#     are needed for a given compile are included from the file Makefile-dirs,
+#     both in the case of program directories and library directories. 
+#
+#     The function of this script is broken down into four parts.  Part one: If
+#     there is C++ code in this directory, a symbol inherited via
+#     Makefile-libs-needed is set to ensure the linker is appropriate for C++.
+#
+#     Part two: For any KJB_HAVE_XXX found in this directory, a symbol for the
+#     compile like to provide the definitions of those symbols  is set.  
+#
+#     Part three: Because KJB_HAVE_XXX may not always be used as it should, and
+#     also because the use of KJB_HAVE_XXX does not necessarily mean that the
+#     library component is actually used, we use #includes to identify external
+#     library use. Having done that, we arrange for the propagation of the link
+#     lings to program builds. We also arrange for any non-standard includes
+#     needed for compiles within this directory.
+#
+#     Part four: If either KJB_HAVE_XXX, or an #include associated with an
+#     external library is found in a header file, then we must propagate the
+#     need for the KJB_HAVE_XXX symbol, and associated non-standard include dirs
+#     to other code. Note that the information used is similar to the union of
+#     that used in the previous two steps, but restricted to header files only. 
+#
+#     This script is a front end to build_makefile_libs_needed_2 which does all
+#     the work. 
+#
+# Author:
+#     Kobus Barnard
+#
+###############################################################################
+
+# set echo 
+
+@ num_args = ${#argv}
+
+if ("${num_args}" > 1) then
+    ${P_STDERR} "Script build_makefile_libs_needed takes only  0 or 1 parameters."
+    exit 1
+endif 
+
+##########################################################
+
+if ($?KJB_VERBOSE_INDENT) then
+    setenv KJB_VERBOSE_INDENT "    ${KJB_VERBOSE_INDENT}"
+else 
+    setenv KJB_VERBOSE_INDENT ""
+endif 
+
+##########################################################
+
+set build_dir = ""
+
+if ("${num_args}" >= 1) then
+    if ("${1}" != "") then
+        set build_dir = `echo ${1} | sed 's/ *//g'`
+    endif 
+endif 
+
+if ("${build_dir}" != "") then
+    set build_dir = `echo ${build_dir} | sed 's#//*#/#g' | sed 's#/$##'`
+    cd ${build_dir} 
+endif 
+
+${MAKE_SCRIPT_PATH}kjb_lock ${MAKE_SCRIPT_PATH}build_makefile_libs_needed_2 $* 
+exit ${status}
+
+

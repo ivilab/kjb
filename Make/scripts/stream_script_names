@@ -1,0 +1,24 @@
+#!/bin/csh -f
+
+if ($?TMPDIR) then
+    set tmp_dir = "$TMPDIR"
+else
+    set tmp_dir = "/tmp"
+endif
+
+${KJB_MKDIR} ${tmp_dir}/${USER}
+
+set temp_file = ${tmp_dir}/${USER}/script_file_list.$$
+
+${KJB_LS} | grep -v '\<build\>' | grep -v .org  > ${temp_file}
+
+# Slight bug here. Our text file formats use the magic string '#!'. If this
+# happens to be in the first row, then file thinks that they are scripts. For
+# now, we remove any line with equal signs. Further, we probably should add a
+# blank line before any output of this magic string. 
+#
+${KJB_FILE} -f ${temp_file} | sed -n '/ script/p' | sed -n '/ executable/p' | sed '/=/d' | sed 's/^\([^:]*\):.*/\1/'
+
+${KJB_RM} ${temp_file}
+
+

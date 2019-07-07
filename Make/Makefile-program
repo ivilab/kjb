@@ -1,0 +1,1152 @@
+#
+# $Id: Makefile-program 22656 2019-06-30 18:42:07Z kobus $
+#
+ 
+include $(MAKE_PATH)Makefile-defs
+
+#
+# External libraries that the program might use if available on this computer.
+#
+# Note that when this line is processed, none of the symbols are defined. We
+# rely on late binding of them as a result of other included Makefiles. 
+#
+# Best to keep the order so such that anything that has dependencies comes
+# before its dependences. 
+#
+LIBS = \
+       $(NEED_LIB_XXX) \
+       $(NEED_LIB_FLTK) \
+       $(NEED_LIB_SUNDIALS_SVEC) \
+       $(NEED_LIB_SUNDIALS_PVEC) \
+       $(NEED_LIB_SUNDIALS_CVODE) \
+       $(NEED_LIB_VLFEAT)\
+       $(NEED_LIB_ERGO) \
+       $(NEED_LIB_XERCES) \
+       $(NEED_LIB_XSD) \
+       $(NEED_LIB_XERCESC) \
+       $(NEED_LIB_PYTHON) \
+       $(NEED_LIB_WN) \
+       $(NEED_LIB_KDTREEXX) \
+       $(NEED_LIB_ANN) \
+       $(NEED_LIB_LIBSVM) \
+       $(NEED_LIB_OPENFACE) \
+       $(NEED_LIB_DLIB) \
+       $(NEED_LIB_OPENCV) \
+       $(NEED_LIB_GANDALF) \
+       $(NEED_LIB_SVM) \
+       $(NEED_LIB_BOOST) \
+       $(NEED_LIB_BST_POPTIONS) \
+       $(NEED_LIB_BST_SERIAL) \
+       $(NEED_LIB_BST_FILESYSTEM) \
+       $(NEED_LIB_BST_SYSTEM) \
+       $(NEED_LIB_BST_THREAD) \
+       $(NEED_LIB_VRJ) \
+       $(NEED_LIB_VTK) \
+       $(NEED_LIB_DGL) \
+       $(NEED_LIB_OSMESA) \
+       $(NEED_LIB_GLEW) \
+       $(NEED_LIB_GLUT) \
+       $(NEED_LIB_OPENGL) \
+       $(NEED_LIB_FONTCONFIG) \
+       $(NEED_LIB_XFT) \
+       $(NEED_LIB_XINERAMA) \
+       $(NEED_LIB_X11) \
+       $(NEED_LIB_FFMPEG) \
+       $(NEED_LIB_TIFF) \
+       $(NEED_LIB_JPEG) \
+       $(NEED_LIB_CASADI) \
+       $(NEED_LIB_ODE) \
+       $(NEED_LIB_GSL) \
+       $(NEED_LIB_FFTW) \
+       $(NEED_LIB_LEVMAR) \
+       $(NEED_LIB_SLATEC) \
+       $(NEED_LIB_LAPACK) \
+       $(NEED_LIB_F2C) \
+       $(NEED_LIB_OPENCL) \
+       $(NEED_LIB_CUDPP) \
+       $(NEED_LIB_CUDCVT) \
+       $(NEED_LIB_CUDART) \
+       $(NEED_LIB_CUDA) \
+       $(NEED_LIB_OPENSSL) \
+       $(NEED_LIB_CURSES) \
+       $(NEED_LIB_TBB) \
+       $(NEED_LIB_PTHREAD) \
+       \
+
+include $(MAKE_PATH)Makefile-program.$(MAKE_FLAVOR)
+
+# The following make flavor dependent defines, set by the file just included,
+# are expanded versions of the pattern oriented symbols defined below. 
+#
+#     SOURCE_FILES
+#     HEADER_FILES
+#     PROGRAM_FILES
+#
+SOURCE_FILE_PAT = *.[cC] *.cpp *.cxx *.cc
+HEADER_FILE_PAT = *.[h] *.[hit]pp *.[hit]xx
+PROGRAM_FILE_PAT = *.[chC] *[chit].pp *[chit].xx *.cc
+
+# A note about file pattern expansion. 
+#     File pattern expansion is make flavor dependent, and also can lead to
+#     annoying failures when the pattern does not match, but what you want is
+#     simply a null result. We only need to rely on make pattern expansion for
+#     rules. Pattern use could probably be purged from commands using scripts
+#     instead. 
+
+################################################################################
+#         Synching Makefile and build with src/Make 
+#
+# The files "Makefile and "build" are strict copies of the ones in src/Make.  If
+# they are updated, we want to get a copy. The syncronization may not be in time
+# for this invocation of make, hence we provide an message about that. Note that
+# GNU make tries to update make files that it reads and rebuild the dependency
+# graphs as a result. When this works (I am not convinced it is robust), we get
+# updated sooner. However, since it does not always work, and since we try to
+# support other versions of make, we also specify "Makefile" and "build" as
+# targets below. 
+# 
+# Why are Makefile and build copies? 
+#     We cannot point to the ones in $(MAKE_PATH) because they implement
+#     figuring out the value of MAKE_PATH. 
+
+Makefile : $(MAKE_PATH)Makefile
+	@$(ECHO_UNLESS_QUIET) " "
+	@$(ECHO_UNLESS_QUIET) "Updating 'Makefile' from $(MAKE_PATH)."
+	@$(ECHO_UNLESS_QUIET) "This will affect future compiles, but not necessarily this one."
+	$(KJB_CP) $(MAKE_PATH)Makefile $@ 
+	@$(ECHO_UNLESS_QUIET) " "
+
+build : $(MAKE_PATH)build
+	@$(ECHO_UNLESS_QUIET) " "
+	@$(ECHO_UNLESS_QUIET) "Updating 'build' from $(MAKE_PATH)."
+	@$(ECHO_UNLESS_QUIET) "This will affect future compiles, but not necessarily this one."
+	$(KJB_CP) $(MAKE_PATH)build $@ 
+	@$(ECHO_UNLESS_QUIET) " "
+
+################################################################################
+#      Include_lines/file_list (target with hidden dependencies) 
+#
+# Include_lines/file_list tracks creating, deleting, and renaming of source code
+# files. 
+#
+# This target is built in two ways depending on whether it needs to be created or
+# whether it is being upated. If it does not exist, it can be created by its own
+# rule. Whether this actually happens depends on the make flavor.  Note that we
+# do not provide dependencies for that target so that it won't be updated by this
+# rule unless it does not exist. If it exists, it is updated as a side effect of
+# building the target Include_lines/file_list.new. This process will also able
+# to create the file if needed. 
+#
+# We explicitly hide the link between the dependencies of
+# Include_lines/file_list.new and Include_lines/file_list so that we control
+# whether the theoretical dependence matters. For example, the directory
+# timestamp matters if it changes due to a source file being moved. Responding
+# to timestamps that do not matter would be hopelessly impractical. 
+
+# ---------------------------------------------
+# Include_lines/file_list 
+#
+# Handle the case the dependency Include_lines/file_list does not exist and we
+# are working on something that depends on it (e.g., Makefile-depend).  Since
+# this file is further maintained only as a side effect, we do not have it
+# depend on anything other than tools.  However, since we want it to depend on
+# tools, and the script is not guaranteed to update the time stamp, we have an
+# explicit {$KJB_TOUCH). 
+
+# ==============================================================================
+
+# Hidden dependencies of tools on tools. 
+
+$(MAKE_SCRIPT_PATH)build_file_list : \
+    $(MAKE_SCRIPT_PATH)kjb_lock
+
+$(MAKE_SCRIPT_PATH)build_include_lines : \
+    $(MAKE_SCRIPT_PATH)kjb_lock
+
+$(MAKE_SCRIPT_PATH)build_include_lines_2 : \
+    $(MAKE_SCRIPT_PATH)kjb_lock
+
+# Dependency on tools that build the target. 
+#
+Include_lines/file_list : \
+    $(MAKE_SCRIPT_PATH)build_file_list
+
+Include_lines/file_list :
+	@$(ECHO_IF_VERBOSE) "Process $$$$ is building $@ because of $?" 
+	$(MAKE_SCRIPT_PATH)build_file_list
+	$(KJB_TOUCH) $@
+
+# ---------------------------------------------
+# Include_lines/file_list.new
+
+# Dependency on tools that build the target. 
+#
+Include_lines/file_list.new: \
+    $(MAKE_SCRIPT_PATH)build_file_list
+
+# Rule to build Include_lines/file_list.new. Note that there is no need to
+# depend on Include_lines because if that does not exist, the target does not
+# either, and the script build_file_list will create Include_lines. 
+# 
+Include_lines/file_list.new : ./ $(FORCE_WITH_SUN5)
+	@$(ECHO_IF_VERBOSE) "Process $$$$ is building $@ because of $?" 
+	$(MAKE_SCRIPT_PATH)build_file_list 
+
+# Convenience dummy target used by the script build-2. Using the target directly
+# would require extra logic for the leading directory, especially in the case
+# where we always use full paths for library components, even if we are building
+# in that directory. The dummy target file_list.new should not be used as a
+# dependency.
+#
+file_list.new: \
+    build \
+    Makefile \
+    $(MAKE_PATH)Makefile-program \
+    Include_lines/file_list.new
+
+################################################################################
+#      Include_lines/include_lines (target with hidden dependencies) 
+#
+# Include_lines/include_lines tracks the state of include lines in source files
+# which determine whether Makefile-depend is up to date. We represents the state
+# of the shadow files, two per source code file, in Include_lines. Using files
+# for each source file is necessary for complete accuracy, as Makefile-depend
+# depends on which file has which includes. If any source file has changed in
+# way that matters, then Include_lines/include_lines is updated as a side effect
+# of building the exposed target Include_lines/include_lines.new. 
+#
+# This target is built in two ways depending on whether it needs to be created or
+# whether it is being updated. If it does not exist, it can be created by its own
+# rule. Whether this actually happens depends on the make flavor.  Note that we
+# do not provide dependencies in that target so that it won't be updated by this
+# rule unless it does not exist. If it exists, it is updated as a side effect of
+# building the target Include_lines/file_list.new. This process will also able
+# to create the file if needed. 
+#
+# We explicitly hide the link between the dependencies of
+# Include_lines/include_lines.new and Include_lines/include_lines so that we
+# control whether the theoretical dependence matters. For example, the source
+# file timestamp matter if they are due to changes in include lines within the
+# file. Responding to timestamps that do not matter would be hopelessly
+# impractical. 
+
+
+# ---------------------------------------------
+# Include_lines/include_lines 
+#
+# Handle the case the dependency Include_lines/include_lines does not exist and
+# we are working on something that depends on it (e.g., Makefile-depend).  Since
+# this file is further maintained only as a side effect, we do not have it
+# depend on anything other than tools. However, since we want it to depend on
+# tools, and the script is not guaranteed to update the time stamp, we have an
+# explicit {$KJB_TOUCH). 
+#
+# Dependency on tools that build the target. 
+#
+Include_lines/include_lines : \
+    $(MAKE_SCRIPT_PATH)build_file_list \
+    $(MAKE_SCRIPT_PATH)build_include_lines \
+    $(MAKE_SCRIPT_PATH)build_include_lines_2 \
+    $(MAKE_SCRIPT_PATH)build_makefile_dirs \
+    $(MAKE_SCRIPT_PATH)get_local_include_dirs \
+    $(MAKE_SCRIPT_PATH)build_sub_libs_needed 
+ 
+# The script build_include_lines updates Include_lines/include_lines only if
+# needed. Because the target is not guaranteed to be updated, but has the
+# dependencies on tools, we need to touch $@. 
+#
+Include_lines/include_lines : 
+	@$(ECHO_IF_VERBOSE) "Building $@ because of $?" 
+	@$(MAKE_SCRIPT_PATH)build_file_list 
+	@$(MAKE_SCRIPT_PATH)build_include_lines
+	@$(KJB_TOUCH) $@
+
+# ---------------------------------------------
+# Include_lines/include_lines.new 
+
+Include_lines/new/% : % $(MAKE_SCRIPT_PATH)update_include_line_file
+	@$(ECHO_IF_VERBOSE) "Building $@ because of $?" 
+	$(MAKE_SCRIPT_PATH)update_include_line_file '' $*
+
+# Tools for the next target. 
+Include_lines/include_lines.new : \
+    $(MAKE_SCRIPT_PATH)build_include_lines \
+    $(MAKE_SCRIPT_PATH)build_include_lines_2 \
+    $(MAKE_SCRIPT_PATH)build_makefile_dirs \
+    $(MAKE_SCRIPT_PATH)get_local_include_dirs \
+    $(MAKE_SCRIPT_PATH)build_sub_libs_needed 
+
+# The processes for building the individual include line files will have removed
+# Include_lines/include_lines if we need to continue updating. This will trigger
+# build_include_lines to update that file, and Makefile-dirs if demanded by the
+# new content of Include_lines/include_lines. 
+#
+Include_lines/include_lines.new : Include_lines/file_list $(NEW_INCLUDE_LINE_FILES)
+	@$(ECHO_IF_VERBOSE) "Building $@ because of $?" 
+	@$(MAKE_SCRIPT_PATH)build_include_lines 
+
+# Convenience dummy target used by the script build-2. Using the target directly
+# would require extra logic for the leading directory, especially in the case
+# where we always use full paths for library components, even if we are building
+# in that directory. The dummy target include_lines.new should not be used as a
+# dependency.
+#
+include_lines.new: \
+    build \
+    Makefile \
+    $(MAKE_PATH)Makefile-program \
+    Include_lines/include_lines.new
+
+################################################################################
+#      Include_lines/sub_libs_needed (target with hidden dependencies) 
+#
+# Build Include_lines/sub_libs_needed which builds Makefile-dirs as a side
+# effect.  We cannot expose the dependency of Makefile-dirs on
+# Include_lines/sub_libs_needed because then (for some versions of "make") the
+# include Makefile-dirs would force building of Include_lines/sub_libs_needed
+# which we are not necessarily ready to do as it depends on Makefile-dirs
+# itself. 
+
+# --------------------------------
+# Target sub_libs_needed
+#
+# Handle the case the dependency Include_lines/sub_libs_needed does not exist
+# and we are working on something that depends on it (e.g., Makefile-depend).
+# Since this file is further maintained only as a side effect, we do not have it
+# depend on anything other than the tools needed to build it. The script
+# build_include_lines calls build_makefile_dirs and build_sub_libs_needed,
+# hence the extra lines. 
+
+# Tools for the target. 
+#
+Include_lines/sub_libs_needed : \
+    $(MAKE_SCRIPT_PATH)build_file_list \
+    $(MAKE_SCRIPT_PATH)build_include_lines \
+    $(MAKE_SCRIPT_PATH)build_include_lines_2 \
+    $(MAKE_SCRIPT_PATH)build_makefile_dirs \
+    $(MAKE_SCRIPT_PATH)get_local_include_dirs \
+    $(MAKE_SCRIPT_PATH)build_sub_libs_needed 
+
+# The script build_include_lines updates Include_lines/sub_libs_needed only if
+# needed.  Because the target is not gaurenteed to be updated, but has the
+# dependencies on tools, we need to touch $@. 
+#
+Include_lines/sub_libs_needed :
+	@$(ECHO_IF_VERBOSE) "Building $@ because of $?" 
+	$(MAKE_SCRIPT_PATH)build_file_list 
+	$(MAKE_SCRIPT_PATH)build_include_lines -f 
+	$(KJB_TOUCH) $@
+
+# Convenience dummy target used by the script build-2. Using the target directly
+# would require extra logic for the leading directory, especially in the case
+# where we always use full paths for library components, even if we are building
+# in that directory. The dummy target sub_libs_needed should not be used as a
+# dependency.
+#
+sub_libs_needed: Include_lines/sub_libs_needed
+
+################################################################################
+
+# In case Makefile-dirs does not exist. 
+
+# Tools for the target. 
+Makefile-dirs: \
+    $(MAKE_SCRIPT_PATH)build_file_list \
+    $(MAKE_SCRIPT_PATH)build_include_lines \
+    $(MAKE_SCRIPT_PATH)build_makefile_dirs \
+    $(MAKE_SCRIPT_PATH)get_local_include_dirs \
+    $(MAKE_SCRIPT_PATH)build_sub_libs_needed 
+
+# The script build_include_lines updates Include_lines/Makefile-dirs only if
+# needed. Because the target is not guaranteed to be updated, but has the
+# dependencies on various tools, we need to touch $@. 
+#
+Makefile-dirs : 
+	$(MAKE_SCRIPT_PATH)build_file_list 
+	$(MAKE_SCRIPT_PATH)build_include_lines
+	$(KJB_TOUCH) $@
+
+include Makefile-dirs
+
+# Typically archives are $(LD_OBJ_DIR)libKJB.a, but this allows expansion to
+# other archives and having no KJB dependencies, in which case KJB_LIB_ARCHIVE
+# is empty.  
+#
+LIB_ARCHIVES = $(KJB_LIB_ARCHIVE) 
+LIB_LINK_STRINGS = $(KJB_LIB_LINK_STR)
+
+################################################################################
+#
+#              Build and include Makefile-depend
+#
+
+# ------------------------------------------
+#
+# Prerequisites for Makefile-depend. 
+
+$(MAKE_EDIT_PATH)%.ex: $(MAKE_EDIT_PATH)strip_ex_files
+
+$(MAKE_EDIT_PATH)%.ex: $(MAKE_EDIT_PATH)%.vim
+	$(MAKE_EDIT_PATH)strip_ex_files $< $@
+
+$(MAKE_EDIT_PATH)%.ex7: $(MAKE_EDIT_PATH)strip_ex7_files
+
+$(MAKE_EDIT_PATH)%.ex7:$(MAKE_EDIT_PATH)%.vim
+	$(MAKE_EDIT_PATH)strip_ex7_files $< $@
+
+# The symbol VIM_SUFFIX used here is either "ex" or "ex7". 
+#
+Makefile-depend : \
+    $(MAKE_EDIT_PATH)Depend.$(VIM_SUFFIX) \
+    $(MAKE_EDIT_PATH)Dirs.$(VIM_SUFFIX) \
+    $(MAKE_EDIT_PATH)Header.$(VIM_SUFFIX) \
+    $(MAKE_EDIT_PATH)Help.$(VIM_SUFFIX) \
+    $(MAKE_EDIT_PATH)Misc.$(VIM_SUFFIX) \
+    $(MAKE_EDIT_PATH)Obs_depend.$(VIM_SUFFIX) \
+    $(MAKE_EDIT_PATH)Obs.$(VIM_SUFFIX) \
+    $(MAKE_EDIT_PATH)Local_obs.$(VIM_SUFFIX) \
+    $(MAKE_EDIT_PATH)Programs_depend.$(VIM_SUFFIX) \
+    $(MAKE_EDIT_PATH)Programs.$(VIM_SUFFIX) \
+    $(MAKE_EDIT_PATH)User.$(VIM_SUFFIX) \
+    $(MAKE_EDIT_PATH)Version_obs.$(VIM_SUFFIX) \
+    $(MAKE_EDIT_PATH)Work.$(VIM_SUFFIX) \
+    $(MAKE_EDIT_PATH)Writeup.$(VIM_SUFFIX)
+
+Makefile-depend : \
+    $(MAKE_SCRIPT_PATH)kjb_makedepend \
+    $(MAKE_SCRIPT_PATH)stream_file_names \
+    $(MAKE_SCRIPT_PATH)stream_prog_lib_obs \
+    $(MAKE_SCRIPT_PATH)update_include_line_file \
+    $(MAKE_SCRIPT_PATH)build_include_lines \
+    $(MAKE_SCRIPT_PATH)build_include_lines_2 \
+	$(MAKE_PATH)Makefile-program 
+
+# -------------------------------------------
+#
+# Now the rule to build Makefile-depend. 
+
+# This needs to become a script to get locking behaviour correct (and remove
+# call to lockfile) !!!!!!!!!!!!!!!!!!!!!!!!!
+#
+
+# Quite a bit of cleanup is possible here by extending kjb_makedepend to handle
+# the header files, getting rid of need for the fake_out_glob trick in the
+# documentation files, etc.  In fact, kjb_makedepend might be a better place to
+# add in lines that we now put in via Makefile-obj-targets-depend. 
+#
+# If used, TEST_SUB_DIRS is defined in Makefile-depend which we are in the
+# process of building. So we may not depend on it for the first build of
+# Makefile-depend. However, the script build_2 ensures that Makefile-depend is
+# built before it is used.
+#
+Makefile-depend : Include_lines/file_list Include_lines/include_lines $(TEST_SUB_DIRS)
+	@$(ECHO_UNLESS_QUIET)  " "
+	@$(ECHO_UNLESS_QUIET)  "================================================================================"
+# Commented out to prevent 'word too long' errors on some systems
+# -- Kyle  Jan 15, 2011
+# 	@$(KJB_ECHO)  "Building Makefile-depend because of $?" 
+	@$(ECHO_UNLESS_QUIET)  "Building Makefile-depend" 
+	@$(ECHO_UNLESS_QUIET)  " "
+	$(MAKE_SCRIPT_PATH)stream_file_names -s -m > Makefile-program-targets
+# 	$(KJB_CP) Makefile-program-targets Makefile-program-targets-SAVE
+	$(KJB_CP) Makefile-program-targets Makefile-misc-targets
+	$(KJB_CP) Makefile-program-targets Makefile-work-targets
+	$(KJB_CP) Makefile-program-targets Makefile-user-targets
+	$(KJB_CP) Makefile-program-targets Makefile-program-targets-depend
+#
+# 	$(KJB_CP) Makefile-program-targets Makefile-program-targets-SAVE
+# 	$(KJB_RM) .Makefile-program-targets.swp
+# 	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)Dirs.$(VIM_SUFFIX) Makefile-program-targets \
+# 	        $(VIM_IO_REDIRECTION)
+# 	$(KJB_CP) Makefile-program-targets Makefile-program-targets-SAVE-2
+#
+	@$(KJB_RM) .Makefile-misc-targets.swp
+	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)Misc.$(VIM_SUFFIX) Makefile-misc-targets \
+	        $(VIM_IO_REDIRECTION)
+#
+	@$(KJB_RM) .Makefile-work-targets.swp
+	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)Work.$(VIM_SUFFIX) Makefile-work-targets \
+	        $(VIM_IO_REDIRECTION)
+#
+	@$(KJB_RM) .Makefile-user-targets.swp
+	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)User.$(VIM_SUFFIX) Makefile-user-targets \
+	        $(VIM_IO_REDIRECTION)
+#
+	@$(KJB_RM) .Makefile-program-targets.swp
+	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)Programs.$(VIM_SUFFIX) Makefile-program-targets \
+	        $(VIM_IO_REDIRECTION)
+#
+	@$(KJB_RM) .Makefile-program-targets-depend.swp
+	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)Programs_depend.$(VIM_SUFFIX) Makefile-program-targets-depend \
+	        $(VIM_IO_REDIRECTION)
+	$(KJB_CAT) Makefile-program-targets-depend >> Makefile-program-targets
+#
+	$(MAKE_SCRIPT_PATH)stream_file_names -s -m -v | sed '/\<version\.[ch][px]*\>/d' > Makefile-obj-targets
+# 	$(KJB_CP) Makefile-obj-targets Makefile-obj-targets-SAVE
+	$(KJB_CP) Makefile-obj-targets Makefile-local-obs
+	@$(KJB_RM) .Makefile-local-obs.swp
+	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)Local_obs.$(VIM_SUFFIX) Makefile-local-obs \
+	        $(VIM_IO_REDIRECTION)
+# 	$(KJB_CP) Makefile-obj-targets Makefile-local-obs-SAVE
+	@$(KJB_RM) .Makefile-obj-targets.swp
+# 	$(KJB_CP) Makefile-obj-targets Makefile-obj-targets-SAVE-2
+	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)Dirs.$(VIM_SUFFIX) Makefile-obj-targets \
+	        $(VIM_IO_REDIRECTION)
+# 	$(KJB_CP) Makefile-obj-targets Makefile-obj-targets-SAVE-3
+	$(KJB_CP) Makefile-obj-targets Makefile-obj-targets-depend
+# 	$(KJB_CP) Makefile-obj-targets-depend Makefile-obj-targets-depend-SAVE
+	@$(KJB_RM) .Makefile-obj-targets.swp
+	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)Obs.$(VIM_SUFFIX) Makefile-obj-targets \
+	        $(VIM_IO_REDIRECTION)
+# 	$(KJB_CP) Makefile-obj-targets Makefile-obj-targets-SAVE-4
+	$(KJB_CAT) Makefile-local-obs >> Makefile-program-targets
+	$(KJB_CAT) Makefile-obj-targets >> Makefile-program-targets
+#
+#   Breaking style here a bit. We could have used a vim script, but instead we use
+#   a regular script.
+	$(MAKE_SCRIPT_PATH)stream_prog_lib_obs >> Makefile-program-targets
+#
+	@$(KJB_RM) .Makefile-obj-targets-depend.swp
+	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)Obs_depend.$(VIM_SUFFIX) Makefile-obj-targets-depend \
+	        $(VIM_IO_REDIRECTION)
+# 	$(KJB_CP) Makefile-obj-targets-depend Makefile-obj-targets-depend-SAVE-2
+	$(KJB_CAT) Makefile-obj-targets-depend >> Makefile-program-targets
+	@$(KJB_RM) Makefile-obj-targets-depend
+	@$(KJB_RM) Makefile-local-obs
+	@$(KJB_RM) Makefile-obj-targets
+#
+	$(MAKE_SCRIPT_PATH)stream_file_names -s -m -v | sed -n '/\<version\.[ch][px]*\>/p' > Makefile-version-obj-targets
+# 	$(KJB_CP) Makefile-version-obj-targets	Makefile-version-obj-targets-SAVE
+	@$(KJB_RM) .Makefile-version-obj-targets.swp
+	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)Dirs.$(VIM_SUFFIX) Makefile-version-obj-targets \
+	        $(VIM_IO_REDIRECTION)
+# 	$(KJB_CP) Makefile-version-obj-targets	Makefile-version-obj-targets-SAVE-2
+	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)Version_obs.$(VIM_SUFFIX) Makefile-version-obj-targets \
+	        $(VIM_IO_REDIRECTION)
+	$(KJB_CAT) Makefile-version-obj-targets >> Makefile-program-targets
+	$(KJB_ECHO) " " >> Makefile-program-targets
+	$(KJB_ECHO) " " >> Makefile-program-targets
+	$(KJB_RM) Makefile-version-obj-targets
+	$(KJB_TOUCH) fake_out_glob.help 
+	$(KJB_LS) *.help > Makefile-help-targets
+	$(KJB_RM) fake_out_glob.help 
+	$(KJB_RM) .Makefile-help-targets.swp
+	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)Dirs.$(VIM_SUFFIX) Makefile-help-targets \
+	        $(VIM_IO_REDIRECTION)
+	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)Help.$(VIM_SUFFIX) Makefile-help-targets \
+	        $(VIM_IO_REDIRECTION)
+	$(KJB_TOUCH) fake_out_glob.w 
+	$(KJB_LS) *.w > Makefile-writeup-targets
+	@$(KJB_RM) fake_out_glob.w 
+	@$(KJB_RM) .Makefile-writeup-targets.swp
+	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)Dirs.$(VIM_SUFFIX) Makefile-writeup-targets \
+	        $(VIM_IO_REDIRECTION)
+	$(VIM_FOR_MAKE) $(VIM_SCRIPT_OPERATOR) $(MAKE_EDIT_PATH)Writeup.$(VIM_SUFFIX) Makefile-writeup-targets \
+	        $(VIM_IO_REDIRECTION)
+	$(KJB_ECHO) " " >> Makefile-writeup-targets
+#	$(MAKE_SCRIPT_PATH)stream_script_names | sed '/\<build\>/d' | sed 's/\(.*\)/doc_program : $$(MAKE_DOC_DIR)\1.shell.made/' >> Makefile-writeup-targets
+	$(MAKE_SCRIPT_PATH)stream_script_names | sed '/\<build\>/d' | sed 's/\(.*\)/doc_program : $$(PROGRAM_CAT_DIR)\1\.1/' >> Makefile-writeup-targets
+	$(KJB_ECHO) " " >> Makefile-writeup-targets
+#	$(MAKE_SCRIPT_PATH)stream_script_names | sed '/\<build\>/d' | sed 's/\(.*\)/$$(PROGRAM_CAT_DIR)\1\.1 : $$(MAKE_DOC_DIR)\1.shell.made/' >> Makefile-writeup-targets
+	$(KJB_ECHO) " " >> Makefile-writeup-targets
+#
+	$(KJB_CAT) /dev/null > Makefile-depend-headers 
+	$(MAKE_SCRIPT_PATH)kjb_makedepend '' -c -Y -w20000 -DMAKE_DEPEND  -DMAKE_DEPEND_GEN_H $(PROG_BASE_INCLUDES)  > Makefile-depend-src 
+	$(MAKE_SCRIPT_PATH)kjb_makedepend '' -x -Y -w20000 -DMAKE_DEPEND  -DMAKE_DEPEND_GEN_H $(PROG_BASE_INCLUDES)  >> Makefile-depend-src 
+#
+	@$(KJB_ECHO) " " > Makefile-depend
+	@$(KJB_ECHO) "#" >> Makefile-depend
+	@$(KJB_ECHO) "# Machine generated file to set make targets" >> Makefile-depend
+	@$(KJB_ECHO) "#" >> Makefile-depend
+	@$(KJB_ECHO) " " >> Makefile-depend
+	$(KJB_CAT) \
+            Makefile-misc-targets \
+            Makefile-work-targets \
+            Makefile-user-targets \
+            Makefile-program-targets \
+            Makefile-help-targets \
+            Makefile-writeup-targets \
+            Makefile-depend-headers \
+            Makefile-depend-src \
+               >> Makefile-depend 
+#
+	@$(KJB_RM) Makefile-misc-targets
+	@$(KJB_RM) Makefile-work-targets
+	@$(KJB_RM) Makefile-user-targets
+	@$(KJB_RM) Makefile-program-targets
+	@$(KJB_RM) Makefile-program-targets-depend
+	@$(KJB_RM) Makefile-help-targets
+	@$(KJB_RM) Makefile-writeup-targets
+	@$(KJB_RM) Makefile-depend-headers
+	@$(KJB_RM) Makefile-depend-src
+	@$(ECHO_UNLESS_QUIET)  " "
+	@$(ECHO_UNLESS_QUIET)  "                         Makefile-depend is built" 
+	@$(ECHO_UNLESS_QUIET)  "================================================================================"
+	@$(ECHO_UNLESS_QUIET)  " "
+
+include Makefile-depend
+
+################################################################################
+#
+# Build and include Makefile-libs-needed.
+#
+
+# This is needed for Makefile-depend. 
+Include_lines/Makefile-libs-needed.state : 
+	$(KJB_MKDIR) $(LIB_COMPONENT_SRC_DIR)Include_lines
+	$(KJB_TOUCH_1990) $@
+
+
+# Dependencies on the tools needed to build it. 
+#
+Makefile-libs-needed : \
+      $(MAKE_PATH)init_compile \
+      $(MAKE_SCRIPT_PATH)build_makefile_libs_needed 
+
+
+Makefile-libs-needed : Include_lines/include_lines
+	@$(ECHO_IF_VERBOSE) "Building $@ because of $?" 
+	$(MAKE_SCRIPT_PATH)build_makefile_libs_needed '$(LIB_COMPONENT_SRC_DIR)'
+	$(MAKE_SCRIPT_PATH)copy_if_different $@ Include_lines/Makefile-libs-needed.state
+
+include Makefile-libs-needed
+
+################################################################################
+#
+#
+# The dependency on Makefile-depend is superfluous for many, but not all, make
+# flavors because of the include. Note that Makefile-depend is how we are
+# currently propagating the dependency on *_incl.h. 
+#
+depend_program : $(DEPEND_TARGETS) Include_lines/sub_libs_needed Makefile-depend 
+
+################################################################################
+#                       Object directory 
+#
+# A target for making sure that all directories exist. This is only used for
+# parallel makes, but most machines now have more than one core, so this is
+# becoming the common case. The target dir_made is never made, so it is always
+# out of date. 
+#
+dir_made :  $(DIR_MADE_TARGETS) $(OBJ_DIR)c_dir_made $(CXX_OBJ_DIR)cxx_dir_made $(LD_OBJ_DIR)ld_dir_made 
+
+# We use "c_dir_made" in the following because $(OBJ_DIR) may be a symbolic link.
+$(OBJ_DIR)c_dir_made : 
+	$(MAKE_SCRIPT_PATH)make_src_shadow_dir "$(REAL_OBJ_DIR)" "$(OBJ_DIR)" .
+	$(KJB_TOUCH) $@ 
+
+# We use "cxx_dir_made" in the following because $(CXX_OBJ_DIR) may be a symbolic link.
+$(CXX_OBJ_DIR)cxx_dir_made : 
+	$(MAKE_SCRIPT_PATH)make_src_shadow_dir "$(REAL_OBJ_DIR)" "$(CXX_OBJ_DIR)" .
+	$(KJB_TOUCH) $@ 
+
+# We use "ld_dir_made" in the following because $(LD_OBJ_DIR) may be a symbolic link.
+$(LD_OBJ_DIR)ld_dir_made : 
+	$(MAKE_SCRIPT_PATH)make_src_shadow_dir "$(REAL_OBJ_DIR)" "$(LD_OBJ_DIR)" .
+	$(KJB_TOUCH) $@ 
+
+################################################################################
+#                            GNU precompiled headers
+
+$(PCH_DIR)%.h.gch : %.h 
+	$(KJB_MKDIR) $(PCH_DIR)
+	( $(KJB_CXX) $< -c -o $@ \
+        $(CXX_FLAGS) $(EXTRA_LIB_OPTIONS) $(HACK_CXX_FLAGS) \
+        $(PROGRAM_CXX_WARNING_FLAGS) \
+        $(PROGRAMMER_FLAGS) \
+        $(HACK_BEFORE_INCLUDES) $(BEFORE_INCLUDES) $(BASE_INCLUDES) $(DEFAULT_OPT_INCLUDES) $(EXTRA_LIB_INCLUDES) $(AFTER_INCLUDES) $(HACK_AFTER_INCLUDES) \
+        $(NEED_HAVE) \
+        $(WITH_LIBS_HAVE); $(COMPILE_STATUS_IS) ) \
+        |& $(KJB_CPP_MESSAGE_FILTER) \
+        $(NULL_TO_MAKE_BLANK_LINE)
+
+################################################################################
+#                       Make the object files 
+#
+# Default build (may be overridden in program specific makefiles). 
+
+# The dependency Makefile-libs-needed is build from source files, so, if the
+# source file changes, then the object file is also out of date, and so it
+# appears that the dependency is not really needed. However, since it is
+# included, the previous version could be active, and then we would forget that
+# the targets are out of date. This is mitigated by the seqence enforced in
+# the script build-2, but we make explicit the need there also, in case this
+# makefile gets used without the script. 
+#
+
+# We used to do this, but this is not robust, especially for mixed C/C++. Now we
+# handle it in Makefile-depend. 
+#
+# $(OBJ_DIR)%.o : $(OBJ_DIR)c_dir_made Makefile-libs-needed
+# $(CXX_OBJ_DIR)%.o : $(CXX_OBJ_DIR)cxx_dir_made Makefile-libs-needed
+
+$(OBJ_DIR)%.o : %.c 
+	@$(KJB_ECHO)
+	@$(KJB_CC) --version |& head -1 
+	$(KJB_CC) $< -c -o $@ \
+        $(CC_FLAGS) $(EXTRA_LIB_CC_FLAGS) $(EXTRA_LIB_OPTIONS) $(HACK_CC_FLAGS) \
+        $(PROGRAM_CC_WARNING_FLAGS) \
+        $(PROGRAMMER_FLAGS) \
+        $(HACK_BEFORE_INCLUDES) $(BEFORE_INCLUDES) $(BASE_INCLUDES) $(DEFAULT_OPT_INCLUDES) $(EXTRA_LIB_INCLUDES) $(AFTER_INCLUDES) $(HACK_AFTER_INCLUDES) \
+        $(NEED_HAVE) \
+        $(WITH_LIBS_HAVE) \
+        $(NULL_TO_MAKE_BLANK_LINE)
+
+
+$(CXX_OBJ_DIR)%.o : %.C
+	@$(KJB_ECHO)
+	@$(KJB_CXX)  --version |& head -1 
+	( $(KJB_CXX) $< -c -o $@ \
+        $(CXX_FLAGS) $(EXTRA_LIB_OPTIONS) $(HACK_CXX_FLAGS) \
+        $(PROGRAM_CXX_WARNING_FLAGS) \
+        $(PROGRAMMER_FLAGS) \
+        $(HACK_BEFORE_INCLUDES) $(BEFORE_INCLUDES) $(BASE_INCLUDES) $(DEFAULT_OPT_INCLUDES) $(EXTRA_LIB_INCLUDES) $(AFTER_INCLUDES) $(HACK_AFTER_INCLUDES) \
+        $(NEED_HAVE) \
+        $(WITH_LIBS_HAVE); $(COMPILE_STATUS_IS) ) \
+        |& $(KJB_CPP_MESSAGE_FILTER) \
+        $(NULL_TO_MAKE_BLANK_LINE)
+
+
+$(CXX_OBJ_DIR)%.o : %.cpp
+	@$(KJB_ECHO)
+	@$(KJB_CXX)  --version |& head -1 
+	( $(KJB_CXX) $< -c -o $@ \
+        $(CXX_FLAGS) $(EXTRA_LIB_OPTIONS) $(HACK_CXX_FLAGS) \
+        $(PROGRAM_CXX_WARNING_FLAGS) \
+        $(PROGRAMMER_FLAGS) \
+        $(HACK_BEFORE_INCLUDES) $(BEFORE_INCLUDES) $(BASE_INCLUDES) $(DEFAULT_OPT_INCLUDES) $(EXTRA_LIB_INCLUDES) $(AFTER_INCLUDES) $(HACK_AFTER_INCLUDES) \
+        $(NEED_HAVE) \
+        $(WITH_LIBS_HAVE); $(COMPILE_STATUS_IS) ) \
+        |& $(KJB_CPP_MESSAGE_FILTER) \
+        $(NULL_TO_MAKE_BLANK_LINE)
+
+# I fixed what looked like an obvious typo in the line below in r8486 - Andrew
+
+$(CXX_OBJ_DIR)%.o : %.cxx
+	@$(KJB_ECHO)
+	@$(KJB_CXX)  --version |& head -1 
+	( $(KJB_CXX) $< -c -o $@ \
+        $(CXX_FLAGS) $(EXTRA_LIB_OPTIONS) $(HACK_CXX_FLAGS) \
+        $(PROGRAM_CXX_WARNING_FLAGS) \
+        $(PROGRAMMER_FLAGS) \
+        $(HACK_BEFORE_INCLUDES) $(BEFORE_INCLUDES) $(BASE_INCLUDES) $(DEFAULT_OPT_INCLUDES) $(EXTRA_LIB_INCLUDES) $(AFTER_INCLUDES) $(HACK_AFTER_INCLUDES) \
+        $(NEED_HAVE) \
+        $(WITH_LIBS_HAVE); $(COMPILE_STATUS_IS) ) \
+        |& $(KJB_CPP_MESSAGE_FILTER) \
+        $(NULL_TO_MAKE_BLANK_LINE)
+
+
+$(CXX_OBJ_DIR)%.o : %.cc
+	@$(KJB_ECHO)
+	@$(KJB_CXX)  --version |& head -1 
+	( $(KJB_CXX) $< -c -o $@ \
+        $(CXX_FLAGS) $(EXTRA_LIB_OPTIONS) $(HACK_CXX_FLAGS) \
+        $(PROGRAM_CXX_WARNING_FLAGS) \
+        $(PROGRAMMER_FLAGS) \
+        $(HACK_BEFORE_INCLUDES) $(BEFORE_INCLUDES) $(BASE_INCLUDES) $(DEFAULT_OPT_INCLUDES) $(EXTRA_LIB_INCLUDES) $(AFTER_INCLUDES) $(HACK_AFTER_INCLUDES) \
+        $(NEED_HAVE) \
+        $(WITH_LIBS_HAVE); $(COMPILE_STATUS_IS) ) \
+        |& $(KJB_CPP_MESSAGE_FILTER) \
+        $(NULL_TO_MAKE_BLANK_LINE)
+
+# I am not sure if this is still used. Test it commented out.
+#
+# CC_FLAGS_DEFINE_FLAGS = -DCC_FLAGS='"$(CC_FLAGS) $(HACK_CC_FLAGS)"'
+# WITH_LIBS_HAVE_DEFINE_FLAGS = -DWITH_LIBS_HAVE_FLAGS='"$(WITH_LIBS_HAVE)"'
+
+
+#
+# This will need some updating if we want to support having version.cpp, etc.
+# It looks a bit tricky. Perhaps insisting on keeping version as a C file is
+# easiest. 
+#
+$(OBJ_DIR)version.o : $(PROGRAM_FILES) $(OBJ_DIR)c_dir_made Makefile-libs-needed
+	$(KJB_CC)  --version |& head -1 
+	$(KJB_CC) version.c -c -o $@ \
+        $(CC_FLAGS) $(EXTRA_LIB_CC_FLAGS) $(EXTRA_LIB_OPTIONS) $(HACK_CC_FLAGS) \
+        $(PROGRAM_CC_WARNING_FLAGS) \
+        $(PROGRAMMER_FLAGS) \
+        $(HACK_BEFORE_INCLUDES) $(BEFORE_INCLUDES) $(BASE_INCLUDES) $(DEFAULT_OPT_INCLUDES) $(EXTRA_LIB_INCLUDES) $(AFTER_INCLUDES) $(HACK_AFTER_INCLUDES) \
+        $(NEED_HAVE) \
+        $(WITH_LIBS_HAVE) \
+        -DLIBS_USED='"$(LIBS)"' \
+        -DCC_FLAGS_USED='"$(CC_FLAGS) $(EXTRA_LIB_CC_FLAGS) $(EXTRA_LIB_OPTIONS) $(HACK_CC_FLAGS)"' \
+        $(NULL_TO_MAKE_BLANK_LINE)
+
+################################################################################
+#                       Make sharable object files 
+#
+# To avoid repeating dependencies in Makefile-depend for shared, we make the
+# shared versions depend on the non-shared (standard, static) objects. Hence
+# building shared will also build the standard objects. This is OK as we usually
+# build shared after standard anyway. 
+#
+$(OBJ_DIR)$(SHARED_DIR)%.o : $(OBJ_DIR)%.o
+
+$(OBJ_DIR)$(SHARED_DIR)%.o : %.c 
+	@$(KJB_MKDIR) $(OBJ_DIR)$(SHARED_DIR)
+	$(KJB_CC) $< -c -o $@ \
+        $(CC_FLAGS) $(CC_SHARED_FLAGS) $(EXTRA_LIB_CC_FLAGS) $(EXTRA_LIB_OPTIONS) $(HACK_CC_FLAGS) \
+        $(PROGRAM_CC_WARNING_FLAGS) \
+        $(PROGRAMMER_FLAGS) \
+        $(HACK_BEFORE_INCLUDES) $(BEFORE_INCLUDES) $(BASE_INCLUDES) $(DEFAULT_OPT_INCLUDES) $(EXTRA_LIB_INCLUDES) $(AFTER_INCLUDES) $(HACK_AFTER_INCLUDES) \
+        $(M_LIB_NEED_HAVE) \
+        $(WITH_LIBS_HAVE) \
+        $(NULL_TO_MAKE_BLANK_LINE)
+
+$(CXX_OBJ_DIR)$(SHARED_DIR)%.o : $(CXX_OBJ_DIR)%.o 
+
+$(CXX_OBJ_DIR)$(SHARED_DIR)%.o : %.cpp 
+	@$(KJB_MKDIR) $(CXX_OBJ_DIR)$(SHARED_DIR)
+	$(KJB_CXX) $< -c -o $@ \
+        $(CXX_FLAGS) $(CXX_SHARED_FLAGS) $(EXTRA_LIB_OPTIONS) $(HACK_CXX_FLAGS) \
+        $(PROGRAM_CXX_WARNING_FLAGS) \
+        $(PROGRAMMER_FLAGS) \
+        $(HACK_BEFORE_INCLUDES) $(BEFORE_INCLUDES) $(BASE_INCLUDES) $(DEFAULT_OPT_INCLUDES) $(EXTRA_LIB_INCLUDES) $(AFTER_INCLUDES) $(HACK_AFTER_INCLUDES) \
+        $(M_LIB_NEED_HAVE) \
+        $(WITH_LIBS_HAVE)\
+        |& $(KJB_CPP_MESSAGE_FILTER) \
+        $(NULL_TO_MAKE_BLANK_LINE)
+
+# Kobus. Seems redundant. Comment out and see what breaks. 
+# $(CXX_OBJ_DIR)$(SHARED_DIR)%.o : $(CXX_OBJ_DIR)%.o 
+
+$(CXX_OBJ_DIR)$(SHARED_DIR)%.o : %.cxx
+	@$(KJB_MKDIR) $(CXX_OBJ_DIR)$(SHARED_DIR)
+	$(KJB_CXX) $< -c -o $@ \
+        $(CXX_FLAGS) $(CXX_SHARED_FLAGS) $(EXTRA_LIB_OPTIONS) $(HACK_CXX_FLAGS) \
+        $(PROGRAM_CXX_WARNING_FLAGS) \
+        $(PROGRAMMER_FLAGS) \
+        $(HACK_BEFORE_INCLUDES) $(BEFORE_INCLUDES) $(BASE_INCLUDES) $(DEFAULT_OPT_INCLUDES) $(EXTRA_LIB_INCLUDES) $(AFTER_INCLUDES) $(HACK_AFTER_INCLUDES) \
+        $(M_LIB_NEED_HAVE) \
+        $(WITH_LIBS_HAVE) \
+        |& $(KJB_CPP_MESSAGE_FILTER) \
+        $(NULL_TO_MAKE_BLANK_LINE)
+
+
+# Kobus. Seems redundant. Comment out and see what breaks. 
+# $(CXX_OBJ_DIR)$(SHARED_DIR)%.o : $(CXX_OBJ_DIR)%.o
+
+$(CXX_OBJ_DIR)$(SHARED_DIR)%.o : %.C
+	@$(KJB_MKDIR) $(CXX_OBJ_DIR)$(SHARED_DIR)
+	$(KJB_CXX) $< -c -o $@ \
+        $(CXX_FLAGS) $(CXX_SHARED_FLAGS) $(EXTRA_LIB_OPTIONS) $(HACK_CXX_FLAGS) \
+        $(PROGRAM_CXX_WARNING_FLAGS) \
+        $(PROGRAMMER_FLAGS) \
+        $(HACK_BEFORE_INCLUDES) $(BEFORE_INCLUDES) $(BASE_INCLUDES) $(DEFAULT_OPT_INCLUDES) $(EXTRA_LIB_INCLUDES) $(AFTER_INCLUDES) $(HACK_AFTER_INCLUDES) \
+        $(M_LIB_NEED_HAVE) \
+        $(WITH_LIBS_HAVE) \
+        |& $(KJB_CPP_MESSAGE_FILTER) \
+        $(NULL_TO_MAKE_BLANK_LINE)
+
+# Kobus. Seems redundant. Comment out and see what breaks. 
+# $(CXX_OBJ_DIR)$(SHARED_DIR)%.o : $(CXX_OBJ_DIR)%.o
+
+$(CXX_OBJ_DIR)$(SHARED_DIR)%.o : %.cc
+	@$(KJB_MKDIR) $(CXX_OBJ_DIR)$(SHARED_DIR)
+	$(KJB_CXX) $< -c -o $@ \
+        $(CXX_FLAGS) $(CXX_SHARED_FLAGS) $(EXTRA_LIB_OPTIONS) $(HACK_CXX_FLAGS) \
+        $(PROGRAM_CXX_WARNING_FLAGS) \
+        $(PROGRAMMER_FLAGS) \
+        $(HACK_BEFORE_INCLUDES) $(BEFORE_INCLUDES) $(BASE_INCLUDES) $(DEFAULT_OPT_INCLUDES) $(EXTRA_LIB_INCLUDES) $(AFTER_INCLUDES) $(HACK_AFTER_INCLUDES) \
+        $(M_LIB_NEED_HAVE) \
+        $(WITH_LIBS_HAVE) \
+        |& $(KJB_CPP_MESSAGE_FILTER) \
+        $(NULL_TO_MAKE_BLANK_LINE)
+
+################################################################################
+#                Archive of local objects
+#
+# This makes it so that a bunch of objects in a directory of programs with
+# multiple mains will only be linked to the mains that need them. OBS_ARCHIVE
+# should be a drop in for OBS. If we change OBS_ARCHIVE in the link line to OBS, it
+# should behave as it did before April 8, 2017. 
+#
+# Fancy bit: This rule is only called if OBS_ARCHIVE is set to
+# $(LD_OBJ_DIR)LOCAL.a which also only happens if OBS is non-empty. This is
+# arranged in Makefile-program via the vim script Local_obs.vim.  
+
+$(LD_OBJ_DIR)LOCAL.a : $(OBS)
+	$(ECHO_UNLESS_QUIET) Building archive of local object files. 
+	$(KJB_RM)  $@
+	$(KJB_AR) $@ $(OBS) /dev/null 
+	$(KJB_RANLIB)  $@
+	$(ECHO_UNLESS_QUIET) Building of local object file archive done. 
+	
+
+################################################################################
+#                KJB library tuned for this program
+#
+
+# This needs to become a script to get locking behaviour correct (and remove
+# call to lockfile) !!!!!!!!!!!!!!!!!!!!!!!!!
+#
+
+# The object directory for the KJB library module is the same as that used for
+# linking, as the mix of object files potentially depends both on the C compiler
+# and the C++ compiler. 
+#
+# libKJB.a depends on sub_libs_needed and file_list
+# (which is simply to get at the file lists in the sub lib dirs) because this
+# determines the collection of objects in libKJB.a.  Without these dependencies,
+# we only know if libKJB.a is out of date with respect to the known objects. We
+# would be blind to additions or deletions of them.
+#
+$(LD_OBJ_DIR)libKJB.a : $(LD_OBJ_DIR)ld_dir_made Include_lines/sub_libs_needed Include_lines/file_list 
+
+#
+# The following issue could be handled by switching from ar (or ld) to libtool
+# which supports having the file names in a filelist file. But this then locks
+# one into assuming libtool is avaialable. 
+#
+# There is a tricky tradeoff here that ultimately should probably dealt with
+# more substantively. If we archive the objects directly, then it is a very long
+# line, that could break things. If we archive over patterns, the line is
+# shorter, but then we can pick up stale objects. Currently we copy the objects
+# so that the length of the list is not a function of how long absolute path
+# names to the library code are. A few tests suggest that it can grow
+# substantially longer in most environments. The choice is set in the file
+# scripts/build_makefile_dirs. 
+#
+# We archive /dev/null for systems that do not know how to build an empty
+# archive.
+#
+$(LD_OBJ_DIR)libKJB.a : $(SUB_LIB_OBS)
+	@$(ECHO_UNLESS_QUIET) Building program specific KJB archive. Echo suppressed.
+	@$(KJB_RM)  $@
+	@$(KJB_AR) $@ $(SUB_LIB_OBS) /dev/null 
+	@$(KJB_RANLIB)  $@
+	@$(ECHO_UNLESS_QUIET) Building of program specific KJB archive done. 
+# 
+# We used to link libKJB.a, but it should not be needed any longer?
+#
+# 	$(KJB_RM_OBJ_DIR_LINK) libKJB.a
+# 	$(KJB_LINK_EXECUTABLE) $@
+# 	$(MAKE_SCRIPT_PATH)check_executable_path $@
+	@$(ECHO_UNLESS_QUIET) " "
+
+################################################################################
+#                       Link programs 
+#
+# The object directory for linking, LD_OBJ_DIR, is a special directory that
+# combines strings from both the C and C++ compiler. The target depends on its
+# main program object, perhaps other objects, and libKJB.a. However, we don't
+# know if the main program is in the C or C++ object directory. Hence the file
+# Makefile-depend has arranged a copy of it in the load directory LD_OBJ_DIR to
+# make the following rule robust (there probably is a better way).
+#
+# The linker (KJB_LD) is usually preset to the C compiler, but can get changed
+# (in Makefile-libs-neded) to the C++ compiler if there is any C++ code involved. 
+#
+# Fancy bit. OBS_ARCHIVE is set to $(LD_OBJ_DIR)LOCAL.a exactly when there is a
+# object file in a program directory without a main(), which corresponds to OBS
+# being non-empty. If this is the case, then OBS_ARCHIVE, is build above. 
+#
+#
+$(LD_OBJ_DIR)% : $(LD_OBJ_DIR)ld_dir_made $(LIB_ARCHIVES) $(VERSION_OBS) $(OBS_ARCHIVE) $(LD_OBJ_DIR)%.o 
+	@$(KJB_ECHO)
+	@$(KJB_LD)  --version |& head -1 
+	$(KJB_LD) $@.o $(VERSION_OBS) $(OBS_ARCHIVE) \
+            $(HACK_BEFORE_LOAD_FLAGS) $(LOAD_FLAGS) -L$(LD_OBJ_DIR) $(LIB_LINK_STRINGS) \
+            $(LOAD_DIRS) \
+            $(LIBS) $(STD_LIBS) $(HACK_AFTER_LOAD_FLAGS) \
+            -o $@ \
+            $(NULL_FOR_BLANK_LINE)
+	@$(MAKE_SCRIPT_PATH)finish_executable $@$(LINK_NAME_SUFFIX) $* 
+
+#  How we used to do it. 
+#
+# 	@$(KJB_PERMIT_EXECUTION) $@
+# 	@$(KJB_RM_OBJ_DIR_LINK) $*
+# 	@$(KJB_LINK_EXECUTABLE) $@
+# 	@$(KJB_ECHO) " "
+
+# #
+# #   We can also check that the executable just built is in the user's path with:
+# #
+# #	      $(MAKE_SCRIPT_PATH)check_executable_path $@
+# #
+# #   This is tested on simple cases, but is it worth it? If we reinstate it, then
+# #   we need to put it into svn AND add it to the scripts that make_src_dist
+# #   knows about. 
+
+################################################################################
+#                       Program target
+# 
+# We copy the dependencies from program_depend because it is not a real target.
+# These are mostly for completeness. Normally we build the makefile oriented
+# dependencies first.  If they are built as a result of this line, then multiple
+# makes may be needed. 
+#
+# The dependency on Makefile-depend is superfluous for many, but not all, make
+# flavors because of the include. Note that Makefile-depend is how we are
+# currently propagating the dependency on *_incl.h. 
+#
+#
+program : $(DEPEND_TARGETS) Include_lines/sub_libs_needed Makefile-dirs Makefile-depend Makefile-libs-needed $(PROGRAMS)
+
+################################################################################
+#                       User target
+# 
+$(USER_BIN_DIR)% : $(LD_OBJ_DIR)%
+	$(MAKE_SCRIPT_PATH)update_bin $< $@
+
+bin : $(DEPEND_TARGETS) Include_lines/sub_libs_needed Makefile-dirs Makefile-depend Makefile-libs-needed $(USER_PROGRAMS)
+
+################################################################################
+#                       Misc bin target
+# 
+$(MISC_BIN_DIR)% : $(LD_OBJ_DIR)%
+	$(MAKE_SCRIPT_PATH)update_bin $< $@
+	$(KJB_PERMIT_EXECUTION) $@
+
+misc_bin : $(DEPEND_TARGETS) Include_lines/sub_libs_needed Makefile-dirs Makefile-depend Makefile-libs-needed $(MISC_PROGRAMS)
+
+################################################################################
+#                       Install target
+# 
+$(INSTALL_BIN_DIR)% : $(LD_OBJ_DIR)%
+	$(MAKE_SCRIPT_PATH)update_bin $< $@
+	$(KJB_PERMIT_EXECUTION) $@
+
+install : $(DEPEND_TARGETS) Include_lines/sub_libs_needed Makefile-dirs Makefile-depend Makefile-libs-needed $(INSTALL_PROGRAMS)
+
+################################################################################
+
+PROG_LIB_NAME = lib$(PROG_LIB_PREFIX)
+
+PROG_LIB_ARCHIVE_NAME = $(PROG_LIB_NAME).a
+PROG_LIB_ARCHIVE = $(LD_OBJ_DIR)$(PROG_LIB_ARCHIVE_NAME)
+
+PROG_LIB_SO_NAME = $(PROG_LIB_NAME).$(DYNAMIC_SUFFIX)
+PROG_LIB_SO = $(LD_OBJ_DIR)$(PROG_LIB_SO_NAME)
+
+################################################################################
+#                       Shared library
+#
+shared: Makefile-depend $(PROG_LIB_SO)
+
+$(PROG_LIB_SO) : Include_lines/sub_libs_needed Include_lines/file_list $(LD_OBJ_DIR)ld_dir_made $(PROG_LIB_SHARED_OBS) $(SUB_LIB_SHARED_OBS)
+	$(KJB_RM) $@
+	@echo Building a shared library from lots of library files with the following command with files omitted. 
+	@echo $(KJB_LD) $(LD_SHARED_FLAGS) $(LOAD_DIRS) $(LIBS) $(STD_LIBS) $(LD_OUTPUT_FLAG) $@ 
+	@$(KJB_LD) $(LD_SHARED_FLAGS) $(LOAD_DIRS) $(LIBS) $(STD_LIBS) $(LD_OUTPUT_FLAG) $@ \
+        $(PROG_LIB_SHARED_OBS) $(SUB_LIB_SHARED_OBS)
+	$(MAKE_SCRIPT_PATH)finish_executable $@ $(PROG_LIB_SO_NAME)
+	$(NULL_TO_MAKE_BLANK_LINE)
+
+################################################################################
+#                       Static library
+#
+static: Makefile-depend $(PROG_LIB_ARCHIVE)
+
+$(PROG_LIB_ARCHIVE) : Include_lines/sub_libs_needed Include_lines/file_list $(LD_OBJ_DIR)ld_dir_made $(PROG_LIB_OBS) $(SUB_LIB_OBS)
+	$(KJB_RM) $@
+	@echo Building an archive library from lots of library files with the following command with files omitted. 
+	@echo $(KJB_AR) $@ 
+	@$(KJB_AR) $@ $(PROG_LIB_OBS) $(SUB_LIB_OBS) 
+	@$(KJB_RANLIB)  $@
+	$(MAKE_SCRIPT_PATH)finish_executable $@ $(PROG_LIB_ARCHIVE_NAME)
+	$(NULL_TO_MAKE_BLANK_LINE)
+
+################################################################################
+#                       Tags
+# 
+ctags: tags 
+
+tags: Include_lines/sub_libs_needed $(PROGRAM_FILES)
+	$(MAKE_SCRIPT_PATH)do_ctags
+
+################################################################################
+#                       Man pages
+#
+
+# A target for making sure that directories exist. This is only used for
+# parallel makes, but most machines now have more than one core, so this is
+# becoming the common case. The target doc_dir_made is never made, so it is
+# always out of date. 
+#
+doc_dir_made : $(DOC_DIR_MADE_TARGETS) $(MAKE_DOC_DIR)doc_dir_made
+
+#
+# For program builds the make_doc dir is not necessarily used for anything other
+# than keeping track of things.  We use "doc_dir_made" because $(MAKE_DOC_DIR)
+# may be a symbolic link.
+#
+$(MAKE_DOC_DIR)doc_dir_made : 
+	$(MAKE_SCRIPT_PATH)make_src_shadow_dir "$(REAL_MAKE_DOC_DIR)" "$(MAKE_DOC)" .
+	$(KJB_TOUCH) $@
+
+$(PROGRAM_CAT_DIR) :
+	$(KJB_MKDIR) $(PROGRAM_CAT_DIR)
+
+$(MAKE_DOC_DIR)%.w.made : $(MAKE_DOC_DIR)doc_dir_made $(PROGRAM_CAT_DIR)
+
+# The version of $(PROGRAM_CAT_DIR) is made as a side effect. 
+$(MAKE_DOC_DIR)%.w.made : %.w
+#   Utils in MAKE_BIN_DIR are magically up to date because build-2 buids them
+#   whenever documation is being built. 
+	$(MAKE_BIN_DIR)writeup_to_man $< > $@
+	$(KJB_CP) $@ $(PROGRAM_CAT_DIR)$*.1
+
+$(MAKE_DOC_DIR)%.help.made : $(MAKE_DOC_DIR)doc_dir_made $(PROGRAM_CAT_DIR)
+
+# The version of $(PROGRAM_CAT_DIR) is made as a side effect. 
+$(MAKE_DOC_DIR)%.help.made : %.help
+#   Utils in MAKE_BIN_DIR are magically up to date because build-2 buids them
+#   whenever documation is being built. 
+	$(MAKE_BIN_DIR)help_to_man $< > $@
+	$(KJB_CP) $@ $(PROGRAM_CAT_DIR)$*.1
+
+$(MAKE_DOC_DIR)%.shell.made : $(MAKE_DOC_DIR)doc_dir_made 
+
+$(PROGRAM_CAT_DIR)%.1 : $(PROGRAM_CAT_DIR)
+
+$(PROGRAM_CAT_DIR)%.1 : $(MAKE_DOC_DIR)%.shell.made
+	$(MAKE_SCRIPT_PATH)copy_if_not_empty $< $@
+
+$(MAKE_DOC_DIR)%.shell.made : %
+#   Utils in MAKE_BIN_DIR are magically up to date because build-2 builds them
+#   whenever documentation is being built. 
+	$(MAKE_BIN_DIR)writeup_to_man $< > $@
+
+# Additional dependencies of doc_program may be in Makefile-depend. 
+doc_program : depend_program $(MAKE_DOC_DIR)doc_dir_made $(PROGRAM_CAT_DIR) $(MAN_FROM_HELP_FILES) $(MAN_FROM_WRITEUP_FILES)
+
+misc_doc_program : doc_program
+	rsync -rl -u $(DOC_DIR)doxygen/ $(MISC_DOC_DIR)doxygen 
+	rsync -rl -u $(DOC_DIR)man/ $(MISC_DOC_DIR)man 
+
+################################################################################
+#                   Protoize
+#
+# We have not used this in quite some time. It is probably broken. 
+#
+proto: 
+	protoize -c "-DPROTOIZE $(CC_FLAGS) $(EXTRA_LIB_CC_FLAGS) $(EXTRA_LIB_OPTIONS) $(HACK_CC_FLAGS) $(MD_DEFINES) $(KJB_HAVE) $(DEFAULT_OPT_INCLUDES) $(BASE_INCLUDES) $(EXTRA_LIB_INCLUDES) $(GENERIC_AFT_INCLUDES)" *.c
+	$(MAKE_SCRIPT_PATH)fix_protoize *.c
+
+################################################################################
+#                       Make clean
+#
+.PHONY : clean
+clean : $(CLEAN_TARGETS)
+	$(MAKE_SCRIPT_PATH)clean_build '' $(LD_OBJ_DIR)libKJB.a $(PROGRAM) $(PROGRAMS) $(OBJ_DIR) $(CXX_OBJ_DIR) $(LD_OBJ_DIR) _PCH$(KJB_DIR_STR)$(CXX_OBJ_DIR) $(MAKE_DOC_DIR)
+
+#
+# The target program_clean (pc) does not clean library directories because it
+# does not depend on $(CLEAN_TARGETS). 
+#
+.PHONY : pc
+pc : program_clean
+
+.PHONY : program_clean
+program_clean : 
+	$(MAKE_SCRIPT_PATH)clean_build '' $(LD_OBJ_DIR)libKJB.a $(PROGRAM) $(PROGRAMS) $(OBJ_DIR) $(CXX_OBJ_DIR) $(LD_OBJ_DIR) _PCH$(KJB_DIR_STR)$(CXX_OBJ_DIR) $(MAKE_DOC_DIR)
+
+# This one is obsolete. Remove eventually.
+.PHONY : init_clean
+init_clean:
+	$(MAKE_SCRIPT_PATH)clean_cache
+	
+

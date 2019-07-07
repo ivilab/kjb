@@ -1,0 +1,260 @@
+#!/bin/csh -f
+
+#
+# Identification
+#     A script to create a new program with kjb makefiles
+#
+# Arguments:
+#      A name of a subdirectory to be added to the current working directory,
+#      followed optionally by the name of a program template string.  Strings
+#      correspond to directories as the part between "program_" and "_template".
+#      Valid template strings and their corresponding directory names are as
+#      follows:
+# |        NULL          program_template
+# |        with_lib      program_with_lib_template
+# |        group         program_group_template
+# |        fancy         program_fancy_template
+#
+# Description
+#     This script creates a new program a few template files and associated
+#     makefiles. It assumes that "Make" and "lib" are up to date.  Use SVN
+#     to achieve this. 
+#
+#     This script must be run in or below a directory (usually "src") which has
+#     the sub-directories "lib" and "Make". 
+#
+#     The new component is built using the program template directory with the
+#     above name in src. If this exists locally in ~/src/examples/templates
+#     (update with "svn"), then that will be used. Otherwise, the script
+#     attempts to use the one in ~kobus/src/examples/templates or
+#     ~kobus/src_dist/latest, and if that fails, it tries to get one from v01
+#     using rsync and ssh. 
+#
+#     The first string (NULL) is for a directory with a single very simple main
+#     program which we set to the directory name. The second (with lib) has
+#     example local lib dirs. The third (group) is a simple example with
+#     multiple mains. This is a good choide for a library test directory. The
+#     fourth is a fancier program that has more example code, and shows how we
+#     also can integrate a "version" source file. 
+#     
+
+
+# set echo 
+
+set remote_user = ""
+
+set num_args = ${#argv}
+
+set target_name = ""
+set source_name = ""
+
+set count = 1
+while ($count <= $num_args)
+    if ("${argv[$count]}" == "-u") then
+        @ count += 1
+        if (${count} > $num_args) then
+            ${P_STDERR} "Missing user name after -u"
+            exit 1 
+        else 
+            set remote_user = "${argv[$count]}@"
+        endif 
+    else if ("${target_name}" == "") then
+        set target_name = "${argv[$count]}"
+    else if ("${source_name}" == "") then
+        set source_name = "${argv[$count]}"
+    else 
+        echo "Extra argument ${argv[$count]} ignored" 
+    endif 
+
+    @ count += 1
+end 
+
+if ("${target_name}" == "") then 
+    ${P_STDERR} " "
+    ${P_STDERR} "This script needs at lease one parameter for the new program name."
+    ${P_STDERR} "The second optional parameter is the template label string."
+    ${P_STDERR} "If the second parameter is ommitted, then a simple program template is used."
+    ${P_STDERR} "Examples for template label string:"
+    ${P_STDERR} "    with_libs"
+    ${P_STDERR} "    group"
+    ${P_STDERR} "    fancy"
+    ${P_STDERR} " "
+    exit 1
+endif 
+
+if ("${source_name}" == "") then
+     set source_name = "program_template"
+else
+     set source_name = "program_${source_name}_template"
+endif
+
+if (-e $target_name) then
+    ${P_STDERR} "$target_name already exists."
+    exit 1
+endif 
+
+# echo $target_name
+# echo $source_name
+# echo $remote_user
+
+##############################################################################
+
+set KJB_SRC_PATH = ""
+
+# We want to use pure "cd", and so if cd has been aliase'd we want to save that
+# fact and unalias cd. 
+#
+set cd_alias = `alias cd`
+
+if ("${cd_alias}" != "") then
+   # echo removing cd alias
+   unalias cd
+endif 
+
+# We want to block going above the user's home directory because it might cause
+# a mount request that we don't want.  
+#
+pushd ${HOME} >& /dev/null
+set home_pwd = `pwd`
+popd >& /dev/null
+
+# Save were we are. 
+pushd `pwd` >& /dev/null
+
+while (("`pwd`" != "/") && ("`pwd`" != "${home_pwd}")) 
+    # echo pwd: `pwd`
+    if ((-d Make) && (-d lib)) then 
+        if ((-e Make/init_compile) && (-e Make/init_machine)) then
+            set KJB_SRC_PATH = `pwd`
+            break
+        endif 
+    endif
+
+    cd ..
+end
+
+# Reset were we were. 
+popd >& /dev/null
+
+# Restore cd alias.
+
+if ("${cd_alias}" != "") then
+   # echo restoring cd alias
+   alias cd "$cd_alias"
+   # alias cd 
+endif 
+
+# echo init_compile: ${init_compile}
+
+if ("${KJB_SRC_PATH}" == "") then
+    ${P_STDERR} "Cannot find dirs lib and Make \(and files Make/init_machine and Make/init_compile\) in higher dirs."
+    ${P_STDERR} "Either you are not in a source directory or you need to check these out using svn."
+    exit 1
+endif 
+
+setenv KJB_SRC_PATH "${KJB_SRC_PATH}/"
+
+set need_init = 1
+
+if (! $?FORCE_INIT_COMPILE) then 
+    if (($?KJB_HAVE_MACHINE) && ($?INIT_SRC_DIR)) then
+        if ("${KJB_SRC_PATH}" == "${INIT_SRC_DIR}") then 
+            if ($?KJB_VERBOSE) then
+                echo "" 
+                echo "Skipping source of init_machine and init_compile."
+            endif 
+
+            set need_init = 0
+        endif 
+    endif 
+endif 
+     
+if (${need_init}) then
+    if ($?KJB_VERBOSE) then
+        echo "" 
+        echo "Sourcing ${KJB_SRC_PATH}Make/init_machine"
+    endif 
+
+    source ${KJB_SRC_PATH}Make/init_machine
+
+    if ($?KJB_VERBOSE) then
+        echo "Sourcing ${KJB_SRC_PATH}Make/init_compile"
+    endif 
+
+    source ${KJB_SRC_PATH}Make/init_compile
+endif 
+
+echo "Now:"
+echo "   SRC_PATH: ${SRC_PATH}"
+echo "   MAKE_PATH: ${MAKE_PATH}"
+echo "   MAKE_SCRIPT_PATH: ${MAKE_SCRIPT_PATH}"
+echo " "
+
+##############################################################################
+
+set kjb_environment = 0
+
+if ($?KJB_ENVIRONMENT) then
+    if ("${KJB_ENVIRONMENT}" == "1") then
+        set kjb_environment = 1
+    endif
+endif 
+
+if ( ! $kjb_environment) then
+    setenv PATH "/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin:${PATH}"
+endif 
+
+##############################################################################
+
+set use_remote = 1
+set src_dist_dirs = ". ~/src /net/v04/work/kobus/src ~kobus/src ~kobus/src_dist/latest"
+
+foreach src_dist_dir (${src_dist_dirs}) 
+    if (-e "${src_dist_dir}/examples/templates/${source_name}") then
+
+        if ("${src_dist_dir}" == ".") then
+            echo "Using local template. Assuming it is up to date (via svn)"
+        endif 
+
+        set src_dist_path = "${src_dist_dir}/examples/templates/${source_name}"
+        set use_remote = 0
+        break
+    endif
+end
+
+if (${use_remote}) then
+    set src_dist_path = "${remote_user}v01.cs.arizona.edu:/home/kobus/src/examples/templates/${source_name}"
+endif 
+
+echo src_dist_path is $src_dist_path
+echo ""
+
+set first_char = `echo $target_name | sed "s/\(.\).*/\1/"`
+set rest = `echo $target_name | sed "s/.//"`
+set uc_first_char = `echo $first_char | sed "y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/"`
+set cap_first_letter = ${uc_first_char}${rest}
+
+rsync -e ssh -v -rlpgoDu --exclude='.*/' --exclude=Include_lines/ --include='*/' --include='*.[cCh]' --include='*.[chit]pp' --include='*.[chit]xx' --exclude='*' ${src_dist_path}/ ${target_name}
+
+if (${status}) then
+    ${P_STDERR} "rsync failed in create_program."
+    exit 1
+endif 
+
+pushd ${target_name} > /dev/null
+
+set template_name = "template"
+
+set uc_template_name = `echo $template_name | sed "y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/"`
+set uc_target_name = `echo $target_name | sed "y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/"`
+
+foreach file (${template_name}*)
+    set new_file = `echo $file | sed "s/${template_name}/${target_name}/"`
+    ${KJB_MV} $file $new_file
+    ${VIM_FOR_MAKE} -e -s -c ':%s/'${template_name}'/'${target_name}'/g' -c :wq $new_file < /dev/null >& /dev/null
+    ${VIM_FOR_MAKE} -e -s -c ':%s/'${uc_template_name}'/'${uc_target_name}'/g' -c :wq $new_file  < /dev/null >& /dev/null
+end
+
+${MAKE_SCRIPT_PATH}kjb_add_makefiles
+
+

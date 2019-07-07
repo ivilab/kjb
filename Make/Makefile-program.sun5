@@ -1,0 +1,23 @@
+
+#
+# Things that seem too difficult to handle the same in all flavors
+# of make:
+#     wildcard expansion
+
+PROGRAM_FILES_CMD = $(MAKE_SCRIPT_PATH)stream_file_names -s -h 
+PROGRAM_FILES = $(FILES_CMD:sh)
+
+SOURCE_FILES_CMD = $(MAKE_SCRIPT_PATH)stream_file_names -s 
+SOURCE_FILES = $(SOURCE_FILES_CMD:sh)
+
+HEADER_FILES_CMD = $(MAKE_SCRIPT_PATH)stream_file_names -h
+HEADER_FILES = $(HEADER_FILES_CMD:sh)
+
+INCLUDE_LINE_FILES_CMD = $(MAKE_SCRIPT_PATH)stream_file_names -s -h Include_lines
+INCLUDE_LINE_FILES = $(INCLUDE_LINE_FILES_CMD:sh) 
+
+INCLUDE_LINE_FILES_NEW_CMD = $(MAKE_SCRIPT_PATH)stream_file_names -s -h Include_lines/new
+INCLUDE_LINE_FILES_NEW = $(INCLUDE_LINE_FILES_NEW_CMD:sh) 
+
+FORCE_WITH_SUN5 = FORCE
+

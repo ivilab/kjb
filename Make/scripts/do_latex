@@ -1,0 +1,51 @@
+#!/bin/bash --norc -u 
+
+if [[ $# != 1  ]]; then
+   echo "Script do_latex needs exactly one argument."
+   exit 1
+fi
+
+input_file=`echo "$1" | sed 's/\.tex$//'`
+
+# Is it safe to assume that if *.aux is stale, it will be rebuilt? 
+#
+# Irregardless, we at least kill the log file because later we grep them all,
+# and if there is one kicking around that has nothing to do with this build,
+# there could be issues. Awaiting a bitter solution. 
+#
+# find . \( -name '*.log' -or -name '*.aux' \) -exec /bin/rm {} \;
+find . -name '*.log' -exec /bin/rm {} \;
+
+# Fanciness:If LATEX is set and not null, the default in quotes is used".
+latex=${LATEX:="pdflatex -interaction=nostopmode"}
+
+echo latex: $latex
+
+bibtex="bibtex"
+
+echo "====> LaTeX first pass"
+${latex} "${input_file}" < /dev/null
+
+if [[ $? != 0 ]]; then
+    echo " "
+    echo "Command failed:"
+    echo "    ${latex} ${input_file}"
+    exit 1
+fi 
+
+echo "====> LaTeX first pass COMPLETE"
+
+# Hacked from one of Ernesto's Makefiles. I do not know if we need all this
+# stuff or even if it is bug free.  
+
+if egrep -q 'No file.*\.bbl|Citation.*undefined' *.log ; then echo "====> BibTex" && ${bibtex} ${input_file} && echo "====> LaTeX BibTeX pass" && ${latex} ${input_file} && ${latex} ${input_file}; fi
+if egrep -q 'There were undefined references|Rerun to get (cross-references|the bars) right' *.log ; then echo "====> LaTeX rerun" && ${latex} ${input_file}; fi
+if egrep -q 'There were undefined references|Rerun to get (cross-references|the bars) right' *.log ; then echo "====> LaTeX rerun" && ${latex} ${input_file}; fi
+
+echo "====> Undefined references and citations:"
+egrep -i '((Reference|Citation).*undefined)|(Label.*multiply defined)' *.log || echo "None."
+
+# I do not know what this is about. 
+# echo "====> Dimensions:"
+# grep "dimension:" *.log || echo "None."
+
