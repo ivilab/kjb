@@ -1,0 +1,263 @@
+#!/bin/csh -f
+
+# Script to make directories with the option of making them in a mirrored src
+# tree directory structure, and setting a symbolic link to the real src
+# directory. 
+
+# Ideally, this script should be robust to being passed through by multiple
+# processes attempting to do the same thing. Since this is only called by make,
+# attempting to build 
+#
+
+# set echo 
+
+set shadow_dir = $1
+# echo "shadow_dir is $shadow_dir"
+
+if ($shadow_dir == "./") then
+    set shadow_dir = ""
+endif 
+# echo "shadow_dir is $shadow_dir"
+
+set sub_sub_dir = $2
+# echo "sub_sub_dir is $sub_sub_dir"
+
+if ($sub_sub_dir == "./") then
+    set sub_sub_dir = ""
+endif 
+# echo "sub_sub_dir is $sub_sub_dir"
+
+set link_name = $3
+# echo "link_name is $link_name"
+
+if ("${link_name}" == "") then
+    set link_name = "."
+endif 
+# echo "link_name is $link_name"
+
+set working_dir = $4
+# echo "working_dir is $working_dir"
+
+if ("${working_dir}" != "") then
+    cd ${working_dir}
+endif
+
+###############################################################################
+
+if ($?KJB_VERBOSE) then
+    echo "--------------------------------------------------------------------"
+    echo "In make_src_shadow_dir."
+    echo "    shadow_dir: ${shadow_dir}" 
+    echo "    sub_sub_dir: ${sub_sub_dir}" 
+    echo "    link_name: ${link_name}" 
+    echo "    working_dir: ${working_dir}" 
+    echo " "
+endif 
+
+###############################################################################
+
+setenv mkdir_cmd "mkdir -p"
+
+###############################################################################
+
+if ("${link_name}" == ".") then 
+    if (-e "${working_dir}${sub_sub_dir}shadow_dir_made") then
+        if ($?KJB_VERBOSE) then
+            echo "    Quick exit from make_src_shadow_dir based on: ${working_dir}${sub_sub_dir}shadow_dir_made"
+            echo "--------------------------------------------------------------------"
+        endif 
+
+        exit
+    endif 
+else 
+    if (-e "${working_dir}${link_name}/shadow_dir_made") then
+        if ($?KJB_VERBOSE) then
+            echo "    Quick exit from make_src_shadow_dir based on: ${working_dir}${link_name}/shadow_dir_made"
+            echo "--------------------------------------------------------------------"
+        endif 
+
+        exit
+    endif 
+endif 
+
+###############################################################################
+
+#
+# If shadow_dir is NULL, then we don't screw around with links. We simply make a
+# few directories, and exit with success.
+#
+if ("$shadow_dir" == "") then
+    if ("$link_name" == ".") then 
+        if ("$sub_sub_dir" != "") then 
+            ${mkdir_cmd} ${sub_sub_dir} >& /dev/null
+            if (${status}) then
+               set top_dir =  `echo ${sub_sub_dir} | sed 's#/.*/##'`
+               /bin/rm -rf ${top_dir}
+               ${mkdir_cmd} ${sub_sub_dir}
+            endif
+        endif
+    else 
+        ${mkdir_cmd} ${link_name} >& /dev/null
+        if (${status}) then
+           set top_dir =  `echo ${link_name} | sed 's#/.*/##'`
+           /bin/rm -rf ${top_dir}
+           ${mkdir_cmd} ${link_name}
+        endif
+
+        if ("${sub_sub_dir}" != "") then 
+            ${mkdir_cmd} ${link_name}/${sub_sub_dir} 
+        endif
+    endif
+
+    if ($?KJB_VERBOSE) then
+        echo "--------------------------------------------------------------------"
+    endif 
+
+    exit 
+endif 
+
+set KJB_SRC_PATH = "${KJB_SRC_PATH}"
+pushd $KJB_SRC_PATH > /dev/null
+set KJB_SRC_PATH = `pwd`
+popd >& /dev/null
+
+set sed_pat = `echo $KJB_SRC_PATH | sed "s/\//\\\//g"`
+
+# echo "sed_pat is ->$sed_pat<-"
+
+#
+# We get the current directory from pwd and not $cwd because the former removes
+# symlinks whereas the later does not (on linux, sun5).
+# 
+set cur_dir = `pwd`
+
+set is_in_src_tree = `echo $cur_dir | grep "$KJB_SRC_PATH"`
+
+# if ("${is_in_src_tree}" == "") then
+#     echo     "Script make_src_shadow_dir needs to be used in src tree."
+#     exit 1
+# endif 
+
+if ($?KJB_VERBOSE) then
+    echo "    is_in_src_tree : ${is_in_src_tree}"
+endif 
+
+if ("${is_in_src_tree}" == "") then
+    if ("${link_name}" == ".") then 
+        if ("${sub_sub_dir}" != "") then 
+            ${mkdir_cmd} ${sub_sub_dir} >& /dev/null
+            if (${status}) then
+               set top_dir =  `echo ${sub_sub_dir} | sed 's#/.*/##'`
+               /bin/rm -rf ${top_dir}
+               ${mkdir_cmd} ${sub_sub_dir}
+            endif
+
+            if ($?KJB_VERBOSE) then
+                echo "    Possble dead code candidate being executed."
+                echo "        touch ${sub_sub_dir}/shadow_dir_made"
+            endif 
+
+            touch ${sub_sub_dir}/shadow_dir_made
+        endif
+    else 
+#       This could be a problem, but leaving it for now and patching makefiles. 
+#       
+        ${P_STDERR} "make_src_shadow_dir cannot have a null shadow dir with non dot link name"
+        exit 1
+    endif
+
+    if ($?KJB_VERBOSE) then
+        echo "--------------------------------------------------------------------"
+    endif 
+
+    exit 
+endif 
+
+#
+# If we are in the regular source tree, then this is where we are
+#
+set sub_dir = `echo $cur_dir/ | sed "s/$sed_pat//"`
+
+# echo sub_dir is $sub_dir
+
+if ("${sub_sub_dir}" != "") then
+    set link_target_dir = `echo $sub_sub_dir | sed "s#\([^/]*\).*#\1#"`
+    set link_target_path = ${shadow_dir}/${sub_dir}/${link_target_dir}
+else 
+    set link_target_path = ${shadow_dir}/${sub_dir}
+endif
+
+# echo "link_target_path is $link_target_path"
+set link_target_path = `echo $link_target_path | sed 's#//*#/#g' | sed 's#/$##'`
+# echo "link_target_path is $link_target_path"
+
+set dir_to_make = ${shadow_dir}/${sub_dir}/${sub_sub_dir}
+# echo "dir_to_make is $dir_to_make"
+set dir_to_make = `echo $dir_to_make | sed 's#//*#/#g' | sed 's#/$##'`
+# echo "dir_to_make is $dir_to_make"
+
+
+${mkdir_cmd} ${dir_to_make} >& /dev/null
+if (${status}) then
+   set top_dir =  `echo ${dir_to_make} | sed 's#/.*/##'`
+   /bin/rm -rf ${top_dir}
+   ${mkdir_cmd} ${dir_to_make}
+endif
+
+
+# "-f" does not really do what you would expect on some systems! So we need some
+# extra logic for those in order not to bonk if the link target exists. 
+#
+# /bin/ln -s -f ${link_target_path} ${link_name}
+
+if ("${link_name}" == ".") then
+    set real_link_name = `echo $link_target_path | sed "s#.*/\([^/]\)#\1#"`
+else 
+    set real_link_name = "${link_name}"
+endif 
+
+if (-e "${real_link_name}") then
+    test -L "${real_link_name}"
+    if (${status}) then
+        echo ---------------------------------------------------------------------------------
+        set date_stamp = `date +%y-%m-%d-%H-%M`
+        /bin/mv ${real_link_name} ${real_link_name}-${date_stamp}
+        echo ${real_link_name} moved to ${real_link_name}-${date_stamp}
+        echo "(So that ${real_link_name} become a link, since we have a shadow directory)"
+        echo ---------------------------------------------------------------------------------
+    endif 
+endif 
+
+test -L "${real_link_name}"
+
+if ( ! ${status}) then
+    /bin/rm -f "${real_link_name}"
+
+    test -L "${real_link_name}"
+
+    if ( ! ${status}) then
+        echo ---------------------------------------------------------------------------------
+        set date_stamp = `date +%y-%m-%d-%H-%M`
+        /bin/mv ${real_link_name} ${real_link_name}-${date_stamp}
+        echo ${real_link_name} moved to ${real_link_name}-${date_stamp}
+        echo "(Because removing it outright failed!)"
+        echo ---------------------------------------------------------------------------------
+    endif 
+endif 
+      
+# echo "real_link_name is $real_link_name"
+# echo "link_target_path is $link_target_path"
+
+if ($?KJB_VERBOSE) then
+    echo ""
+    echo "    /bin/ln -s -f ${link_target_path} ${real_link_name}"
+endif 
+
+/bin/ln -s -f ${link_target_path} ${real_link_name} 
+
+touch ${dir_to_make}/shadow_dir_made
+
+if ($?KJB_VERBOSE) then
+    echo "--------------------------------------------------------------------"
+endif 
+

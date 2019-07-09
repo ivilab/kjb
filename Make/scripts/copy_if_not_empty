@@ -1,0 +1,25 @@
+#!/bin/csh -f
+
+@ num_args = ${#argv}
+
+if (${num_args} != 2) then
+    ${P_STDERR} "Script copy_it_not_empty requires exactly two arguments."
+    ${P_STDERR} "Instead we got ${num_args}."
+    exit 1 
+endif 
+
+if (-f "$1") then
+    if (! -z "$1") then
+        echo "Updating $2"
+
+        ${KJB_CP} "$1" "$2" 
+        if (${status}) then
+            ${P_STDERR} "Command failed : ${KJB_CP} $1 $2"
+            exit 1 
+        endif 
+    endif 
+endif 
+
+
+
+

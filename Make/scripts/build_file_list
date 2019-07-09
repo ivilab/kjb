@@ -1,0 +1,36 @@
+#!/bin/csh -f
+
+###############################################################################
+#
+# Identification:
+#     A script to maintain the file Include_lines/file_list
+#
+# Description:
+#     Script called by make to maintain the Include_lines/file_list. This tracks
+#     changes in the source collection. If source files are added, deleted, or
+#     renamed, then the file Include_lines/file_list gets updated which leads to
+#     a rebuild of the makefiles on the next call to make.
+#
+#     The reason why we need an additional call to make is that this script gets
+#     called whenever the directory gets updated which happens relatively
+#     freqently due to a number of reasons. However, this only indicates that
+#     the source file collection might have changed, and, in fact, source file
+#     collection changes are relatively rare. Thus there are many false alarms
+#     which we can prune relatively quickly. But having the trigger (directory
+#     timesamp) be a dependency in make will mean that we rebuild the makefiles
+#     every time which is relatively expensive. Hence we use the "hidden"
+#     dependency Include_lines/file_list. The script build-2, which is called by
+#     Makefile, manages this by calling make several times. If build-2 is not
+#     used (e.g., "make -f Makfeile-2) then it may take multiple makes before
+#     everything is up to date. Build-2 uses multiple calls to avoid this
+#     confusion. 
+#
+# Author:
+#     Kobus Barnard
+#
+###############################################################################
+
+${MAKE_SCRIPT_PATH}kjb_lock ${MAKE_SCRIPT_PATH}build_file_list_2 $* 
+exit ${status}
+
+

@@ -1,0 +1,18 @@
+#!/bin/csh -f
+
+pushd ${1} > /dev/null 
+
+find . -follow -name '*.3' > .man3_file_list
+
+if (! -z .man3_file_list) then
+    foreach file (*.3 )
+        set new_file = `echo $file | sed 's/make_doc\/*//' | sed "s/_mock_function//g"`
+        cat $file | sed "s/_mock_function//g" | sed "s/type_T/<type T>/g" | sed "s/-HEADER.c/.h/g" | ${MAKE_BIN_DIR}/c2man_out > ${MAN_DIR}/$new_file
+        /bin/rm $file
+    end 
+endif 
+
+rm .man3_file_list
+
+popd >& /dev/null
+

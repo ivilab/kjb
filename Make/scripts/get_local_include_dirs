@@ -1,0 +1,146 @@
+#!/bin/csh -f
+
+
+# if ("$2" != "") set echo 
+# set echo
+
+
+@ num_args = ${#argv}
+
+if ((-d ${KJB_LIB_PATH}) && (-r ${KJB_LIB_PATH}) && (-x ${KJB_LIB_PATH})) then
+    pushd ${KJB_LIB_PATH} > /dev/null
+    # Insure no trailing slash.
+    set real_kjb_lib_dir = `echo ${cwd} | sed 's/\/*$//'`
+    popd > /dev/null
+else
+    set real_kjb_lib_dir = ""
+endif 
+
+##########################################################
+
+set build_dir = ""
+
+if ("${num_args}" >= 1) then
+    if ("${1}" != "") then
+        set build_dir = `echo ${1} | sed 's/ *//g'`
+    endif 
+endif 
+
+if ("${build_dir}" != "") then
+    set build_dir = `echo ${build_dir} | sed 's#//*#/#g' | sed 's#/$##'`
+else 
+    set build_dir = .
+endif 
+
+pushd ${build_dir} > /dev/null
+    set build_dir_path = ${cwd}
+popd > /dev/null
+
+##########################################################
+#
+# Test for building libKJB.a itself? 
+#
+if ("${real_kjb_lib_dir}" == "") then
+    set real_kjb_lib_path = ""
+else
+    pushd ${real_kjb_lib_dir} > /dev/null
+        set real_kjb_lib_path = "${cwd}"
+    popd > /dev/null
+endif 
+
+if ("${build_dir_path}" == "${real_kjb_lib_path}") then
+    set in_kjb_lib_dir = 1
+else
+    set in_kjb_lib_dir = 0
+endif 
+
+##########################################################
+#
+# Test for building a sub-lib of KJB.
+#
+
+pushd ${build_dir_path} > /dev/null
+    pushd .. > /dev/null
+
+    if ("${cwd}" == "${real_kjb_lib_path}") then
+        set in_kjb_lib_sub_dir = 1
+    else
+        set in_kjb_lib_sub_dir = 0
+    endif 
+
+    popd >& /dev/null
+popd >& /dev/null
+
+
+##########################################################
+
+set base_include_dirs = ""
+
+if (-e ${build_dir}/Makefile-include) then
+    if ((! ${in_kjb_lib_dir}) && (! ${in_kjb_lib_sub_dir})) then
+        if (-e ../../lib) then
+        if (-d ../../lib) then
+            set base_include_dirs = "${base_include_dirs} ${INCLUDE_FLAG}../../lib/"
+        endif 
+        endif 
+    endif 
+else if (! ${in_kjb_lib_dir}) then
+    set base_include_dirs = "${INCLUDE_FLAG}./"
+
+    if (-e lib) then
+        if (-d lib) then
+            touch lib/fake_out_glob
+
+            foreach lib_sub_dir (lib/*)
+                set is_link = `${MAKE_SCRIPT_PATH}is_link ${lib_sub_dir}`
+
+                if (${is_link}) continue
+                
+                if (-d "${lib_sub_dir}") then
+                    if (-e "${lib_sub_dir}/Makefile-include") then
+                        set base_include_dirs = "${base_include_dirs} ${INCLUDE_FLAG}lib/"
+                        break
+                    endif
+                endif
+           end
+
+           /bin/rm lib/fake_out_glob
+        endif 
+    endif 
+
+    # A bit of a hack. We look for a lib above us because we may be in a test
+    # directory for a program lib sub dir. However, we do not know how many
+    # sub-dirs deep we could be. We assume no more than 3. 
+    #
+    set lib_dir_path = "../lib"
+
+    set count = 0
+
+    # To allow looking in even higher levels above, increase this.
+    set max_levels_above = 3
+
+    while (${count} < ${max_levels_above}) 
+        if ((-d ${lib_dir_path}) && (-r ${lib_dir_path}) && (-x ${lib_dir_path})) then
+            pushd ${lib_dir_path} > /dev/null
+            set real_lib_dir_path = "${cwd}" 
+            popd > /dev/null
+
+            if ("${real_lib_dir_path}" != "${real_kjb_lib_path}") then
+                # If we use the path instead of ${lib_dir_path}lib then the
+                # program can move without rebuilding makefiles (the library
+                # position has to remain the same).
+                #
+                set base_include_dirs = "${base_include_dirs} ${INCLUDE_FLAG}${real_lib_dir_path}/"
+                # set base_include_dirs = "${base_include_dirs} ${INCLUDE_FLAG}${lib_dir_path}lib"
+            endif 
+
+            break
+        endif 
+
+        set lib_dir_path = "../${lib_dir_path}" 
+        @ count ++
+    end
+endif 
+
+echo ${base_include_dirs}
+
