@@ -1,0 +1,65 @@
+#
+# A file that is sourced by build-2 to make it a bit simpler.
+# However, because it is sourced, we need to be careful about setting any
+# variables that are using in build-2, such as 'count'.
+
+# Recursive rm is with force is hanging on some systems (spotted on Ubuntu
+# running under parallels and sharing Mac file system).
+
+pushd ${MAKE_PATH} > /dev/null
+    set make_dir_cwd = "${cwd}"
+popd > /dev/null
+
+if ("${cwd}" == "${make_dir_cwd}") then
+    echo "Script clean_local is refusing to clean ${MAKE_PATH}" 
+    exit
+endif 
+
+if (-e Include_lines) then
+   find Include_lines -delete
+endif 
+
+# Kobus: 2017/08/03 --- it is not *that* dangerous. Let's see how it goes. 
+#
+# This is convenient for cleaning up after debugging, but is quite dangerous. 
+
+# if ($?CLEAN_EXTRA_MAKEFILES) then
+    set delete_list = `/bin/ls -1 | grep Makefile. | grep -v 'Makefile-2$' | grep -v 'Makefile-include$'`
+
+    if ("${delete_list}" != "") then
+        ${KJB_RM} ${delete_list}
+    endif 
+# else 
+#     ${KJB_RM} Makefile-dirs
+# 
+#     set file_count = `/bin/ls -1 | grep -c Makefile-depend`
+# 
+#     if (${file_count} > 0) then
+#         ${KJB_RM} Makefile-depend*
+#     endif 
+# 
+#     ${KJB_RM} Makefile-test-depend
+#     ${KJB_RM} Makefile-libs-needed
+# 
+#     set file_count = `/bin/ls -1 | grep -c Makefile-library`
+# 
+#     if (${file_count} > 0) then
+#         ${KJB_RM} Makefile-library*
+#     endif 
+# endif 
+
+set file_count = `/bin/ls -1 | grep -c _incl.h`
+
+if (${file_count} > 0) then
+    ${KJB_RM} *_incl.h* 
+endif 
+
+set file_count = `/bin/ls -1 | grep -c kjb_all_`
+
+if (${file_count} > 0) then
+    ${KJB_RM} kjb_all_* 
+endif 
+
+
+
+

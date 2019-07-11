@@ -1,0 +1,143 @@
+#!/bin/csh -f
+
+# set echo
+
+set make_edit_dir  = $1
+set parent_dir = $2
+
+###### if ("${incl_file}" == "") then
+######     set parent_dir = ""
+###### else 
+######     set parent_dir = `echo ${incl_file} | sed 's#\(.*\)/.*_incl.h#\1#'`/
+###### endif 
+
+# echo make_edit_dir: $make_edit_dir
+# echo parent_dir: $parent_dir
+
+if ("$parent_dir" != "") then 
+    set dir = `echo /$parent_dir | sed "s/.*\/\(.*\)\//\1/"`
+else 
+    set dir = `pwd | sed "s/.*\/\(.*\)/\1/"`
+endif 
+
+if (! -e ${parent_dir}${dir}_incl.h) then
+    set uc_dir = `echo ${dir} | sed "y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/"`
+    ${KJB_CP} ${MAKE_PATH}template_incl.h ${parent_dir}${dir}_incl.h
+	${VIM_FOR_MAKE} -e -c ":%s/XXX/${uc_dir}/g" -c :wq ${parent_dir}${dir}_incl.h < /dev/null >& /dev/null
+endif 
+
+set have_comment = `grep 'End of list of all exported includes maintained by the fix_incl script' ${parent_dir}${dir}_incl.h`
+
+if ("${have_comment}" == "") then
+    echo "Upgrading/repairing special comments in ${parent_dir}${dir}_incl.h."
+
+    ${VIM_FOR_MAKE} ${parent_dir}${dir}_incl.h < ${make_edit_dir}Add_incl_comment.${VIM_SUFFIX} >& /dev/null
+
+    if ($status) then
+        ${P_STDERR} ""
+        ${P_STDERR} "Upgrading/repairing of special comments in  ${parent_dir}${dir}_incl.h failed."
+        ${P_STDERR} "You have to patch that file by hand."
+        ${P_STDERR} "Perhaps the version in the template directory can help."
+        ${P_STDERR} ""
+        exit 1 
+    endif 
+endif 
+
+set have_gen = `cat ${parent_dir}${dir}_incl.h | sed -n "/#include.*${dir}_gen.h/p" | sed "s/#.*/#/"`
+
+
+# 
+# Kobus--recent patch: Previously we insisted that all dot h files had the
+# directory prefix. While this is generally a good idea, it is perhaps too
+# rigid. Hence, lets try just putting all dot h files into the incl file. 
+#
+# foreach file ( ${parent_dir}${dir}_*.h )
+#
+
+set private_files = ""
+
+foreach file ( ${parent_dir}*.h )
+    set skip = `grep -c 'PRIVATE_HEADER_FILE' ${file}`
+
+    if (${skip} > 0) then 
+        set file = `echo ${file} | sed 's#//*$##'`
+        set file = `echo ${file} | sed 's#.*/\([^/]*.[hit]x*p*\)$#\1#'`
+        set private_files = "${private_files} ${file}"
+        continue
+    endif 
+
+    set have_file = 0
+    
+    if ("$parent_dir" != "") then 
+        set file = `echo $file | sed "s@${parent_dir}@@"`
+    endif 
+       
+    # Perhaps a better test would be check that we have a corresponding C file?
+    if (("$file" == "${dir}_incl.h") || ("$file" == "${dir}_incl_f.h") || ("$file" == "${dir}_gen.h") || ("$file" == "${dir}_gen_f.h")) then 
+        set have_file = 1
+    endif
+
+    # The old way to skip private. Another crack at sk private. 
+    if ( ! $have_file) then 
+        set is_private = `cat ${parent_dir}${file} | sed -n "/header file.*private/p" | sed "s/.*/#/"`
+        if ("$is_private" != "") then
+           set have_file = 1
+        endif 
+    endif 
+
+    if (( ! $have_file) && ("$have_gen" != "")) then 
+        set include_line = `cat ${parent_dir}${dir}_gen.h | sed -n "/#include.*$file/p" | sed "s/#.*/#/"`
+        
+        if ("$include_line" != "") then
+            set have_file = 1
+        endif 
+    endif 
+
+    if ( ! $have_file) then 
+        set include_line = `cat ${parent_dir}${dir}_incl.h | sed -n "/#include.*$file/p" | sed "s/#.*/#/"`
+        
+        if ("$include_line" != "") then
+            set have_file = 1
+        endif 
+    endif 
+
+    if ( ! $have_file) then 
+        echo "Adding ${dir}/${file} to  ${parent_dir}${dir}_incl.h" 
+
+        # 
+        # Previously we used VIM_SCRIPT_OPERATOR and VIM_IO_REDIRECTION instead
+        # of < and >&, but this is wrong now (always was?) because the shell
+        # parses for io redirection first, and vim gets the string with < and >&
+        # as file names. 
+        # 
+        ${VIM_FOR_MAKE} ${parent_dir}${dir}_incl.h < ${make_edit_dir}Add_incl_line.${VIM_SUFFIX} >& /dev/null
+        ${VIM_FOR_MAKE} -c :%s@x1y2z3@${dir}/${file}@ -c :wq ${parent_dir}${dir}_incl.h  < /dev/null >& /dev/null
+    endif 
+end 
+
+set noglob
+
+set files_to_check = (`grep "#include.*${dir}/" ${parent_dir}${dir}_incl.h | sed 's/.*".*\/\(.*\)"/\1/'`)
+
+foreach file_to_check (${files_to_check}) 
+    if (! -e ${parent_dir}${file_to_check}) then
+        /bin/rm -f  ${parent_dir}${dir}_incl.h.swp
+        echo "Removing ${file_to_check} from  ${parent_dir}${dir}_incl.h" 
+        ${VIM_FOR_MAKE} -c :%g@include.*"${dir}/${file_to_check}"@d -c :wq ${parent_dir}${dir}_incl.h  < /dev/null >& /dev/null
+
+    endif 
+end 
+
+foreach private_file (${private_files}) 
+    set remove = `grep -c ${private_file} ${parent_dir}${dir}_incl.h`
+
+    if (${remove} > 0) then
+        /bin/rm -f  ${parent_dir}${dir}_incl.h.swp
+        echo "Removing ${private_file} from  ${parent_dir}${dir}_incl.h" 
+        ${VIM_FOR_MAKE} -c :%g@include.*"${dir}/${private_file}"@d -c :wq ${parent_dir}${dir}_incl.h  < /dev/null >& /dev/null
+
+    endif 
+end 
+
+unset noglob 
+

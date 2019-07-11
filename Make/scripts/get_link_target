@@ -1,0 +1,22 @@
+#!/bin/csh -f 
+
+# Currently we assume that init_compile has been sourced. 
+
+if ($# != 1) then
+    ${P_STDERR} "Script make_link needs exactly one argument."
+    exit 1
+endif 
+
+set link_name = "$1"
+
+if (-l "${link_name}") then
+    set link_to = `${KJB_LS} -l "${link_name}" | sed 's/.* ->  *//'`
+    echo "${link_to}"
+else if (-e "${link_name}") then
+    ${VERBOSE_ECHO} "Argument to get_link_target is not a link, so returning the argumenmt."
+    echo "$1"
+else     
+    ${VERBOSE_ECHO} "Argument to get_link_target does not exist, so returning empty string."
+    echo ""
+endif 
+

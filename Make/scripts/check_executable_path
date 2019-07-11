@@ -1,0 +1,28 @@
+#!/bin/csh -f 
+
+set prog_path = "$1"
+
+if ("${prog_path}" == "") then
+    exit
+endif 
+
+set prog = `echo ${prog_path} | sed 's#.*/\([^/*]*\)#\1#'`
+
+# echo prog: $prog
+
+set which_path = `which ${prog} | sed 's#//*#/#g'`
+
+if (${status}) then
+    echo " "
+    echo 'Warning: Program "'${prog}'" with relative path "'${prog_path}'" is not in your PATH."'
+    echo " "
+else
+    if ("./${prog_path}" != "${which_path}") then
+        echo " "
+        echo "Warning: The program just built (${prog_path}) is not the version of ${prog} first in your path."
+        echo "         That happens to be ${which_path}"
+        echo " "
+    endif 
+endif 
+
+

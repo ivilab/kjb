@@ -1,0 +1,130 @@
+#!/bin/csh -f
+
+###############################################################################
+#
+# Identification:
+#     A script to maintain the file <sub_lib_name>_incl.h 
+#
+# Description:
+#     This script maintains the files *_incl.h in the directory provided as an
+#     argument. If the file <sub_lib_name>_incl.h does not exist, the script
+#     builds that file, and colatrally it also builds
+#     Include_lines/Makefile-depend-incl-dot-h. 
+#
+#     If the file <sub_lib_name>_incl.h already exists, this script simply
+#     touches it. Hence it is up to the make process to remove
+#     <sub_lib_name>_incl.h if it is out of date to force this script to rebuild
+#     it. 
+#
+#     We use the above mechanism because <sub_lib_name>_incl.h plays two roles
+#     in the build systems. First, it transfers the dependencies of the dot h
+#     files in the sub lib directory to targets depending on
+#     <sub_lib_name>_incl.h. Second, it must track whether it is up to date. We
+#     could simply force a rebuild in both cases, but the second case occurs
+#     much more often, and the forced rebuild would be a bit confusing and takes
+#     a bit of time (not much).
+#
+# Author:
+#     Kobus Barnard
+#
+###############################################################################
+
+set build_dir = $1
+
+if ("$build_dir" != "") then 
+    cd ${build_dir}
+    if (${status}) then 
+       ${P_STDERR} "Script build_incl_dot_h could not enter directory ${build_dir}."
+       exit 1 
+    endif 
+else 
+    set build_dir = `pwd`
+endif 
+
+
+if ($?KJB_VERBOSE_INDENT) then
+    setenv KJB_VERBOSE_INDENT "    ${KJB_VERBOSE_INDENT}"
+else 
+    setenv KJB_VERBOSE_INDENT ""
+endif 
+
+if ($?KJB_VERBOSE) then
+    echo " "
+    echo "${KJB_VERBOSE_INDENT}Entering script build_incl_dot_h for directory ${build_dir}. "
+endif
+
+
+set build_dir = `echo ${build_dir} | sed 's#/*$##'`
+set dir = `echo ${build_dir} | sed "s/.*\/\(.*\)/\1/"`
+
+set uc_dir = `echo ${dir} | sed "y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/"`
+set incl_file = "${dir}_incl.h"
+
+# If ${incl_file} exists, then we just touch it. 
+#
+if (-e "${incl_file}") then
+    if ($?KJB_VERBOSE) then
+        echo "${KJB_VERBOSE_INDENT}Script build_incl_dot_h is only touching ${incl_file} because it exists"
+    endif
+
+    ${KJB_TOUCH} "${incl_file}"
+else 
+    if ($?KJB_VERBOSE) then
+        echo "${KJB_VERBOSE_INDENT}Script build_incl_dot_h is rebulding ${incl_file} and Include_lines/Makefile-incl-dot-h"
+    endif
+
+    echo "" > ${incl_file}
+    echo "#ifdef MAKE_DEPEND" >> ${incl_file}
+    echo "#    ifndef MAKE_DEPEND_${uc_dir}_INCL_H" >> ${incl_file}
+    echo "#        ifndef MAKE_DEPEND_DIR" >> ${incl_file}
+    echo "#            define ${uc_dir}_INCL_INCLUDED" >> ${incl_file}
+    echo "#        endif" >> ${incl_file}
+    echo "#    endif" >> ${incl_file}
+    echo "#endif  " >> ${incl_file}
+    echo "" >> ${incl_file}
+    echo "#ifndef ${uc_dir}_INCL_INCLUDED" >> ${incl_file}
+    echo "#define ${uc_dir}_INCL_INCLUDED" >> ${incl_file}
+    echo "" >> ${incl_file}
+
+    # ${MAKE_SCRIPT_PATH}stream_file_names -h -skip_incl | sed 's#.*/\([^/]*/[^/]*\.h\)#\1#' > .tmp.$$.incl.h 
+    ${MAKE_SCRIPT_PATH}stream_file_names -h -skip_incl > .tmp.$$.incl.h 
+
+    # We could also exclude *_gen.h as before, but this is not necessary, and not
+    # worth the trouble, especially since it skipping it has a small chance of
+    # causing problems. 
+    #
+    set incl_skip_names_1 = `grep -l PRIVATE_HEADER_FILE *.h`
+    set incl_skip_names_2 = `grep -l 'header file.*private' *.h`
+
+    foreach skip_name (${incl_skip_names_1} ${incl_skip_names_2})
+        if ($?KJB_VERBOSE) then
+            echo "${KJB_VERBOSE_INDENT}Skipping adding ${skip_name} to ${incl_file} due to private header string."
+        endif
+
+        grep -v "${skip_name}"  .tmp.$$.incl.h  > .tmp.$$_2.incl.h
+        ${KJB_MV}  .tmp.$$_2.incl.h  .tmp.$$.incl.h
+    end
+
+    sed "s#^#${dir}/#" .tmp.$$.incl.h | sed 's/\(.*\)/#include "\1"/' >> ${incl_file}
+
+    ${KJB_MKDIR} Include_lines 
+    set symbolized_dir = '$('${uc_dir}'_DIR)'
+    sed "s/\(.*\)/${symbolized_dir}${incl_file} : ${symbolized_dir}\1/" < .tmp.$$.incl.h > Include_lines/Makefile-depend-incl-dot-h
+
+    ${KJB_RM}  .tmp.$$.incl.h
+
+    echo "" >> ${incl_file}
+    echo "#endif  " >> ${incl_file}
+    echo "" >> ${incl_file}
+
+
+    # cat ${incl_file}
+endif 
+
+
+if ($?KJB_VERBOSE) then
+    echo "${KJB_VERBOSE_INDENT}Leaving script build_incl_dot_h  for directory ${build_dir}. "
+    echo " "
+endif
+
+

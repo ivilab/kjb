@@ -1,0 +1,17 @@
+#/bin/csh -f 
+
+source ${MAKE_SCRIPT_PATH}clean_local_obj
+
+set is_program_dir = `${MAKE_SCRIPT_PATH}stream_file_names -m -t`
+
+if ("${is_program_dir}" == "1") then 
+    if (-d "${KJB_LIB_PATH}") then
+        echo "Also cleaning object files in dirs below ${KJB_LIB_PATH} because this is a program dir"
+
+        pushd "${KJB_LIB_PATH}" > /dev/null
+            source ${MAKE_SCRIPT_PATH}clean_local_obj
+        popd > /dev/null
+    endif 
+endif 
+
+

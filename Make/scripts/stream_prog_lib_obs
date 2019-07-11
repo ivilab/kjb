@@ -1,0 +1,79 @@
+#!/bin/tcsh 
+
+# This provides symbols if we want to build a library out of a program.
+
+set dir_name = `echo $cwd | sed 's#.*/##'`
+echo "PROG_LIB_PREFIX = $dir_name" 
+echo  " "
+
+set c_files = `${MAKE_SCRIPT_PATH}stream_file_names -c -m -v`
+set cxx_files = `${MAKE_SCRIPT_PATH}stream_file_names -x -m -v`
+
+echo 'PROG_LIB_OBS = \'
+
+if ("${c_files}" != "") then
+    foreach c_file (${c_files})
+        set code_base_name = `echo ${c_file} | sed 's/\.c$//'`
+        echo "               "'$'"(OBJ_DIR)${code_base_name}.o \"
+    end
+endif 
+
+if ("${cxx_files}" != "") then
+    foreach cxx_file (${cxx_files})
+        set code_base_name = `echo ${cxx_file} | sed 's/\.[Cc][px]*$//'`
+        echo "               "'$'"(CXX_OBJ_DIR)${code_base_name}.o \" 
+    end 
+endif 
+
+echo '               $(NULL_TO_END_LIST)' 
+echo  " " 
+
+echo 'PROG_LIB_SHARED_OBS = \'
+
+if ("${c_files}" != "") then
+    foreach c_file (${c_files})
+        set code_base_name = `echo ${c_file} | sed 's/\.c$//'`
+        echo "               "'$'"(OBJ_DIR)"'$'"(SHARED_DIR)${code_base_name}.o \" 
+    end
+endif
+
+if ("${cxx_files}" != "") then
+    foreach cxx_file (${cxx_files})
+        set code_base_name = `echo ${cxx_file} | sed 's/\.[Cc][px]*$//'`
+        echo "               "'$'"(CXX_OBJ_DIR)"'$'"(SHARED_DIR)${code_base_name}.o \"
+    end
+endif
+
+echo '               $(NULL_TO_END_LIST)'
+echo  " " 
+echo  " " 
+
+# #############################################################################
+# set code_base_names = `$KJB_LS | grep '.\.h$' | sed 's#\.h##'`
+# 
+# echo 'PROG_LIB_OBS = \' >> ${output_file_name}
+# foreach code_base_name (${code_base_names})
+#     if (-e "${code_base_name}.c") then
+#         echo "               "'$'"(OBJ_DIR)${code_base_name}.o \" >> ${output_file_name}
+#     else if ((-e "${code_base_name}.cpp") || (-e "${code_base_name}.cxx") || (-e "${code_base_name}.C") || (-e "${code_base_name}.cc")) then
+#         echo "               "'$'"(CXX_OBJ_DIR)${code_base_name}.o \" >> ${output_file_name}
+#     endif 
+# end
+# echo '               $(NULL_TO_END_LIST)' >> ${output_file_name}
+# 
+# echo  " " >> ${output_file_name}
+# 
+# echo 'PROG_LIB_SHARED_OBS = \' >> ${output_file_name}
+# foreach code_base_name (${code_base_names})
+#     if (-e "${code_base_name}.c") then
+#         echo "               "'$'"(OBJ_DIR)"'$'"(SHARED_DIR)${code_base_name}.o \" >> ${output_file_name}
+#     else if ((-e "${code_base_name}.cpp") || (-e "${code_base_name}.cxx") || (-e "${code_base_name}.C") || (-e "${code_base_name}.cc")) then
+#         echo "               "'$'"(CXX_OBJ_DIR)"'$'"(SHARED_DIR)${code_base_name}.o \" >> ${output_file_name}
+#     endif 
+# end
+# echo '               $(NULL_TO_END_LIST)' >> ${output_file_name}
+# 
+# 
+# echo  " " >> ${output_file_name}
+# echo  " " >> ${output_file_name}
+# 

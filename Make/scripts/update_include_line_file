@@ -1,0 +1,165 @@
+#!/bin/csh -f
+
+###############################################################################
+#
+# Identification:
+#     Updates files in Include lines tracking include lines of the a file
+#
+# Description:
+#     This script is called by make to update files in Include_lines that track
+#     the include lines for the file provided as an argument.  If the process
+#     reveals a change from the previous state, then the makefile dependencies
+#     need to be rebuilt. To have ths happens, this script removes
+#     Include_lines/include_lines. It assumes that that the makefile will
+#     provide the needed call to build_include_lines to rebuild it and perform
+#     additional tasks if needed based on its new contents. Note that the script
+#     build_include_line_files does a similar thing over the whole directory.
+# 
+#     The include line tracking is achieved using two shadow files for each
+#     source file, ${file}, that track whether the include lines have changes
+#     for the source file. The shadow file Include_lines/new/${file} is updated
+#     whenever the source file changes. The change is propogated to the file
+#     Include_lines/${file} only if the include file list has changed from
+#     before. 
+#
+#     The script first creates/overwrites the include line file for the provided
+#     file in Include_lines/new.  If this is different from the one in
+#     Include_lines, the later is updated, and the file
+#     Include_lines/include_lines is removed. 
+#
+# Parameters: 
+#     This script takes either two or three arguments. If the first arg is "-f",
+#     then we force the building of sub_libs_needed. The first arg not "-f" is
+#     the file whose include files need to be updated. If there is another
+#     argument, it is taken as the directory to run it in. 
+#
+# Author:
+#     Kobus Barnard
+#
+###############################################################################
+
+# set echo 
+
+@ num_args = ${#argv}
+
+if (${num_args} > 1) then
+    set dir = `echo ${1} | sed 's/ *//'`
+
+    if ("${dir}" != "") then 
+        pushd "${dir}" > /dev/null
+    endif
+
+    set file = "${2}"
+else if (${num_args} > 0) then
+    set file = "${1}"
+else 
+    ${P_STDERR} "Script update_file_include_list needs at least one argument for the file name"
+    exit 1
+endif 
+
+set file_name = `echo ${file} | sed 's#.*/##'`
+
+###############################################################################
+
+if ($?KJB_VERBOSE_INDENT) then
+    setenv KJB_VERBOSE_INDENT "    ${KJB_VERBOSE_INDENT}"
+else 
+    setenv KJB_VERBOSE_INDENT ""
+endif 
+
+###############################################################################
+
+if ($?KJB_VERBOSE) then
+    echo "Entering script update_file_include_list in directory ${cwd} with argument ${file}. "
+endif
+
+# echo file: ${file}
+# echo file_name: ${file_name}
+
+set inc_file = Include_lines/${file_name} 
+set new_inc_file = Include_lines/new/${file_name} 
+
+set actually_updated = 0
+
+# We need a consistent sort across machines.
+setenv LC_ALL "en_US.UTF-8"
+setenv LC_CTYPE "en_US.UTF-8"
+
+# Changes here should be checked against similar lines in
+# build_include_line_files
+#
+sed -n '/^[ 	]*#[ 	]*include[ 	][ 	]*["<].*\.[hH][px]*[">][ 	]*\/*/p' ${file} | sed 's@.*\([<"][A-Za-z0-9/_-]*\.[hH][px]*[>"]\).*$@\1@' > ${new_inc_file}.tmp.$$
+if (${status}) then
+    ${P_STDERR} "Making a list of include lines into  ${new_inc_file}.tmp.$$ failed."
+    exit 1 
+endif 
+
+# This previous version assumes an overly restricted version of how we do
+# #define's.  However there is no problem risking a spurious KJB_HAVE. So we
+# loosen the search criterion.
+#
+# sed -n '/^#[ 	]*ifdef[ 	][ 	]*KJB_HAVE_[A-Z0-9_][A-Z0-9_]*/p' ${file} | sed 's/.*\(KJB_HAVE_[A-Z0-9_][A-Z0-9_]*\)/\1/' >> ${new_inc_file}.tmp.$$
+#
+# Looser search criterion.
+#
+sed -n '/^[ 	]*#[ 	]*[ie].*KJB_HAVE_[A-Z0-9_][A-Z0-9_]*/p' ${file} | sed 's/||/\n/' | sed 's/&&/\n/' | sed -n '/KJB_HAVE_/p' | sed 's/.*\(KJB_HAVE_[A-Z0-9][A-Z0-9_]*\).*/\1/' >> ${new_inc_file}.tmp.$$
+if (${status}) then
+    ${P_STDERR} "Adding KJB_HAVE lines into  ${new_inc_file}.tmp.$$ failed."
+    exit 1 
+endif 
+
+if ($?KJB_VERBOSE) then
+    echo "${KJB_VERBOSE_INDENT}Script update_file_include_list updating ${new_inc_file} directory ${cwd}."
+endif
+
+sort -u ${new_inc_file}.tmp.$$ > ${new_inc_file}
+if (${status}) exit 1 
+
+${KJB_RM} ${new_inc_file}.new.tmp.$$
+if (${status}) exit 1 
+
+${KJB_DIFF_TEST} ${inc_file} ${new_inc_file} > /dev/null
+if (${status}) then 
+    if ($?KJB_VERBOSE) then
+        echo "${KJB_VERBOSE_INDENT}Script update_file_include_list updating ${inc_file} (diff) directory ${cwd}"
+        echo "${KJB_VERBOSE_INDENT}Also removing Include_lines/include_lines to force a makedepend." 
+    endif
+
+    set try = 1
+    while (1) 
+        ${KJB_CP} ${new_inc_file} ${inc_file}
+
+        if (${status}) then
+            echo "Copy of ${new_inc_file} to ${inc_file} returned error."
+
+            if ($try <= 5) then
+                echo "Trying again in case it is due to multiple processes doing the same thing."
+                @ try +=1
+            else 
+                break
+            endif
+        else 
+            break
+        endif 
+    end
+
+    ${KJB_RM} Include_lines/include_lines
+endif 
+
+# This seems to be no longer needed? Test!! 
+#
+# We used to follow this with updating all things that rely on ${new_inc_file}
+# if needed. However, this leads to a lot of extra work because we will do the
+# update in sequence for each file in the directory. Now we trust the makefiles
+# to follow any seqence of calls to this routine with a call to
+# build_include_lines. But to make that work, we need to indicate that
+# include_lines.new is out of date. Hence we remove it. If
+# Include_lines/include_lines was also removed, it will trigger a makedepend.
+# 
+##############  ${KJB_RM} Include_lines/include_lines.new
+
+if ($?KJB_VERBOSE) then
+    echo "${KJB_VERBOSE_INDENT}Leaving script update_file_include_list directory ${cwd}."
+    echo " "
+endif
+

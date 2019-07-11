@@ -1,0 +1,88 @@
+#
+#               Manipulating the build using BUILD_ENV* 
+#               =======================================
+#
+# Certain files, all of which match the pattern BUILD_ENV*, can be used to
+# manipulate the build within a particular directory. They serve two purposes:
+# A) specify options that are necessary for building a program (e.g., perhaps
+# only certain versions of "boost" work; and B) specify personal preferences for
+# the build (e.g., you prefer the default to be optimized code that can be
+# debugged). For purpose A, the BUILD_ENV file goes into SVN. For purpose B, it
+# does not, and you should use the versions with the ${USER_NAME} in the file
+# name. Purpose A is usually indicative of a problem that should be fixed (e.g.,
+# perhaps your code should work with all relatively recent vesions of boost).
+# Both purposes are only relevant in specific circumstances, and most of the
+# time, a source directory does not have any BUILD_ENV* files.  The more usual
+# way to manipulate the build has been through environment variables. Those can
+# also be set in this file if that is more convenient. The values in this file
+# override the environment. 
+#
+# All of the following files listed are sourced if they exist, in the order
+# listed here. The ones without USER should be in svn (if we use them at all).
+# The ones with USER need not be.
+#     BUILD_ENV
+#     BUILD_ENV.${USER}                 (if USER is set --- it usually is!) 
+#     BUILD_ENV.${OS}
+#     BUILD_ENV.${OS}.${USER}
+#     BUILD_ENV.${MACHINE}              ($MACHINE is usually $OS_$CPU)
+#     BUILD_ENV.${MACHINE.${USER}}      (if USER is set)
+#     BUILD_ENV.${OS2}                  (if OS2 is not null)
+#     BUILD_ENV.${OS2}.${USER}          (if OS2 is not null, and USER is set)
+#     BUILD_ENV.${OS2}_${CPU}           (if OS2 is not null)
+#     BUILD_ENV.${OS2}_${CPU}.${USER}   (if OS2 is not null, and USER is set)
+#
+
+#                      Object file dir hint 
+#                      --------------------
+#
+# By default object files go into a directory which looks like
+# $MACHINE/$COMPILER/$CODE, where CODE is generally either of "dev" for
+# developement or "prod" for production (see below). Thus multiple versions are
+# easily managed.  FORCE_OBJ_DIR can be used to force the code to go elsewhere,
+# with the most comon other destination being "" which makes .o, .a, and
+# executable files to appear in the current directory. If the rseolved value of
+# the environment variable OBJ_DIR is not "", and Kobus's environment is not
+# beig used, then a link is made from any built executables to the current
+# directory. If Kobus's environment is being used, then OBJ_DIR is automatically
+# arranged to be part of the path and these (ugly) links are not needed. 
+
+# setenv FORCE_OBJ_DIR ""
+
+
+#                      Production vs development code hint
+#                      -----------------------------------
+#
+# By default, the version of the code is inherited from environment variables
+# such as PRODUCTION. The default is to build development versions of the code,
+# unless this is part of an exported version  (on-line, shared).  
+#
+
+# setenv PRODUCTION 1
+
+#                      Compiler hints
+#                      --------------
+#
+# You can set a preferred compiler by uncommenting and editing the following
+# lines. Otherwise the script "init_compile" will try to find a compiler. 
+#
+# If our choice for one of the compilers is not in our PATH, then we may need to
+# specify the path in variable provided. Note that specifying the path but NOT a
+# compiler choice is likely an ERROR, because you would be setting the path of a
+# compiler chosen by the script. 
+#
+# The paths in variables ending in '_PATH' must have a trailing slashes (this is
+# a convention we use, although not gaurenteed). 
+# 
+# setenv KJB_CC gcc
+# setenv CC_PATH ""
+#
+# setenv KJB_CXX g++
+# setenv CXX_PATH ""
+#
+# setenv KJB_F77 gcc
+# setenv F77_PATH ""
+#
+# setenv KJB_LD gcc 
+# setenv LD_PATH ""
+#
+

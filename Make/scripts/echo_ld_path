@@ -1,0 +1,48 @@
+#!/bin/csh -f 
+
+set found = 0
+set KJB_SRC_PATH = ""
+
+pushd `pwd` > /dev/null
+
+while ("`pwd`" != "/")
+    if (-e Make/init_machine) then
+        set found = 1
+        break
+    endif 
+
+    set KJB_SRC_PATH = "../${KJB_SRC_PATH}"
+
+    cd ..
+end
+
+popd > /dev/null
+
+if (${found}) then
+    if ("${KJB_SRC_PATH}" == "") then
+        set KJB_SRC_PATH = "./"
+    endif 
+else
+    set KJB_SRC_PATH = "${HOME}/src/"
+
+   if (! -e ${KJB_SRC_PATH}Make/init_machine) then
+       # We cannot use P_STDERR here because we might not have defined it yet.
+       bash -c "echo 1>&2"
+       bash -c "echo This directory does not seem to be below a src dirctory with KJB installed. 1>&2"
+       bash -c "echo Nor does ${KJB_SRC_PATH}Make/init_machine exist.  1>&2"
+       bash -c "echo 1>&2"
+
+       exit 1 
+   endif 
+endif 
+
+source ${KJB_SRC_PATH}/Make/init_machine >& /dev/null
+
+setenv KJB_SRC_PATH "${KJB_SRC_PATH}" 
+
+#setenv KJB_VERBOSE
+source ${KJB_SRC_PATH}/Make/init_compile >& /dev/null
+
+echo ${KJB_LD_PATH}
+setenv KJB_LD_PATH ${KJB_LD_PATH}
+
