@@ -1,7 +1,0 @@
-#!/bin/csh -f
-
-foreach arg  ( $* )
-    ${VIM_FOR_MAKE} -e -c ":%s/__builtin_va_list */void* /g" -c :wq $arg
-end
-
-
