@@ -1,0 +1,85 @@
+ 
+include $(MAKE_PATH)Makefile-program
+
+################################################################################
+#
+#              Build and include Makefile-test-depend
+#
+
+# ------------------------------------------
+#
+# Prerequisites for Makefile-test-depend. 
+
+Makefile-test-depend : \
+    $(MAKE_SCRIPT_PATH)build_test_depend \
+	$(MAKE_DIR)Makefile-program 
+
+# -------------------------------------------
+#
+# Now the rule to build Makefile-test-depend. 
+
+# The process of building Makefile-test-depend creates the key rules for itself.
+# So, 'make Makefile-test-depend' needs to be done twice. This is handled in the 
+# script build_2.
+
+Makefile-test-depend : Include_lines/file_list
+	@$(ECHO_UNLESS_QUIET)  " "
+	@$(ECHO_UNLESS_QUIET)  "================================================================================"
+	@$(ECHO_UNLESS_QUIET)  "Building Makefile-test-depend" 
+	@$(ECHO_UNLESS_QUIET)  " "
+	$(MAKE_SCRIPT_PATH)build_test_depend > Makefile-test-depend
+	@$(ECHO_UNLESS_QUIET)  " "
+	@$(ECHO_UNLESS_QUIET)  "                         Makefile-test-depend is built" 
+	@$(ECHO_UNLESS_QUIET)  "================================================================================"
+	@$(ECHO_UNLESS_QUIET)  " "
+
+include Makefile-test-depend
+
+.PHONY : test
+test : $(TEST_TARGETS)
+
+.PHONY : regress
+regress : $(REGRESS_TARGETS)
+
+.PHONY : test_svn
+test_svn : $(TEST_SVN_TARGETS)
+
+
+# Cleaning test is problematic due to svn. We will experiment with having svn do the removal. 
+#
+.PHONY : test_clean
+test_clean : regress_clean
+	@$(ECHO_UNLESS_QUIET) "Cleaning test book keeping files, but not touching others."
+	@$(ECHO_UNLESS_QUIET) "Use target 'test_very_clean' to kill everying."
+	find test_runs -name 'run_succeeded' -exec ${MAKE_SCRIPT_PATH}kjb_svn_rm  {} \;
+	find test_runs -name 'output_checked' -exec ${MAKE_SCRIPT_PATH}kjb_svn_rm  {} \;
+
+.PHONY : %.test_clean
+%.test_clean : test_runs/%
+	find $< -name 'run_succeeded' -exec ${MAKE_SCRIPT_PATH}kjb_svn_rm  {} \;
+	find $< -name 'output_checked' -exec ${MAKE_SCRIPT_PATH}kjb_svn_rm  {} \;
+
+.PHONY : test_very_clean
+test_very_clean : 
+	find test_runs -d -name 'test' -exec ${MAKE_SCRIPT_PATH}kjb_svn_rm  {} \;
+
+.PHONY : %.test_very_clean
+%.test_very_clean :  test_runs/%
+	find $< -d -name 'test' -exec ${MAKE_SCRIPT_PATH}kjb_svn_rm  {} \;
+
+.PHONY : check_clean
+check_clean : 
+	find test_runs -name 'output_checked' -exec ${MAKE_SCRIPT_PATH}kjb_svn_rm  {} \;
+
+.PHONY : %.check_clean
+%.check_clean : test_runs/%
+	find $< -name 'output_checked' -exec ${MAKE_SCRIPT_PATH}kjb_svn_rm  {} \;
+
+.PHONY : regress_clean
+regress_clean : 
+	find test_runs -d -name 'regress' -exec /bin/rm -rf {} \;
+
+.PHONY : %.regress_clean
+%.regress_clean : test_runs/%
+	find $< -d -name 'regress' -exec /bin/rm -rf  {} \;
+

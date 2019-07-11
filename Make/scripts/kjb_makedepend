@@ -1,0 +1,151 @@
+#!/bin/tcsh 
+
+# Careful with echo as this script works by writing to standard out. All echo
+# output should be sent to /dev/stderr. 
+
+# set echo 
+
+set num_args = $#argv
+
+if (${num_args} < 2) then
+    ${P_STDERR} "Script kjb_makedepend needs at least two arguments."
+    exit 1 
+endif 
+
+if (! $?KJB_VERBOSE_INDENT) then
+    setenv KJB_VERBOSE_INDENT ""
+endif 
+
+if ($?KJB_VERBOSE) then
+    ${P_STDERR} " "
+    ${P_STDERR} "${KJB_VERBOSE_INDENT}Script kjb_makedepend called with arguments: $1 $2"
+    ${P_STDERR} "in directory `pwd`."
+endif
+
+set dir = "$1"
+set suffix_str = "$2"
+
+# echo dir:${dir} > kjb_makedepend_dir_arg
+
+set c_source = 0
+set cxx_source = 0
+
+if ("${suffix_str}" == "-c") then
+    set c_source = 1
+else if ("${suffix_str}" == "-x") then
+    set cxx_source = 1
+else 
+    ${P_STDERR} "First argument: ${arg} to script kjb_makedepend is invalid."
+    exit 1 
+endif 
+
+set rest_of_args = "$argv[3-$num_args]"
+# echo rest_of_args: ${rest_of_args}
+
+
+if ("${dir}" != "") then 
+    pushd ${dir} > /dev/null
+endif 
+
+${KJB_CAT} /dev/null > Makefile-depend-tmp
+if ("${status}") exit 1
+
+set files = `${MAKE_SCRIPT_PATH}stream_file_names ${suffix_str}`
+
+if ("${files}" != "") then
+    ${KJB_CAT} /dev/null > Makefile-depend-tmp-2
+    if ("${status}") exit 1
+
+    which ${MAKEDEPEND} >& /dev/null
+  
+    if (${status}) then
+        ${P_STDERR} "Script kjb_makedepend cannot find 'makedepend'"
+        ${P_STDERR} "Perhaps it is not installed on this system?"
+
+        exit 1
+    endif 
+
+    if ($?KJB_VERBOSE) then
+        ${P_STDERR} " "
+        ${P_STDERR} "${KJB_VERBOSE_INDENT}Script kjb_makedepend is executing: "
+        ${P_STDERR} "${KJB_VERBOSE_INDENT}    ${MAKEDEPEND} -f Makefile-depend-tmp-2 ${rest_of_args} ${files}"
+        ${P_STDERR} "in directory `pwd`."
+    endif
+
+    (${MAKEDEPEND} -f Makefile-depend-tmp-2 ${rest_of_args} ${files} > /dev/null) >& makedepend.err
+
+    # This does not work depending on circumstances. I don't know why.
+    # (${MAKEDEPEND} -f Makefile-depend-tmp-2 ${rest_of_args} ${files} > /dev/null ) |& grep -v 'cannot find include file' |& grep -v 'not in' >& makedepend.err
+
+    if ("${status}") then
+        ${P_STDERR} "Program makedepend failed in kjb_makedepend in `pwd`."
+        ${P_STDERR} "Any error output should be in makedepend.err"
+        ${P_STDERR} " "
+        exit 1
+    endif
+
+    if ($?KJB_VERBOSE) then
+        ${P_STDERR} "${KJB_VERBOSE_INDENT}Done kjb_makedepend in `pwd`."
+        ${P_STDERR} " "
+    endif
+
+    if ("${dir}" != "") then
+        if ($?KJB_DEBUG) then
+            ${KJB_CP} Makefile-depend-tmp-2 Makefile-depend-tmp-2-SAVE
+            if ("${status}") exit 1
+        endif 
+        
+        sed "s#^\([A-Za-z0-9_\-]\)#${dir}\1#" Makefile-depend-tmp-2 > Makefile-depend-tmp-3
+        if ("${status}") exit 1
+
+        ${KJB_MV} Makefile-depend-tmp-3  Makefile-depend-tmp-2
+        if ("${status}") exit 1
+    endif  
+
+    if ($?KJB_DEBUG) then
+        ${KJB_CP} Makefile-depend-tmp-2 Makefile-depend-tmp-2-SAVE-2
+        if ("${status}") exit 1
+    endif 
+
+    ${KJB_RM} .Makefile-depend-tmp-2.swp
+    if ("${status}") exit 1
+
+    ${VIM_FOR_MAKE} Makefile-depend-tmp-2 < ${MAKE_EDIT_PATH}Dirs.${VIM_SUFFIX} >& /dev/null
+    if ("${status}") exit 1
+
+    if ($?KJB_DEBUG) then
+        ${KJB_CP} Makefile-depend-tmp-2 Makefile-depend-tmp-2-SAVE-3
+        if ("${status}") exit 1
+    endif 
+
+    ${KJB_RM} .Makefile-depend-tmp-2.swp
+    if ("${status}") exit 1
+
+    ${VIM_FOR_MAKE} Makefile-depend-tmp-2 < ${MAKE_EDIT_PATH}Depend.${VIM_SUFFIX} >& /dev/null
+    if ("${status}") exit 1
+
+    if ($?KJB_DEBUG) then
+        ${KJB_CP} Makefile-depend-tmp-2 Makefile-depend-tmp-2-SAVE-4
+        if ("${status}") exit 1
+    endif 
+
+    if (${c_source}) then
+        sed 's/\([a-z0-9A-Z_\-\.]*\)\.o *:/$(OBJ_DIR)\1.o :/' Makefile-depend-tmp-2 > Makefile-depend-tmp 
+    else if (${cxx_source}) then
+        sed 's/\([a-z0-9A-Z_\-\.]*\)\.o *:/$(CXX_OBJ_DIR)\1.o :/' Makefile-depend-tmp-2 > Makefile-depend-tmp 
+    endif 
+
+    if ("${status}") exit 1
+
+    ${KJB_RM} Makefile-depend-tmp-2
+    ${KJB_RM} Makefile-depend-tmp-2.bak
+endif 
+
+${KJB_CAT} Makefile-depend-tmp
+if ("${status}") exit 1
+
+${KJB_RM}  Makefile-depend-tmp
+${KJB_RM}  makedepend.err
+
+
+

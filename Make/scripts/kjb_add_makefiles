@@ -1,0 +1,440 @@
+#!/bin/csh -f
+
+##############################################################################
+#
+# Identification:
+#     A script to add kjb style Makefiles the current directory
+#
+# Arguments:
+#      No arguments are required. The argument '-p' forces adding program
+#      makefiles. The argument '-l' forces adding library makefiles.
+#
+# Description:
+#     This script adds kjb library style Makefiles to the current directory. In
+#     the absence of a "-p" or "-l" flag, if there are no code files at all, or
+#     if a main routine can be found, then it is assumed that program oriented
+#     makefiles are wanted; otherwise, it is assumed that library oriented
+#     makefiles are wanted. 
+#
+#     If program oriented makefiles are wanted, and there exists a sub-directory
+#     "lib", then this script will build makefiles in any sub-directory of "lib"
+#     that has code. 
+#
+# Bugs:
+#     As we climb up the directory tree from the current directory we are
+#     looking for a ancestor that has the sub-directory "Make". If we happen to
+#     back up through a symbolic link, then this script will probably fail. 
+#
+##############################################################################
+
+
+# set echo 
+
+
+set build_dir = ""
+set force = 0
+set prefer_lib = 0
+set prefer_prog = 0
+set use_heuristic = 1
+set svn_dir = 0
+
+foreach arg ($*)
+    if ("${arg}" == "-f") then
+        set force = 1
+    else if ("${arg}" == "-p") then
+        set prefer_prog = 1
+        set prefer_lib = 0
+        set use_heuristic = 0
+    else if("${arg}" == "-l") then
+        set prefer_prog = 0
+        set prefer_lib = 1
+        set use_heuristic = 0
+    else if ("${build_dir}" != "") then
+        ${P_STDERR} "Only one non-option argument is allowed."
+        exit 1
+    else 
+        set build_dir = "${arg}"
+    endif
+end 
+
+
+# We don't use this much. 
+if ("${build_dir}" != "") then
+    cd ${build_dir} 
+endif 
+
+
+##############################################################################
+
+#
+# Find out where we are in the source tree. In particular, we want to find a
+# dir that has Make as a sub-dir and Make/init_compile as a file in that (just
+# for uniqueness).  
+#
+
+set found = 0
+set KJB_SRC_PATH = ""
+
+pushd `pwd` > /dev/null
+
+while ("`pwd`" != "/")
+    if (-e Make/init_compile) then
+        set KJB_SRC_PATH = `pwd` 
+        set found = 1
+        break
+    endif 
+
+    cd ..
+end
+
+popd >& /dev/null
+
+if (${found}) then
+    setenv KJB_SRC_PATH "${KJB_SRC_PATH}/"
+else
+   #
+   # Handling of KJB_SRC_PATH outside the tree must be consistent with the script
+   # "build"
+   #
+   if ($?KJB_SRC_PATH != 0) then 
+       setenv KJB_SRC_PATH "${HOME}/src/"
+   endif 
+
+   if (! -e ${KJB_SRC_PATH}Make/init_compile) then
+       ${P_STDERR} " "
+       ${P_STDERR} "This directory does not seem to be below a src dirctory with KJB installed."
+       ${P_STDERR} "Nor does ${KJB_SRC_PATH}/Make/init_compile exist. "
+       ${P_STDERR} " "
+       ${P_STDERR} "Try setting KJB_SRC_PATH to a directory with Make as a sub-dir."
+       ${P_STDERR} " "
+
+       exit 1 
+   endif 
+endif 
+
+##############################################################################
+
+set need_init = 1
+
+if (! $?FORCE_INIT_COMPILE) then 
+    if (($?KJB_HAVE_MACHINE) && ($?INIT_SRC_DIR)) then
+        if ("${KJB_SRC_PATH}" == "${INIT_SRC_DIR}") then 
+            if ($?KJB_VERBOSE) then
+                echo "" 
+                echo "Skipping source of init_machine and init_compile."
+            endif 
+
+            set need_init = 0
+        endif 
+    endif 
+endif 
+     
+if (${need_init}) then
+    if ($?KJB_VERBOSE) then
+        echo "" 
+        echo "Sourcing ${KJB_SRC_PATH}Make/init_machine"
+    endif 
+
+    source ${KJB_SRC_PATH}Make/init_machine
+
+    if ($?KJB_VERBOSE) then
+        echo "Sourcing ${KJB_SRC_PATH}Make/init_compile"
+    endif 
+
+    source ${KJB_SRC_PATH}Make/init_compile
+endif 
+
+echo "Now:"
+echo "   SRC_PATH: ${SRC_PATH}"
+echo "   MAKE_PATH: ${MAKE_PATH}"
+echo "   MAKE_SCRIPT_PATH: ${MAKE_SCRIPT_PATH}"
+echo " "
+
+##############################################################################
+
+set script_files = `${MAKE_SCRIPT_PATH}stream_script_names | sed '/^build$/d'`
+if (${status}) then
+    ${P_STDERR} " "
+    ${P_STDERR} "Script stream_script_names failed in script kjb_add_makefiles."
+    ${P_STDERR} " "
+    exit 1
+endif 
+
+set lib_sub_dir = `pwd | sed -n '/\/lib\/[^\/]*$/p'`
+
+set test_main = `${MAKE_SCRIPT_PATH}stream_file_names -m`
+if (${status}) then
+    ${P_STDERR} " "
+    ${P_STDERR} "Script stream_file_names with option -m failed in script kjb_add_makefiles."
+    ${P_STDERR} " "
+    exit 1
+endif 
+
+##############################################################################
+
+if (${use_heuristic}) then
+    #
+    # We want program Makefiles unless the parent directory is "lib".  The
+    # following is mostly to explain the choice to the user. 
+    #
+
+    set prefer_lib = 0
+    set prefer_prog = 0
+
+    echo " "
+    if ("${test_main}" != "") then
+        echo "Assuming that you want program Makefiles due to programs with main."
+        echo "    ${test_main}"
+        echo "Overide with option '-l''"
+        set prefer_prog = 1
+    else if ("${lib_sub_dir}" != "") then
+        echo "Assuming that you want library Makefiles because the parent dir is lib."
+        echo "Overide with option '-p''"
+        set prefer_lib = 1
+    else if ("${script_files}" != "") then
+        echo "Assuming that you want program Makefiles due to script files."
+        echo "Overide with option '-l''"
+        set prefer_prog = 1
+    else 
+        echo "Assuming that you want program Makefiles by default."
+        echo "Overide with option '-l''"
+        set prefer_prog = 1
+    endif 
+    echo " "
+endif 
+
+##############################################################################
+
+if (${prefer_prog}) then
+    if (-e lib) then
+        pushd lib > /dev/null
+        if ($status) exit 
+
+        set lib_sub_dirs = `/bin/ls -1`
+
+        foreach lib_sub_dir (${lib_sub_dirs})
+            if (! -d ${lib_sub_dir} ) continue
+
+            if (-l ${lib_sub_dir} ) then
+                echo "Ignoring link ${lib_sub_dir}."
+                continue
+            endif 
+
+            echo " "
+            echo "Adding makefiles to sub-lib lib/${lib_sub_dir}."
+            echo " "
+
+            pushd ${lib_sub_dir} > /dev/null
+            if (${status}) exit
+
+            ${MAKE_SCRIPT_PATH}kjb_add_makefiles
+            if (${status}) then 
+                ${P_STDERR} "Adding makefiles to sub-lib lib/${lib_sub_dir} failed."
+                exit 1 
+            endif 
+
+            popd > /dev/null
+            if (${status}) exit
+        end
+
+        popd > /dev/null
+        if (${status}) exit
+    endif 
+endif 
+
+##############################################################################
+
+set build_dir_name = `pwd | sed 's#.*/##'`
+
+##############################################################################
+
+if (${prefer_lib}) then
+    echo "Library ID: ${build_dir_name}"
+
+    if (-d ${KJB_LIB_PATH}${build_dir_name}) then
+        pushd ${KJB_LIB_PATH}${build_dir_name} > /dev/null
+           set test_kjb_lib_sub_dir = `pwd`
+        popd > /dev/null
+
+        set cur_dir = `pwd`
+        if ("${test_kjb_lib_sub_dir}" == "${cur_dir}") then 
+           echo "This appears to be a sub-directory of KJB lib."
+        else 
+           ${P_STDERR} "This does not appear to be a sub-directory of KJB lib."
+           ${P_STDERR} "However, the directory ${KJB_LIB_PATH}${build_dir_name} exists."
+           ${P_STDERR} "It is important to avoid name conflict with KJB sub-libs."
+           ${P_STDERR} " "
+           ${P_STDERR} "Exiting for now."
+           ${P_STDERR} " "
+
+           exit 1
+        endif 
+    endif 
+endif 
+
+##############################################################################
+
+svn info >& /dev/null
+if (! $status) set svn_dir = 1
+
+if ((! $force) && (-e Makefile-2) && (${svn_dir})) then
+    ${P_STDERR} " "
+    ${P_STDERR} "This directory is under svn control and already has 'Makefile-2'."
+    ${P_STDERR} "This script replaces all makefiles, but does not commit them."
+    ${P_STDERR} "Hence, this script is exiting. What next?"
+    ${P_STDERR} " "
+    ${P_STDERR} "Plan A"
+    echo "    Perhaps the existing makefiles are fine. To check, try 'make'". > /dev/stderr
+    ${P_STDERR} "    If that fails, remove them, do 'svn update', and the try 'make' again."
+    ${P_STDERR} " "
+    ${P_STDERR} "Plan B"
+    ${P_STDERR} "    Perhaps Plan A does not work, or you really wanted to rebuild the makefiles."
+    ${P_STDERR} "    To force rebuilding makefiles use the '-f' flag."
+    ${P_STDERR} "    Once you succeed, they will be added to svn, but not committed."
+    ${P_STDERR} "    This is because the rest of the directory might be broken."
+    ${P_STDERR} "    Once you can build using 'make', DO NOT FORGET TO COMMIT."
+    ${P_STDERR} " "
+
+    exit 1
+endif 
+
+set old_makefiles = "build tags"
+
+set count_makefiles = `/bin/ls -1 | grep -c 'Makefile'`
+
+if ("${count_makefiles}" > 0) then
+    set old_makefiles = "${old_makefiles} Makefile*"
+endif 
+
+set first_time = 1
+
+foreach old_makefile (${old_makefiles})
+    if ((-e ${old_makefile}) || (-l ${old_makefile})) then 
+        set svn_file = 0
+
+        if ($svn_dir) then
+            svn info ${old_makefile} >& /dev/null
+            if (! $status) set svn_file = 1
+        endif 
+
+        if (${first_time}) then
+            echo "Moving makefiles to OLD_MAKEFILES as needed"
+
+            set first_time = 0
+
+            if (-e OLD_MAKEFILES) then
+                ${KJB_MV} OLD_MAKEFILES OLD_MAKEFILES_OLDER
+                ${KJB_MKDIR} OLD_MAKEFILES
+                ${KJB_MV} OLD_MAKEFILES_OLDER OLD_MAKEFILES/OLDER
+            else 
+                ${KJB_MKDIR} OLD_MAKEFILES
+            endif 
+        endif 
+
+        ${KJB_MV} ${old_makefile} OLD_MAKEFILES
+
+        if (${svn_file}) then
+            echo "Making sure that any existing old copy of ${old_makefile} is removed from the SVN repository."
+            svn update ${old_makefile}
+            svn --force rm ${old_makefile}
+            svn commit -m ' ' ${old_makefile} 
+        endif 
+    endif 
+end 
+
+##############################################################################
+
+/bin/cp -f ${MAKE_PATH}build .
+/bin/cp -f ${MAKE_PATH}Makefile .
+
+if (${prefer_lib}) then
+    /bin/cp -f ${MAKE_PATH}Makefile-2-xxx Makefile-2
+    /bin/cp -f ${MAKE_PATH}Makefile-include-xxx Makefile-include
+
+    set lc_build_dir_name = `echo $build_dir_name | sed "s/-/__/"`
+    set uc_build_dir_name = `echo $lc_build_dir_name | sed "y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/"`
+
+    /bin/rm -f .Makefile-2.swp
+    /bin/rm -f .Makefile-include.swp
+
+    ${VIM_FOR_MAKE} -e -s -c :%s/xxx/${lc_build_dir_name}/g -c :wq Makefile-2  < /dev/null >& /dev/null
+    ${VIM_FOR_MAKE} -e -s -c :%s/xxx/${lc_build_dir_name}/g -c :wq Makefile-include  < /dev/null >& /dev/null
+    ${VIM_FOR_MAKE} -e -s -c :%s/XXX/${uc_build_dir_name}/g -c :wq Makefile-2  < /dev/null >& /dev/null
+    ${VIM_FOR_MAKE} -e -s -c :%s/XXX/${uc_build_dir_name}/g -c :wq Makefile-include  < /dev/null >& /dev/null
+else 
+    /bin/cp -f ${MAKE_PATH}Makefile-2 Makefile-2
+endif 
+
+##############################################################################
+
+make depend_clean
+if (${status}) exit 1 
+
+make depend
+if (${status}) exit 1 
+
+# As soon as we can build the Makefiles, we set up svn. Before we used to make
+# stuff first as a test. But if that failed, then svn did not get set up
+# correctly.  But it is better to be able to commit at this point. 
+#
+if (${svn_dir}) then
+    set makefiles = "build Makefile Makefile-2 Makefile-include"  
+
+    foreach makefile (${makefiles})
+        if (-e "${makefile}") then
+            echo "Adding (if needed), but not committing ${makefile} to the SVN repository."
+            svn add ${makefile} > /dev/null
+            if (${status}) then 
+                ${P_STDERR} "Svn add ${makefile} failed."
+                exit 1 
+            endif 
+        endif 
+    end 
+
+#     svn commit -m ' ' 
+#     if (${status}) exit 1 
+endif 
+
+if (${svn_dir}) then
+    echo "Ready to commit makefiles to SVN." 
+endif 
+
+echo " "
+echo " Testing the make."
+echo " "
+
+make clean
+if (${status}) then
+    ${P_STDERR} "Make clean failed."
+    exit 1 
+endif 
+
+make 
+if (${status}) then 
+    ${P_STDERR} "Make failed."
+    exit 1 
+endif 
+
+
+# Check that we have converged to nothing to do. 
+make 
+if (${status}) then 
+    ${P_STDERR} "Make failed."
+    exit 1 
+endif 
+
+# Double check that we have converged to nothing to do. 
+make 
+if (${status}) then 
+    ${P_STDERR} "Make failed."
+    exit 1 
+endif 
+
+# make tags
+# if (${status}) exit 1 
+
+# make doc
+# if (${status}) then
+#     echo "Making of documentation failed, but everything else is OK." 
+# endif 
+ 

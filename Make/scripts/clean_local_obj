@@ -1,0 +1,17 @@
+#/bin/csh -f 
+
+# A file to be either executed or sourced to remove all object files in the
+# current directory and below. It might fail on some systems due variations on
+# "find". As this occurs, we should modify this script. 
+
+if ($?DRY_RUN) then
+    find -L . \( -name '*.o' -o -name '*.a' -o -name '*.so' -o -name '*.gch'\)  -exec /bin/ls {} \; 
+    echo " "
+    echo "Files listed instead of deleted due to DRY_RUN being set."
+    echo " "
+else 
+    find -L . \( -name '*.o' -o -name '*.a' -o -name '*.so'  -o -name '*.gch'\)  -exec /bin/rm {} \; 
+endif 
+
+
+

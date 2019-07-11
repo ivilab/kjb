@@ -1,0 +1,151 @@
+#!/bin/csh -f
+
+# set echo 
+
+set num_args = $#argv
+
+if ("${num_args}" < 2) then
+    ${P_STDERR} "Script test_program needs at least 2 arguments."
+    exit 1
+endif 
+
+if ("${1}" == "-i") then
+    # We assume that we are not being called from build unlike the other cases. 
+
+    if (-e "build") then
+        setenv ONLY_GET_ENV_FROM_BUILD
+        source build
+        unsetenv ONLY_GET_ENV_FROM_BUILD
+    else 
+        ${P_STDERR} "Script test_program needs to be in a directory with a copy of 'build'"
+        exit 1
+    endif 
+    
+    set program = `echo $2 | sed 's/\.c$//'`
+    set input_dir = ""
+
+    set count = 1
+    while ($count < 100)
+        set try_input_dir = `printf '%02d' ${count}`
+        set try_input_dir_rel_path = "test_input/${program}/${try_input_dir}"
+        if (! -e "${try_input_dir_rel_path}") then
+            ${KJB_MKDIR} "${try_input_dir_rel_path}"
+            if ($status) break
+            set input_dir = "${try_input_dir}"
+            break
+        endif 
+        @ count ++
+    end
+
+    if ("${input_dir}" == "") then
+        ${P_STDERR} "Unable to create a directory to save test input into."
+        exit 1
+    endif 
+
+    set obj_dir = "$LD_OBJ_DIR"
+    set extra_args = "$argv[3-]"
+else
+    set program = "$2"
+    set input_dir = "$3" 
+    set obj_dir = "${LD_OBJ_DIR}"
+    set extra_args = ""
+endif 
+
+set code_dir = `echo ${obj_dir} | sed 's#^[^/][^/]*/\([^/][^/]*/\)[^/][^/]*/$#\1#'`
+
+if ("${1}" == "-t") then
+    set test_type = "test"
+    set test_type_dir = "test"
+    set output_leaf_dir = "${code_dir}"
+else if ("${1}" == "-r") then
+    set test_type = "regress"
+    set test_type_dir = "regress"
+    set output_leaf_dir = "${obj_dir}"
+else if ("${1}" == "-c") then
+    set test_type = "check"
+    # Check shares output dir with test
+    set test_type_dir = "test"
+    set output_leaf_dir = "${code_dir}"
+else if ("${1}" == "-s") then
+    set test_type = "svn"
+    set test_type_dir = "test"
+    set output_leaf_dir = "${code_dir}"
+    setenv ADD_TESTS_TO_SVN
+else if ("${1}" == "-i") then
+    set test_type = "interactive"
+    set test_type_dir = "test"
+    set output_leaf_dir = "${code_dir}"
+else 
+    echo "Script test_program first argument must be either '-i', '-t', '-c', or '-r'."
+    exit ${bug_rc}
+endif 
+
+if ("${test_type}" == "regress") then
+    set test_type_dir = "${test_type}" 
+    set output_leaf_dir = ${obj_dir}
+else 
+    set output_leaf_dir = ${code_dir}
+    set test_type_dir = "test" 
+endif 
+
+set run_dir = test_runs/${program}/${input_dir}/${test_type_dir}/${output_leaf_dir}
+
+# This causes too much grief. Doing a different strategy for removing files
+# that might not belong, namely remove old files using the file test_time_stamp
+# touched below. 
+#
+# if ("${test_type}" == "check") then
+#     ${KJB_RM} "${run_dir}/FAILED"
+# else if ("${test_type}" == "test") then
+#     ${VERBOSE_ECHO} "Script test_program is exectuting: kjb_svn_rm ${run_dir}"
+#     ${MAKE_SCRIPT_PATH}kjb_svn_rm "${run_dir}"
+# else if ("${test_type}" == "svn") then
+#     ${VERBOSE_ECHO} "Script test_program is leaving ${run_dir} alone due to test_type svn."
+# else 
+#     ${KJB_RM} "${run_dir}"
+# endif 
+
+${KJB_MKDIR} "${run_dir}"
+ 
+if ($status) then
+    ${P_STDERR} "Script test_program unable to create directory ${run_dir} in `pwd`"
+    exit 1
+endif 
+
+if ("${test_type}" == "test") then
+    # We want to be able to remove all files that we did not modify, as they
+    # might be stale. 
+    ${KJB_TOUCH} ${run_dir}/test_time_stamp
+endif 
+
+if ($?KJB_VERBOSE) then
+    if ($KJB_VERBOSE >= 2) then
+        echo "Script test_program calling test_program_2 with args: "
+        echo "    test_type:  ${test_type}"
+        echo "    program:    ${program}"
+        echo "    input_dir   ${input_dir}"
+        echo "    obj_dir:    ${obj_dir}"
+        echo "    code_dir:   ${code_dir}"
+        echo "    run_dir:    ${run_dir}"
+        echo "    extra_args: ${extra_args}"
+    endif 
+endif 
+
+if ("${test_type}" == "interactive") then
+    ${MAKE_SCRIPT_PATH}/test_program_2 "${test_type}" "${program}" "${input_dir}" "${obj_dir}" "${code_dir}" "${run_dir}" "${extra_args}" 
+    set test_status = ${status}
+else
+    ${MAKE_SCRIPT_PATH}/test_program_2 "${test_type}" "${program}" "${input_dir}" "${obj_dir}" "${code_dir}" "${run_dir}" "${extra_args}" >& ${run_dir}/${test_type}.res 
+    set test_status = ${status}
+    
+    ${KJB_CAT} ${run_dir}/${test_type}.res 
+endif
+
+if (${test_status}) then
+    ${KJB_TOUCH} "${run_dir}/FAILED"
+else 
+    ${KJB_RM} "${run_dir}/FAILED"
+endif 
+
+exit ${test_status}
+

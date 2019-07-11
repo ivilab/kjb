@@ -1,0 +1,39 @@
+#
+# A file that is source by build-2 to make it a bit simpler.
+# However, because it is sourced, we need to be careful about setting any
+# variables that are using in build-2, such as 'count'.
+#
+
+source ${MAKE_SCRIPT_PATH}clean_local
+
+foreach dir (${KJB_LIB_PATH}*) 
+    if (-d ${dir}) then
+        pushd ${dir} > /dev/null
+            source ${MAKE_SCRIPT_PATH}clean_local
+        popd > /dev/null
+    endif 
+end
+
+pushd ${KJB_LIB_DIR} > /dev/null
+    set real_kjb_lib_dir = "${cwd}" 
+popd > /dev/null
+
+set libs_to_clean = "lib ../lib ../../lib ../../../lib ../../../../lib"
+
+foreach lib_to_clean (${libs_to_clean}) 
+    if (-d "${lib_to_clean}") then
+        pushd ${lib_to_clean} > /dev/null
+            if ("{cwd}" != "${real_kjb_lib_dir}") then
+                set dirs = `${MAKE_SCRIPT_PATH}stream_file_names -a`
+
+                foreach dir (${dirs})
+                    if (-d ${dir}) then
+                        pushd ${dir} > /dev/null
+                            source ${MAKE_SCRIPT_PATH}clean_local
+                        popd > /dev/null
+                    endif 
+                end
+            endif 
+        popd > /dev/null
+    endif 
+end
