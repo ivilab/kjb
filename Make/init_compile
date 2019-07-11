@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 #
-# $Id: init_compile 22709 2019-07-11 23:05:47Z kobus $
+# $Id: init_compile 22710 2019-07-11 23:19:44Z kobus $
 # 
 # Optional libraries. 
 #     The main reason to edit this file is to add optional libraries.  Each
@@ -980,7 +980,7 @@ endif
 ################################################################################
 #
 # We are going to do this more naively and simply than UA HPC.
-# We just load the modules one time, set a flag saying "done."
+# We just load the modules one time and set a flag saying "done."
 
 if ($?KJB_TACC_HPC) then
     if ( ! $?TACC_HPC_MODULES) then
