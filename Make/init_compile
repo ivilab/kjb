@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 #
-# $Id: init_compile 22681 2019-07-04 23:48:25Z kobus $
+# $Id: init_compile 22709 2019-07-11 23:05:47Z kobus $
 # 
 # Optional libraries. 
 #     The main reason to edit this file is to add optional libraries.  Each
@@ -436,22 +436,6 @@ if ($do_cache ) then
     endif
 
     if (-e "${cache_fname}") then
-#         #
-#         # Kobus. Now that we study the cache dependencies, this next block seems OBSOLETE?
-#         #
-#         if($?CACHE_EXPIRE_DAYS) then
-#             set cache_expire_days=$CACHE_EXPIRE_DAYS
-# 
-#             # test if value is an integer
-#             expr $CACHE_EXPIRE_DAYS + 0 >& /dev/null
-#             if(${status} || $CACHE_EXPIRE_DAYS <= 0) then
-#                 echo "Invalid CACHE_EXPIRE_DAYS.  Defaulting to 1 day..."
-#                 set cache_expire_days=1
-#             endif
-#         else
-#             set cache_expire_days=1
-#         endif
-
         # Kobus. Added a check that the cache is newer than this file. However,
         # we must use the system "test". If someone's program is test.c, then
         # weird things can happen. Fortunately, system test should be available
