@@ -1043,3 +1043,4 @@ int trim_word_list_empty_entries_at_tail( Word_list* word_list_ptr )
 }
 #endif
 
+
