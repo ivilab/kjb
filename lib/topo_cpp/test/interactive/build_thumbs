@@ -1,0 +1,126 @@
+#!/bin/bash
+
+##############################################################################
+#
+# Identification:
+#     A script to build a thumbnail image of a single elevation tile
+#
+# Description:
+#     Run this script in /net/v04/data_3/trails/elevation/ned_13as/thumbs_abs
+#     There is a single required argument, the path+filename of an executable
+#     that reads NED13 float-format data and converts it into a JPEG.
+#     This script does the associated extraction, in a loop, and shrinks the
+#     JPEG.  You might prefer to use the make_thumbs script instead of this
+#     one, if you want to make a bunch of thumbnails.
+#
+#     This script requires ImageMagick.
+#
+#     This script exits with a nonzero return code iff there is a problem.
+#
+# Option arguments: 
+#
+#     This script requires three arguments in a fixed order.
+#
+# |    --absolute | --relative
+#         Exactly one of the above two flags is required as the first argument.
+#         This flag indicates whether the elevation values should be expressed
+#         with respect to an absolute standard, or just relative to the other
+#         elevations in the tile.  Absolute representation lets you put two
+#         tiles together and compare values between them; the output is in
+#         color, where "warm"/"cool" colors indicate low and high elevations,
+#         respectively.  (Pike's Peak will be blue, Phantom Ranch will be red.)
+#         Relative representation yields grayscale output, and each tile's
+#         elevation values are scaled and shifted to cover the whole range of
+#         grayscale intensities from black (#000000) to white (#ffffff).
+#
+# |     NEDPATH
+#          The second argument is the path to the NED tiles, which must
+#          be (or appear to be) a local directory, containing one-degree NED-13
+#          GridFloat zip files, each named with its north latitude and
+#          west longitude (as a positive number).  You can download these for
+#          free from nationalmap.gov.  We already have some, though.
+#          Within the Sista network, the correct path is the following:
+#          /net/v04/data_3/trails/elevation/ned_13as/llgrid
+#
+# |     EXEPATH
+#          The third argument is the absolute path plus filename of the
+#          executable binary of the program "float2img.cpp" found in
+#          src/lib/topo_cpp/test/interactive.  This is the software that
+#          actually does the conversion of the huge GridFloat file into an
+#          image file.  This program is kind of a slow memory hog.
+#
+# Author:
+#     Andrew Predoehl
+#
+##############################################################################
+
+# $Id: build_thumbs 14561 2013-06-03 20:13:24Z predoehl $
+
+function print_synopsis {
+cat <<EOF
+
+Formats:  `basename $0` --absolute NEDPATH EXEPATH
+          `basename $0` --relative NEDPATH EXEPATH
+
+    --absolute  Output imgs contain hues corr. to meters of elevation
+    --relative  Output imgs contain gray levels corr. to local max, min
+    NEDPATH     Path to directory containing NED13 data (only) as zip archives
+    EXEPATH     Path to executable to perform float-to-jpeg conv.
+
+    Output thumbnails are written into the current working directory.
+EOF
+}
+if [ $# -ne 3 ] 
+then echo "`basename $0`: error: wrong number of arguments." >&2
+    print_synopsis >&2
+    exit 1
+fi
+if [ "$1" != "--absolute" -a "$1" != "--relative" ]
+then echo "`basename $0`: error: first arg must be --absolute or --relative">&2
+    print_synopsis >&2
+    exit 1
+fi
+if [ ! -d $2 ]
+then echo "`basename $0`: error: second arg must be a path to NED13 files">&2
+    print_synopsis >&2
+    exit 1
+fi
+if [ ! -x $3 ]
+then echo "`basename $0`: error: third arg must be an image-gen executable">&2
+    print_synopsis >&2
+    exit 1
+fi
+CON=`which convert`
+test -x $CON || exit 1 # need ImageMagick
+
+pushd $2 || exit 1
+NEDPATH=`pwd -P`
+popd || exit 1
+pushd `dirname $3` || exit 1
+EXEPATH=`pwd -P`/`basename $3`
+popd || exit 1
+
+#rm -f *.jpeg &
+for X in $NEDPATH/*.zip
+do  Y=`basename $X`
+    LL=${Y%.zip}
+    H=$LL.jpeg
+    test -r $H && continue # skip extraction if that filename exists already
+
+    # there are two options below because some of the file archives are weird
+    DIE2=0
+    for F in $LL/float${LL}_13.flt $LL/float${LL}_13
+    do unzip $X $F -d /tmp >/dev/null && break
+        echo "`basename $0`: warning: extracting $F did not work" >&2
+        DIE2=`expr 1 + $DIE2`
+    done
+    test $DIE2 -lt 2 || exit 1 # if both options above fail, then script fails
+    G=/tmp/$F
+    test $DIE2 -eq 1 && mv $G $G.flt && G=$G.flt # normalize filename
+    $EXEPATH $1 $G # $3 is executable, $1 is --absolute or --relative
+    J=/tmp/$LL/float${LL}_13.jpeg
+    test -r $J || echo "`basename $0`: error: DEM-to-jpeg failure" >&2
+    $CON $J -resize 512x512 $H || exit 1
+    rm $G $J || exit 1
+    rmdir /tmp/$LL || exit 1
+done

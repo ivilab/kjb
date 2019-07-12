@@ -1,0 +1,7 @@
+
+Error reported during non-interactive run.
+Execution of "ls NOT_A_FILE" reported failure status (1).
+ls: NOT_A_FILE: No such file or directory
+<<TEST>> Skipping cleanup of the system command process (not the originating process).
+
+dbi: prog_rc is 1 on source line 31 of kjb_system_2.c

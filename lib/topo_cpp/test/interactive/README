@@ -1,0 +1,62 @@
+As of this writing, there are two demo programs you can use to see
+geographical information.
+
+1. test_doq
+
+This is a program that shows a few aerial photos.
+
+Internally we store the UTM coordinate of a few locations in the USA,
+(see the source code).
+For each location, we assemble a grayscale aerial view (resolution of 1 meter
+per pixel, for a 2 km X 2 km square).  The aerial imagery is downloaded from
+Terraserver-USA and locally cached; then we reload the image from the cache
+(as a test).  The cache we create, write, and read is new and temporary.
+When the test program finished, that temporary cache is deleted.
+
+2.  float2img, make_thumbs, make_montage
+
+float2img is a C++ program that visualizes digital elevation model data.
+Its input is the filename of a big block of "float" digital elevation model
+data, i.e., pure binary for IEEE-754 numbers.  This program was written to
+handle data from the USGS, specifically NED13 tiles covering a 1-degree by
+1-degree area.  This program is a bit difficult to use; consider one of the
+scripts below
+
+make_thumbs is a script to generate thumbnail images of NED13 data (i.e.,
+digital elevation model data) stored in /data_3/trails/elevation.
+The thumbnails are generated in the current directory, so you might not want
+to use a directory in /work.  Also, this script needs to call float2img, so
+you must tell the script the path to the executable.
+
+Here is a sample usage:
+( src/lib/topo_cpp/test/interactive ) # build latest source code
+( src/lib/topo_cpp/test/interactive ) make
+. . . results omitted . . .
+( src/lib/topo_cpp/test/interactive ) # learn executable path (2 pieces)
+( src/lib/topo_cpp/test/interactive ) which float2img
+./linux_x86_64_opteron/prod/g++_gcc//float2img
+( src/lib/topo_cpp/test/interactive ) pwd -P
+/net/v04/work/predoehl/src/lib/topo_cpp/test/interactive
+( src/lib/topo_cpp/test/interactive ) # make a temporary directory for output
+( src/lib/topo_cpp/test/interactive ) mkdir /tmp/temp
+( src/lib/topo_cpp/test/interactive ) pushd /tmp/temp
+( /tmp/temp ) # set up temporary directory for running the script
+( /tmp/temp ) ln -s /net/v04/work/predoehl/src/lib/topo_cpp/test/interactive/build_thumbs
+( /tmp/temp ) ln -s /net/v04/work/predoehl/src/lib/topo_cpp/test/interactive/make_thumbs
+( /tmp/temp ) ln -s /net/v04/work/predoehl/src/lib/topo_cpp/test/interactive/make_montage 
+( /tmp/temp ) # now run the script (takes quite some time)
+( /tmp/temp ) ./make_thumbs /net/v04/work/predoehl/src/lib/topo_cpp/test/interactive/linux_x86_64_opteron/prod/g++_gcc/float2img
+( /tmp/temp ) # (optional) make montage, too -- see below
+( /tmp/temp ) ./make_montage
+( /tmp/temp ) # admire the results
+( /tmp/temp ) cd thumb_abs ; ooh ; ahh ; cd ../thumb_rel ; ooh ; ahh
+( /tmp/temp ) # that's enough
+( /tmp/temp ) popd
+( src/lib/topo_cpp/test/interactive ) rm -rf /tmp/temp
+
+make_montage uses the output of make_thumbs and assembles the pieces into a
+large grid (probably with gaps) according to their spatial (mercator
+projection) position.  The output file is called montage.jpeg.  See above for
+a sample invocation -- you have to have the output of make_thumbs in the
+current directory.
+

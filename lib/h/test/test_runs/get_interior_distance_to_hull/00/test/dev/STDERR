@@ -1,0 +1,5 @@
+dbf: test_vp->elements[ 0 ] is 0.292893 on source line 64 of get_interior_distance_to_hull.c
+dbf: distance is 0.292893 on source line 68 of get_interior_distance_to_hull.c
+<<TEST>> Begin cleaning up system command process (41842) (ignore line for regression testing).
+<<TEST>> Wait result is 0 (ignore line for regression testing).
+<<TEST>> Done waiting for system command  process to finish (ignore line for regression testing).

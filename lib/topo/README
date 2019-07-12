@@ -1,0 +1,12 @@
+This directory contains C code used for geodesy and for caching aerial imagery.
+The primary authors are Scott and Alan Morris, although Andrew Predoehl helped
+adapt it to libkjb conventions, though that aspect still needs more work.
+Both are used by the Finding Trails project.  File master.c contains geodesy
+code, code that models the earth as an ellipsoid, and computes great circle
+distances on that surface.  File index.c contains code used for developing a
+file cache of tiled aerial imagery.  It's primarily used with TerraServer
+imagery.
+
+AMP
+26 Nov 2012
+

@@ -1,0 +1,5001 @@
+<<  2 >> Verbose level at program startup is 5.
+<<  1 >> Try 1 with num_rows = 1 and num_cols = 1.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 2 with num_rows = 37 and num_cols = 46.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 3 with num_rows = 48 and num_cols = 65.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 4 with num_rows = 88 and num_cols = 129.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 5 with num_rows = 43 and num_cols = 76.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 6 with num_rows = 1 and num_cols = 13.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 7 with num_rows = 81 and num_cols = 100.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 8 with num_rows = 57 and num_cols = 67.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 9 with num_rows = 40 and num_cols = 117.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 10 with num_rows = 65 and num_cols = 131.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 11 with num_rows = 31 and num_cols = 87.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 12 with num_rows = 33 and num_cols = 99.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 13 with num_rows = 73 and num_cols = 128.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 14 with num_rows = 6 and num_cols = 88.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 15 with num_rows = 101 and num_cols = 155.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 16 with num_rows = 42 and num_cols = 114.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 17 with num_rows = 11 and num_cols = 36.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 18 with num_rows = 17 and num_cols = 76.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 19 with num_rows = 8 and num_cols = 67.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 20 with num_rows = 91 and num_cols = 187.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 21 with num_rows = 47 and num_cols = 113.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 22 with num_rows = 15 and num_cols = 80.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 23 with num_rows = 65 and num_cols = 160.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 24 with num_rows = 63 and num_cols = 141.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 25 with num_rows = 44 and num_cols = 103.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 26 with num_rows = 43 and num_cols = 136.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 27 with num_rows = 5 and num_cols = 37.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 28 with num_rows = 13 and num_cols = 66.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 29 with num_rows = 60 and num_cols = 102.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 30 with num_rows = 59 and num_cols = 68.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 31 with num_rows = 76 and num_cols = 77.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 32 with num_rows = 99 and num_cols = 188.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 33 with num_rows = 36 and num_cols = 95.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 34 with num_rows = 61 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 35 with num_rows = 51 and num_cols = 143.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 36 with num_rows = 22 and num_cols = 38.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 37 with num_rows = 54 and num_cols = 123.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 38 with num_rows = 65 and num_cols = 133.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 39 with num_rows = 18 and num_cols = 62.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 40 with num_rows = 39 and num_cols = 63.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 41 with num_rows = 29 and num_cols = 44.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 42 with num_rows = 85 and num_cols = 90.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 43 with num_rows = 11 and num_cols = 12.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 44 with num_rows = 11 and num_cols = 69.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 45 with num_rows = 55 and num_cols = 76.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 46 with num_rows = 60 and num_cols = 67.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 47 with num_rows = 30 and num_cols = 107.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 48 with num_rows = 32 and num_cols = 114.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 49 with num_rows = 40 and num_cols = 60.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 50 with num_rows = 7 and num_cols = 33.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 51 with num_rows = 57 and num_cols = 76.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 52 with num_rows = 65 and num_cols = 131.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 53 with num_rows = 39 and num_cols = 58.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 54 with num_rows = 27 and num_cols = 107.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 55 with num_rows = 84 and num_cols = 99.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 56 with num_rows = 47 and num_cols = 109.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 57 with num_rows = 74 and num_cols = 100.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 58 with num_rows = 72 and num_cols = 127.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 59 with num_rows = 67 and num_cols = 139.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 60 with num_rows = 31 and num_cols = 115.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 61 with num_rows = 68 and num_cols = 74.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 62 with num_rows = 50 and num_cols = 57.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 63 with num_rows = 2 and num_cols = 29.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 64 with num_rows = 80 and num_cols = 133.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 65 with num_rows = 58 and num_cols = 144.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 66 with num_rows = 81 and num_cols = 176.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 67 with num_rows = 89 and num_cols = 149.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 68 with num_rows = 81 and num_cols = 112.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 69 with num_rows = 36 and num_cols = 85.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 70 with num_rows = 49 and num_cols = 123.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 71 with num_rows = 15 and num_cols = 28.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 72 with num_rows = 29 and num_cols = 85.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 73 with num_rows = 81 and num_cols = 174.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 74 with num_rows = 62 and num_cols = 68.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 75 with num_rows = 61 and num_cols = 102.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 76 with num_rows = 87 and num_cols = 88.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 77 with num_rows = 97 and num_cols = 181.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 78 with num_rows = 94 and num_cols = 187.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 79 with num_rows = 58 and num_cols = 107.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 80 with num_rows = 59 and num_cols = 148.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 81 with num_rows = 38 and num_cols = 75.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 82 with num_rows = 95 and num_cols = 123.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 83 with num_rows = 4 and num_cols = 28.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 84 with num_rows = 66 and num_cols = 111.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 85 with num_rows = 32 and num_cols = 70.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 86 with num_rows = 43 and num_cols = 87.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 87 with num_rows = 39 and num_cols = 126.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 88 with num_rows = 42 and num_cols = 86.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 89 with num_rows = 70 and num_cols = 90.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 90 with num_rows = 87 and num_cols = 179.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 91 with num_rows = 54 and num_cols = 105.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 92 with num_rows = 91 and num_cols = 170.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 93 with num_rows = 68 and num_cols = 99.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 94 with num_rows = 63 and num_cols = 83.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 95 with num_rows = 64 and num_cols = 110.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 96 with num_rows = 42 and num_cols = 142.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 97 with num_rows = 93 and num_cols = 169.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 98 with num_rows = 90 and num_cols = 180.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 99 with num_rows = 70 and num_cols = 94.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 100 with num_rows = 86 and num_cols = 142.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 101 with num_rows = 66 and num_cols = 155.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 102 with num_rows = 100 and num_cols = 186.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 103 with num_rows = 29 and num_cols = 108.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 104 with num_rows = 57 and num_cols = 119.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 105 with num_rows = 20 and num_cols = 87.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 106 with num_rows = 39 and num_cols = 56.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 107 with num_rows = 18 and num_cols = 33.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 108 with num_rows = 2 and num_cols = 63.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 109 with num_rows = 83 and num_cols = 129.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 110 with num_rows = 74 and num_cols = 147.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 111 with num_rows = 58 and num_cols = 93.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 112 with num_rows = 96 and num_cols = 126.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 113 with num_rows = 11 and num_cols = 28.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 114 with num_rows = 20 and num_cols = 50.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 115 with num_rows = 99 and num_cols = 101.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 116 with num_rows = 91 and num_cols = 132.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 117 with num_rows = 13 and num_cols = 65.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 118 with num_rows = 95 and num_cols = 128.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 119 with num_rows = 74 and num_cols = 92.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 120 with num_rows = 92 and num_cols = 148.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 121 with num_rows = 68 and num_cols = 95.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 122 with num_rows = 4 and num_cols = 90.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 123 with num_rows = 76 and num_cols = 76.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 124 with num_rows = 63 and num_cols = 137.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 125 with num_rows = 64 and num_cols = 88.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 126 with num_rows = 76 and num_cols = 155.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 127 with num_rows = 97 and num_cols = 151.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 128 with num_rows = 33 and num_cols = 124.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 129 with num_rows = 69 and num_cols = 166.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 130 with num_rows = 40 and num_cols = 129.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 131 with num_rows = 48 and num_cols = 64.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 132 with num_rows = 77 and num_cols = 101.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 133 with num_rows = 65 and num_cols = 104.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 134 with num_rows = 44 and num_cols = 114.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 135 with num_rows = 68 and num_cols = 135.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 136 with num_rows = 10 and num_cols = 28.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 137 with num_rows = 89 and num_cols = 144.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 138 with num_rows = 20 and num_cols = 53.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 139 with num_rows = 60 and num_cols = 146.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 140 with num_rows = 25 and num_cols = 122.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 141 with num_rows = 61 and num_cols = 146.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 142 with num_rows = 74 and num_cols = 142.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 143 with num_rows = 22 and num_cols = 27.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 144 with num_rows = 71 and num_cols = 143.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 145 with num_rows = 69 and num_cols = 136.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 146 with num_rows = 51 and num_cols = 60.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 147 with num_rows = 55 and num_cols = 63.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 148 with num_rows = 99 and num_cols = 129.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 149 with num_rows = 96 and num_cols = 102.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 150 with num_rows = 99 and num_cols = 170.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 151 with num_rows = 46 and num_cols = 116.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 152 with num_rows = 48 and num_cols = 115.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 153 with num_rows = 48 and num_cols = 57.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 154 with num_rows = 37 and num_cols = 66.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 155 with num_rows = 4 and num_cols = 96.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 156 with num_rows = 98 and num_cols = 117.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 157 with num_rows = 97 and num_cols = 139.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 158 with num_rows = 75 and num_cols = 123.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 159 with num_rows = 1 and num_cols = 17.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 160 with num_rows = 95 and num_cols = 135.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 161 with num_rows = 59 and num_cols = 142.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 162 with num_rows = 31 and num_cols = 115.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 163 with num_rows = 94 and num_cols = 97.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 164 with num_rows = 71 and num_cols = 138.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 165 with num_rows = 26 and num_cols = 31.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 166 with num_rows = 92 and num_cols = 132.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 167 with num_rows = 44 and num_cols = 55.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 168 with num_rows = 46 and num_cols = 114.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 169 with num_rows = 13 and num_cols = 102.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 170 with num_rows = 93 and num_cols = 153.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 171 with num_rows = 37 and num_cols = 54.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 172 with num_rows = 87 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 173 with num_rows = 21 and num_cols = 101.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 174 with num_rows = 25 and num_cols = 28.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 175 with num_rows = 31 and num_cols = 32.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 176 with num_rows = 30 and num_cols = 90.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 177 with num_rows = 58 and num_cols = 127.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 178 with num_rows = 84 and num_cols = 108.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 179 with num_rows = 81 and num_cols = 155.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 180 with num_rows = 33 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 181 with num_rows = 73 and num_cols = 118.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 182 with num_rows = 42 and num_cols = 105.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 183 with num_rows = 23 and num_cols = 34.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 184 with num_rows = 74 and num_cols = 134.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 185 with num_rows = 33 and num_cols = 130.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 186 with num_rows = 6 and num_cols = 42.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 187 with num_rows = 53 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 188 with num_rows = 89 and num_cols = 125.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 189 with num_rows = 92 and num_cols = 161.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 190 with num_rows = 77 and num_cols = 80.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 191 with num_rows = 27 and num_cols = 86.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 192 with num_rows = 83 and num_cols = 133.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 193 with num_rows = 41 and num_cols = 134.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 194 with num_rows = 3 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 195 with num_rows = 31 and num_cols = 86.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 196 with num_rows = 99 and num_cols = 118.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 197 with num_rows = 71 and num_cols = 95.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 198 with num_rows = 95 and num_cols = 127.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 199 with num_rows = 68 and num_cols = 72.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 200 with num_rows = 68 and num_cols = 72.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 201 with num_rows = 77 and num_cols = 123.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 202 with num_rows = 40 and num_cols = 75.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 203 with num_rows = 59 and num_cols = 77.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 204 with num_rows = 23 and num_cols = 79.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 205 with num_rows = 81 and num_cols = 95.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 206 with num_rows = 22 and num_cols = 24.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 207 with num_rows = 85 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 208 with num_rows = 59 and num_cols = 60.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 209 with num_rows = 35 and num_cols = 40.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 210 with num_rows = 67 and num_cols = 116.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 211 with num_rows = 54 and num_cols = 92.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 212 with num_rows = 92 and num_cols = 138.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 213 with num_rows = 34 and num_cols = 61.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 214 with num_rows = 101 and num_cols = 153.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 215 with num_rows = 100 and num_cols = 157.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 216 with num_rows = 79 and num_cols = 145.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 217 with num_rows = 21 and num_cols = 57.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 218 with num_rows = 37 and num_cols = 99.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 219 with num_rows = 20 and num_cols = 83.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 220 with num_rows = 15 and num_cols = 94.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 221 with num_rows = 90 and num_cols = 125.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 222 with num_rows = 19 and num_cols = 19.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 223 with num_rows = 83 and num_cols = 102.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 224 with num_rows = 83 and num_cols = 120.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 225 with num_rows = 33 and num_cols = 125.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 226 with num_rows = 29 and num_cols = 33.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 227 with num_rows = 80 and num_cols = 100.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 228 with num_rows = 79 and num_cols = 102.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 229 with num_rows = 53 and num_cols = 65.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 230 with num_rows = 42 and num_cols = 130.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 231 with num_rows = 16 and num_cols = 29.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 232 with num_rows = 14 and num_cols = 70.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 233 with num_rows = 43 and num_cols = 103.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 234 with num_rows = 79 and num_cols = 138.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 235 with num_rows = 12 and num_cols = 52.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 236 with num_rows = 80 and num_cols = 136.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 237 with num_rows = 90 and num_cols = 115.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 238 with num_rows = 72 and num_cols = 148.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 239 with num_rows = 14 and num_cols = 54.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 240 with num_rows = 59 and num_cols = 135.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 241 with num_rows = 44 and num_cols = 130.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 242 with num_rows = 41 and num_cols = 137.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 243 with num_rows = 53 and num_cols = 147.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 244 with num_rows = 34 and num_cols = 81.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 245 with num_rows = 16 and num_cols = 57.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 246 with num_rows = 93 and num_cols = 161.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 247 with num_rows = 99 and num_cols = 157.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 248 with num_rows = 22 and num_cols = 72.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 249 with num_rows = 44 and num_cols = 74.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 250 with num_rows = 6 and num_cols = 49.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 251 with num_rows = 93 and num_cols = 156.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 252 with num_rows = 84 and num_cols = 173.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 253 with num_rows = 14 and num_cols = 58.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 254 with num_rows = 100 and num_cols = 182.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 255 with num_rows = 26 and num_cols = 123.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 256 with num_rows = 55 and num_cols = 87.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 257 with num_rows = 62 and num_cols = 94.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 258 with num_rows = 75 and num_cols = 164.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 259 with num_rows = 34 and num_cols = 35.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 260 with num_rows = 56 and num_cols = 68.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 261 with num_rows = 21 and num_cols = 56.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 262 with num_rows = 2 and num_cols = 98.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 263 with num_rows = 62 and num_cols = 70.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 264 with num_rows = 16 and num_cols = 75.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 265 with num_rows = 36 and num_cols = 82.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 266 with num_rows = 14 and num_cols = 113.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 267 with num_rows = 54 and num_cols = 64.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 268 with num_rows = 84 and num_cols = 151.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 269 with num_rows = 64 and num_cols = 81.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 270 with num_rows = 30 and num_cols = 62.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 271 with num_rows = 55 and num_cols = 94.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 272 with num_rows = 55 and num_cols = 61.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 273 with num_rows = 8 and num_cols = 33.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 274 with num_rows = 40 and num_cols = 100.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 275 with num_rows = 43 and num_cols = 116.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 276 with num_rows = 58 and num_cols = 97.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 277 with num_rows = 63 and num_cols = 89.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 278 with num_rows = 72 and num_cols = 152.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 279 with num_rows = 19 and num_cols = 67.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 280 with num_rows = 35 and num_cols = 120.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 281 with num_rows = 38 and num_cols = 138.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 282 with num_rows = 11 and num_cols = 92.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 283 with num_rows = 69 and num_cols = 131.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 284 with num_rows = 33 and num_cols = 104.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 285 with num_rows = 14 and num_cols = 108.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 286 with num_rows = 79 and num_cols = 125.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 287 with num_rows = 93 and num_cols = 149.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 288 with num_rows = 88 and num_cols = 176.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 289 with num_rows = 51 and num_cols = 122.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 290 with num_rows = 35 and num_cols = 62.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 291 with num_rows = 44 and num_cols = 113.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 292 with num_rows = 3 and num_cols = 72.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 293 with num_rows = 63 and num_cols = 133.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 294 with num_rows = 44 and num_cols = 102.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 295 with num_rows = 39 and num_cols = 112.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 296 with num_rows = 79 and num_cols = 107.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 297 with num_rows = 15 and num_cols = 22.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 298 with num_rows = 57 and num_cols = 84.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 299 with num_rows = 4 and num_cols = 53.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 300 with num_rows = 28 and num_cols = 127.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 301 with num_rows = 96 and num_cols = 192.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 302 with num_rows = 15 and num_cols = 66.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 303 with num_rows = 21 and num_cols = 37.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 304 with num_rows = 28 and num_cols = 112.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 305 with num_rows = 63 and num_cols = 152.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 306 with num_rows = 12 and num_cols = 85.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 307 with num_rows = 27 and num_cols = 41.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 308 with num_rows = 34 and num_cols = 127.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 309 with num_rows = 24 and num_cols = 65.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 310 with num_rows = 30 and num_cols = 41.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 311 with num_rows = 97 and num_cols = 187.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 312 with num_rows = 69 and num_cols = 160.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 313 with num_rows = 11 and num_cols = 46.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 314 with num_rows = 92 and num_cols = 111.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 315 with num_rows = 41 and num_cols = 129.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 316 with num_rows = 73 and num_cols = 102.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 317 with num_rows = 71 and num_cols = 75.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 318 with num_rows = 38 and num_cols = 62.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 319 with num_rows = 44 and num_cols = 59.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 320 with num_rows = 11 and num_cols = 23.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 321 with num_rows = 15 and num_cols = 41.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 322 with num_rows = 39 and num_cols = 116.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 323 with num_rows = 29 and num_cols = 42.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 324 with num_rows = 42 and num_cols = 123.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 325 with num_rows = 91 and num_cols = 124.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 326 with num_rows = 76 and num_cols = 172.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 327 with num_rows = 27 and num_cols = 68.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 328 with num_rows = 76 and num_cols = 97.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 329 with num_rows = 64 and num_cols = 89.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 330 with num_rows = 66 and num_cols = 145.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 331 with num_rows = 74 and num_cols = 75.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 332 with num_rows = 97 and num_cols = 127.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 333 with num_rows = 83 and num_cols = 173.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 334 with num_rows = 98 and num_cols = 162.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 335 with num_rows = 64 and num_cols = 102.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 336 with num_rows = 100 and num_cols = 192.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 337 with num_rows = 89 and num_cols = 127.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 338 with num_rows = 27 and num_cols = 32.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 339 with num_rows = 81 and num_cols = 135.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 340 with num_rows = 54 and num_cols = 142.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 341 with num_rows = 80 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 342 with num_rows = 95 and num_cols = 181.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 343 with num_rows = 22 and num_cols = 98.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 344 with num_rows = 22 and num_cols = 82.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 345 with num_rows = 38 and num_cols = 115.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 346 with num_rows = 4 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 347 with num_rows = 83 and num_cols = 84.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 348 with num_rows = 69 and num_cols = 155.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 349 with num_rows = 87 and num_cols = 143.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 350 with num_rows = 39 and num_cols = 104.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 351 with num_rows = 55 and num_cols = 131.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 352 with num_rows = 88 and num_cols = 131.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 353 with num_rows = 36 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 354 with num_rows = 65 and num_cols = 144.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 355 with num_rows = 96 and num_cols = 106.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 356 with num_rows = 87 and num_cols = 133.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 357 with num_rows = 100 and num_cols = 194.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 358 with num_rows = 54 and num_cols = 127.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 359 with num_rows = 30 and num_cols = 82.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 360 with num_rows = 53 and num_cols = 129.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 361 with num_rows = 80 and num_cols = 120.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 362 with num_rows = 73 and num_cols = 83.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 363 with num_rows = 79 and num_cols = 82.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 364 with num_rows = 26 and num_cols = 46.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 365 with num_rows = 44 and num_cols = 84.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 366 with num_rows = 68 and num_cols = 141.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 367 with num_rows = 27 and num_cols = 49.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 368 with num_rows = 36 and num_cols = 100.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 369 with num_rows = 30 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 370 with num_rows = 53 and num_cols = 150.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 371 with num_rows = 83 and num_cols = 150.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 372 with num_rows = 37 and num_cols = 120.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 373 with num_rows = 62 and num_cols = 148.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 374 with num_rows = 20 and num_cols = 67.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 375 with num_rows = 75 and num_cols = 95.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 376 with num_rows = 3 and num_cols = 11.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 377 with num_rows = 67 and num_cols = 165.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 378 with num_rows = 5 and num_cols = 65.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 379 with num_rows = 16 and num_cols = 50.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 380 with num_rows = 31 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 381 with num_rows = 46 and num_cols = 69.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 382 with num_rows = 46 and num_cols = 129.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 383 with num_rows = 96 and num_cols = 170.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 384 with num_rows = 41 and num_cols = 119.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 385 with num_rows = 39 and num_cols = 42.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 386 with num_rows = 52 and num_cols = 120.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 387 with num_rows = 33 and num_cols = 74.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 388 with num_rows = 48 and num_cols = 103.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 389 with num_rows = 98 and num_cols = 171.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 390 with num_rows = 50 and num_cols = 111.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 391 with num_rows = 20 and num_cols = 95.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 392 with num_rows = 67 and num_cols = 71.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 393 with num_rows = 60 and num_cols = 84.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 394 with num_rows = 81 and num_cols = 158.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 395 with num_rows = 93 and num_cols = 113.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 396 with num_rows = 37 and num_cols = 89.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 397 with num_rows = 92 and num_cols = 140.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 398 with num_rows = 94 and num_cols = 130.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 399 with num_rows = 10 and num_cols = 98.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 400 with num_rows = 23 and num_cols = 70.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 401 with num_rows = 71 and num_cols = 109.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 402 with num_rows = 45 and num_cols = 118.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 403 with num_rows = 26 and num_cols = 64.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 404 with num_rows = 50 and num_cols = 97.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 405 with num_rows = 54 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 406 with num_rows = 14 and num_cols = 67.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 407 with num_rows = 44 and num_cols = 61.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 408 with num_rows = 77 and num_cols = 137.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 409 with num_rows = 8 and num_cols = 104.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 410 with num_rows = 37 and num_cols = 43.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 411 with num_rows = 87 and num_cols = 170.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 412 with num_rows = 56 and num_cols = 142.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 413 with num_rows = 59 and num_cols = 118.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 414 with num_rows = 98 and num_cols = 138.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 415 with num_rows = 20 and num_cols = 39.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 416 with num_rows = 45 and num_cols = 120.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 417 with num_rows = 20 and num_cols = 81.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 418 with num_rows = 85 and num_cols = 115.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 419 with num_rows = 6 and num_cols = 99.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 420 with num_rows = 8 and num_cols = 55.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 421 with num_rows = 77 and num_cols = 147.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 422 with num_rows = 46 and num_cols = 87.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 423 with num_rows = 85 and num_cols = 169.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 424 with num_rows = 19 and num_cols = 78.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 425 with num_rows = 67 and num_cols = 150.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 426 with num_rows = 40 and num_cols = 55.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 427 with num_rows = 40 and num_cols = 139.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 428 with num_rows = 33 and num_cols = 93.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 429 with num_rows = 68 and num_cols = 90.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 430 with num_rows = 11 and num_cols = 99.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 431 with num_rows = 21 and num_cols = 33.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 432 with num_rows = 84 and num_cols = 123.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 433 with num_rows = 99 and num_cols = 154.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 434 with num_rows = 13 and num_cols = 78.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 435 with num_rows = 43 and num_cols = 66.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 436 with num_rows = 85 and num_cols = 140.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 437 with num_rows = 82 and num_cols = 107.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 438 with num_rows = 81 and num_cols = 97.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 439 with num_rows = 82 and num_cols = 97.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 440 with num_rows = 48 and num_cols = 147.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 441 with num_rows = 20 and num_cols = 69.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 442 with num_rows = 96 and num_cols = 181.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 443 with num_rows = 99 and num_cols = 126.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 444 with num_rows = 93 and num_cols = 167.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 445 with num_rows = 13 and num_cols = 105.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 446 with num_rows = 31 and num_cols = 113.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 447 with num_rows = 54 and num_cols = 110.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 448 with num_rows = 29 and num_cols = 30.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 449 with num_rows = 101 and num_cols = 169.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 450 with num_rows = 20 and num_cols = 113.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 451 with num_rows = 18 and num_cols = 80.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 452 with num_rows = 40 and num_cols = 68.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 453 with num_rows = 41 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 454 with num_rows = 12 and num_cols = 31.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 455 with num_rows = 98 and num_cols = 112.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 456 with num_rows = 90 and num_cols = 123.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 457 with num_rows = 99 and num_cols = 189.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 458 with num_rows = 29 and num_cols = 122.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 459 with num_rows = 96 and num_cols = 144.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 460 with num_rows = 81 and num_cols = 84.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 461 with num_rows = 25 and num_cols = 119.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 462 with num_rows = 3 and num_cols = 44.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 463 with num_rows = 56 and num_cols = 82.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 464 with num_rows = 52 and num_cols = 114.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 465 with num_rows = 58 and num_cols = 126.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 466 with num_rows = 36 and num_cols = 93.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 467 with num_rows = 23 and num_cols = 119.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 468 with num_rows = 14 and num_cols = 32.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 469 with num_rows = 92 and num_cols = 149.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 470 with num_rows = 15 and num_cols = 41.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 471 with num_rows = 52 and num_cols = 88.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 472 with num_rows = 66 and num_cols = 129.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 473 with num_rows = 8 and num_cols = 37.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 474 with num_rows = 98 and num_cols = 186.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 475 with num_rows = 72 and num_cols = 119.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 476 with num_rows = 63 and num_cols = 126.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 477 with num_rows = 100 and num_cols = 146.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 478 with num_rows = 37 and num_cols = 82.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 479 with num_rows = 27 and num_cols = 44.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 480 with num_rows = 74 and num_cols = 101.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 481 with num_rows = 6 and num_cols = 105.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 482 with num_rows = 44 and num_cols = 112.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 483 with num_rows = 61 and num_cols = 95.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 484 with num_rows = 12 and num_cols = 14.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 485 with num_rows = 44 and num_cols = 93.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 486 with num_rows = 35 and num_cols = 101.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 487 with num_rows = 46 and num_cols = 81.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 488 with num_rows = 32 and num_cols = 69.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 489 with num_rows = 21 and num_cols = 59.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 490 with num_rows = 30 and num_cols = 48.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 491 with num_rows = 64 and num_cols = 97.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 492 with num_rows = 71 and num_cols = 110.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 493 with num_rows = 6 and num_cols = 62.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 494 with num_rows = 95 and num_cols = 116.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 495 with num_rows = 38 and num_cols = 116.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 496 with num_rows = 85 and num_cols = 165.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 497 with num_rows = 50 and num_cols = 85.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 498 with num_rows = 52 and num_cols = 111.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 499 with num_rows = 38 and num_cols = 42.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 500 with num_rows = 3 and num_cols = 67.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 501 with num_rows = 12 and num_cols = 26.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 502 with num_rows = 22 and num_cols = 61.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 503 with num_rows = 9 and num_cols = 9.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 504 with num_rows = 20 and num_cols = 70.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 505 with num_rows = 78 and num_cols = 125.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 506 with num_rows = 101 and num_cols = 126.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 507 with num_rows = 92 and num_cols = 130.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 508 with num_rows = 24 and num_cols = 47.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 509 with num_rows = 17 and num_cols = 44.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 510 with num_rows = 68 and num_cols = 95.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 511 with num_rows = 92 and num_cols = 119.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 512 with num_rows = 19 and num_cols = 62.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 513 with num_rows = 49 and num_cols = 84.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 514 with num_rows = 94 and num_cols = 119.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 515 with num_rows = 79 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 516 with num_rows = 75 and num_cols = 120.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 517 with num_rows = 39 and num_cols = 96.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 518 with num_rows = 12 and num_cols = 32.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 519 with num_rows = 16 and num_cols = 88.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 520 with num_rows = 40 and num_cols = 67.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 521 with num_rows = 78 and num_cols = 125.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 522 with num_rows = 78 and num_cols = 161.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 523 with num_rows = 66 and num_cols = 142.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 524 with num_rows = 98 and num_cols = 133.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 525 with num_rows = 9 and num_cols = 92.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 526 with num_rows = 67 and num_cols = 81.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 527 with num_rows = 54 and num_cols = 123.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 528 with num_rows = 62 and num_cols = 152.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 529 with num_rows = 43 and num_cols = 122.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 530 with num_rows = 51 and num_cols = 101.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 531 with num_rows = 96 and num_cols = 174.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 532 with num_rows = 39 and num_cols = 45.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 533 with num_rows = 28 and num_cols = 120.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 534 with num_rows = 13 and num_cols = 32.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 535 with num_rows = 83 and num_cols = 110.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 536 with num_rows = 6 and num_cols = 60.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 537 with num_rows = 22 and num_cols = 56.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 538 with num_rows = 47 and num_cols = 56.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 539 with num_rows = 10 and num_cols = 105.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 540 with num_rows = 68 and num_cols = 82.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 541 with num_rows = 54 and num_cols = 88.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 542 with num_rows = 71 and num_cols = 145.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 543 with num_rows = 40 and num_cols = 111.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 544 with num_rows = 64 and num_cols = 82.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 545 with num_rows = 28 and num_cols = 86.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 546 with num_rows = 11 and num_cols = 86.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 547 with num_rows = 9 and num_cols = 31.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 548 with num_rows = 31 and num_cols = 113.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 549 with num_rows = 79 and num_cols = 93.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 550 with num_rows = 66 and num_cols = 164.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 551 with num_rows = 74 and num_cols = 110.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 552 with num_rows = 22 and num_cols = 40.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 553 with num_rows = 89 and num_cols = 136.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 554 with num_rows = 9 and num_cols = 10.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 555 with num_rows = 73 and num_cols = 172.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 556 with num_rows = 76 and num_cols = 159.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 557 with num_rows = 10 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 558 with num_rows = 54 and num_cols = 135.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 559 with num_rows = 58 and num_cols = 95.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 560 with num_rows = 38 and num_cols = 55.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 561 with num_rows = 64 and num_cols = 111.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 562 with num_rows = 86 and num_cols = 111.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 563 with num_rows = 31 and num_cols = 112.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 564 with num_rows = 5 and num_cols = 64.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 565 with num_rows = 69 and num_cols = 113.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 566 with num_rows = 28 and num_cols = 126.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 567 with num_rows = 64 and num_cols = 71.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 568 with num_rows = 80 and num_cols = 153.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 569 with num_rows = 79 and num_cols = 166.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 570 with num_rows = 92 and num_cols = 164.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 571 with num_rows = 86 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 572 with num_rows = 24 and num_cols = 66.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 573 with num_rows = 22 and num_cols = 34.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 574 with num_rows = 25 and num_cols = 48.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 575 with num_rows = 73 and num_cols = 126.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 576 with num_rows = 71 and num_cols = 147.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 577 with num_rows = 2 and num_cols = 29.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 578 with num_rows = 87 and num_cols = 124.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 579 with num_rows = 33 and num_cols = 84.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 580 with num_rows = 15 and num_cols = 83.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 581 with num_rows = 4 and num_cols = 70.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 582 with num_rows = 72 and num_cols = 93.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 583 with num_rows = 20 and num_cols = 82.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 584 with num_rows = 73 and num_cols = 114.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 585 with num_rows = 18 and num_cols = 78.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 586 with num_rows = 87 and num_cols = 152.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 587 with num_rows = 9 and num_cols = 23.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 588 with num_rows = 41 and num_cols = 71.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 589 with num_rows = 50 and num_cols = 59.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 590 with num_rows = 10 and num_cols = 61.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 591 with num_rows = 51 and num_cols = 65.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 592 with num_rows = 95 and num_cols = 99.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 593 with num_rows = 51 and num_cols = 77.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 594 with num_rows = 92 and num_cols = 178.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 595 with num_rows = 60 and num_cols = 150.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 596 with num_rows = 47 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 597 with num_rows = 54 and num_cols = 101.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 598 with num_rows = 51 and num_cols = 80.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 599 with num_rows = 99 and num_cols = 155.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 600 with num_rows = 20 and num_cols = 105.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 601 with num_rows = 83 and num_cols = 143.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 602 with num_rows = 55 and num_cols = 126.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 603 with num_rows = 74 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 604 with num_rows = 43 and num_cols = 137.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 605 with num_rows = 66 and num_cols = 141.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 606 with num_rows = 65 and num_cols = 75.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 607 with num_rows = 19 and num_cols = 45.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 608 with num_rows = 25 and num_cols = 97.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 609 with num_rows = 1 and num_cols = 2.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 610 with num_rows = 21 and num_cols = 41.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 611 with num_rows = 31 and num_cols = 60.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 612 with num_rows = 51 and num_cols = 89.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 613 with num_rows = 17 and num_cols = 45.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 614 with num_rows = 53 and num_cols = 80.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 615 with num_rows = 28 and num_cols = 113.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 616 with num_rows = 94 and num_cols = 189.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 617 with num_rows = 2 and num_cols = 75.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 618 with num_rows = 70 and num_cols = 145.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 619 with num_rows = 30 and num_cols = 96.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 620 with num_rows = 89 and num_cols = 136.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 621 with num_rows = 94 and num_cols = 122.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 622 with num_rows = 62 and num_cols = 76.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 623 with num_rows = 35 and num_cols = 81.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 624 with num_rows = 56 and num_cols = 58.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 1.3681e-14
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 625 with num_rows = 74 and num_cols = 119.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 626 with num_rows = 73 and num_cols = 156.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 627 with num_rows = 14 and num_cols = 104.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 628 with num_rows = 64 and num_cols = 112.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 629 with num_rows = 12 and num_cols = 112.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 630 with num_rows = 41 and num_cols = 101.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 631 with num_rows = 56 and num_cols = 88.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 632 with num_rows = 35 and num_cols = 105.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 633 with num_rows = 53 and num_cols = 84.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 634 with num_rows = 4 and num_cols = 10.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 635 with num_rows = 22 and num_cols = 83.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 636 with num_rows = 81 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 637 with num_rows = 19 and num_cols = 33.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 638 with num_rows = 59 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 639 with num_rows = 7 and num_cols = 70.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 640 with num_rows = 93 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 641 with num_rows = 29 and num_cols = 108.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 642 with num_rows = 70 and num_cols = 76.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 643 with num_rows = 74 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 644 with num_rows = 53 and num_cols = 153.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 645 with num_rows = 25 and num_cols = 49.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 646 with num_rows = 80 and num_cols = 175.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 647 with num_rows = 4 and num_cols = 41.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 648 with num_rows = 59 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 649 with num_rows = 79 and num_cols = 146.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 650 with num_rows = 54 and num_cols = 80.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 651 with num_rows = 20 and num_cols = 76.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 652 with num_rows = 42 and num_cols = 69.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 653 with num_rows = 67 and num_cols = 74.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 654 with num_rows = 22 and num_cols = 70.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 655 with num_rows = 72 and num_cols = 123.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 656 with num_rows = 82 and num_cols = 83.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 657 with num_rows = 60 and num_cols = 96.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 658 with num_rows = 44 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 659 with num_rows = 20 and num_cols = 61.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 660 with num_rows = 41 and num_cols = 133.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 661 with num_rows = 70 and num_cols = 138.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 662 with num_rows = 62 and num_cols = 79.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 663 with num_rows = 35 and num_cols = 77.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 664 with num_rows = 63 and num_cols = 109.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 665 with num_rows = 51 and num_cols = 101.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 666 with num_rows = 30 and num_cols = 87.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 667 with num_rows = 1 and num_cols = 14.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 668 with num_rows = 43 and num_cols = 125.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 669 with num_rows = 18 and num_cols = 37.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 670 with num_rows = 87 and num_cols = 152.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 671 with num_rows = 6 and num_cols = 35.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 672 with num_rows = 61 and num_cols = 86.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 673 with num_rows = 81 and num_cols = 82.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 674 with num_rows = 100 and num_cols = 148.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 675 with num_rows = 42 and num_cols = 60.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 676 with num_rows = 76 and num_cols = 173.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 677 with num_rows = 6 and num_cols = 71.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 678 with num_rows = 84 and num_cols = 176.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 679 with num_rows = 53 and num_cols = 138.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 680 with num_rows = 72 and num_cols = 104.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 681 with num_rows = 97 and num_cols = 110.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 682 with num_rows = 96 and num_cols = 188.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 683 with num_rows = 24 and num_cols = 112.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 684 with num_rows = 94 and num_cols = 171.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 685 with num_rows = 56 and num_cols = 142.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 686 with num_rows = 93 and num_cols = 156.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 687 with num_rows = 47 and num_cols = 72.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 688 with num_rows = 53 and num_cols = 80.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 689 with num_rows = 86 and num_cols = 110.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 690 with num_rows = 86 and num_cols = 174.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 691 with num_rows = 65 and num_cols = 116.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 692 with num_rows = 48 and num_cols = 113.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 693 with num_rows = 27 and num_cols = 50.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 694 with num_rows = 37 and num_cols = 65.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 695 with num_rows = 56 and num_cols = 76.
+<<  1 >> A Diff is 2.0840e-14
+<<  1 >> B Diff is 1.7764e-13
+<<  1 >> C Diff is 2.0840e-14
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 696 with num_rows = 94 and num_cols = 127.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 697 with num_rows = 50 and num_cols = 118.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 698 with num_rows = 8 and num_cols = 31.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 699 with num_rows = 17 and num_cols = 50.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 700 with num_rows = 94 and num_cols = 166.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 701 with num_rows = 78 and num_cols = 148.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 702 with num_rows = 8 and num_cols = 71.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 703 with num_rows = 73 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 704 with num_rows = 56 and num_cols = 87.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 705 with num_rows = 12 and num_cols = 97.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 706 with num_rows = 39 and num_cols = 103.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 707 with num_rows = 65 and num_cols = 89.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 708 with num_rows = 29 and num_cols = 82.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 709 with num_rows = 89 and num_cols = 120.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 710 with num_rows = 94 and num_cols = 168.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 711 with num_rows = 80 and num_cols = 86.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 712 with num_rows = 82 and num_cols = 165.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 713 with num_rows = 15 and num_cols = 43.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 714 with num_rows = 4 and num_cols = 27.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 715 with num_rows = 36 and num_cols = 42.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 716 with num_rows = 83 and num_cols = 110.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 717 with num_rows = 59 and num_cols = 75.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 718 with num_rows = 48 and num_cols = 131.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 719 with num_rows = 85 and num_cols = 120.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 720 with num_rows = 29 and num_cols = 112.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 721 with num_rows = 37 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 722 with num_rows = 55 and num_cols = 150.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 723 with num_rows = 35 and num_cols = 112.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 724 with num_rows = 91 and num_cols = 114.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 725 with num_rows = 10 and num_cols = 66.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 726 with num_rows = 84 and num_cols = 182.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 727 with num_rows = 88 and num_cols = 93.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 728 with num_rows = 68 and num_cols = 145.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 729 with num_rows = 43 and num_cols = 67.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 730 with num_rows = 90 and num_cols = 153.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 731 with num_rows = 25 and num_cols = 83.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 732 with num_rows = 14 and num_cols = 52.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 733 with num_rows = 6 and num_cols = 15.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 734 with num_rows = 98 and num_cols = 126.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 735 with num_rows = 26 and num_cols = 123.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 736 with num_rows = 19 and num_cols = 41.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 737 with num_rows = 76 and num_cols = 144.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 738 with num_rows = 10 and num_cols = 63.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 739 with num_rows = 62 and num_cols = 84.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 740 with num_rows = 88 and num_cols = 116.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 741 with num_rows = 38 and num_cols = 53.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 742 with num_rows = 34 and num_cols = 97.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 743 with num_rows = 5 and num_cols = 24.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 744 with num_rows = 19 and num_cols = 106.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 745 with num_rows = 20 and num_cols = 51.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 746 with num_rows = 99 and num_cols = 196.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 747 with num_rows = 99 and num_cols = 139.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 748 with num_rows = 7 and num_cols = 12.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 749 with num_rows = 69 and num_cols = 105.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 750 with num_rows = 48 and num_cols = 99.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 751 with num_rows = 9 and num_cols = 49.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 752 with num_rows = 74 and num_cols = 112.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 753 with num_rows = 82 and num_cols = 176.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 754 with num_rows = 71 and num_cols = 98.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 755 with num_rows = 29 and num_cols = 110.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 756 with num_rows = 7 and num_cols = 38.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 757 with num_rows = 62 and num_cols = 107.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 758 with num_rows = 37 and num_cols = 119.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 759 with num_rows = 67 and num_cols = 71.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 760 with num_rows = 26 and num_cols = 72.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 761 with num_rows = 39 and num_cols = 93.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 762 with num_rows = 93 and num_cols = 184.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 763 with num_rows = 74 and num_cols = 139.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 764 with num_rows = 27 and num_cols = 62.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 765 with num_rows = 12 and num_cols = 39.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 766 with num_rows = 78 and num_cols = 142.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 767 with num_rows = 95 and num_cols = 143.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 768 with num_rows = 39 and num_cols = 133.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 769 with num_rows = 68 and num_cols = 141.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 770 with num_rows = 63 and num_cols = 73.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 771 with num_rows = 72 and num_cols = 125.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 772 with num_rows = 73 and num_cols = 137.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 773 with num_rows = 19 and num_cols = 60.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 774 with num_rows = 76 and num_cols = 128.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 775 with num_rows = 17 and num_cols = 108.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 776 with num_rows = 8 and num_cols = 93.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 777 with num_rows = 5 and num_cols = 5.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 778 with num_rows = 54 and num_cols = 55.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 779 with num_rows = 78 and num_cols = 124.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 780 with num_rows = 62 and num_cols = 80.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 781 with num_rows = 10 and num_cols = 108.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 782 with num_rows = 23 and num_cols = 50.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 783 with num_rows = 80 and num_cols = 111.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 784 with num_rows = 36 and num_cols = 85.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 785 with num_rows = 30 and num_cols = 108.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 786 with num_rows = 19 and num_cols = 72.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 787 with num_rows = 18 and num_cols = 22.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 788 with num_rows = 12 and num_cols = 76.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 789 with num_rows = 84 and num_cols = 86.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 790 with num_rows = 97 and num_cols = 129.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 791 with num_rows = 12 and num_cols = 73.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 792 with num_rows = 63 and num_cols = 158.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 793 with num_rows = 19 and num_cols = 27.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 794 with num_rows = 80 and num_cols = 124.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 795 with num_rows = 30 and num_cols = 129.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 796 with num_rows = 97 and num_cols = 156.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 797 with num_rows = 93 and num_cols = 168.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 798 with num_rows = 36 and num_cols = 83.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 799 with num_rows = 10 and num_cols = 21.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 800 with num_rows = 86 and num_cols = 96.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 801 with num_rows = 93 and num_cols = 94.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 802 with num_rows = 73 and num_cols = 146.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 803 with num_rows = 41 and num_cols = 108.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 804 with num_rows = 8 and num_cols = 50.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 805 with num_rows = 14 and num_cols = 62.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 806 with num_rows = 27 and num_cols = 126.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 807 with num_rows = 85 and num_cols = 158.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 808 with num_rows = 30 and num_cols = 99.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 809 with num_rows = 94 and num_cols = 176.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 810 with num_rows = 20 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 811 with num_rows = 52 and num_cols = 102.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 812 with num_rows = 59 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 813 with num_rows = 70 and num_cols = 100.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 814 with num_rows = 41 and num_cols = 81.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 815 with num_rows = 28 and num_cols = 104.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 816 with num_rows = 80 and num_cols = 130.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 817 with num_rows = 46 and num_cols = 94.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 818 with num_rows = 16 and num_cols = 71.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 819 with num_rows = 49 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 820 with num_rows = 73 and num_cols = 78.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 821 with num_rows = 74 and num_cols = 166.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 822 with num_rows = 41 and num_cols = 124.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 823 with num_rows = 97 and num_cols = 186.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 824 with num_rows = 59 and num_cols = 98.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 825 with num_rows = 42 and num_cols = 118.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 826 with num_rows = 77 and num_cols = 152.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 827 with num_rows = 32 and num_cols = 110.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 828 with num_rows = 19 and num_cols = 94.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 829 with num_rows = 4 and num_cols = 24.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 830 with num_rows = 19 and num_cols = 32.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 831 with num_rows = 9 and num_cols = 64.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 832 with num_rows = 85 and num_cols = 169.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 833 with num_rows = 64 and num_cols = 135.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 834 with num_rows = 83 and num_cols = 141.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 835 with num_rows = 3 and num_cols = 84.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 836 with num_rows = 11 and num_cols = 80.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 837 with num_rows = 20 and num_cols = 33.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 838 with num_rows = 43 and num_cols = 74.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 839 with num_rows = 24 and num_cols = 57.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 840 with num_rows = 56 and num_cols = 152.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 841 with num_rows = 56 and num_cols = 101.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 842 with num_rows = 73 and num_cols = 79.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 843 with num_rows = 6 and num_cols = 105.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 844 with num_rows = 43 and num_cols = 111.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 845 with num_rows = 74 and num_cols = 147.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 846 with num_rows = 65 and num_cols = 97.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 847 with num_rows = 35 and num_cols = 125.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 848 with num_rows = 8 and num_cols = 68.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 849 with num_rows = 55 and num_cols = 149.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 850 with num_rows = 2 and num_cols = 21.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 851 with num_rows = 79 and num_cols = 141.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 852 with num_rows = 28 and num_cols = 71.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 853 with num_rows = 22 and num_cols = 102.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 854 with num_rows = 91 and num_cols = 145.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 855 with num_rows = 62 and num_cols = 149.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 856 with num_rows = 40 and num_cols = 100.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 857 with num_rows = 5 and num_cols = 54.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 858 with num_rows = 78 and num_cols = 148.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 859 with num_rows = 27 and num_cols = 83.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 860 with num_rows = 73 and num_cols = 134.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 861 with num_rows = 37 and num_cols = 94.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 862 with num_rows = 81 and num_cols = 146.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 863 with num_rows = 5 and num_cols = 70.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 864 with num_rows = 80 and num_cols = 173.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 865 with num_rows = 52 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 866 with num_rows = 31 and num_cols = 58.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 867 with num_rows = 38 and num_cols = 68.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 868 with num_rows = 68 and num_cols = 144.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 869 with num_rows = 63 and num_cols = 148.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 870 with num_rows = 44 and num_cols = 138.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 871 with num_rows = 38 and num_cols = 109.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 872 with num_rows = 24 and num_cols = 71.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 873 with num_rows = 92 and num_cols = 100.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 874 with num_rows = 69 and num_cols = 158.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 875 with num_rows = 14 and num_cols = 88.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 876 with num_rows = 61 and num_cols = 83.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 877 with num_rows = 63 and num_cols = 98.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 878 with num_rows = 32 and num_cols = 38.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 879 with num_rows = 96 and num_cols = 192.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 880 with num_rows = 82 and num_cols = 100.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 881 with num_rows = 80 and num_cols = 117.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 882 with num_rows = 70 and num_cols = 110.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 883 with num_rows = 26 and num_cols = 45.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 884 with num_rows = 21 and num_cols = 92.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 885 with num_rows = 3 and num_cols = 76.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 886 with num_rows = 40 and num_cols = 68.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 887 with num_rows = 63 and num_cols = 162.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 888 with num_rows = 60 and num_cols = 154.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 889 with num_rows = 41 and num_cols = 47.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 890 with num_rows = 53 and num_cols = 136.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 891 with num_rows = 92 and num_cols = 133.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 892 with num_rows = 87 and num_cols = 109.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 893 with num_rows = 83 and num_cols = 83.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 894 with num_rows = 48 and num_cols = 123.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 895 with num_rows = 49 and num_cols = 126.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 896 with num_rows = 75 and num_cols = 116.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 897 with num_rows = 22 and num_cols = 65.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 898 with num_rows = 35 and num_cols = 53.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 899 with num_rows = 55 and num_cols = 82.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 900 with num_rows = 45 and num_cols = 139.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 901 with num_rows = 45 and num_cols = 97.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 902 with num_rows = 74 and num_cols = 116.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 903 with num_rows = 49 and num_cols = 148.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 904 with num_rows = 83 and num_cols = 170.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 905 with num_rows = 62 and num_cols = 152.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 906 with num_rows = 85 and num_cols = 139.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 907 with num_rows = 56 and num_cols = 93.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 908 with num_rows = 82 and num_cols = 172.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 909 with num_rows = 24 and num_cols = 79.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 910 with num_rows = 78 and num_cols = 92.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 911 with num_rows = 29 and num_cols = 37.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 912 with num_rows = 89 and num_cols = 95.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 913 with num_rows = 37 and num_cols = 40.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 914 with num_rows = 35 and num_cols = 89.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 915 with num_rows = 58 and num_cols = 81.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 916 with num_rows = 34 and num_cols = 105.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 917 with num_rows = 45 and num_cols = 47.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 918 with num_rows = 76 and num_cols = 114.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 919 with num_rows = 82 and num_cols = 139.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 920 with num_rows = 38 and num_cols = 81.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 921 with num_rows = 26 and num_cols = 59.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 922 with num_rows = 15 and num_cols = 64.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 923 with num_rows = 49 and num_cols = 56.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 924 with num_rows = 28 and num_cols = 92.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 925 with num_rows = 97 and num_cols = 183.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 926 with num_rows = 81 and num_cols = 115.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 927 with num_rows = 62 and num_cols = 148.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 928 with num_rows = 42 and num_cols = 66.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 929 with num_rows = 81 and num_cols = 87.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 930 with num_rows = 98 and num_cols = 141.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 931 with num_rows = 77 and num_cols = 116.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 932 with num_rows = 34 and num_cols = 96.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 933 with num_rows = 11 and num_cols = 39.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 934 with num_rows = 45 and num_cols = 116.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 935 with num_rows = 81 and num_cols = 88.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 936 with num_rows = 30 and num_cols = 41.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 937 with num_rows = 9 and num_cols = 39.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 938 with num_rows = 50 and num_cols = 63.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 939 with num_rows = 91 and num_cols = 168.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 940 with num_rows = 17 and num_cols = 42.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 941 with num_rows = 13 and num_cols = 63.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 942 with num_rows = 33 and num_cols = 87.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 943 with num_rows = 100 and num_cols = 161.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 944 with num_rows = 65 and num_cols = 103.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 945 with num_rows = 21 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 946 with num_rows = 68 and num_cols = 114.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 947 with num_rows = 33 and num_cols = 45.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 948 with num_rows = 83 and num_cols = 137.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 949 with num_rows = 27 and num_cols = 125.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 950 with num_rows = 54 and num_cols = 146.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 951 with num_rows = 25 and num_cols = 108.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 952 with num_rows = 41 and num_cols = 69.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 953 with num_rows = 33 and num_cols = 107.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 954 with num_rows = 19 and num_cols = 84.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 955 with num_rows = 40 and num_cols = 133.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 956 with num_rows = 30 and num_cols = 49.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 957 with num_rows = 16 and num_cols = 20.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 958 with num_rows = 72 and num_cols = 84.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 959 with num_rows = 96 and num_cols = 170.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 960 with num_rows = 52 and num_cols = 126.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 961 with num_rows = 85 and num_cols = 115.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 962 with num_rows = 63 and num_cols = 132.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 963 with num_rows = 68 and num_cols = 141.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 964 with num_rows = 97 and num_cols = 181.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 965 with num_rows = 78 and num_cols = 99.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 966 with num_rows = 63 and num_cols = 158.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 967 with num_rows = 24 and num_cols = 64.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 968 with num_rows = 8 and num_cols = 78.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 969 with num_rows = 78 and num_cols = 148.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 970 with num_rows = 48 and num_cols = 77.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 971 with num_rows = 93 and num_cols = 173.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 972 with num_rows = 7 and num_cols = 21.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 973 with num_rows = 53 and num_cols = 92.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 974 with num_rows = 14 and num_cols = 42.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 975 with num_rows = 16 and num_cols = 40.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 976 with num_rows = 65 and num_cols = 121.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 977 with num_rows = 67 and num_cols = 84.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 978 with num_rows = 55 and num_cols = 69.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 979 with num_rows = 12 and num_cols = 17.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 980 with num_rows = 6 and num_cols = 68.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 981 with num_rows = 24 and num_cols = 118.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 982 with num_rows = 2 and num_cols = 83.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 983 with num_rows = 52 and num_cols = 81.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 984 with num_rows = 11 and num_cols = 47.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 985 with num_rows = 38 and num_cols = 105.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 986 with num_rows = 72 and num_cols = 136.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 987 with num_rows = 85 and num_cols = 173.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 988 with num_rows = 40 and num_cols = 46.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 989 with num_rows = 29 and num_cols = 107.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 990 with num_rows = 8 and num_cols = 89.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 991 with num_rows = 27 and num_cols = 64.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 992 with num_rows = 100 and num_cols = 118.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 993 with num_rows = 11 and num_cols = 91.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 994 with num_rows = 30 and num_cols = 59.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 995 with num_rows = 4 and num_cols = 86.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 996 with num_rows = 16 and num_cols = 77.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 997 with num_rows = 80 and num_cols = 119.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 998 with num_rows = 98 and num_cols = 163.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 999 with num_rows = 19 and num_cols = 21.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00
+<<  1 >> Try 1000 with num_rows = 33 and num_cols = 50.
+<<  1 >> A Diff is 0.0000e+00
+<<  1 >> B Diff is 0.0000e+00
+<<  1 >> C Diff is 0.0000e+00
+<<  1 >> D Diff is 0.0000e+00

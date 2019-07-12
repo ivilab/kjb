@@ -1,0 +1,9 @@
+<<  2 >> Verbose level at program startup is 2.
+<<TEST>> Parent process in create_system_command_process() is 15731 (ignore line for regression testing).
+<<TEST>> Child process in create_system_command_process() is 15732 (ignore line for regression testing).
+<<  3 >> Using multi-threaded independent_GMM EM
+<< Warning >> Warning: multi-threaded GMM doesn't currently pass tests.
+User level CPU time since last reset is 0.301s; System CPU is 1.255s; Total CPU is 1.556s
+<<  3 >> Running time of multithread independent GMM is:       1556
+<<  3 >> Number of iterations is 45
+seed = 0:0

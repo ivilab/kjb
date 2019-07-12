@@ -1,0 +1,7 @@
+<<  2 >> Verbose level at program startup is 5.
+<<TEST>> Parent process in create_system_command_process() is 17555 (ignore line for regression testing).
+<<TEST>> Child process in create_system_command_process() is 17570 (ignore line for regression testing).
+Interior test distance is -5.00000e-01
+Facet test distance is 7.00000e-01
+Edge test distance is 5.00000e-01
+Vertex test distance is 1.04881e+00

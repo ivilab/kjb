@@ -1,0 +1,52 @@
+<<  2 >> Verbose level at program startup is 2.
+<<TEST>> Parent process in create_system_command_process() is 9228 (ignore line for regression testing).
+<<TEST>> Child process in create_system_command_process() is 9229 (ignore line for regression testing).
+<<  3 >> 2  : Log likelihood is -5.415040e+03  |  2.000000e+00 | Held out is -5.973147e+02  |  2.000000e+00
+<<  3 >> 3  : Log likelihood is -5.414574e+03  |  8.600553e-05 | Held out is -5.972594e+02  |  9.249572e-05
+<<  3 >> 4  : Log likelihood is -5.413867e+03  |  1.306941e-04 | Held out is -5.971771e+02  |  1.378714e-04
+<<  3 >> 5  : Log likelihood is -5.412318e+03  |  2.860373e-04 | Held out is -5.969968e+02  |  3.019593e-04
+<<  3 >> 6  : Log likelihood is -5.408826e+03  |  6.454425e-04 | Held out is -5.965905e+02  |  6.808261e-04
+<<  3 >> 7  : Log likelihood is -5.400753e+03  |  1.493708e-03 | Held out is -5.956539e+02  |  1.571113e-03
+<<  3 >> 8  : Log likelihood is -5.381531e+03  |  3.565511e-03 | Held out is -5.934406e+02  |  3.722697e-03
+<<  3 >> 9  : Log likelihood is -5.334707e+03  |  8.738854e-03 | Held out is -5.881452e+02  |  8.963237e-03
+<<  3 >> 10 : Log likelihood is -5.225597e+03  |  2.066419e-02 | Held out is -5.762172e+02  |  2.048843e-02
+<<  3 >> 11 : Log likelihood is -5.035210e+03  |  3.710960e-02 | Held out is -5.563018e+02  |  3.517004e-02
+<<  3 >> 12 : Log likelihood is -4.863664e+03  |  3.465957e-02 | Held out is -5.390970e+02  |  3.141284e-02
+<<  3 >> 13 : Log likelihood is -4.776665e+03  |  1.804902e-02 | Held out is -5.306099e+02  |  1.586814e-02
+<<  3 >> 14 : Log likelihood is -4.738282e+03  |  8.068028e-03 | Held out is -5.266430e+02  |  7.504231e-03
+<<  3 >> 15 : Log likelihood is -4.717558e+03  |  4.383199e-03 | Held out is -5.242536e+02  |  4.547373e-03
+<<  3 >> 16 : Log likelihood is -4.701002e+03  |  3.515584e-03 | Held out is -5.222588e+02  |  3.812231e-03
+<<  3 >> 17 : Log likelihood is -4.684847e+03  |  3.442561e-03 | Held out is -5.202952e+02  |  3.766947e-03
+<<  3 >> 18 : Log likelihood is -4.667671e+03  |  3.672965e-03 | Held out is -5.181584e+02  |  4.115202e-03
+<<  3 >> 19 : Log likelihood is -4.647760e+03  |  4.274883e-03 | Held out is -5.155514e+02  |  5.044066e-03
+<<  3 >> 20 : Log likelihood is -4.621310e+03  |  5.707100e-03 | Held out is -5.118517e+02  |  7.202000e-03
+<<  3 >> 21 : Log likelihood is -4.577945e+03  |  9.427869e-03 | Held out is -5.054877e+02  |  1.251105e-02
+<<  3 >> 22 : Log likelihood is -4.483723e+03  |  2.079581e-02 | Held out is -4.919538e+02  |  2.713728e-02
+<<  3 >> 23 : Log likelihood is -4.234243e+03  |  5.723348e-02 | Held out is -4.605998e+02  |  6.583153e-02
+<<  3 >> 24 : Log likelihood is -3.927899e+03  |  7.506468e-02 | Held out is -4.240928e+02  |  8.253026e-02
+<<  3 >> 25 : Log likelihood is -3.894697e+03  |  8.488721e-03 | Held out is -4.200904e+02  |  9.482421e-03
+<<  3 >> 26 : Log likelihood is -3.870423e+03  |  6.251926e-03 | Held out is -4.167059e+02  |  8.089100e-03
+<<  3 >> 27 : Log likelihood is -3.846465e+03  |  6.209389e-03 | Held out is -4.130241e+02  |  8.874637e-03
+<<  3 >> 28 : Log likelihood is -3.825812e+03  |  5.383735e-03 | Held out is -4.096408e+02  |  8.225298e-03
+<<  3 >> 29 : Log likelihood is -3.809868e+03  |  4.176265e-03 | Held out is -4.069452e+02  |  6.602102e-03
+<<  3 >> 30 : Log likelihood is -3.798434e+03  |  3.005580e-03 | Held out is -4.050131e+02  |  4.759038e-03
+<<  3 >> 31 : Log likelihood is -3.790456e+03  |  2.102604e-03 | Held out is -4.037069e+02  |  3.230440e-03
+<<  3 >> 32 : Log likelihood is -3.784755e+03  |  1.505054e-03 | Held out is -4.028240e+02  |  2.189255e-03
+<<  3 >> 33 : Log likelihood is -3.780391e+03  |  1.153805e-03 | Held out is -4.021912e+02  |  1.572213e-03
+<<  3 >> 34 : Log likelihood is -3.776696e+03  |  9.779500e-04 | Held out is -4.016887e+02  |  1.250170e-03
+<<  3 >> 35 : Log likelihood is -3.773189e+03  |  9.290568e-04 | Held out is -4.012396e+02  |  1.118664e-03
+<<  3 >> 36 : Log likelihood is -3.769463e+03  |  9.877881e-04 | Held out is -4.007902e+02  |  1.120593e-03
+<<  3 >> 37 : Log likelihood is -3.765063e+03  |  1.168095e-03 | Held out is -4.002910e+02  |  1.246425e-03
+<<  3 >> 38 : Log likelihood is -3.759283e+03  |  1.536356e-03 | Held out is -3.996735e+02  |  1.543676e-03
+<<  3 >> 39 : Log likelihood is -3.750738e+03  |  2.275591e-03 | Held out is -3.988080e+02  |  2.167945e-03
+<<  3 >> 40 : Log likelihood is -3.736183e+03  |  3.888056e-03 | Held out is -3.973911e+02  |  3.559113e-03
+<<  3 >> 41 : Log likelihood is -3.707251e+03  |  7.773763e-03 | Held out is -3.946349e+02  |  6.959917e-03
+<<  3 >> 42 : Log likelihood is -3.647208e+03  |  1.632842e-02 | Held out is -3.889515e+02  |  1.450620e-02
+<<  3 >> 43 : Log likelihood is -3.573987e+03  |  2.027951e-02 | Held out is -3.824561e+02  |  1.684039e-02
+<<  3 >> 44 : Log likelihood is -3.554861e+03  |  5.365826e-03 | Held out is -3.812616e+02  |  3.128004e-03
+<<  3 >> 45 : Log likelihood is -3.553034e+03  |  5.139771e-04 | Held out is -3.811859e+02  |  1.985499e-04
+<<  3 >> 46 : Log likelihood is -3.552788e+03  |  6.937293e-05 | Held out is -3.811778e+02  |  2.135493e-05
+<<  3 >> 47 : Log likelihood is -3.552745e+03  |  1.191823e-05 | Held out is -3.811768e+02  |  2.508032e-06
+<<  3 >> 48 : Log likelihood is -3.552736e+03  |  2.548256e-06 | Held out is -3.811767e+02  |  2.792437e-07
+<<  3 >> 49 : Log likelihood is -3.552734e+03  |  7.380057e-07 | Held out is -3.811767e+02  |  4.766539e-09
+seed = 925948349:-6957

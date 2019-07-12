@@ -1,0 +1,2003 @@
+<<  2 >> Verbose level at program startup is 5.
+<<TEST>> Parent process in create_system_command_process() is 35392 (ignore line for regression testing).
+<<TEST>> Child process in create_system_command_process() is 35393 (ignore line for regression testing).
+<<  1 >> Test 1.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 2.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 3.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 4.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 5.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 6.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 7.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 8.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 9.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 10.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 11.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 12.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 13.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 14.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 15.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 16.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 17.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 18.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 19.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 20.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 21.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 22.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 23.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 24.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 25.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 26.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 27.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 28.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 29.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 30.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 31.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 32.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 33.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 34.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 35.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 36.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 37.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 38.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 39.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 40.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 41.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 42.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 43.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 44.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 45.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 46.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 47.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 48.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 49.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 50.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 51.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 52.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 53.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 54.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 55.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 56.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 57.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 58.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 59.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 60.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 61.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 62.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 63.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 64.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 65.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 66.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 67.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 68.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 69.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 70.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 71.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 72.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 73.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 74.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 75.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 76.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 77.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 78.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 79.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 80.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 81.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 82.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 83.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 84.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 85.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 86.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 87.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 88.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 89.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 90.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 91.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 92.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 93.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 94.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 95.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 96.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 97.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 98.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 99.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 100.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 101.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 102.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 103.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 104.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 105.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 106.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 107.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 108.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 109.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 110.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 111.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 112.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 113.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 114.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 115.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 116.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 117.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 118.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 119.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 120.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 121.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 122.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 123.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 124.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 125.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 126.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 127.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 128.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 129.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 130.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 131.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 132.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 133.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 134.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 135.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 136.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 137.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 138.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 139.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 140.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 141.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 142.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 143.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 144.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 145.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 146.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 147.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 148.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 149.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 150.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 151.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 152.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 153.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 154.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 155.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 156.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 157.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 158.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 159.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 160.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 161.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 162.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 163.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 164.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 165.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 166.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 167.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 168.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 169.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 170.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 171.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 172.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 173.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 174.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 175.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 176.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 177.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 178.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 179.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 180.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 181.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 182.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 183.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 184.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 185.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 186.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 187.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 188.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 189.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 190.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 191.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 192.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 193.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 194.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 195.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 196.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 197.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 198.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 199.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 200.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 201.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 202.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 203.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 204.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 205.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 206.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 207.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 208.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 209.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 210.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 211.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 212.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 213.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 214.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 215.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 216.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 217.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 218.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 219.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 220.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 221.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 222.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 223.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 224.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 225.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 226.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 227.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 228.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 229.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 230.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 231.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 232.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 233.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 234.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 235.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 236.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 237.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 238.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 239.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 240.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 241.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 242.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 243.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 244.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 245.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 246.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 247.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 248.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 249.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 250.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 251.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 252.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 253.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 254.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 255.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 256.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 257.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 258.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 259.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 260.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 261.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 262.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 263.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 264.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 265.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 266.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 267.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 268.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 269.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 270.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 271.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 272.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 273.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 274.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 275.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 276.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 277.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 278.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 279.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 280.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 281.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 282.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 283.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 284.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 285.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 286.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 287.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 288.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 289.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 290.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 291.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 292.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 293.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 294.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 295.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 296.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 297.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 298.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 299.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 300.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 301.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 302.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 303.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 304.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 305.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 306.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 307.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 308.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 309.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 310.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 311.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 312.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 313.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 314.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 315.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 316.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 317.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 318.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 319.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 320.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 321.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 322.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 323.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 324.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 325.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 326.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 327.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 328.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 329.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 330.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 331.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 332.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 333.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 334.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 335.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 336.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 337.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 338.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 339.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 340.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 341.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 342.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 343.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 344.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 345.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 346.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 347.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 348.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 349.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 350.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 351.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 352.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 353.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 354.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 355.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 356.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 357.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 358.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 359.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 360.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 361.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 362.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 363.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 364.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 365.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 366.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 367.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 368.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 369.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 370.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 371.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 372.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 373.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 374.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 375.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 376.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 377.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 378.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 379.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 380.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 381.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 382.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 383.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 384.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 385.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 386.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 387.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 388.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 389.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 390.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 391.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 392.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 393.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 394.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 395.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 396.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 397.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 398.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 399.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 400.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 401.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 402.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 403.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 404.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 405.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 406.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 407.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 408.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 409.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 410.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 411.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 412.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 413.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 414.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 415.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 416.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 417.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 418.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 419.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 420.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 421.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 422.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 423.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 424.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 425.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 426.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 427.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 428.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 429.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 430.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 431.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 432.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 433.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 434.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 435.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 436.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 437.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 438.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 439.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 440.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 441.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 442.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 443.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 444.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 445.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 446.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 447.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 448.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 449.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 450.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 451.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 452.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 453.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 454.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 455.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 456.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 457.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 458.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 459.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 460.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 461.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 462.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 463.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 464.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 465.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 466.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 467.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 468.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 469.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 470.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 471.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 472.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 473.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 474.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 475.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 476.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 477.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 478.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 479.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 480.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 481.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 482.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 483.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 484.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 485.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 486.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 487.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 488.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 489.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 490.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 491.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 492.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 493.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 494.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 495.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 496.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 497.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 498.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 499.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 500.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 501.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 502.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 503.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 504.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 505.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 506.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 507.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 508.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 509.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 510.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 511.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 512.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 513.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 514.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 515.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 516.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 517.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 518.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 519.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 520.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 521.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 522.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 523.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 524.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 525.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 526.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 527.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 528.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 529.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 530.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 531.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 532.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 533.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 534.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 535.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 536.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 537.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 538.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 539.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 540.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 541.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 542.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 543.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 544.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 545.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 546.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 547.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 548.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 549.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 550.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 551.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 552.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 553.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 554.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 555.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 556.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 557.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 558.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 559.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 560.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 561.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 562.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 563.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 564.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 565.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 566.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 567.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 568.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 569.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 570.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 571.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 572.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 573.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 574.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 575.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 576.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 577.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 578.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 579.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 580.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 581.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 582.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 583.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 584.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 585.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 586.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 587.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 588.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 589.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 590.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 591.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 592.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 593.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 594.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 595.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 596.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 597.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 598.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 599.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 600.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 601.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 602.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 603.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 604.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 605.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 606.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 607.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 608.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 609.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 610.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 611.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 612.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 613.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 614.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 615.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 616.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 617.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 618.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 619.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 620.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 621.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 622.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 623.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 624.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 625.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 626.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 627.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 628.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 629.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 630.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 631.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 632.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 633.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 634.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 635.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 636.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 637.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 638.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 639.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 640.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 641.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 642.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 643.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 644.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 645.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 646.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 647.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 648.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 649.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 650.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 651.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 652.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 653.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 654.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 655.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 656.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 657.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 658.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 659.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 660.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 661.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 662.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 663.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 664.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 665.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 666.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 667.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 668.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 669.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 670.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 671.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 672.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 673.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 674.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 675.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 676.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 677.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 678.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 679.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 680.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 681.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 682.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 683.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 684.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 685.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 686.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 687.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 688.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 689.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 690.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 691.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 692.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 693.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 694.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 695.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 696.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 697.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 698.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 699.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 700.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 701.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 702.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 703.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 704.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 705.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 706.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 707.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 708.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 709.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 710.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 711.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 712.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 713.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 714.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 715.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 716.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 717.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 718.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 719.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 720.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 721.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 722.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 723.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 724.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 725.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 726.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 727.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 728.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 729.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 730.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 731.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 732.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 733.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 734.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 735.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 736.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 737.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 738.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 739.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 740.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 741.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 742.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 743.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 744.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 745.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 746.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 747.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 748.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 749.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 750.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 751.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 752.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 753.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 754.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 755.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 756.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 757.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 758.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 759.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 760.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 761.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 762.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 763.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 764.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 765.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 766.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 767.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 768.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 769.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 770.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 771.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 772.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 773.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 774.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 775.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 776.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 777.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 778.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 779.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 780.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 781.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 782.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 783.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 784.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 785.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 786.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 787.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 788.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 789.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 790.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 791.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 792.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 793.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 794.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 795.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 796.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 797.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 798.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 799.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 800.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 801.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 802.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 803.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 804.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 805.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 806.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 807.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 808.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 809.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 810.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 811.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 812.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 813.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 814.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 815.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 816.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 817.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 818.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 819.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 820.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 821.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 822.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 823.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 824.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 825.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 826.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 827.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 828.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 829.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 830.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 831.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 832.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 833.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 834.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 835.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 836.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 837.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 838.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 839.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 840.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 841.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 842.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 843.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 844.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 845.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 846.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 847.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 848.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 849.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 850.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 851.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 852.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 853.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 854.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 855.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 856.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 857.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 858.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 859.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 860.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 861.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 862.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 863.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 864.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 865.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 866.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 867.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 868.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 869.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 870.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 871.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 872.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 873.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 874.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 875.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 876.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 877.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 878.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 879.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 880.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 881.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 882.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 883.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 884.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 885.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 886.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 887.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 888.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 889.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 890.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 891.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 892.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 893.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 894.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 895.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 896.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 897.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 898.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 899.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 900.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 901.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 902.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 903.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 904.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 905.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 906.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 907.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 908.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 909.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 910.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 911.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 912.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 913.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 914.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 915.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 916.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 917.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 918.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 919.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 920.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 921.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 922.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 923.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 924.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 925.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 926.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 927.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 928.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 929.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 930.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 931.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 932.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 933.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 934.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 935.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 936.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 937.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 938.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 939.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 940.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 941.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 942.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 943.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 944.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 945.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 946.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 947.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 948.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 949.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 950.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 951.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 952.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 953.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 954.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 955.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 956.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 957.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 958.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 959.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 960.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 961.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 962.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 963.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 964.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 965.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 966.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 967.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 968.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 969.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 970.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 971.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 972.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 973.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 974.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 975.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 976.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 977.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 978.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 979.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 980.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 981.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 982.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 983.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 984.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 985.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 986.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 987.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 988.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 989.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 990.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 991.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 992.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 993.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 994.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 995.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 996.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 997.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 998.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 999.
+<<  2 >> Finding average and mass with grid.
+<<  1 >> Test 1000.
+<<  2 >> Finding average and mass with grid.

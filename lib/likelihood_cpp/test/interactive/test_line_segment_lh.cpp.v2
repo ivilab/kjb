@@ -1,0 +1,507 @@
+#include <l/l_sys_lib.h>
+#include <l_cpp/l_exception.h>
+#include <l_cpp/l_iterator.h>
+#include <gr_cpp/gr_opengl.h>
+#include <gr_cpp/gr_glut.h>
+#include <gr_cpp/gr_rectangle_2d.h>
+#include <edge_cpp/line_segment.h>
+#include <edge_cpp/collinear_segment_chain.h>
+#include <likelihood_cpp/line_segment_likelihood.h>
+#include <m_cpp/m_vector.h>
+
+#include <iostream>
+#include <iomanip>
+#include <list>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <functional>
+#include <boost/format.hpp>
+
+using namespace kjb;
+using namespace kjb::geometry;
+
+// segment wrapper
+enum Segment_type{DATA_SEGMENT, MODEL_SEGMENT};
+struct Super_segment
+{
+    Line_segment segment;
+    Segment_type type;
+
+    Super_segment(const Line_segment& seg, Segment_type tp) :
+        segment(seg), type(tp)
+    {}
+};
+
+// typedefs
+typedef std::list<Super_segment> Segment_list;
+
+// interface constants
+const int win_width = 512;
+const int win_height = 512;
+const double trans_inc = 2.0;
+const double rot_inc = M_PI / 48.0;
+const double grow_inc = 5.0;
+
+// likelihood parameters
+double distance_sigma = 20.0;
+double angle_sigma = M_PI / 24.0;
+double growth_sigma = 0.4;
+double num_segments_lambda = 5.0;
+double segment_probability_scale = 10.0;
+double num_noise_chains_lambda = 8.0;
+double noise_length_lambda = 1 / 70.0;
+double noise_min_x = 0.0;
+double noise_max_x = win_width;
+double noise_min_y = 0.0;
+double noise_max_y = win_height;
+double num_noise_segments_lambda = 5.0;
+double noise_segment_probability = 0.75;
+
+// chain-building parameters
+double chain_distance_threshold = 10.0;
+double chain_orientation_threshold = M_PI / 12.0;
+double chain_gap_threshold = 80.0;
+
+// other constants
+const double corr_rect_width_pad = 0.0;
+const double corr_rect_height = 15.0;
+
+// segments
+Segment_list* segments;
+circular_iterator<Segment_list::iterator> active_seg_p;
+
+// stipple masks
+GLushort solid_stipple = 0xFFFF;
+GLushort corr_stipple = 0x3333;
+const size_t num_stipples = 4;
+GLushort stipples[num_stipples] = {0x00FF, 0xF00F, 0xFF00, 0x0FF0};
+circular_iterator<GLushort*> cur_stipple(stipples, stipples + num_stipples);
+
+// callbacks
+void display_scene();
+void reshape_window(int, int);
+void process_key(unsigned char, int, int);
+void process_idle();
+
+// helpers
+void display_segment(const Super_segment&);
+void display_correspondence(const Elsl_correspondence_pair& cp);
+void display_chain_box(const Chain* chain_p);
+void display_GL_bitmap_string(const std::string&, int, int);
+
+int main(int, char**)
+{
+    // set up window and callbacks
+    opengl::Glut_window win(win_width, win_height);
+    win.set_display_callback(display_scene);
+    win.set_reshape_callback(reshape_window);
+    win.set_keyboard_callback(process_key);
+    //win.set_idle_callback(process_idle);
+
+    // init opengl with stipple and anti-aliasing
+    opengl::default_init_opengl(win_width, win_height);
+    glEnable(GL_LINE_STIPPLE);
+    /* glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_BLEND);
+    glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE); */
+
+    // set up initial segments iterators
+    segments = new Segment_list;
+    active_seg_p = make_circular_iterator(*segments);
+
+    // start execution
+    glutMainLoop();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void display_scene()
+{
+    try
+    {
+        // separate segments
+        Segment_vector data_segments;
+        Segment_vector model_segments;
+        for(Segment_list::const_iterator seg_p = segments->begin();
+                                         seg_p != segments->end();
+                                         seg_p++)
+        {
+            if(seg_p->type == DATA_SEGMENT)
+            {
+                data_segments.push_back(seg_p->segment);
+            }
+            else
+            {
+                model_segments.push_back(seg_p->segment);
+            }
+        }
+
+        // find correspondence
+        Chain_vector data_chains
+                = find_collinear_segment_chains(data_segments.begin(),
+                                                data_segments.end(),
+                                                chain_distance_threshold,
+                                                chain_orientation_threshold,
+                                                chain_gap_threshold);
+
+        Line_segment_likelihood likelihood(data_chains,
+                                           distance_sigma,
+                                           angle_sigma,
+                                           growth_sigma,
+                                           num_segments_lambda,
+                                           segment_probability_scale,
+                                           num_noise_chains_lambda,
+                                           noise_length_lambda,
+                                           noise_min_x,
+                                           noise_max_x,
+                                           noise_min_y,
+                                           noise_max_y,
+                                           num_noise_segments_lambda,
+                                           noise_segment_probability);
+
+        Chain_vector model_chains
+                = find_collinear_segment_chains(model_segments.begin(),
+                                                model_segments.end(),
+                                                chain_distance_threshold,
+                                                chain_orientation_threshold,
+                                                chain_gap_threshold);
+
+        double lh = likelihood(model_chains);
+        const Elsl_correspondence&
+                correspondence = likelihood.get_correspondence();
+
+        // start the rendering
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+
+        // render all segments, both model and data
+        glLineWidth(3.0);
+        std::for_each(segments->begin(), segments->end(),
+                      std::ptr_fun(display_segment));
+
+        // render correspondences and used chains
+        glLineWidth(1.5);
+        std::for_each(correspondence.begin(), correspondence.end(),
+                      std::ptr_fun(display_correspondence));
+
+        // render correspondences and used chains
+        glColor3d(1.0, 1.0, 1.0);
+        glLineWidth(1.5);
+        glLineStipple(1, solid_stipple);
+        std::for_each(likelihood.get_unassigned_model_chains().begin(),
+                      likelihood.get_unassigned_model_chains().end(),
+                      std::ptr_fun(display_chain_box));
+
+        // display likelhood in corner
+        glColor3d(1.0, 1.0, 1.0);
+        display_GL_bitmap_string(boost::str(
+                    boost::format("Likelihood: %0.4f") % lh),
+                    win_width - 200, win_height - 50);
+    }
+    catch(const kjb::Exception& ex)
+    {
+        ex.print_details();
+    }
+
+    glutSwapBuffers();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void reshape_window(int w, int h)
+{
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0.0, win_width, win_height, 0.0);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void process_key(unsigned char key, int, int)
+{
+    try
+    {
+        switch(key)
+        {
+            // add data segment
+            case 'c':
+            {
+                const double segment_length = 250.0;
+                Line_segment default_segment(win_width / 2.0, win_height / 2.0,
+                                             0.0, segment_length);
+                segments->push_back(Super_segment(default_segment,
+                                                  DATA_SEGMENT));
+                active_seg_p = make_circular_iterator(*segments);
+                active_seg_p--;
+                break;
+            }
+
+            // add model segment
+            case 'm':
+            {
+                const double segment_length = 250.0;
+                Line_segment default_segment(win_width / 2.0, win_height / 2.0,
+                                             0.0, segment_length);
+                segments->push_back(Super_segment(default_segment,
+                                                  MODEL_SEGMENT));
+                active_seg_p = make_circular_iterator(*segments);
+                active_seg_p--;
+                break;
+            }
+
+            // remove active
+            case 'd':
+            {
+                if(!segments->empty())
+                {
+                    Segment_list::iterator seg_p = active_seg_p.get_iterator();
+                    active_seg_p++;
+                    segments->erase(seg_p);
+                }
+                break;
+            }
+
+            // translate active
+            case 'h':
+            {
+                if(!segments->empty())
+                {
+                    active_seg_p->segment.translate(
+                                Vector().set(-trans_inc, 0.0));
+                }
+                break;
+            }
+
+            case 'l':
+            {
+                if(!segments->empty())
+                {
+                    active_seg_p->segment.translate(
+                                Vector().set(trans_inc, 0.0));
+                }
+                break;
+            }
+
+            case 'j':
+            {
+                if(!segments->empty())
+                {
+                    active_seg_p->segment.translate(
+                                Vector().set(0.0, trans_inc));
+                }
+                break;
+            }
+
+            case 'k':
+            {
+                if(!segments->empty())
+                {
+                    active_seg_p->segment.translate(
+                                Vector().set(0.0, -trans_inc));
+                }
+                break;
+            }
+
+            // rotate active
+            case 'r':
+            {
+                if(!segments->empty())
+                {
+                    active_seg_p->segment.rotate(-rot_inc);
+                }
+                break;
+            }
+
+            case 'R':
+            {
+                if(!segments->empty())
+                {
+                    active_seg_p->segment.rotate(rot_inc);
+                }
+                break;
+            }
+
+            // grow
+            case 'G':
+            {
+                if(!segments->empty())
+                {
+                    const Vector& ac_center = active_seg_p->segment.get_centre();
+                    double ac_orient = active_seg_p->segment.get_orientation();
+                    double ac_len = active_seg_p->segment.get_length();
+                    active_seg_p->segment.init_from_centre_and_orientation(
+                                                                ac_center[0],
+                                                                ac_center[1],
+                                                                ac_orient,
+                                                                ac_len
+                                                                 + grow_inc);
+                }
+                break;
+            }
+
+            // shrink
+            case 'g':
+            {
+                if(!segments->empty())
+                {
+                    const Vector& ac_center = active_seg_p->segment.get_centre();
+                    double ac_orient = active_seg_p->segment.get_orientation();
+                    double ac_len = active_seg_p->segment.get_length();
+                    active_seg_p->segment.init_from_centre_and_orientation(
+                                                                ac_center[0],
+                                                                ac_center[1],
+                                                                ac_orient,
+                                                                ac_len
+                                                                 - grow_inc);
+                }
+                break;
+            }
+
+            // change active
+            case 'n':
+            {
+                if(!segments->empty())
+                {
+                    active_seg_p++;
+                }
+                break;
+            }
+
+            // quite
+            case 'q':
+            {
+                delete segments;
+                kjb_c::kjb_exit(0);
+            }
+
+            default: return;
+        }
+    }
+    catch(const kjb::Exception& ex)
+    {
+        ex.print_details();
+    }
+
+    glutPostRedisplay();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void process_idle()
+{
+    static size_t idle_count = 0;
+
+    if(++idle_count > 40000)
+    {
+        cur_stipple++;
+        idle_count = 0;
+
+        glutPostRedisplay();
+    }
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void display_segment
+(
+    const Super_segment& sseg
+)
+{
+    if(sseg.type == DATA_SEGMENT)
+    {
+        glColor3d(1.0, 1.0, 0.0);
+    }
+    else
+    {
+        glColor3d(0.0, 0.0, 1.0);
+    }
+
+    if(!segments->empty() && &(*active_seg_p) == &sseg)
+    {
+        glLineStipple(1, *cur_stipple);
+    }
+    else
+    {
+        glLineStipple(1, solid_stipple);
+    }
+
+    sseg.segment.wire_render();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void display_correspondence(const Elsl_correspondence_pair& cp)
+{
+    if(cp.model_chain_p == NULL)
+    {
+        glColor3d(1.0, 1.0, 1.0);
+    }
+    else
+    {
+        glColor3d(0.0, 1.0, 0.0);
+    }
+
+    glLineStipple(1, solid_stipple);
+    display_chain_box(cp.data_chain_p);
+
+    if(cp.model_chain_p != NULL)
+    {
+        glLineStipple(1, solid_stipple);
+        display_chain_box(cp.model_chain_p);
+
+        const Chain& data_chain = *cp.data_chain_p;
+        const Chain& model_chain = *cp.model_chain_p;
+        Vector d_chain_c = projective_to_euclidean_2d(data_chain.get_centre());
+        Vector m_chain_c = projective_to_euclidean_2d(model_chain.get_centre());
+
+        if(vector_distance(d_chain_c, m_chain_c) > FLT_EPSILON)
+        {
+            Line_segment connector(data_chain.get_centre(),
+                                   model_chain.get_centre());
+
+            glLineStipple(1, corr_stipple);
+            connector.wire_render();
+        }
+
+        /* double angle = 0;
+        double distance = 0; 
+        std::pair<Chain, Chain> chs = align_to_x_axis(data_chain, model_chain,
+                                                      distance, angle);
+        glLineStipple(1, solid_stipple);
+        // yellow for aligned data chain
+        glColor3f(0.0, 1.0, 1.0);
+        chs.first.wire_render();
+        // blue for aligned model chain 
+        glColor3f(0.0, 0.0, 1.0);
+        chs.second.wire_render(); */
+
+    }
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void display_chain_box(const Chain* chain_p)
+{
+    Vector chain_center = projective_to_euclidean_2d(chain_p->get_centre());
+
+    Rectangle_2d m_rect(chain_center, chain_p->get_orientation(),
+                        chain_p->get_length() + corr_rect_width_pad,
+                        corr_rect_height);
+    m_rect.wire_render();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void display_GL_bitmap_string(const std::string& s, int x, int y)
+{
+    glRasterPos2i(x, y);
+    for(size_t i = 0; i < s.length(); i++)
+    {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, s.c_str()[i]);
+    }
+}
+

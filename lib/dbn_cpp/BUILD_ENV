@@ -1,0 +1,7 @@
+setenv COMPILER_SEARCH_DIR /bin_gcc-4.8
+setenv BOOST_VERSION 1_54
+
+# setenv KJB_CC "${COMPILER_SEARCH_DIR}/gcc
+# setenv KJB_CXX "${COMPILER_SEARCH_DIR}/g++
+# setenv KJB_F77 "${COMPILER_SEARCH_DIR}/gcc
+# setenv KJB_LD "${COMPILER_SEARCH_DIR}/g++

@@ -1,0 +1,7 @@
+<<  2 >> Verbose level at program startup is 5.
+<<TEST>> Parent process in create_system_command_process() is 17742 (ignore line for regression testing).
+<<TEST>> Child process in create_system_command_process() is 17747 (ignore line for regression testing).
+<<  1 >> Test 1 with 46 hulls.
+<<  3 >> Testing intersection with vertices.
+<<  3 >> Testing intersection with coarse grid.
+<<  3 >> Testing intersection with random samples.

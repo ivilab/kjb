@@ -1,0 +1,8 @@
+
+Error reported during non-interactive run.
+Operation failed because the program was built without the SLATEC interface.
+(Appropriate re-compiling is needed to fix this.)
+
+<<TEST>> Begin cleaning up system command process (38068) (ignore line for regression testing).
+<<TEST>> Wait result is 0 (ignore line for regression testing).
+<<TEST>> Done waiting for system command  process to finish (ignore line for regression testing).

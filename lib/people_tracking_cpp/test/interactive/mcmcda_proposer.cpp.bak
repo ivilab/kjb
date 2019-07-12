@@ -1,0 +1,815 @@
+/* =========================================================================== *
+   |
+   |  Copyright (c) 1994-2011 by Kobus Barnard (author)
+   |
+   |  Personal and educational use of this code is granted, provided that this
+   |  header is kept intact, and that the authorship is not misrepresented, that
+   |  its use is acknowledged in publications, and relevant papers are cited.
+   |
+   |  For other use contact the author (kobus AT cs DOT arizona DOT edu).
+   |
+   |  Please note that the code in this file has not necessarily been adequately
+   |  tested. Naturally, there is no guarantee of performance, support, or fitness
+   |  for any particular task. Nonetheless, I am interested in hearing about
+   |  problems that you encounter.
+   |
+   |  Author:  Ernesto Brau
+ * =========================================================================== */
+
+/* $Id: mcmcda_proposer.cpp.bak 16928 2014-05-30 00:05:48Z ernesto $ */
+
+#include <stracking_cpp/stracking_mcmcda_proposer.h>
+#include <people_tracking_cpp/pt_association.h>
+#include <people_tracking_cpp/pt_target.h>
+#include <people_tracking_cpp/pt_detection_box.h>
+#include <people_tracking_cpp/pt_data.h>
+#include <people_tracking_cpp/pt_complete_trajectory.h>
+#include <people_tracking_cpp/pt_box_trajectory.h>
+#include <people_tracking_cpp/pt_scene.h>
+#include <people_tracking_cpp/pt_position_prior.h>
+#include <people_tracking_cpp/pt_box_likelihood.h>
+#include <people_tracking_cpp/pt_optical_flow_likelihood.h>
+#include <people_tracking_cpp/pt_util.h>
+#include <people_tracking_cpp/pt_visibility.h>
+#include <st_cpp/st_perspective_camera.h>
+#include <gr_cpp/gr_opengl.h>
+#include <gr_cpp/gr_glut.h>
+#include <prob_cpp/prob_distribution.h>
+#include <prob_cpp/prob_pdf.h>
+#include <prob_cpp/prob_sample.h>
+#include <l_cpp/l_filesystem.h>
+#include <wrap_opencv_cpp/cv_histogram.h>
+#include <detector_cpp/d_bbox.h>
+#include <string>
+#include <exception>
+#include <limits>
+#include <boost/program_options.hpp>
+#include <boost/foreach.hpp>
+#include <boost/bind.hpp>
+
+using namespace kjb;
+using namespace kjb::pt;
+using namespace kjb::opengl;
+using namespace kjb::stracking;
+using namespace std;
+using namespace boost;
+
+// pointers to stuff
+const Perspective_camera* cam_p;
+Scene* scene_p;
+const Mcmcda_proposer<Target>* proposer_p;
+const Glut_window* wnd_p;
+Ascn::const_iterator cur_target_p;
+const Box_likelihood* box_lh_p;
+const Optical_flow_likelihood* of_lh_p;
+Ascn* wp_p;
+
+const vector<Integral_flow>* x_flows_p;
+const vector<Integral_flow>* y_flows_p;
+const vector<Integral_flow>* back_x_flows_p;
+const vector<Integral_flow>* back_y_flows_p;
+const vector<Hist_map>* histograms_p; 
+
+// declarations
+void reshape_window(int w, int h);
+void display_scene();
+void process_key(unsigned char key, int x, int y);
+void draw_box(const Bbox&);
+Vector get_dbox_center(const Detection_box& dbox);
+Detection_box average_box_centers(const vector<const Detection_box*>& boxes);
+void process_options(int argc, char** argv);
+
+// options
+string movie_dp;
+double img_width;
+double img_height;
+int d_bar;
+int b_bar;
+double v_bar;
+double noise_variance;
+double gamm;
+size_t frame_rate;
+
+const double m_thresh = 0.5;
+//const double scale_xs = 0.148199;
+//const double scale_ys = 0.074347;
+const double scale_xm = 3.419287;
+const double scale_ym = 0.956642;
+const double bg_scale_x = 2.0*scale_xm;
+const double bg_scale_y = 2.0*scale_ym;
+const double gp_scale = 10.0;
+const double gp_svar = 100.0;
+
+bool use_propagated = false;
+
+string movie_exp_dir;
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+int main(int argc, char** argv)
+{
+    try
+    {
+        process_options(argc, argv);
+
+        // read data boxes
+        Box_data data(img_width, img_height, 1.0);
+        data.read(file_names_from_format(
+            movie_dp + "/detection_boxes/person_inria/%05d.txt"));
+
+        // read camera
+        Perspective_camera camera;
+        string cam_fp = movie_dp + "/camera/gt_camera1_fix_height.txt";
+        camera.read(cam_fp.c_str());
+
+        // read OF data
+        /*vector<string> of_fps = file_names_from_format(
+            movie_dp + "/features/optical_flow/01/%05d.txt");
+        vector<Flow_feature_set> feature_sets(of_fps.size());
+        transform(
+            of_fps.begin(),
+            of_fps.end(),
+            feature_sets.begin(),
+            read_flow_features);
+            */
+
+        string feat_dp = movie_dp + "/features/optical_flow/brox/";
+        vector<string> x_of_fps = 
+            file_names_from_format(feat_dp + "/x_int_s4/%05d.txt");
+        vector<string> y_of_fps = 
+            file_names_from_format(feat_dp + "/y_int_s4/%05d.txt");
+        vector<string> back_x_of_fps = 
+            file_names_from_format(feat_dp + "/back_x_int_s4/%05d.txt", 2);
+        vector<string> back_y_of_fps = 
+            file_names_from_format(feat_dp + "/back_y_int_s4/%05d.txt", 2);
+        vector<string> frame_imgs
+            = file_names_from_format(movie_dp + "/frames/%05d.jpg");
+
+        vector<Integral_flow> flows_x;
+        vector<Integral_flow> flows_y;
+        vector<Integral_flow> back_flows_x;
+        vector<Integral_flow> back_flows_y;
+        KJB(ASSERT(x_of_fps.size() == y_of_fps.size()));
+        assert(back_flows_x.size() == back_flows_y.size());
+        assert(back_flows_x.size() == flows_x.size());
+        size_t num_frames = x_of_fps.size();
+        for(size_t i = 0; i < num_frames; i++)
+        {
+            std::cout << " read in flow " << back_x_of_fps[i] << std::endl;
+            //back_flows_x.push_back(Integral_flow(back_x_of_fps[i]));
+            //back_flows_y.push_back(Integral_flow(back_y_of_fps[i]));
+            flows_x.push_back(Integral_flow(x_of_fps[i]));
+            flows_y.push_back(Integral_flow(x_of_fps[i]));
+        }
+
+        x_flows_p = &flows_x;
+        y_flows_p = &flows_y;
+        back_x_flows_p = &back_flows_x;
+        back_y_flows_p = &back_flows_y;
+
+        // Compute the histogram of each detection box
+        const int red_bins = 12;
+        const int green_bins = 12;
+        vector<Hist_map> histograms(frame_imgs.size());
+        std::cout << histograms.size() << std::endl;
+
+        for(size_t i = 0; i < frame_imgs.size(); i++)
+        {
+            Image img(frame_imgs[i]);
+            std::cout << "Load image at frame  " << i + 1 << std::endl; 
+            BOOST_FOREACH(const Detection_box& dbox, data[i])
+            {
+                Bbox box(dbox.bbox);
+                unstandardize(box, img_width, img_height);
+                histograms[i].insert(
+                        make_pair<const Detection_box*, Matrix>(&dbox, 
+                        opencv::calculate_rg_histogram(img, box, 
+                                               red_bins, green_bins)));
+            }
+        }
+
+        histograms_p = &histograms;
+        Feature_score feature_score(histograms, flows_x, flows_y);
+
+        // create proposer
+        Mcmcda_proposer<Target> proposer(
+            Categorical_distribution<size_t>(
+                MCMCDA_BIRTH, MCMCDA_NUM_MOVES - 1, 1),
+            v_bar,
+            d_bar,
+            b_bar,
+            gamm,
+            bind(get_dbox_center, _1),
+            average_box_centers,
+            feature_score,
+            noise_variance,
+            Target(1.7, 0.4, 0.3, data.size()));
+
+        // make optimizer object (which, in turn contains gradient)
+        Box_likelihood box_likelihood(
+            *data[0].begin(), 0.001, img_width, img_height);
+
+        /*Optical_flow_likelihood of_likelihood(
+            feature_sets, img_width, img_height,
+            scale_xm, scale_ym, bg_scale_x, bg_scale_y);
+            */
+        Optical_flow_likelihood of_likelihood(
+            flows_x, flows_y, img_width, img_height,
+            scale_xm, scale_ym, 2*scale_xm, 2*scale_ym);
+
+        Position_prior pos_prior(gp_scale, gp_svar);
+
+        // create GL environment
+        Glut_window wnd(img_width, img_height, "MCMCDA proposer");
+        wnd.set_reshape_callback(reshape_window);
+        wnd.set_display_callback(display_scene);
+        wnd.set_keyboard_callback(process_key);
+        cout << endl;
+
+        // initialize stuff
+        Scene scene(Ascn(data), camera, 1.0, 1.0, 1.0);
+        cur_target_p = scene.association.end();
+
+        Ascn wp = scene.association;
+
+        // global pointers
+        proposer_p = &proposer;
+        wnd_p = &wnd;
+        cam_p = &camera;
+        scene_p =  &scene;
+        box_lh_p = &box_likelihood;
+        of_lh_p = &of_likelihood;
+        wp_p = &wp;
+
+        glutMainLoop();
+    }
+    catch(const Exception& kex)
+    {
+        kex.print_details();
+        return EXIT_FAILURE;
+    }
+    catch(const std::exception& ex)
+    {
+        cout << ex.what() << endl;
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void reshape_window(int w, int h)
+{
+    glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-img_width / 2.0, img_width / 2.0,
+            -img_height / 2.0, img_height / 2.0,
+            -1.0, 10.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void display_scene()
+{
+    // clear stuff
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+
+    const Ascn& w = scene_p->association;
+
+    // display boxes
+    glColor3d(0.2, 0.2, 0.2);
+    glLineWidth(1.0);
+    for(size_t i = 0; i < w.get_data().size(); i++)
+    {
+        BOOST_FOREACH(const Detection_box& box, w.get_data()[i])
+        {
+            draw_box(box.bbox);
+        }
+    }
+
+    for(Ascn::const_iterator tg_p = w.begin();
+                                            tg_p != w.end();
+                                            tg_p++)
+    {
+        Vector active_box_col = Vector().set(1.0, 0.0, 0.0);
+        Vector active_tr_col = Vector().set(1.0, 1.0, 0.0);
+        Vector inactive_col = Vector().set(0.0, 0.4, 0.0);
+
+        glColor(tg_p == cur_target_p ? active_box_col : inactive_col);
+        glLineWidth(2.0);
+        BOOST_FOREACH(const Target::value_type& pr, *tg_p)
+        {
+            draw_box(pr.second->bbox);
+        }
+
+        glLineWidth(3.0);
+        glColor(tg_p == cur_target_p ? active_tr_col : inactive_col);
+        const Trajectory& traj = tg_p->trajectory();
+        const Box_trajectory& box_traj
+                                = get_body_box_trajectory(traj, *cam_p);
+        int sf = box_traj.start_time();
+        int ef = box_traj.end_time();
+        for(size_t f = sf - 1; f <= ef - 2; f++)
+        {
+            glBegin(GL_LINES);
+            glVertex(box_traj[f]->value.get_bottom_center());
+            glVertex(box_traj[f + 1]->value.get_bottom_center());
+            glEnd();
+        }
+    }
+
+    if(cur_target_p != w.end())
+    {
+        cout << "Current track: [" << cur_target_p->get_start_time()
+             << ", " << cur_target_p->get_end_time() << "]"
+             << " ===> "
+             << target_box_likelihood(*box_lh_p, *cur_target_p)
+             << "     "
+             << of_lh_p->at_trajectory(*cur_target_p)
+             << "\n\n";
+    }
+    else
+    {
+        cout << "No tracks...\n\n";
+    }
+
+    glutSwapBuffers();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void process_key(unsigned char key, int /*x*/, int /*y*/)
+{
+    Ascn& w = scene_p->association;
+    const Mcmcda_proposer<Target>& proposer = *proposer_p;
+    double fwd, rev;
+    bool true_move = true;
+
+    switch(key)
+    {
+        case 'b':
+        {
+            fwd = proposer.propose_birth(w, *wp_p);
+            if(fwd == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            rev = proposer.p_death(*wp_p, w);
+            if(rev == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            fwd += proposer.move_log_pdf(MCMCDA_BIRTH, w);
+            rev += proposer.move_log_pdf(MCMCDA_DEATH, *wp_p);
+
+            break;
+        }
+
+        case 'd':
+        {
+            fwd = proposer.propose_death(w, *wp_p);
+            if(fwd == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            rev = proposer.p_birth(*wp_p, w);
+            if(rev == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            fwd += proposer.move_log_pdf(MCMCDA_DEATH, w);
+            rev += proposer.move_log_pdf(MCMCDA_BIRTH, *wp_p);
+
+            break;
+        }
+
+        /*case 's':
+        {
+            fwd = proposer.propose_split(w, *wp_p);
+            if(fwd == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            rev = proposer.p_merge(*wp_p, w);
+            if(rev == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            fwd += proposer.move_log_pdf(MCMCDA_SPLIT, w);
+            rev += proposer.move_log_pdf(MCMCDA_MERGE, *wp_p);
+
+            break;
+        }
+
+        case 'm':
+        {
+            fwd = proposer.propose_merge(w, *wp_p);
+            if(fwd == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            rev = proposer.p_split(*wp_p, w);
+            if(rev == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            fwd += proposer.move_log_pdf(MCMCDA_MERGE, w);
+            rev += proposer.move_log_pdf(MCMCDA_SPLIT, *wp_p);
+
+            break;
+        }*/
+
+        case 'e':
+        {
+            fwd = proposer.propose_extension(w, *wp_p);
+            if(fwd == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            rev = proposer.p_reduction(*wp_p, w);
+            if(rev == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            fwd += proposer.move_log_pdf(MCMCDA_EXTENSION, w);
+            rev += proposer.move_log_pdf(MCMCDA_REDUCTION, *wp_p);
+
+            break;
+        }
+
+        case 'r':
+        {
+            fwd = proposer.propose_reduction(w, *wp_p);
+            if(fwd == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            rev = proposer.p_extension(*wp_p, w);
+            if(rev == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            fwd += proposer.move_log_pdf(MCMCDA_REDUCTION, w);
+            rev += proposer.move_log_pdf(MCMCDA_EXTENSION, *wp_p);
+
+            break;
+        }
+
+        case 'w':
+        {
+            fwd = proposer.propose_switch(w, *wp_p);
+            if(fwd == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            fwd += proposer.move_log_pdf(MCMCDA_SWITCH, w);
+            rev = fwd;
+
+            break;
+        }
+
+        case 'k':
+        {
+            fwd = proposer.propose_secretion(w, *wp_p);
+            if(fwd == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            rev = proposer.p_absorption(*wp_p, w);
+            if(rev == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            fwd += proposer.move_log_pdf(MCMCDA_SECRETION, w);
+            rev += proposer.move_log_pdf(MCMCDA_ABSORPTION, *wp_p);
+
+            break;
+        }
+
+        case 'p':
+        {
+            fwd = proposer.propose_absorption(w, *wp_p);
+            if(fwd == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            rev = proposer.p_secretion(*wp_p, w);
+            if(rev == -numeric_limits<double>::max())
+            {
+                break;
+            }
+
+            fwd += proposer.move_log_pdf(MCMCDA_ABSORPTION, w);
+            rev += proposer.move_log_pdf(MCMCDA_SECRETION, *wp_p);
+
+            break;
+        }
+
+        case 'o':
+        {
+            true_move = false;
+            write_scene(*scene_p, "output/mcmcda_proposer/tracks");
+            cout << "Wrote scene in outout/mcmcda_proposer/" << endl;
+            break;
+        }
+
+        case 'i':
+        {
+            true_move = false;
+//            read_scene(*scene_p,
+//                       "output/mcmcda_proposer/tracks",
+//                       "output/mcmcda_proposer/tracks/association.txt",
+//                       "output/mcmcda_proposer/tracks/camera.txt",
+//                       "output/mcmcda_proposer/tracks/params.txt",
+//                       Target(1.7, 0.4, 0.3, gp_scale,
+//                              gp_svar, w.get_data().size()));
+            if(movie_exp_dir == "")
+            {
+                movie_exp_dir = "output/mcmcda_proposer/";
+            }
+            read_scene(*scene_p, movie_exp_dir + "/tracks");
+            cur_target_p = scene_p->association.begin();
+            BOOST_FOREACH(const Target& target, scene_p->association)
+            {
+                if(use_propagated)
+                {
+                    target.update_trajectory(*cam_p);
+                                            //*x_flows_p, *y_flows_p, 
+                                            //*back_x_flows_p, *back_y_flows_p, 
+                                            //frame_rate);
+                }
+                else
+                {
+                    target.update_trajectory(*cam_p);
+                }
+                target.update_height(*cam_p);
+                //target.smooth_trajectory();
+                initialize_directions(target.trajectory());
+                target.changed(false);
+            }
+            std::for_each(scene_p->association.begin(), 
+                          scene_p->association.end(),
+                          boost::bind(&Target::update_boxes, _1, 
+                          scene_p->camera));
+
+            update_visibilities(*scene_p);
+
+            cout << "Read scene from output/mcmcda_proposer/" << endl;
+            break;
+        }
+
+        case 'h':
+        {
+            true_move = false;
+
+            if(w.empty())
+            {
+                break;
+            }
+
+            cur_target_p++;
+            if(cur_target_p == w.end())
+            {
+                cur_target_p = w.begin();
+            }
+
+            break;
+        }
+
+        case 'l':
+        {
+            true_move = false;
+
+            if(w.empty())
+            {
+                break;
+            }
+
+            if(cur_target_p == w.begin())
+            {
+                cur_target_p = w.end();
+            }
+
+            cur_target_p--;
+
+            break;
+        }
+
+        case 'z':
+        {
+            true_move = false;
+            using std::swap;
+            swap(scene_p->association, *wp_p);
+            cout << "Rejected!\n\n";
+            if(w.empty())
+            {
+                cur_target_p = w.end();
+            }
+            else
+            {
+                cur_target_p = w.begin();
+            }
+            break;
+        }
+
+        case 'q':
+        {
+            cout << "Bye..." << endl;
+            exit(EXIT_SUCCESS);
+        }
+
+        default:
+        {
+            return;
+        }
+    }
+
+    if(true_move)
+    {
+        if(fwd == -numeric_limits<double>::max()
+                || rev == -numeric_limits<double>::max())
+        {
+            cout << "    proposal failed; probability is 0.\n\n";
+        }
+        else
+        {
+            cout << "    success!\n";
+            cout << "    fwd prob is " << fwd << "\n";
+            cout << "    rev prob is " << rev << "\n";
+
+            double blh = scene_box_likelihood(*box_lh_p, *scene_p);
+            double olh = (*of_lh_p)(*scene_p);
+
+            cout << "    prev lh is " << blh + olh
+                 << "(" << blh << ", " << olh << ")" << endl;
+
+            using std::swap;
+            swap(w, *wp_p);
+
+            if(w.empty())
+            {
+                cur_target_p = w.end();
+            }
+            else
+            {
+                cur_target_p = w.begin();
+                BOOST_FOREACH(const Target& target, w)
+                {
+                    if(target.is_changed())
+                    {
+                        if(use_propagated)
+                        {
+                            target.update_trajectory(*cam_p);
+                                                    //*x_flows_p, *y_flows_p, 
+                                                    //*back_x_flows_p, *back_y_flows_p, 
+                                                    //frame_rate);
+                        }
+                        else
+                        {
+                            target.update_trajectory(*cam_p);
+                        }
+                        //target.smooth_trajectory();
+                        initialize_directions(target.trajectory());
+                        target.changed(false);
+                    }
+                }
+                std::for_each(scene_p->association.begin(), 
+                              scene_p->association.end(),
+                              boost::bind(&Target::update_boxes, _1, 
+                                          scene_p->camera));
+
+                update_visibilities(*scene_p);
+            }
+
+            blh = scene_box_likelihood(*box_lh_p, *scene_p);
+            olh = (*of_lh_p)(*scene_p);
+
+            cout << "    cur lh is " << blh + olh
+                 << "(" << blh << ", " << olh << ")" << endl;
+            cout << endl;
+        }
+    }
+
+    wnd_p->redisplay();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void draw_box(const Bbox& box)
+{
+    glBegin(GL_LINE_LOOP);
+    glVertex2d(box.get_left(), box.get_top());
+    glVertex2d(box.get_right(), box.get_top());
+    glVertex2d(box.get_right(), box.get_bottom());
+    glVertex2d(box.get_left(), box.get_bottom());
+    glEnd();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+Vector get_dbox_center(const Detection_box& dbox)
+{
+    return dbox.bbox.get_bottom_center();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+Detection_box average_box_centers(const vector<const Detection_box*>& boxes)
+{
+    Detection_box res = *boxes[0];
+
+    Vector avg(0.0, 0.0);
+    size_t num_boxes = boxes.size();
+    for(size_t i = 0; i < num_boxes; i++)
+    {
+        avg += boxes[i]->bbox.get_bottom_center();
+    }
+
+    res.bbox.set_center(avg / num_boxes);
+    res.bbox.set_centre_y(res.bbox.get_centre_y() + res.bbox.get_height()/2.0);
+    return res;
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void process_options(int argc, char** argv)
+{
+    namespace bpo = program_options;
+
+    bpo::options_description cmdline_options("General options");
+    bpo::variables_map vm;
+
+    try
+    {
+        // All options
+        cmdline_options.add_options()
+            ("help,h", "produce help message")
+            ("movie-path", bpo::value<string>(&movie_dp)->required(),
+                      "path to the data directory")
+            ("movie-exp-dir", bpo::value<string>(&movie_exp_dir)->default_value(""),
+                      "path to the data directory")
+            ("width", bpo::value<double>(&img_width)->default_value(1280),
+                      "width of the image (and GL window)")
+            ("height", bpo::value<double>(&img_height)->default_value(720),
+                      "height of the image (and GL window)")
+            ("v-bar", bpo::value<double>(&v_bar)->default_value(5.0),
+                      "maximum velocity of tracks")
+            ("d-bar", bpo::value<int>(&d_bar)->default_value(30),
+                      "maximum skipped frames of a track")
+            ("b-bar", bpo::value<int>(&b_bar)->default_value(15),
+                      "maximum skipped frames of a track")
+            ("noise-variance",
+                bpo::value<double>(&noise_variance)->default_value(50.0),
+                "noise variance for detection boxes")
+            ("gamma", bpo::value<double>(&gamm)->default_value(0.1),
+                      "probability of halting growing a proposed track")
+            ("frame-rate", bpo::value<size_t>(&frame_rate)->default_value(25),
+                      "frame rate of the movie (number of frames/s)");
+
+        bpo::store(bpo::command_line_parser(argc, argv)
+                   .options(cmdline_options).run(), vm);
+
+        if(vm.count("help"))
+        {
+            cout << "Usage: mcmcda_proposer OPTIONS\n"
+                 << "Manually run MCMCDA moves."
+                 << cmdline_options << "\n"
+                 << "For questions or complaints see Ernesto." << endl;
+
+            exit(EXIT_SUCCESS);
+        }
+
+        bpo::notify(vm);
+    }
+    catch(const bpo::error& err)
+    {
+        throw Exception(err.what());
+    }    
+    catch(const std::exception& ex)
+    {
+        throw ex;
+    }    
+}
+

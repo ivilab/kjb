@@ -1,0 +1,19 @@
+
+# 
+# Machine generated file to set make targets
+#
+
+PROGRAMS = \
+        $(OBJ_DIR)generate_RGB_data \
+        $(OBJ_DIR)get_projection_matrix \
+        $(OBJ_DIR)get_projection_vector
+
+
+
+
+MAN_FROM_HELP_FILES = \
+
+
+
+MAN_FROM_WRITEUP_FILES = \
+

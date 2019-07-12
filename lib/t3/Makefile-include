@@ -1,0 +1,73 @@
+
+################################################################################
+#                             Options
+
+# For programs, speical purpose compile options are set in Makefile-2. For
+# library modules, the must go in Makefile-include. 
+#
+# For example, to force no optimization for C compiles, replace CC_FLAGS with
+# DONT_OPTIMIZE_CC_FLAGS. 
+#     
+# To force a C99 compile in an emergency, replace
+#     $(CC_FLAGS)
+# below with 
+#      $(CC_C99_BASE_FLAGS) $(CC_TEST_OR_OPTIMIZE)
+# In developing KJB library code for the U.A. vision lab, this capability MUST
+# BE USED ONLY FOR TRANSITION. 
+#
+################################################################################
+
+T3_LIB_CC_FLAGS = $(CC_FLAGS)
+T3_LIB_CC_WARNING_FLAGS = $(CC_KJB_WARNINGS)
+T3_LIB_CXX_FLAGS = $(CXX_FLAGS)
+T3_LIB_CXX_WARNING_FLAGS = $(CXX_KJB_WARNINGS)
+T3_LIB_EXTRA_COMPILE_FLAGS =
+
+################################################################################
+
+T3_LIB_PREFIX = t3
+T3_LIB_UC_PREFIX = T3
+
+T3_LIB_SRC_DIR = $(T3_DIR)
+T3_LIB_REAL_SRC_DIR = $(REAL_T3_DIR)
+
+T3_LIB_ARCHIVE = $(T3_DIR)$(OBJ_DIR)libKJBt3.a
+T3_LIB_LD = -L$(T3_DIR)$(OBJ_DIR) -lKJBt3 
+
+################################################################################
+
+$(T3_DIR)Makefile-library.$(MAKE_FLAVOR) : $(MAKE_DIR)Makefile-library.$(MAKE_FLAVOR)
+	sed 's/LIB_COMPONENT/T3_LIB/g' < $< > $@
+
+include $(T3_DIR)Makefile-library.$(MAKE_FLAVOR)
+
+################################################################################
+
+$(T3_DIR)Makefile-library : $(MAKE_DIR)Makefile-library
+	sed 's/LIB_COMPONENT/T3_LIB/g' < $< > $@
+
+include $(T3_DIR)Makefile-library
+
+################################################################################
+
+# As of 19/01/02, we do this in Makefile-library. Delete eventually. 
+#
+### # What if Include_lines/header_file_list does not exist?
+### $(T3_DIR)Include_lines/header_file_list : 
+### 	$(KJB_MKDIR) $(T3_DIR)Include_lines
+### 	$(KJB_RM) $@.new
+### 	$(KJB_TOUCH) $@
+### 
+### $(T3_DIR)$(T3_LIB_PREFIX)_incl.h : $(MAKE_SCRIPT_PATH)build_incl_dot_h $(T3_DIR)Include_lines/header_file_list 
+### 	@$(ECHO_IF_VERBOSE) "Building $@ because of $?" 
+### 	$(MAKE_SCRIPT_PATH)build_incl_dot_h $(T3_DIR)
+### 
+### ################################################################################
+### 
+### # Custom compile lines go here. Unfortunately, patterns cannot be used. However,
+### # if you want to change the compile for the entire directory, you can probably
+### # do what you want by changing the flags above (e.g., CC_FLAGS). 
+### 
+### 
+### 
+### 

@@ -1,0 +1,115 @@
+This directory contains ImageMagick code, but it lacks proper const
+correctness.  The patch below shows how that could be improved.
+The patch has not been applied because of concern for breaking legacy code.
+December 2012
+
+Index: error.h
+===================================================================
+--- error.h	(revision 14494)
++++ error.h	(working copy)
+@@ -26,8 +26,13 @@
+ /*
+   Error typedef declarations.
+ */
++#if 0 // how it was, December 2012 (AMP)
+ typedef void
+   (*ErrorHandler) _Declare((char *,char *));
++#else
++typedef void
++  (*ErrorHandler) _Declare((const char *, const char *));
++#endif
+ 
+ /*
+   Error declarations.
+@@ -37,8 +42,13 @@
+   SetWarningHandler _Declare((ErrorHandler));
+ 
+ extern void
++#if 0 // how it was, December 2012 (AMP)
+   Error _Declare((char *,char *)),
+   Warning _Declare((char *,char *));
++#else
++  Error _Declare((const char *, const char *)),
++  Warning _Declare((const char *, const char *));
++#endif
+ 
+ 
+ #ifdef __cplusplus
+Index: error.c
+===================================================================
+--- error.c	(revision 14494)
++++ error.c	(working copy)
+@@ -75,8 +75,13 @@
+   Forward declaraations.
+ */
+ static void
++#if 0 // how it was, December 2012 (AMP)
+   DefaultErrorHandler _Declare((char *,char *)),
+   DefaultWarningHandler _Declare((char *,char *));
++#else
++  DefaultErrorHandler _Declare((const char *, const char *)),
++  DefaultWarningHandler _Declare((const char *, const char *));
++#endif
+ 
+ /*
+   Global declarations.
+@@ -124,7 +129,13 @@
+ %
+ %
+ */
+-static void DefaultErrorHandler(char *message, char *qualifier)
++static void DefaultErrorHandler(
++#if 0 // how it was, December 2012 (AMP)
++	char *message, char *qualifier
++#else
++	const char *message, const char *qualifier
++#endif
++)
+ {
+   if (message == (char *) NULL)
+     exit(1);
+@@ -161,7 +172,13 @@
+ %
+ %
+ */
+-static void DefaultWarningHandler(char *message, char *qualifier)
++static void DefaultWarningHandler(
++#if 0 // how it was, December 2012 (AMP)
++	char *message, char *qualifier
++#else
++	const char *message, const char *qualifier
++#endif
++)
+ {
+   if (message == (char *) NULL)
+     return;
+@@ -197,7 +214,13 @@
+ %
+ %
+ */
+-void Error(char *message, char *qualifier)
++void Error(
++#if 0 // how it was, December 2012 (AMP)
++	char *message, char *qualifier
++#else
++	const char *message, const char *qualifier
++#endif
++)
+ {
+   if (error_handler != (ErrorHandler) NULL)
+     (*error_handler)(message,qualifier);
+@@ -297,7 +320,13 @@
+ %
+ %
+ */
+-void Warning(char *message, char *qualifier)
++void Warning(
++#if 0 // how it was, December 2012 (AMP)
++	char *message, char *qualifier
++#else
++	const char *message, const char *qualifier
++#endif
++)
+ {
+   if (warning_handler != (ErrorHandler) NULL)
+     (*warning_handler)(message,qualifier);

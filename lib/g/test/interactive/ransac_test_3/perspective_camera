@@ -1,0 +1,12 @@
+     Type: N3kjb17Calibrated_cameraE
+      camera_centre: -60 22 916 1
+      pitch: -0
+      yaw: 1.11022e-16
+      roll: -0
+      focal_length: 1000
+      principal_point: 0 0
+      skew: 1.5708
+      aspect_ratio: 1
+      world_scale: 1
+      near: 0.1
+      far: 100000

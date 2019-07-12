@@ -1,0 +1,30 @@
+
+# 
+# Machine generated file to set make targets
+#
+
+PROGRAMS = \
+        $(OBJ_DIR)distance_to_2D_hull \
+        $(OBJ_DIR)distance_to_3D_hull \
+        $(OBJ_DIR)dual_intersect_2D_hulls \
+        $(OBJ_DIR)dual_intersect_3D_hulls \
+        $(OBJ_DIR)fill_2D_hull \
+        $(OBJ_DIR)fill_3D_hull \
+        $(OBJ_DIR)find_2D_hull_average \
+        $(OBJ_DIR)find_3D_hull_average \
+        $(OBJ_DIR)get_interior_distance_to_hull \
+        $(OBJ_DIR)intersect_2D_hulls \
+        $(OBJ_DIR)intersect_3D_hulls \
+        $(OBJ_DIR)is_point_in_polygon \
+        $(OBJ_DIR)point_inside_2D_hulls \
+        $(OBJ_DIR)point_inside_3D_hulls
+
+
+
+
+MAN_FROM_HELP_FILES = \
+
+
+
+MAN_FROM_WRITEUP_FILES = \
+

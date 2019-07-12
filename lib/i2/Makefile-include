@@ -1,0 +1,73 @@
+
+################################################################################
+#                             Options
+
+# For programs, speical purpose compile options are set in Makefile-2. For
+# library modules, the must go in Makefile-include. 
+#
+# For example, to force no optimization for C compiles, replace CC_FLAGS with
+# DONT_OPTIMIZE_CC_FLAGS. 
+#     
+# To force a C99 compile in an emergency, replace
+#     $(CC_FLAGS)
+# below with 
+#      $(CC_C99_BASE_FLAGS) $(CC_TEST_OR_OPTIMIZE)
+# In developing KJB library code for the U.A. vision lab, this capability MUST
+# BE USED ONLY FOR TRANSITION. 
+#
+################################################################################
+
+I2_LIB_CC_FLAGS = $(CC_FLAGS)
+I2_LIB_CC_WARNING_FLAGS = $(CC_KJB_WARNINGS) 
+I2_LIB_CXX_FLAGS = $(CXX_FLAGS)
+I2_LIB_CXX_WARNING_FLAGS = $(CXX_KJB_WARNINGS)
+I2_LIB_EXTRA_COMPILE_FLAGS =
+
+################################################################################
+
+I2_LIB_PREFIX = i2
+I2_LIB_UC_PREFIX = I2
+
+I2_LIB_SRC_DIR = $(I2_DIR)
+I2_LIB_REAL_SRC_DIR = $(REAL_I2_DIR)
+
+I2_LIB_ARCHIVE = $(I2_DIR)$(OBJ_DIR)libKJB$(I2_LIB_PREFIX).a
+I2_LIB_LD = -L$(I2_DIR)$(OBJ_DIR) -lKJB$(I2_LIB_PREFIX) 
+
+################################################################################
+
+$(I2_DIR)Makefile-library.$(MAKE_FLAVOR) : $(MAKE_DIR)Makefile-library.$(MAKE_FLAVOR)
+	sed 's/LIB_COMPONENT/I2_LIB/g' < $< > $@
+
+include $(I2_DIR)Makefile-library.$(MAKE_FLAVOR)
+
+################################################################################
+
+$(I2_DIR)Makefile-library : $(MAKE_DIR)Makefile-library
+	sed 's/LIB_COMPONENT/I2_LIB/g' < $< > $@
+
+include $(I2_DIR)Makefile-library
+
+################################################################################
+
+# As of 19/01/02, we do this in Makefile-library. Delete eventually. 
+#
+### # What if Include_lines/header_file_list does not exist?
+### $(I2_DIR)Include_lines/header_file_list : 
+### 	$(KJB_MKDIR) $(I2_DIR)Include_lines
+### 	$(KJB_RM) $@.new
+### 	$(KJB_TOUCH) $@
+### 
+### $(I2_DIR)$(I2_LIB_PREFIX)_incl.h : $(MAKE_SCRIPT_PATH)build_incl_dot_h $(I2_DIR)Include_lines/header_file_list
+### 	@$(ECHO_IF_VERBOSE) "Building $@ because of $?" 
+### 	$(MAKE_SCRIPT_PATH)build_incl_dot_h $(I2_DIR)
+### 
+### ################################################################################
+### 
+### # Custom compile lines go here. Unfortunately, patterns cannot be used. However,
+### # if you want to change the compile for the entire directory, you can probably
+### # do what you want by changing the flags above (e.g., CC_FLAGS). 
+### 
+### 
+### 
+### 

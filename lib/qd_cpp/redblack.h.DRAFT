@@ -1,0 +1,2665 @@
+/**
+ * @file
+ * @author Andrew Predoehl
+ * @brief definition of class Redblack_subtree_sum.
+ */
+/*
+ * $Id: redblack.h.DRAFT 20139 2015-11-30 05:50:36Z predoehl $
+ */
+
+#ifndef REDBLACK_H_PREDOEHL_12_DEC_2011_VISION
+#define REDBLACK_H_PREDOEHL_12_DEC_2011_VISION 1
+
+#include <l/l_sys_lib.h>
+#include <l/l_sys_io.h>
+#include <l/l_debug.h>
+#include <l_cpp/l_util.h>
+
+#ifdef DEBUGGING
+#include <sstream>
+#include <map> /* oh the irony */
+#endif
+
+#include <qd_cpp/diprique.h>
+
+#include <iosfwd>                       /* std::ostream                  */
+#include <algorithm>                    /* std::sort and several others  */
+#include <numeric>                      /* std::accumulate               */
+#include <limits>                       /* std::numeric_limits           */
+#include <new>
+#include <iterator>
+
+
+namespace kjb
+{
+namespace qd
+{
+
+
+/**
+ * @brief a balanced binary search tree storing subtree sums in each node.
+ *
+ * This is a so-called Red-Black tree, thus it maintains a height of O(log n)
+ * where n is the number of nodes.
+ *
+ * @section redblackinv     Red-Black Tree Invariants
+ * A Red-Black Tree is a binary search tree augmented with one bit of "color"
+ * information associated with each node.  Each node is either red or black.
+ * Keys are stored only in internal nodes, not in the leaves.
+ * The critical properties of a Red-Black tree are these:
+ * @subsection redblacki1   Root and all leaves are black.
+ * @subsection redblacki2   No-Red-Red invariant
+ *                          Every red node has two black children.
+ * @subsection redblacki3   Black-height invariant
+ *                          If p, q are simple descending paths starting from
+ *                          the same node and ending at leaves, then p and q
+ *                          include the same number of black nodes.
+ *
+ * @subsection blackheight  Black height
+ * The final invariant guarantees that the tree has a well-defined value called
+ * the black height, which is the number of black nodes from the root to any
+ * leaf, along a simple path of descent.
+ *
+ * @section rbfeatures Other features of this Red-Black tree
+ *
+ * @subsection rbsubsum Subtree Sums
+ *
+ * The tree not only maintains the Red-Black invariants, but it stores
+ * real-valued keys and stores in each node the sum of the keys in the subtree
+ * rooted at that node.
+ *
+ * @subsection rbsat Satellite data
+ *
+ * This is a class template, actually.  The template is parameterized by one
+ * type, the satellite data that you want to store in each node.
+ * The type for the satellite data must be copyable and it must have a default
+ * constructor, just like the requirements for standard containers.
+ *
+ * @subsection rbmultikey Keys are not constrained to be unique
+ *
+ * This dictionary allows the user to insert using the same key value as
+ * already found in the tree.  Both sets of satellite data will be stored.
+ * An erase operation on a key that exists in the tree multiple times will
+ * cause one of those nodes to be extracted and removed, but it is impossible
+ * to say which one it will be (it does not in general follow a LIFO or FIFO
+ * rule).
+ *
+ * @subsection rbiter Iterators
+ *
+ * The tree also offers a bidirectional iterator and const_iterator.
+ * The tree data structure returns an iterator every time a new record is
+ * created and inserted into the tree.  The user can then read the node (@see
+ * iterator operator*), erase it (@see erase), or alter its key value (@see
+ * rekey_loc) via its iterator.
+ *
+ * The ability to alter the key value of a node is a specific requirement of
+ * Dijkstra's algorithm (and was the motivation for providing this feature).
+ *
+ * @subsection rbnilleaf "Leaves" are empty
+ *
+ * This tree is (in a sense) organized so that both keys and satellite data are
+ * stored in the internal nodes of the tree, not in the leaves.  All leaves are
+ * represented by a single node called "nil."  All nodes also have a parent
+ * pointer, which is not useful for the root node and for the nil node (their
+ * parent pointers should equal zero).  During a deletion, however, the nil
+ * node might have its parent pointer set to the parent of the deleted node.
+ *
+ * @subsection rblinar Linear array representation
+ *
+ * In an attempt to simplify the code, I've made the class store its nodes in a
+ * linear array for dictionaries of size TREE_THRESH or smaller, currently set
+ * at a size of seven nodes.  So this doesn't really build a red-black tree
+ * unless there are eight or more internal nodes to be kept.
+ *
+ * @section rbrefs References
+ *
+ * The Red-Black tree is due to Bayer, Guibas and Sedgewick.  I'm basing my
+ * code on the presentation found in CLR, but I didn't follow their pseudocode.
+ *
+ * CLR = Cormen, Leiserson and Rivest, Introduction to Algorithms, MIT Press.
+ *
+ * The locator pattern is described in
+ * Goodrich and Tamassia, Data Structures and Algorithms in Java, section 6.4,
+ * John Wiley, 1998.
+ */
+template < typename SATELLITE_TYPE, typename Key_tp >
+class Redblack_subtree_sum
+// : public DijkstraPriorityQueue< SATELLITE_TYPE >
+{
+public:
+    typedef SATELLITE_TYPE                                   Sat_tp;
+    //typedef typename DijkstraPriorityQueue< Sat_tp >::Key_tp Key_tp;
+    typedef std::pair< Key_tp, Sat_tp >                      value_type;
+
+    class iterator;
+    class const_iterator;
+
+private:
+    enum
+    {
+        VERBOSE = 0,          ///< flag for verbosity of internal checks
+        TREE_THRESH = 7,      ///< max size for a linear array repr.
+        BLACKHEIGHT_BAD = -1, ///< sentinel val means blackheight undef'd
+    };
+
+    /// @brief basic node of the tree stores key, subtree sum, satellite data
+    struct Node
+    {
+        Key_tp  key,        ///< search key we use to organize the BST
+                sum;        ///< sum of keys in the subtree rooted at this node
+        Sat_tp  sat;        ///< satellite data
+        Node    *left,      ///< pointer to left child
+                *right,     ///< pointer to right child
+                *parent;    ///< pointer to parent
+        bool    is_black;   ///< flag: is this node painted black?
+
+        /// @brief default ctor leaves all fields uninitialized -- danger!
+        Node()
+        {}
+
+        /// @brief basic ctor initializes all fields
+        Node(
+            const Key_tp& kk,
+            const Sat_tp& ss,
+            bool bk,
+            Node* ll = 00,
+            Node* rr = 00
+        )
+        :   key( kk ),
+            sum( kk ),
+            sat( ss ),
+            left( ll ),
+            right( rr ),
+            parent( 00 ),
+            is_black( bk )
+        {}
+
+        /// @brief convenience getter makes the code read a little easier
+        bool is_red() const
+        {
+            return ! is_black;
+        }
+
+        /// @brief order operator is based on key value
+        bool operator<( const Node& other ) const
+        {
+            return key < other.key;
+        }
+
+        /// @brief update sum field assuming left, right are not eq to null
+        void update_sum()
+        {
+            KJB(ASSERT( left && right ));
+            sum = key + left -> sum + right -> sum;
+        }
+
+        /// @brief link to a child node, and it back to this
+        void you_are_my_child( Node* child, Node* Node::* branch )
+        {
+            KJB(ASSERT( child ));
+            this ->* branch = child;
+            child -> parent = this;
+        }
+        /// @brief link to a child node as this node's left child
+        void link_left_child( Node* child )
+        {
+            you_are_my_child( child, & Node::left );
+        }
+
+        /// @brief link to a child node as this node's right child
+        void link_right_child( Node* child )
+        {
+            you_are_my_child( child, & Node::right );
+        }
+
+    };
+
+
+    /**
+     * @brief a sentinel node that has two helpful properties.
+     *
+     * Specifically, it is black and it has a zero sum.
+     * We use this single node to represent all "leaves" in the tree, because
+     * @ref rbnilleaf in the tree.  So any node bearing a key has its left and
+     * right fields point either to other key-bearing nodes or to this node.
+     * By using this node in place of rather than NULL pointers, we can
+     * simplify the code a little bit.
+     *
+     * Except for temporarily during a deletion, the parent node of nil is
+     * always equal to NULL.
+     */
+    Node m_nil;
+
+    /// @brief either the root of the tree or the base of the array
+    Node *root;
+
+    /// @brief number of valid elements in the dictionary
+    unsigned m_size;
+
+#ifdef DEBUGGING
+    /// @brief emit a debug message
+    void chatter( const char* s ) const
+    {
+        if ( VERBOSE ) KJB(TEST_PSE(( "CHATTER: %s\n", s )));
+    }
+
+    /// @brief emit message intended for entering a function (use __func__)
+    void enter( const char* s ) const
+    {
+        if ( VERBOSE ) KJB(TEST_PSE(( "CHATTER: Entering %s\n", s )));
+    }
+
+    /// @brief stub for debug function printing a message and returning false.
+    bool fail( const char *s ) const
+    {
+        chatter( s );
+        return false;
+    }
+
+    /// @brief stub for debug function printing a number and returning false.
+    bool fail( int nnn ) const
+    {
+        KJB(TEST_PSE(( "FAIL: line %d\n", nnn )));
+        return false;
+    }
+
+#else
+    /// @brief stub used for debug
+    void chatter( const char* ) const {}
+
+    /// @brief stub used for debug
+    void enter( const char* ) const {}
+
+    /// @brief stub for function used during debugging
+    bool fail( const char* ) const { return false; }
+
+    /// @brief stub for function used during debugging
+    bool fail( int ) const { return false; }
+#endif
+
+
+
+
+
+
+
+    /// @brief initialize a new node set up to be a parent of nil leaves.
+    Node* new_node( const Key_tp& key, const Sat_tp& sat, bool black )
+    {
+        return new Node( key, sat, black, & m_nil, & m_nil );
+    }
+
+
+    /// @brief initialize a new node by copying an old node
+    Node* new_node( const Node& old_node )
+    {
+        return new_node( old_node.key, old_node.sat, old_node.is_black );
+    }
+
+
+
+
+    /// @brief test whether a node equals this tree's ubiquitous nil node
+    bool is_nil( const Node* ppp ) const
+    {
+        return ppp == & m_nil;
+    }
+
+
+    /// @brief test whether a node does not equal this tree's nil node
+    bool is_not_nil( const Node* ppp ) const
+    {
+        return ppp != & m_nil;
+    }
+
+
+    /// @brief test whether this node is the parent of two nil leaves
+    bool are_both_children_nil( const Node* ppp ) const
+    {
+        return      ppp
+                &&  is_not_nil( ppp )
+                &&  is_nil( ppp -> left )
+                &&  is_nil( ppp -> right );
+    }
+
+
+    /**
+     * @brief verify the @ref redblacki3 while computing @ref blackheight
+     * @param ppp   pointer to root node of subtree to be verified.
+     * @return BLACKHEIGHT_BAD if the @ref redblacki3 is violated.
+     * @return the @ref blackheight otherwise.
+     */
+    int blackheight_in_linear_time( const Node* ppp ) const
+    {
+        KJB(ASSERT( ppp ));
+        if ( is_nil( ppp ) )
+        {
+            return 1;   // because nil is black
+        }
+
+        int bh = blackheight_in_linear_time( ppp -> left );
+
+        if  (       bh != BLACKHEIGHT_BAD
+                &&  bh == blackheight_in_linear_time( ppp -> right )
+            )
+        {
+            return bh + ( ppp -> is_black ? 1 : 0 );
+        }
+
+        return BLACKHEIGHT_BAD;
+    }
+
+
+    /**
+     * @brief release all memory in the subtree rooted at the indicated node.
+     *
+     * Note how we also test for ppp not equal to 0.  I believe that could
+     * happen if std::bad_alloc is thrown.  (Not tested.)
+     */
+    void recursive_destroy( Node* ppp )
+    {
+        if ( ppp && is_not_nil( ppp ) )
+        {
+            recursive_destroy( ppp -> left );
+            recursive_destroy( ppp -> right );
+            delete ppp;
+        }
+    }
+
+
+    /// @brief convert the linear array into a binary search tree structure
+    void make_it_a_real_tree_now()
+    {
+#ifdef DEBUGGING
+        enter( __func__ );
+#endif
+        Node *r[TREE_THRESH], *s = root;
+        size_t j = 0;
+        KJB(ASSERT(s)); r[j++] = s; s = s -> right;
+        KJB(ASSERT(s)); r[j++] = s; s = s -> right;
+        KJB(ASSERT(s)); r[j++] = s; s = s -> right;
+        KJB(ASSERT(s)); r[j++] = s; s = s -> right;
+        KJB(ASSERT(s)); r[j++] = s; s = s -> right;
+        KJB(ASSERT(s)); r[j++] = s; s = s -> right;
+        KJB(ASSERT(s)); r[j++] = s; s = s -> right;
+        KJB(ASSERT(TREE_THRESH == j && 00 == s));
+        
+        // set up internal nodes
+        root = r[3];
+        root -> parent = m_nil.parent = 00;
+        root -> link_left_child(  r[1] );
+        root -> link_right_child( r[5] );
+        r[1] -> link_left_child(  r[0] );
+        r[1] -> link_right_child( r[2] );
+        r[5] -> link_left_child(  r[4] );
+        r[5] -> link_right_child( r[6] );
+
+        // set up leaves
+        r[0].left = r[0].right = r[2].left = r[2].right
+            = r[4].left = r[4].right = r[6].left = r[6].right = & m_nil;
+
+        // update the sums -- the three calls are correct iff the assertion is
+        KJB(ASSERT( 7 == TREE_THRESH ));
+        root -> left -> update_sum();
+        root -> right -> update_sum();
+        root -> update_sum();
+    }
+
+
+
+
+    /**
+     * @brief insert new node into a subtree as an obligate child.
+     *
+     * @pre toparent does not equal NULL.
+     * @pre *toparent does not equal NULL.
+     * @pre n00b does not equal NULL.
+     *
+     * @param[in,out] toparent  pointer to whatever tree pointer links to the
+     *                          potential parent of the new node we want to
+     *                          insert.
+     * @param[in] pn_left       flag true iff the path from parent to child
+     *                          node goes through a left branch.
+     * @param[in] n00b          new node we want to insert in the tree.
+     *
+     * Insert new node *n00b (not currently in the tree) somewhere into the
+     * subtree rooted at the node that *toparent points to.
+     *
+     * Note this function is in mutual induction with insert_gp().
+     * As noted there, we would need a no-throw guarantee here for exception
+     * safety, but I am not yet absolutely certain we can truly guarantee it.
+     *
+     * @return value in set {0,1,2} to indicate potential problems in tree:
+     * - Value 0 means no problems; this subtree satisfies the @ref redblacki2.
+     * - Value 1 means the child of *parent potentially breaks @ref redblacki2.
+     * - Value 2 means *parent potentially breaks @ref redblacki2.
+     */
+    int insert_parent( Node** toparent, bool pn_left, Node* n00b )
+    {
+        KJB(ASSERT( n00b && toparent && *toparent ));
+        Node* parent = *toparent;
+
+        Node* Node::* branch = pn_left ? & Node::left : & Node::right;
+        if ( is_nil( parent ->* branch ) )
+        {
+            KJB(ASSERT( n00b -> is_red() ));
+            parent -> you_are_my_child( n00b, branch );
+            parent -> sum += n00b -> sum;
+            return 1; // red child at depth 2 in subtree rooted at gramp
+        }
+        else
+        {
+#ifdef DEBUGGING
+            int rc = insert_gp( toparent, pn_left, n00b );
+            /*
+             * If rc is zero, that is fine:  it means no-red-red is satisfied.
+             * If rc is 2 or 4, we can handle it:  it means no-red-red might
+             * be unsatisfied, but
+             */
+            KJB(ASSERT( 0 == rc || 2 == rc || 4 == rc ));
+            KJB(ASSERT( rc != 2 || ( parent ->* branch ) -> is_red() ));
+            KJB(ASSERT( rc != 4 || parent -> is_red() ));
+
+            /*
+             * Shift that return value downwards, because it describes the tree
+             * status for a deeper context, but we want to return the tree
+             * status for the current context.
+             */
+            return rc >> 1;
+#else
+            return insert_gp( toparent, pn_left, n00b ) >> 1;
+#endif
+        }
+    }
+
+
+    /**
+     * @brief insert a new node into a subtree as an obligate grandchild.
+     *
+     * "Obligate grandchild" means the new node will have a parent and a
+     * grandparent:  prior to calling rb_balance(), it won't be the root or a
+     * child of the root.
+     *
+     * @param togramp   points to a tree pointer that points to the node that
+     *                  will be either the grandparent of n00b or a more
+     *                  distant ancestor.
+     * @param gp_left   True iff n00b goes into the left subtree of *togramp.
+     * @param n00b      points to a new node not already in the tree.
+     *
+     * @pre togramp must not equal NULL.
+     * @pre *togramp must not equal NULL.
+     * @pre n00b must not equal NULL.
+     *
+     * @return  A value indicating whether (and if so, where) a red node in the
+     *          tree is potentially violating the @ref redblacki2.
+     *          If the value is zero, then the subtree rooted at *gramp
+     *          satisfies the invariant.  A nonzero value indicates a potential
+     *          violation.  We use powers of two to indicate relative height in
+     *          the tree of the red node that is potentially violating.  Thus
+     *          values 4, 2, 1 would indicate *gramp, a child of *gramp, and a
+     *          grandchild of *gramp (following the path to n00b).
+     *          The value of 1 is never returned because it is resolved by a
+     *          call to rb_balance().
+     *          Larger values (2 or 4) indicate a topology that could require
+     *          resolution higher in the tree; so we return and and rely on the
+     *          caller to fix the problem.
+     *
+     * I know it looks stupid to compute gp_left as an argument, but because of
+     * mutual recursion we would end up doing twice the number of key
+     * comparisons if we did it inside the function.
+     *
+     * For exception safety, this needs a no-throw guarantee, and I think the
+     * code achieves it, but I am not absolutely certain.
+     */
+    int insert_gp( Node** togramp, bool gp_left, Node* n00b )
+    {
+        KJB(ASSERT( n00b && togramp && *togramp ));
+
+        Node    *gramp = *togramp,
+                **toparent = gp_left ? & gramp -> left : & gramp -> right;
+
+        gramp -> sum += n00b -> sum;
+
+        KJB(ASSERT( toparent ));
+        Node *parent = *toparent;
+
+        KJB(ASSERT( parent ));
+        bool pn_left = *n00b < *parent;
+
+        /*
+         * The semantics of the value in rc and of the value returned by this
+         * function are the same.  This is important, pay attention!
+         *
+         * rc tells us about a red node that might be the child of a red node,
+         * i.e., a potential violation of the @ref redblacki2.
+         * The possible values are in the set {0, 1, 2}.
+         *
+         * If 0==rc, then the invariant is satisfied in this subtree.
+         * If 1==rc, then new node n00b is red; must check *parent.
+         * If 2==rc, then *parent is newly painted red; must check *gramp.
+         *
+         * In like wise, the value 4 would indicate *gramp is newly painted
+         * red (see below).  Thus the value in rc and the return value below
+         * have consistent semantics.
+         */
+        int rc = insert_parent( toparent, pn_left, n00b );
+        KJB(ASSERT( 0 == rc || 1 == rc || 2 == rc ));
+
+        /*
+         * The return value below is in the set {0, 2, 4}.
+         * Values 0 and 2 have the same semantics as 'rc' above.
+         * Value 4 means *gramp is newly painted red and the caller must
+         * check its parent.
+         */
+        return rb_balance( togramp, gp_left, pn_left, rc );
+    }
+
+
+    /// @brief convenience fun. returns a Node field pointer the "other" way.
+    Node* Node::* opposite_direction( Node* Node::* some_direction ) const
+    {
+        return some_direction == & Node::left ? & Node::right : & Node::left;
+    }
+
+
+    /**
+     * @brief straighten a zigzagged branch of the tree by swapping two nodes
+     *
+     * @param gramp grandparent node, G in diagram below.
+     * @param p_branch  Node branch that indicates the direction from
+     *                  grandparent to the parent.
+     *
+     * Diagram assumes *p_branch is Node::left; diagram would be mirror image
+     * otherwise.
+     *
+     * Key:
+     * - G = gramp
+     * - B = oldbarent I mean parent
+     * - H = oldcHild
+     * - U = uncle of H (could be nil)
+     * - a = min_tree (could be nil)
+     * - D = meD_tree (could be nil)
+     * - k = max_tree (could be nil)
+     * - + = updated subset-sum
+     *
+     * Before, with ancestors above descendants, keys ordered left to right:
+     * @code
+     *         G
+     *    B         U
+     *  a   H
+     *     D k
+     * @endcode
+     *
+     * After:
+     * @code
+     *        G
+     *    H+      U
+     *  B+  k
+     * a D
+     * @endcode
+     */
+    void unzigzag( Node* gramp, Node* Node::* p_branch )
+    {
+        Node* Node::* u_branch = opposite_direction( p_branch );//towards uncle
+
+        KJB(ASSERT( gramp ));
+        KJB(ASSERT( is_not_nil( gramp ->* p_branch ) ));
+        KJB(ASSERT( is_not_nil( gramp ->* p_branch ->* u_branch ) ));
+
+        Node    *oldparent = gramp ->* p_branch,
+                *oldchild = oldparent ->* u_branch,
+                *med_tree = oldchild ->* p_branch; // could be nil
+
+        gramp -> you_are_my_child( oldchild, p_branch );
+        oldchild -> you_are_my_child( oldparent, p_branch );
+
+        oldparent ->* u_branch = med_tree;
+        if ( is_not_nil( med_tree ) )
+        {
+            med_tree -> parent = oldparent;
+        }
+
+        /*
+         * Now "oldparent" is the child of "oldchild" -- it's freaky friday.
+         */
+        oldparent -> update_sum();
+        oldchild -> update_sum();
+    }
+
+
+    /**
+     * @brief rotate tree with black gramp and its red offspring
+     *
+     * @param togramp   points to whatever tree pointer points to grandparent,
+     *                  G in diagram below.  Diagram assumes p_branch indicates
+     *                  the left pointer field; diagram would be its mirror
+     *                  image if p_branch indicates the right pointer field.
+     * @param p_branch  Node branch that indicates the direction from
+     *                  grandparent to the parent (C in diagram below).
+     *
+     * @pre Parent node (C in diagram below) is not nil.
+     *
+     * @post If parent node C has a non-nil child (D in diagram) in a zig-zag
+     *       configuration (i.e., regarding nodes C and D, one is a left child
+     *       and one is a right child), THEN, afterwards, D becomes a child of
+     *       G and switches direction (if it was a right child before the call,
+     *       it is a left child afterwards, or vice versa).
+     *
+     * Key:
+     * - G = oldgramp
+     * - C = oldparent
+     * - D = medmed_tree child (could be nil)
+     * - + = updated subset-sum
+     *
+     * Configuration before rotation is shown below.  Left-to-right spacing
+     * indicates key order, and ancestors are above descendants.
+     * @code
+     *         G
+     *    C         U
+     *       D
+     * @endcode
+     *
+     * After rotation:
+     * @code
+     *         C+
+     *              G+
+     *           D     U
+     * @endcode
+     */
+    void rotate( Node** togramp, Node* Node::* p_branch )
+    {
+        KJB(ASSERT( togramp && *togramp ));
+
+        Node* Node::* u_branch = opposite_direction( p_branch ); // to uncle
+        Node* oldgramp = *togramp;
+
+        KJB(ASSERT( is_not_nil( oldgramp ) ));
+        KJB(ASSERT( is_not_nil( oldgramp ->* p_branch ) ));
+
+        Node    *oldparent = oldgramp ->* p_branch,
+                *medmed_tree = oldparent ->* u_branch;
+
+        KJB(ASSERT( oldparent -> parent == oldgramp ));
+
+        // rotate the descendant relationships
+        *togramp = oldparent;
+
+        // update the ancestor relationships
+        oldparent -> parent = oldgramp -> parent;
+        oldparent -> you_are_my_child( oldgramp, u_branch );
+
+        oldgramp ->* p_branch = medmed_tree;
+        if ( is_not_nil( medmed_tree ) )
+        {
+            medmed_tree -> parent = oldgramp;
+        }
+
+        /*
+         * Now "oldparent" and "oldgramp" have swapped parent-child statuses.
+         * Also they have to swap colors.
+         * The former sibling of "oldparent" is still the child of "oldgramp"
+         * and so it is now become a grandchild of "oldparent."  IF ANY.
+         */
+        std::swap( oldgramp -> is_black, oldparent -> is_black );
+
+        oldgramp -> update_sum();
+        oldparent -> update_sum();
+    }
+
+
+    /**
+     * @brief maybe restore the @ref redblacki2
+     *
+     * @param[in,out] togramp   Points to whatever tree pointer points to the
+     *                          grandparent node of the newest child.
+     * @param[in] gp_left       Flag set true iff the path from grandparent to
+     *                          parent goes through the left branch.
+     * @param[in] pn_left       Flag set true iff the path from parent to new
+     *                          child goes through the left branch.
+     * @param[in] red_child     A bitmap that indicates how the color invariant
+     *                          needs to be repaired in the tree (see below).
+     *
+     * @return a bitmap indicating where, if anywhere, the tree's color
+     * invariants need to be fixed.  If red_child is 1, that means that the
+     * grandchild of **togramp indicated
+     * by gp_left and pn_left is potentially violating @ref redblacki2.
+     * If so, this function will resolve that node's violation.  In that case
+     * it will return the value 0 or 4.
+     * - The return value is 0 under one of two conditions:
+     *  - we determine that there is no actual violation (parent is black).
+     *  - violation is actual but we resolve it via one or two rotations.
+     * - The return value is 4 (= 1<<2) when the violation is actual but we
+     *      resolve it in part by turning the grandparent red (which itself
+     *      could cause a violation that must be resolved higher in the tree).
+     *
+     * If red_child is not equal to 1, we immediately return the value in
+     * red_child without altering the tree.
+     */
+    int rb_balance( Node** togramp, bool gp_left, bool pn_left, int red_child )
+    {
+        /*
+         * On input, red_child is...
+         * 3 if n00b is newly red and that fact must be handled.
+         * 2 if parent is newly red and that fact must be handled.
+         * 1 if gramp is newly red and that fact must be handled.
+         * 0 if no one's redness must be handled.
+         */
+        if ( red_child != 1 )
+        {
+            return red_child;
+        }
+
+        KJB(ASSERT( togramp && *togramp ));
+
+        Node* Node::* gp_branch = gp_left ? & Node::left : & Node::right;
+
+        Node    *gramp = *togramp,
+                *parent = gramp ->* gp_branch,
+                *uncle = gramp ->* opposite_direction( gp_branch );
+
+        KJB(ASSERT( parent ));
+        if ( parent -> is_black )
+        {
+            return 0;   // if parent is black then a red child is not a problem
+        }
+        KJB(ASSERT( gramp -> is_black )); //parent and gramp cannot both be red
+
+        if ( uncle -> is_black ) // also, uncle could be "nil" (black).
+        {
+            // unzigzag, if necessary
+            if ( gp_left != pn_left )
+            {
+                unzigzag( gramp, gp_branch );
+            }
+            // rotate like alexander the great
+            rotate( togramp, gp_branch );
+            KJB(ASSERT( 00 == m_nil.parent ));
+            return 0;
+        }
+
+        KJB(ASSERT( is_not_nil( uncle ) ));
+        uncle -> is_black = parent -> is_black = true;
+        gramp -> is_black = false;
+        return 1 << 2;  // now gramp is a red child 2 levels higher
+    }
+
+
+#ifdef DEBUGGING
+    /// @brief print the indentation of a debug print
+    void dbp_indent( int depth, std::ostream& os ) const
+    {
+        static const char* INDENT = "\t";
+        for ( int iii = 0; iii < depth; ++iii )
+        {
+            os << INDENT;
+        }
+    }
+
+
+    /// @brief during a debug print, this prints a subtree branch
+    void db_print_child(
+        const Node* ppp,
+        int depth,
+        Node* Node::* branchpp,
+        const char* branchss,
+        std::ostream& os
+    )   const
+    {
+        dbp_indent( depth, os );
+        os << branchss << " subtree:";
+        if ( is_nil( ppp ->* branchpp ) )
+        {
+            os << " NIL\n";
+        }
+        else
+        {
+            if ( ppp != root && ( ppp ->* branchpp ) -> parent != ppp )
+            {
+                os << " BROKEN!!!! ";
+            }
+            os << '\n';
+            recursive_db_print( ppp ->* branchpp, 1 + depth, os );
+        }
+    }
+
+
+    /// @brief during a debug print, this prints a node and its subtree
+    void recursive_db_print(
+        const Node* ppp,
+        int depth,
+        std::ostream& os
+    ) const
+    {
+        if ( is_nil( ppp ) )
+        {
+            return;
+        }
+
+        dbp_indent( depth, os );
+        os << "key=" << ppp -> key << ", sum=" << ppp -> sum
+            << ", color=" << ( ppp -> is_black ? "BLACK" : "red" )
+            << ", sat=" << ppp -> sat;
+
+        if ( ! dictionary_is_small_linear_array() )
+        {
+            os << ", blackheight=" << blackheight_in_linear_time( ppp );
+        }
+        else if ( ! are_both_children_nil( ppp ) )
+        {
+            os << ", WARNING: children are not nil";
+        }
+
+        if ( are_both_children_nil( ppp ) )
+        {
+            os << '\n';
+            return;
+        }
+        os << ", left=" << ppp -> left << ", right=" << ppp -> right << '\n';
+
+        db_print_child( ppp, depth, & Node::left, "Left", os );
+        db_print_child( ppp, depth, & Node::right, "Right", os );
+    }
+#endif
+
+
+    /// @brief scan entire tree to see if any red node has a red child
+    bool red_node_has_red_child_in_linear_time( const Node* ppp ) const
+    {
+        KJB(ASSERT( ppp ));
+        if ( is_nil( ppp ) || are_both_children_nil( ppp ) )
+        {
+            return false;
+        }
+        if ( ppp -> is_red() && ppp -> left -> is_red() )
+        {
+            return true;
+        }
+        if ( ppp -> is_red() && ppp -> right -> is_red() )
+        {
+            return true;
+        }
+        return      red_node_has_red_child_in_linear_time( ppp -> left )
+                ||  red_node_has_red_child_in_linear_time( ppp -> right );
+    }
+
+
+    /// @brief scan entire tree to verify that the sums are exactly correct
+    bool sums_are_correct_in_linear_time( const Node* ppp ) const
+    {
+        KJB(ASSERT( ppp ));
+        if ( is_nil( ppp ) ) return true;
+        Key_tp sts = ppp -> key;
+        if ( is_not_nil( ppp -> left ) ) sts += ppp -> left -> sum;
+        if ( is_not_nil( ppp -> right ) ) sts += ppp -> right -> sum;
+#ifdef DEBUGGING
+        if ( sts != ppp -> sum )
+        {
+            chatter( "internal sums are incorrect" );
+        }
+#endif
+        return      sts == ppp -> sum
+                &&  sums_are_correct_in_linear_time( ppp -> left )
+                &&  sums_are_correct_in_linear_time( ppp -> right );
+    }
+
+
+    /// @brief scan tree and see if sums are fairly close to correct
+    bool sums_are_close_enough_in_linear_time( const Node* ppp ) const
+    {
+        const Key_tp SMALL = 1e-3;
+        KJB(ASSERT( ppp ));
+        if ( is_nil( ppp ) )
+            return true;
+
+        Key_tp sts = ppp -> key;
+        if ( is_not_nil( ppp -> left ) ) sts += ppp -> left -> sum;
+        if ( is_not_nil( ppp -> right ) ) sts += ppp -> right -> sum;
+
+        Key_tp rrr = fabs( sts - ppp -> sum )/(fabs( sts )+fabs( ppp -> sum ));
+
+#ifdef DEBUGGING
+        if ( !( sts == ppp -> sum || rrr < SMALL ) )
+        {
+            chatter( "internal sums are inadequately accurate" );
+            std::ostringstream ess;
+            ess << "rrr=" <<rrr <<" which exceeds SMALL=" << SMALL << '\n';
+            chatter( ess.str().c_str() );
+            return fail( __LINE__ );
+        }
+#endif
+
+        return      ( sts == ppp -> sum || rrr < SMALL )
+                &&  sums_are_close_enough_in_linear_time( ppp -> left )
+                &&  sums_are_close_enough_in_linear_time( ppp -> right );
+    }
+
+
+    /**
+     * @brief search through the linear array (used for tiny dictionaries).
+     *
+     * @param[in] qkey      Query key for which to search
+     * @param[out] sat_out  Optional ptr to object where satellite data can
+     *                      be copied (clobberly) in case the key is found.
+     *
+     * @return pointer to a node iff the query key is found, otherwise null.
+     *
+     * Remember this dictionary does not require keys to be unique, and a
+     * search for a key used more than once could return any of the records
+     * using that key: the order is undefined.
+     */
+    Node* linear_search(
+        const Key_tp& qkey,
+        Sat_tp* sat_out
+    )
+    {
+#ifdef DEBUGGING
+        enter( __func__ );
+#endif
+#if 0
+        for ( size_t iii = 0; iii < m_size; ++iii )
+        {
+            if ( root[ iii ].key == qkey )
+            {
+                if ( sat_out ) *sat_out = root[ iii ].sat;
+                if ( loc_out ) *loc_out = root[ iii ].locator;
+                if ( ix ) *ix = iii;
+                KJB(ASSERT( location_list.is_good_here( root + iii ) ));
+                return true;
+            }
+        }
+#else
+        for (Node* n = root; n; n = n -> right)
+        {
+            if (qkey == n -> key)
+            {
+                if ( sat_out ) *sat_out = n -> sat;
+                return n;
+            }
+        }
+#endif
+        return 00;
+    }
+
+
+    /// @brief search through the tree structure for a key
+    Node* tree_search(
+        const Key_tp& qkey,
+        Sat_tp* sat_out,
+        Node* ppp
+    )
+    {
+#ifdef DEBUGGING
+        enter( __func__ );
+#endif
+        KJB(ASSERT( ppp ));
+        if ( is_nil( ppp ) )
+        {
+            return 00;
+        }
+        if ( qkey == ppp -> key )
+        {
+            if ( sat_out ) *sat_out = ppp -> sat;
+            return ppp;
+        }
+        Node* Node::* branch= qkey < ppp -> key ? & Node::left : & Node::right;
+        return tree_search( qkey, sat_out, ppp ->* branch );
+    }
+
+
+    /**
+     * @brief collapse a subtree structure into a linked list, inorder
+     * @param tree    Root node of subtree to scan (inorder) into list
+     *
+     * @return pointer to first and last node in the array
+     *
+     * Nil leaves do not get written into dest, naturally.
+     */
+    std::pair< Node*, Node* > recursive_condense( Node* tree )
+    {
+        KJB(ASSERT( tree ));
+        std::pair< Node*, Node* > nn( std::make_pair(tree, tree) );
+
+        if ( is_nil( tree -> left ) )
+        {
+            tree -> parent = 00;
+        }
+        else
+        {
+            std::pair< Node*, Node* > ll = recursive_condense( tree -> left );
+            nn.first = ll.first;
+            // link *ll.second and *tree as left-right neighbors
+            ll.second -> right = tree;
+            tree -> parent = ll.second;
+        }
+        tree -> left = 00;
+        tree -> blk = true;
+
+        if ( is_nil( tree -> right ) )
+        {
+            tree -> right = 00;
+        }
+        else
+        {
+            std::pair< Node*, Node* > rr = recursive_condense( tree -> right );
+            nn.second = rr.second;
+            // link *tree and *rr.first as left-right neighbors
+            tree -> right = rr.first;
+            rr.first -> parent = tree;
+        }
+        return nn;
+    }
+
+
+
+
+    /// @brief get pointer to the pointer linking to the indicated non-nil node
+    Node** to_parent_link( Node* ppp )
+    {
+        if ( ppp == root )
+        {
+            return & root;
+        }
+
+        KJB(ASSERT( ppp && is_not_nil( ppp ) ));
+
+        Node* parent = ppp -> parent;
+        KJB(ASSERT( parent && is_not_nil( parent ) ));
+        KJB(ASSERT( parent -> right == ppp || parent -> left == ppp ));
+
+        return parent -> left == ppp ? & parent -> left : & parent -> right;
+    }
+
+
+    /// @brief get a Node field indicating how parent points to a non-nil node
+    Node* Node::* parent_branch_to_me( Node* ppp ) const
+    {
+        KJB(ASSERT( ppp && ppp != root /* && is_not_nil( ppp ) */ ));
+        KJB(ASSERT( ppp -> parent ));
+        KJB(ASSERT(     ppp -> parent -> right == ppp
+                    ||  ppp -> parent -> left == ppp  ));
+        return ppp -> parent -> right == ppp ? & Node::right : & Node::left;
+    }
+
+
+    /**
+     * @brief remove the indicated node from between its parent and child.
+     *
+     * Roughly speaking, *ppp is like the middle node of a 3-node linked list.
+     * We splice the linked list so the parent of *ppp and the child of *ppp
+     * are connected, and they lose their attachments to middle node *ppp.
+     * The child of *ppp could be the nil node.
+     *
+     * @param ppp       pointer to the node to be detached from the tree
+     * @param par_br    Node field pointer indicating which way the parent node
+     *                  points to *ppp.
+     * @param child_br  Node field pointer indicating which way the child node
+     *                  descends from node *ppp.
+     *
+     * @pre the number of non-nil children of *ppp must be one or none.
+     * @pre node *ppp must have a parent node (it is not the root).
+     * @return ppp -- the node itself is not touched
+     * @post parent node of ppp points to the indicated child of ppp via its
+     * *par_br branch.
+     *
+     * *** NEXT TWO LINES VERY IMPORTANT! ***
+     * @post the child node has its parent pointer set to the parent of *ppp,
+     * regardless of whether the child is nil!  That breaks a common invariant!
+     */
+    Node* splice_me( Node* ppp, Node* Node::* par_br, Node* Node::* child_br )
+    {
+        KJB(ASSERT( ppp && ppp != root ));
+
+        Node    *child_p = ppp ->* child_br,
+                *par_p = ppp -> parent;
+        KJB(ASSERT( par_p && is_not_nil( par_p ) ));
+        KJB(ASSERT( ppp == par_p ->* par_br ));
+        KJB(ASSERT( is_nil( ppp ->* opposite_direction( child_br ) ) ));
+        KJB(ASSERT( child_p ));
+        KJB(ASSERT( is_nil( child_p ) || ppp == child_p -> parent ));
+        KJB(ASSERT( 00 == m_nil.parent ));
+
+        /*
+         * NOTE WELL:  we do the following EVEN WHEN CHILD IS THE NIL NODE!!
+         * That's because it is the easiest way to remember the bereaved
+         * parent node, an entity we often must manipulate during a deletion.
+         * The alternative was something like the following:
+         *
+                par_p ->* par_br = child_p;
+                if ( is_not_nil( child_p ) )
+                    child_p -> parent = par_p;
+        */
+        par_p -> you_are_my_child( child_p, par_br );
+
+        KJB(ASSERT( (ppp ->* child_br) -> parent == ppp -> parent ));
+        KJB(ASSERT( ppp -> parent ->* par_br == ppp ->* child_br ));
+
+        return ppp;
+    }
+
+
+    /**
+     * @brief like splice_me() but also works for root, and figures out par_br
+     *
+     * *** NEXT TWO LINES VERY IMPORTANT!  Inherited from splice_me().  ***
+     * @post the child node has its parent pointer set to the parent of *ppp,
+     * regardless of whether the child is nil!  That breaks a common invariant!
+     */
+    Node* semiauto_splice( Node* ppp, Node* Node::* child_br )
+    {
+        if ( ppp == root )
+        {
+            KJB(ASSERT( is_nil( ppp ->* opposite_direction( child_br ) ) ));
+            KJB(ASSERT(     is_nil( ppp ->* child_br )
+                        ||  ppp == ( ppp ->* child_br ) -> parent ));
+            root = ppp ->* child_br;
+            return ppp;
+        }
+        return splice_me( ppp, parent_branch_to_me( ppp ), child_br );
+    }
+
+
+    /**
+     * @brief like semiauto_splice() but figures out child_br
+     * @param[in] ppp       pointer to node to be spliced out, if possible.
+     * @param[out] tochild  indicates a pointer into which we write a pointer
+     *                      to the "bereaved child" formerly a child of ppp; if
+     *                      ppp has one non-nil child, that one is the output.
+     *                      If both children are nil, this returns the address
+     *                      of the nil node, whose parent pointer is set to
+     *                      the "bereaved parent," formerly parent of *ppp.
+     * @return pointer to indicated node, or ZERO if the node has two children.
+     *
+     * *** NEXT TWO LINES VERY IMPORTANT!  Inherited from splice_me().  ***
+     * @post the child node has its parent pointer set to the parent of *ppp,
+     * regardless of whether the child is nil!  That breaks a common invariant!
+     */
+    Node* fully_auto_splice( Node* ppp, Node ** tochild )
+    {
+        if ( is_nil( ppp -> left ) )
+        {
+            *tochild = ppp -> right;
+            return semiauto_splice( ppp, & Node::right );
+        }
+        if ( is_nil( ppp -> right ) )
+        {
+            *tochild = ppp -> left;
+            return semiauto_splice( ppp, & Node::left );
+        }
+        return 00;  // cannot splice ppp because it has two children
+    }
+
+
+    /**
+     * "Target" is difficult to eliminate (it has two children).
+     *
+     * So we find a single-child subordinate (vic) to take its place.
+     * Node vic loses his stupid weakling single child and gets two superior
+     * replacement children (the ex-children of target).
+     *
+     * Also the subtree-sums must
+     * be decreased by vic->key between target and vic.
+     *
+     * @param[in] target    Node we wish to eliminate
+     * @param[out] to_child Indicates a pointer to the "bereaved child" node,
+     *                      i.e., previous value of vic->right.
+     *
+     * @return target, which is now deletable.
+     *
+     * *** NEXT TWO LINES VERY IMPORTANT!  Inherited from splice_me().  ***
+     * @post node *to_child has its parent pointer set to the former parent of
+     *       vic, even if the child is nil!  That breaks a common invariant!
+     */
+    Node* supplant_target( Node* target, Node** to_child )
+    {
+#ifdef DEBUGGING
+        enter( __func__ );
+#endif
+        KJB(ASSERT( target && is_not_nil( target ) ));
+        KJB(ASSERT( is_not_nil( target -> right ) ));
+        KJB(ASSERT( 00 == m_nil.parent ));
+
+        // must find victim (vic) -- min value of right subtree
+        Node *vic = target -> right;
+        while ( is_not_nil( vic -> left ) )
+        {
+            vic = vic -> left;
+        }
+
+        KJB(ASSERT( is_not_nil( vic ) && is_nil( vic -> left ) ));
+
+#if 0
+        /*
+         * Now target assumes the identity of victim, by taking its key, its
+         * satellite value, its locator, and its location_list entry.
+         */
+        target -> key = vic -> key;
+        target -> sat = vic -> sat;
+        Loc_tp &TaLo( target -> locator ), &ViLo( vic -> locator );
+        std::swap( location_list[ TaLo ], location_list[ ViLo ] );
+        std::swap( TaLo, ViLo );
+
+        // update subtree-sums between target, victim (i.e., retrace the path).
+        for ( Node* ppp = target -> right; ppp != vic; ppp = ppp -> left )
+        {
+            KJB(ASSERT( is_not_nil( ppp ) ));
+            ppp -> sum -= vic -> key;
+        }
+
+        // splice out vic; vic's parent vp claims vic's right child (if any).
+        *to_child = vic -> right;
+        return semiauto_splice( vic, & Node::right );
+#else
+        KJB(ASSERT( is_not_nil( target -> left ) ));
+
+        // vic will supplant target, adopting its children and being adopted
+        // by target's parent.  target will be dispossessed and shunned.
+
+        // Deduct vic key from those nearby superiors soon to be subordinates.
+        KJB(ASSERT( vic -> parent && is_not_nil( vic -> parent ) ));
+        for (Node* vp = vic -> parent; vp != target; vp = vp -> parent)
+        { 
+            vp -> sum -= vic -> key;
+        }
+
+        // Splice out vic; vic's parent claims vic's right child (if any).
+        // vic_child.parent points back at vic_parent too, even if child is nil
+        KJB(ASSERT( to_child ));
+        *to_child = vic -> right;
+        Node *vic2 = semiauto_splice( vic, & Node::right );
+        KJB(ASSERT( vic2 == vic ));
+
+        // Plant vic in place of target
+        std::swap(vic -> is_black, target -> is_black);
+        vic -> link_left_child( target -> left );
+        vic -> link_right_child( target -> right );
+        vic -> update_sum();
+        vic -> parent = target -> parent;
+        if (root == target)
+        {
+            // vic becomes Adam, the root, and has no parent.
+            KJB(ASSERT(00 == target -> parent));
+            root = vic;
+        }
+        else
+        {
+            // target's (once) parent adopts vic, disavowing target.
+            Node* Node::* b = parent_branch_to_me( vic );
+            target -> parent -> you_are_my_child( vic, b );
+        }
+
+        return target;
+#endif
+    }
+
+
+    /// @brief resolve "double" blackness on node xblack (could be the nil obj)
+    void resolve_double_black( Node* xblack )
+    {
+#ifdef DEBUGGING
+        enter( __func__ );
+#endif
+        KJB(ASSERT( xblack ));
+        KJB(ASSERT( m_nil.is_black ));
+        KJB(ASSERT( root && is_not_nil( root ) ));
+
+        if ( xblack -> is_red() )
+        {
+            // whoa, this is too easy!
+            xblack -> is_black = true;
+            return;
+        }
+
+        if ( xblack == root )
+        {
+            return; // ignore extra black at root b/c root has no sibling
+        }
+
+        // Let "me" = xblack.  Since I am black, I must have a sibling.
+        Node* Node::* xb_br = parent_branch_to_me( xblack );
+        Node* Node::* sib_br = opposite_direction( xb_br );
+        Node* sib = xblack -> parent ->* sib_br;
+        KJB(ASSERT( sib && is_not_nil( sib ) )); // CLRS page 290
+
+        // If my sibling is red, it can be rotated to become my (black) parent.
+        if ( sib -> is_red() )
+        {
+            return case_of_the_red_sibling(
+                                            xblack,
+                                            xb_br
+#ifdef DEBUGGING
+                                            ,sib
+#endif
+                                        );
+        }
+
+        Node    *near_nephew = sib ->* xb_br,
+                *far_nephew = sib ->* sib_br;
+        KJB(ASSERT( far_nephew && near_nephew )); // could be nil
+
+        // Resolution depends on my nephews (possibly nil).  Tail recursion:
+        if ( far_nephew -> is_red() )
+        {
+            return case_of_the_far_red_nephew( sib, xb_br );
+        }
+
+        if ( near_nephew -> is_black )
+        {
+            return case_of_the_black_sib_and_nephews( sib );
+        }
+
+        return case_of_the_near_red_nephew( xblack, sib, xb_br );
+    }
+
+
+    /**
+      @brief case of the three black relatives (sibling and sibling's children)
+     *
+     * @param sib   pointer to sibling of the extra-black node
+     *
+     * We handle this by painting the sib red, so that the extra-blackness
+     * problem floats a level higher in the tree.  That doesn't solve the
+     * problem but it gets us a step closer to resolution.
+     * You say, "you can't do that -- parent might be red?"  That's a fair
+     * point but we will handle that contingency when we call
+     * resolve_double_black() again.
+     */
+    void case_of_the_black_sib_and_nephews( Node* sib )
+    {
+#ifdef DEBUGGING
+        enter( __func__ );
+#endif
+        KJB(ASSERT( sib && is_not_nil( sib ) && sib -> is_black ));
+        KJB(ASSERT( sib -> left && sib -> left -> is_black ));
+        KJB(ASSERT( sib -> right && sib -> right -> is_black ));
+        KJB(ASSERT( m_nil.is_black ));
+        sib -> is_black = false;
+        m_nil.parent = 00;
+
+        return resolve_double_black( sib -> parent );
+    }
+
+
+    /**
+     * Light at the end of the tunnel!   Thanks to the far red nephew, we
+     * can shift (black) sibling into the path to the xblack, satisfying the
+     * extra black requirement, and red nephew can simply be painted black to
+     * make up for the loss of its parent.
+     *
+     * @param oldsib    sibling of the node with the extra black value
+     *                  It is called "oldsib" because of the postcondition.
+     * @param xb_br     Node field pointer indicating direction from the parent
+     *                  of the extra-black node to the extra-black node (not
+     *                  the sibling).
+     *
+     * @post the extra-black node has a new grandparent, its former sibling.
+     * @post the extra-black node has a new uncle, its formerly red nephew.
+     * @post the formerly red nephew is painted black so its blackheight does
+     *       not decrease (despite the loss of its grandparent).
+     * @post the former sibling and its parent swap colors.
+     * @post the nil.parent pointer, which might have been temporarily allowed
+     *      to point to a node, is (if so) restored to its usual zero value.
+     */
+    void case_of_the_far_red_nephew( Node* oldsib, Node* Node::* xb_br )
+    {
+#ifdef DEBUGGING
+        enter( __func__ );
+#endif
+        KJB(ASSERT( m_nil.is_black ));
+
+        Node* Node::* sib_br = opposite_direction( xb_br );
+
+        KJB(ASSERT( oldsib ));
+
+        Node    *oldparent = oldsib -> parent,
+                *old_far_nephew = oldsib ->* sib_br;
+        KJB(ASSERT( oldparent && is_not_nil( oldparent ) ));
+        KJB(ASSERT( oldsib == oldparent ->* sib_br ));
+        KJB(ASSERT( oldsib -> is_black ));
+        KJB(ASSERT( old_far_nephew -> is_red() ));
+
+        rotate( to_parent_link( oldparent ), sib_br );
+        old_far_nephew -> is_black = true;
+        m_nil.parent = 00;
+    }
+
+
+    /**
+     * @brief convert "only a near red nephew" case to "far red nephew" case.
+     * @param xblack    points to node with "extra-black" status
+     * @param oldsib    points to sibling node of *xblack, at first
+     * @param xb_br     Node field pointer indicates direction from the parent
+     *                  node of *xblack to *xblack.
+     * @pre xblack has a non-nil sibling, oldsib
+     * @pre oldsib has two non-nil children (nephews to xblack)
+     * @pre both nephews are non nil, and they are different colors
+     * @pre nephew nearer to xblack is red.
+     * @post previously red nephew becomes future black sibling to xblack
+     * @post previous sibling become future far red nephew to xblack
+     * @post previous far black nephew becomes child to future far red nephew.
+     *
+     * The last step of this function is to call case_of_the_far_red_nephew().
+     */
+    void case_of_the_near_red_nephew(
+        Node* xblack,
+        Node* oldsib,
+        Node* Node::* xb_br
+    )
+    {
+#ifdef DEBUGGING
+        enter( __func__ );
+#endif
+        KJB(ASSERT( xblack -> parent == oldsib -> parent ));
+        KJB(ASSERT( oldsib && is_not_nil( oldsib ) && oldsib -> is_black ));
+        KJB(ASSERT( oldsib -> left && oldsib -> right ));
+        KJB(ASSERT( m_nil.is_black ));
+
+        Node    *old_red_nef = ( oldsib ->* xb_br ),
+                *parent = xblack -> parent;
+
+        // far nephew must be black too!  only the near nephew is red.
+        KJB(ASSERT( ( oldsib ->* opposite_direction( xb_br ) ) -> is_black ));
+        KJB(ASSERT( old_red_nef -> is_red() ));
+
+        /* unzigzag xblack's parent,sib,near-nephew, make them swap colors.
+         * oldsib becomes new far-nephew.  old near-nephew becomes new sib.
+         *
+         * Also, unzigzag likely corrupts xblack -> parent if *xblack is nil.
+         * However, I think we have no need to care about that anymore.
+         */
+        unzigzag( parent, opposite_direction( xb_br ) );
+        m_nil.parent = 00;
+        oldsib -> is_black = false;
+
+        Node *& new_blk_sib = old_red_nef;  // alias for clarity
+        new_blk_sib -> is_black = true;
+
+        // old_red_nef has become the new black sibling of xblack
+        KJB(ASSERT( new_blk_sib == parent ->* opposite_direction( xb_br ) ));
+        KJB(ASSERT( oldsib == new_blk_sib ->* opposite_direction( xb_br ) ));
+        return case_of_the_far_red_nephew( new_blk_sib, xb_br );
+    }
+
+
+    /**
+     * This case actually puts the extra-black pointer deeper in the tree,
+     * and lengthens the trace by 1.  However, it can be proved that if you get
+     * here, you only call resolve_double_black() one more time before you
+     * return.
+     * @param xblack    points to node (possibly nil) with extra-black status
+     *                  If xblack points to the nil node, we suspend the usual
+     *                  invariant "nil.parent==0" and require that
+     *                  xblack->parent point to the specific parent of the node
+     *                  with extra-black status.  In other words, we let nil
+     *                  behave like a "real" node, temporarily.
+     * @param xb_br     Node field pointer indicating the direction of descent
+     *                  from the parent of *xblack to *xblack.
+     * @param sib       points to sibling node of *xblack; it cannot be nil
+     *                  because its parent would have an undefined blackheight.
+     *
+     * @pre As stated, xblack->parent must indicate the parent node of the node
+     * with extra-black status, EVEN IF xblack indicates the nil node!  This is
+     * contrary to the usual invariants of the tree.
+     *
+     * @post nil.parent==0 (restoring our usual invariants).
+     */
+    void case_of_the_red_sibling(
+        Node* xblack,
+        Node* Node::* xb_br
+#ifdef DEBUGGING
+        ,Node* sib
+#endif
+    )
+    {
+#ifdef DEBUGGING
+        enter( __func__ );
+        KJB(ASSERT( m_nil.is_black ));
+        KJB(ASSERT( sib && is_not_nil( sib ) ));
+        KJB(ASSERT( xblack -> parent == sib -> parent ));
+        KJB(ASSERT( xblack -> is_black &&  sib -> is_red() ));
+        KJB(ASSERT( xblack != root ));
+#endif
+
+        Node* xb_parent = xblack -> parent;
+
+        Node* Node::* sib_br = opposite_direction( xb_br );
+        rotate( to_parent_link( xb_parent ), sib_br );
+        m_nil.parent = 00;
+
+        // the following can be useful if xblack is nil, otherwise is benign:
+        xblack -> parent = xb_parent;
+
+        KJB(ASSERT( xb_parent -> is_red() ));
+#ifdef DEBUGGING
+        KJB(ASSERT( xb_parent == sib ->* xb_br ));
+        KJB(ASSERT( sib -> is_black ));
+#endif
+        KJB(ASSERT( (xb_parent ->* sib_br) -> is_black ));
+        KJB(ASSERT( (xb_parent ->* xb_br ) == xblack ));
+        KJB(ASSERT( xblack -> is_black ));
+
+        resolve_double_black( xblack );
+    }
+
+
+    /**
+     * @brief remove any node you name from the tree
+     *
+     * @param target    Points to the node to be eliminated.
+     *
+     * This updates the subtree sums too.
+     * During the course of this function, the invariant of "nil.parent==0" is
+     * temporarily suspended, but restored at the end.
+     *
+     * The target named by the caller is either deleted, or its contents are
+     * overwritten by the node with the next largest key in the tree.
+     * This routine always executes a deletion, but it is therefore not always
+     * done on the target.  Internally, 'tar2' points to the node to be
+     * deleted.
+     */
+    void kill_a_node( Node* target )
+    {
+#ifdef DEBUGGING
+        enter( __func__ );
+#endif
+        KJB(ASSERT( 00 == m_nil.parent ));
+        KJB(ASSERT( target && is_not_nil( target ) ));
+        const Key_tp& query_key( target -> key );
+
+        for ( Node* ppp = target; ppp != root; ppp = ppp -> parent )
+        {
+            ppp -> sum -= query_key;
+        }
+        root -> sum -= query_key;
+
+        // Splice out target if possible, otherwise replace its contents
+        Node *xblack, *tar2 = fully_auto_splice( target, & xblack );
+
+        // *xblack is nil iff xblack -> parent equals tar2.
+        KJB(ASSERT( 00 == tar2 || 00 == m_nil.parent || is_nil( xblack ) ));
+        KJB(ASSERT( 00 == tar2 || m_nil.parent || is_not_nil( xblack ) ));
+
+        if ( 00 == tar2 )
+        {
+            tar2 = supplant_target( target, & xblack );
+            KJB(ASSERT( tar2 == target ));
+        }
+
+        if ( target -> is_black )
+        {
+            /*
+             * Picture the blackheight invariant as unaffected, conserving the
+             * blackness (if any) of target.  But since target is being
+             * destroyed, the blackness falls on its child.  This might give
+             * the child "extra blackness" (xblack) temporarily.  If the child
+             * is double black, we must reshape the tree to shift the
+             * extra blackness elsewhere.
+             */
+            resolve_double_black( xblack );
+        }
+        m_nil.parent = 00;
+        delete target;
+    }
+
+
+    /// @brief common idiom for testing how the dictionary is represented now
+    bool dictionary_is_small_linear_array() const
+    {
+        return size() <= TREE_THRESH;
+    }
+
+
+    /// @brief return the blackheight of the tree; BLACKHEIGHT_BAD if corrupt
+    int blackheight_in_linear_time() const
+    {
+#ifdef DEBUGGING
+        enter( __func__ );
+#endif
+        if ( dictionary_is_small_linear_array() )
+        {
+            return 0;
+        }
+        return blackheight_in_linear_time( root );
+    }
+
+    /// @brief scan tree for red node with red child; if so, tree is corrupt
+    bool red_node_has_red_child_in_linear_time() const
+    {
+#ifdef DEBUGGING
+        enter( __func__ );
+#endif
+        return red_node_has_red_child_in_linear_time( root );
+    }
+
+    /// @brief scan tree to verify the sums are good; if not, tree is corrupt
+    bool sums_are_correct_in_linear_time() const
+    {
+#ifdef DEBUGGING
+        enter( __func__ );
+#endif
+        return sums_are_correct_in_linear_time( root );
+    }
+
+
+    /// @brief copy some other tree whose nil leaves are found in THAT tree.
+    Node* recursive_copy(
+        const Node* src,
+        const Redblack_subtree_sum< SATELLITE_TYPE >& st
+    )
+    {
+        KJB(ASSERT( src ));
+        if ( st.is_nil( src ) ) // the other tree's nil node
+        {
+            return & m_nil;
+        }
+
+        Node* my_copy = new Node( *src );
+        /* my_copy -> parent = 00; not actually necessary */
+        my_copy -> link_left_child( recursive_copy( src -> left, st ) );
+        my_copy -> link_right_child( recursive_copy( src -> right, st ) );
+        m_nil.parent = 00;
+
+        return my_copy;
+    }
+
+
+
+#ifdef DEBUGGING
+    /// @brief test the binary search tree invariant of the entire tree
+    bool is_bst_in_linear_time() const
+    {
+        const Key_tp KMAX( std::numeric_limits< Key_tp >::max() );
+        enter( __func__ );
+        return is_bst_in_linear_time( root, -KMAX, +KMAX );
+    }
+
+
+    /// @brief test the binary search tree invariant of the given subtree
+    bool is_bst_in_linear_time(
+        const Node* ppp,
+        const Key_tp& min,
+        const Key_tp& max
+    )   const
+    {
+        KJB(ASSERT( ppp ));
+        if ( is_nil( ppp ) )
+        {
+            return true;
+        }
+        const Key_tp& kii = ppp -> key;
+
+        /*
+         * When we insert, we put equal keys in the right subtree, but when
+         * we rotate, equal keys could end up in the left subtree too.
+         * Thus, kii==min or kii==max is acceptable.
+         */
+        if ( kii < min || max < kii )   // equality is not a failure
+        {
+            return false;
+        }
+
+        const Node  *pl = ppp -> left,
+                    *pr = ppp -> right;
+
+        return      ( is_nil( pl ) || pl -> parent == ppp )
+                &&  ( is_nil( pr ) || pr -> parent == ppp )
+                &&  is_bst_in_linear_time( pr, kii, max )
+                &&  is_bst_in_linear_time( pl, min, kii );
+    }
+
+
+#endif
+
+
+    /// @brief insert a node into dictionary stored as a sorted linear array
+    Node* linear_insert( Node* n )
+    {
+        KJB(ASSERT( n ));
+        ++m_size;
+        if (1 == m_size)
+        {
+            return root = n;
+        }
+        // add to head of list (new minimum key)
+        if (n -> key <= root -> key)
+        {
+            n -> right = root;
+            root -> parent = n;
+            return root = n;
+        }
+        Node* m = root;  // m is a predecessor
+        // loop until m is the largest predecessor
+        while (m -> right && m -> right -> key < n -> key)
+        {
+            m = m -> right;
+        }
+        // splice new node after m
+        n -> right = m -> right;
+        m -> right = n;
+        n -> parent = m;
+        if (n -> right) n -> right -> parent = n;
+        return n;
+    }
+
+
+    /// @brief insert key into dictionary stored as a tree
+    Node* tree_insert( const Key_tp& key, const Sat_tp& sat )
+    {
+        if ( TREE_THRESH == size() )
+        {
+            make_it_a_real_tree_now();
+        }
+        Node* n00b = new_node( key, sat, 0 ); // red
+        insert_gp( &root, *n00b < *root, n00b );
+        root -> is_black = true;
+        ++m_size;
+        KJB(ASSERT( 00 == m_nil.parent ));
+        KJB(ASSERT( n00b ));
+        return n00b;
+    }
+
+
+
+    /// @brief dictionary is a small linear array; detach node n from it.
+    void detach_array_elt( Node* n )
+    {
+        --m_size; // shrink the array size -- yes, a little bit premature
+
+        if (n == root)
+        {
+            root = n -> right;
+        }
+        else
+        {
+            n -> parent -> right = n -> right;
+        }
+        if (n -> right)
+        {
+            n -> right -> parent = n -> parent;
+        }
+    }
+
+
+    /// @brief dictionary is a tree; try to find, remove a key.
+    bool del_tree_node( Node* ppp )
+    {
+        KJB(ASSERT( ppp ));
+        kill_a_node( ppp );
+        --m_size;
+        KJB(ASSERT( 00 == m_nil.parent ));
+
+        // Test whether the dictionary has just now shrunk down to lin-arr size
+        if ( TREE_THRESH == m_size )
+        {
+            root = recursive_condense(root).first;
+        }
+        return true;
+    }
+
+
+    /// @brief search through tree for an extremal element (if any)
+    const Node* loc_extremum(Node* Node::* branch) const
+    {
+        if ( 0 == size() )
+        {
+            return 0;   // sentinel value for empty dictionaries
+        }
+
+        // handle the small linear array case
+        if ( dictionary_is_small_linear_array() )
+        {
+            if (&Node::left == branch)
+            {
+                return root;
+            }
+            else if (&Node::right == branch)
+            {
+                const Node *mx = root;
+                while (mx -> right)
+                {
+                    mx = mx -> right;
+                }
+                return mx;
+            }
+        }
+
+        // common case: search the tree down its chosen branch
+        KJB(ASSERT( root ));
+        const Node* ppp;
+        for ( ppp = root; ppp && is_not_nil( ppp ->* branch );
+                                                        ppp = ppp ->* branch )
+        {
+            KJB(ASSERT( ppp ));
+        }
+        KJB(ASSERT( ppp && is_nil( ppp ->* branch ) ));
+        return ppp;
+    }
+
+
+
+    /// @brief recursively implements node_using_cumulative_key_sum for trees
+    const_iterator tree_seek_cukes( const Node* ppp, Key_tp keysum ) const
+    {
+        KJB(ASSERT( ppp && is_not_nil( ppp ) ));
+        if ( are_both_children_nil( ppp ) )
+        {
+            if ( ppp -> key < keysum )
+            {
+                chatter( "sought a cumulative key sum larger than "
+                         "sum of all keys 2" );
+            }
+            return ppp;
+        }
+        const Key_tp lsum = is_not_nil( ppp -> left ) ? ppp -> left -> sum : 0;
+        // Uncommon case:  go left.
+        if ( is_not_nil( ppp -> left ) && keysum <= lsum )
+        {
+            return tree_seek_cukes( ppp -> left, keysum );
+        }
+        keysum -= lsum;
+        // Also uncommon case:  retrieve this node
+        if ( keysum <= ppp -> key )
+        {
+            return ppp;
+        }
+        // Degenerate case:  ck is too big but we cannot go right; we forgive.
+        if ( is_nil( ppp -> right ) )
+        {
+            chatter( "sought a cumulative key sum larger than "
+                     "sum of all keys 3" );
+            return ppp;
+        }
+        keysum -= ppp -> key;
+        // Common case:  go right.  We have already shrunk c_k appropriately.
+        return tree_seek_cukes( ppp -> right, keysum );
+    }
+
+
+    /**
+     * @brief copy a given tree
+     * @pre this object must be empty
+     * @post this object mimics the tree structure
+     * @throws bad_alloc if memory allocation fails.
+     *
+     * If memory allocation fails, this object should be reset to an empty
+     * state, but that has not been tested.
+     */
+    void copy_tree_into_empty(
+        const Redblack_subtree_sum< SATELLITE_TYPE >& tree
+    )
+    {
+        KJB(ASSERT(0 == size()));
+
+        if ( 0 == tree.size() ) return;
+        root = 00; // must contain a defined value, if "catch" clause runs.
+
+        try
+        {
+            if ( tree.dictionary_is_small_linear_array() )
+            {
+                std::vector< Node* > tn(tree.size(), 00);
+                size_t j = 0;
+                for (Node* q = tree.root; q; q = q -> right)
+                {
+                    tn[j++] = q;
+                }
+                KJB(ASSERT(j == tree.size()));
+                while (! tn.empty())
+                {
+                    KJB(ASSERT(tn.back()));
+                    const int BLACK = 1;
+                    root = linear_insert(
+                        new Node(tn.back() -> key, tn.back() -> sat, BLACK));
+                    tn.pop_back();
+                }
+            }
+            else
+            {
+                m_size = tree.size();
+                root = recursive_copy( tree.root, tree );
+            }
+        }
+        catch (std::bad_alloc& e)
+        {
+            // If we cannot do the whole thing, retract any partial progress.
+            clear();
+            throw e;
+        }
+    }
+
+
+    /**
+     * @brief search for a key in the dictionary; return first one.
+     *
+     * @param[in] key   key value in node to be searched for.
+     * If multiple (key,value) pairs have been inserted in the dictionary using
+     * the same key, it is undefined which one will be found.
+     * Also remember the problems that occur when searching for exact
+     * floating-point equality.
+     * @param[out] sat_out  Optional output storage for satellite data.
+     *                      If equal to NULL, satellite data is ignored.
+     *
+     * @return iterator to record iff the exact key is found, otherwise end()
+     */
+    const_iterator find_key_const( const Key_tp& key, Sat_tp* sat_out ) const
+    {
+        bool is_found;
+        if ( dictionary_is_small_linear_array() )
+        {
+            return linear_search( key, sat_out );
+        }
+        else
+        {
+            return tree_search( key, sat_out, root );
+        }
+    }
+
+    // implementation of node_using_cumulative_key_sum
+    const_iterator c_node_using_cukes( Key_tp keysum ) const
+    {
+        if ( 0 == size() )
+        {
+            return end();
+        }
+        if ( dictionary_is_small_linear_array() )
+        {
+            // List entries do NOT have a valid sum field.
+            Key_tp sum_so_far = 0;
+            Node *last = 00;
+            for (Node* m = root; m; m = m -> right)
+            {
+                last = m;
+                if (keysum <= (sum_so_far + m -> key))
+                {
+                    return m;
+                }
+            }
+            KJB(ASSERT( sum_so_far < keysum ));
+            chatter( "sought a cumulative key sum larger than "
+                     "sum of all keys 1" );
+            return last;
+        }
+        return tree_seek_cukes( root, keysum );
+    }
+
+
+    void swap_children(Node* p, Node* q, Node* Node::* branch)
+    {
+        KJB(ASSERT( p && is_not_nil( p )));
+        KJB(ASSERT( q && is_not_nil( q )));
+        KJB(ASSERT( is_nil( p ->* branch ) || p ->* branch -> parent == p ));
+        KJB(ASSERT( is_nil( q ->* branch ) || q ->* branch -> parent == q ));
+
+        if ( is_nil( p ->* branch ))
+        {
+            if ( is_nil( q ->* branch )) return; // nothing to do
+            q ->* branch -> parent = p;
+        }
+        else if ( is_nil( q ->* branch ))
+        {
+            KJB(ASSERT( p ->* branch -> parent == p ));
+            p ->* branch -> parent = q;
+        }
+        else
+        {
+            std::swap( p ->* branch -> parent, q ->* branch -> parent );
+        }
+        std::swap(p ->* branch, q ->* branch);
+    }
+
+
+    const_iterator c_begin() const
+    {
+        if ( is_empty() ) return end();
+        if ( dictionary_is_small_linear_array() ) return root;
+        return get_min(); // see loc_min
+    }
+
+public:
+
+    /// @brief default ctor
+    Redblack_subtree_sum()
+    :   m_nil( 0, Sat_tp(), true, 00, 00, 00 ),
+        m_size( 0 )
+    {} // root is undefined, you got a problem with that???
+
+
+    /**
+     * @brief destroy the tree or the linear array.
+     *
+     * @post Naturally, this invalidates all iterators
+     */
+    void clear()
+    {
+        KJB(ASSERT( 00 == m_nil.parent ));
+        if ( 0 == size() )
+        {
+            return;
+        }
+
+        if ( dictionary_is_small_linear_array() )
+        {
+            while (root)
+            {
+                Node *next = root -> right;
+                delete root;
+                root = next;
+            }
+        }
+        else
+        {
+            recursive_destroy( root );
+        }
+
+        m_size = 0;
+    }
+
+
+    /// @brief copy ctor (same locators will work in this one too)
+    Redblack_subtree_sum( const Redblack_subtree_sum< SATELLITE_TYPE >& tree )
+    :   m_nil( 0, Sat_tp(), true, 00, 00, 00 ),
+        m_size( 0 )
+    {
+        copy_tree_into_empty( tree );
+    }
+
+
+    /**
+     * @brief assignment operator
+     *
+     * @post old iterators invalid in the new tree (unless you self-assign)
+     */
+    Redblack_subtree_sum& operator=(
+        const Redblack_subtree_sum< SATELLITE_TYPE >& tree
+    )
+    {
+        if ( this != &tree )
+        {
+            clear();
+            copy_tree_into_empty( tree );
+        }
+        return *this;
+    }
+
+
+    /// @brief dtor clears the structure
+    ~Redblack_subtree_sum()
+    {
+        clear();
+    }
+
+
+    /**
+     * @brief insert a new key+value pair in the dictionary
+     */
+    iterator insert( const Key_tp& key, const Sat_tp& sat )
+    {
+        KJB(ASSERT( 00 == m_nil.parent ));
+        // Test whether we can do the insertion and STILL remain a linear array
+        if ( size() < TREE_THRESH )
+        {
+            const int BLACK = 1;
+            return linear_insert( new Node(key, sat, BLACK) );
+        }
+        return tree_insert( key, sat );
+    }
+
+    /// @brief the following is a hack to mimic StochasticPriorityQueue
+    iterator ins_max_key( const Sat_tp& sat )
+    {
+        return insert( std::numeric_limits< Key_tp >::max(), sat );
+    }
+
+#ifdef DEBUGGING
+    /// @brief print the contents and structure of the dictionary
+    void debug_print( std::ostream& os ) const
+    {
+        if ( 0 == size() )
+        {
+            os << "tree is empty\n";
+        }
+        else if ( dictionary_is_small_linear_array() )
+        {
+            os << "tiny tree is in an unsorted array, root=" << root << '\n';
+            for ( size_t iii = 0; iii < size(); ++iii )
+            {
+                KJB(ASSERT( are_both_children_nil( root + iii ) ));
+                recursive_db_print( root + iii, 0, os );
+            }
+        }
+        else
+        {
+            os << "Big tree with nil at " << & m_nil
+               << ", root=" << root << '\n';
+            recursive_db_print( root, 0, os );
+        }
+    }
+#else
+    /// @brief stub: remove print code when not checking aggressively
+    void debug_print( std::ostream& ) const {}
+#endif
+
+
+#ifdef DEBUGGING
+    bool small_list_valid() const
+    {
+        if (0 == size()) return true;
+
+        size_t s = 0;
+        for (Node* n = root, b = 00; n; b = n, n = n -> right)
+        {
+            ++s;
+            if (n -> left) return fail( "list node lacks nil left field" );
+            if (n -> parent != b) return fail( "bad parent of list node" );
+            if (b && b -> key > n -> key) return fail( "list unsorted" );
+        }
+        if (size() != s)
+        {
+            return fail( "list is corrupt or size is wrong" );
+        }
+    }
+#endif
+
+
+    /// @brief scan dictionary in linear time to verify invariants are valid
+    bool tree_valid_in_nlogn_time() const
+    {
+#ifdef DEBUGGING
+        enter( __func__ );
+        if ( m_nil.is_red() )
+        {
+            return fail( "nil is red" );
+        }
+
+        if ( m_nil.parent )
+        {
+            return fail( "nil points to a parent" );
+        }
+
+
+        if ( dictionary_is_small_linear_array() )
+        {
+            if (! small_list_valid())
+            {
+                return fail( "small list is bad" );
+            }
+        }
+        else 
+        {
+            if  (       blackheight_in_linear_time() == BLACKHEIGHT_BAD
+                    ||  root -> is_red()
+                    ||  red_node_has_red_child_in_linear_time()
+                    //  ||  ! sums_are_correct_in_linear_time()
+                    ||  ! sums_are_close_enough_in_linear_time( root )
+                    ||  ! is_bst_in_linear_time()
+                )
+            {
+                return fail( "tree structure is bad" );
+            }
+        }
+#endif
+        return true;
+    }
+
+
+    const_iterator find_key( const Key_tp& key, Sat_tp* sat_out ) const
+    {
+        return find_key_const(key, sat_out);
+    }
+    iterator find_key( const Key_tp& key, Sat_tp* sat_out )
+    {
+        return const_cast<Node*>(find_key_const(key, sat_out) -> p_);
+    }
+
+
+    /**
+     * @brief erase a key+value pair from the dictionary
+     *
+     * @param[in] query_key Key for which to search.
+     * If multiple key+value pairs have been inserted in the dictionary using
+     * the same key, it is undefined which one will be found.
+     *
+     * @param[out] sat_out  Optional pointer to which, if not equal to NULL,
+     * this will write the satellite data when and if the key value is found.
+     *
+     * @return true iff the key is found
+     *
+     * @post either this returns false, or one key+value pair is removed from
+     * the dictionary having a key equal to that of query_key (xor).
+     * As stated, it is undefined which key+value pair
+     * is removed when there are multiple records sharing the same query_key
+     * number, although of course the removed pair will be one of those
+     * records.
+     *
+     * @post If the key is found, its iterator is of course invalidated
+     */
+    bool erase_key( const Key_tp& query_key, Sat_tp* sat_out )
+    {
+        KJB(ASSERT( 00 == m_nil.parent ));
+
+        // handle the mini-array case
+        if ( dictionary_is_small_linear_array() )
+        {
+            Node* n = linear_search( query_key, sat_out );
+            if ( n ) detach_array_elt( n );
+            delete n;
+            return n;
+        }
+
+        // common case: dictionary is a tree
+        Node* ppp = tree_search( query_key, sat_out, root, 00 );
+        if ( 00 == ppp )
+        {
+            return false;
+        }
+        KJB(ASSERT( ppp -> key == query_key ));
+
+        return del_tree_node( ppp );
+    }
+
+
+
+    /**
+     * @brief remove the record indicated by i
+     * @param[in] i     Iterator of record to remove
+     */
+    void erase( iterator i )
+    {
+        // handle the linear array case
+        if ( dictionary_is_small_linear_array() )
+        {
+            detach_array_elt( i -> p_ );
+            delete i -> p_;
+            return i -> p_;
+        }
+
+        // common case: dictionary is a tree
+        return del_tree_node( i -> p_ );
+    }
+
+
+
+    /// @brief return the locator for the record with the minimum key, or 0
+    /// can make a non-const iterator version when needed.
+    const_iterator get_min() const
+    {
+        return loc_extremum( & Node::left );
+    }
+    /// @brief same semantics as const version
+    iterator get_min()
+    {
+        return const_cast<Node*>( loc_extremum( & Node::left ) );
+    }
+
+
+    /// @brief return the locator for the record with the maximum key, or 0
+    /// can make a non-const iterator version when needed.
+    const_iterator get_max() const
+    {
+        return loc_extremum( & Node::right );
+    }
+    /// @brief same semantics as const version
+    iterator get_max()
+    {
+        return const_cast<Node*>( loc_extremum( & Node::right ) );
+    }
+
+
+    /// @brief return the number of key+value pairs in the dictionary.
+    size_t size() const
+    {
+        return m_size;
+    }
+
+
+    /// @brief return whether the size is zero
+    bool is_empty() const
+    {
+        return 0 == m_size;
+    }
+
+
+    /// @brief change the key value for a node to a new value, O(log n) time
+    void rekey_loc( iterator i, const Key_tp& newkey )
+    {
+#ifdef DEBUGGING
+        enter( __func__ );
+#endif
+        if ( dictionary_is_small_linear_array() )
+        {
+            detach_array_elt( i -> p_ );
+            i -> p_ -> key = newkey;
+            i -> p_ -> left = i -> p_ -> right = i -> p_ -> parent = 00;
+            linear_insert( i -> p_ );
+            return;
+        }
+
+        // common case: dictionary is a tree
+
+        // strategy:  insert an "impostor," a new node w/ new key, old sat
+        Node* const pimpo = tree_insert( newkey, Sat_tp() );
+
+        // swap key, children, parent with impostor, then make it disappear.
+        std::swap( i -> p_ -> key, pimpo -> key );
+        swap_children( i -> p_, pimpo, & Node::left );
+        swap_children( i -> p_, pimpo, & Node::right );
+
+        // now swap parents.
+        std::swap(i -> p_ -> parent, pimpo -> parent);
+        if (pimpo == root)
+        {
+            root = i -> p_;
+            pimpo -> parent ->* parent_branch_to_me(i -> p_) = pimpo;
+        }
+        else if (i -> p_ == root)
+        {
+            root = pimpo;
+            i -> p_ -> parent ->* parent_branch_to_me(pimpo) = i -> p_;
+        }
+        else
+        {
+            std::swap(i -> p_ -> parent ->* parent_branch_to_me(pimpo),
+                      pimpo -> parent ->* parent_branch_to_me(i -> p_));
+        }
+
+        // now we can "disappear" the impostor node and no one will even notice
+        del_tree_node( pimpo );
+    }
+
+
+    /// @brief return subtree sum at root node (i.e., the sum of all keys).
+    Key_tp root_sum() const
+    {
+        if ( 0 == size() )
+        {
+            return 0;
+        }
+        if ( dictionary_is_small_linear_array() )
+        {
+            Key_tp s = 0;
+            for (Node* n = root; n; n = n -> right)
+            {
+                s += n -> key;
+            }
+            return s;
+        }
+        return root -> sum;
+    }
+
+    /**
+     * @brief fetch a node based on inorder cumulative sum of tree keys
+     * @param keysum   value we want to find or minimally exceed.
+     * @pre if tree contains nonpositive keys, behavior is undefined.
+     * @return See exposition below:  returns locator of a node such that the
+     *          sum of its key and the keys of all nodes less than it is at
+     *          least 'keysum,' in a minimal sense.
+     *
+     * Former name: loc_using_cumulative_key_sum
+     *
+     * This method is most useful when keys are all positive.  Keys do not need
+     * to be distinct.  If keys are nonpositive, screwy things will probably
+     * occur.
+     *
+     * Let n denote a node and n.k denote its key.  Neither n or k will
+     * be used to represent integers (but i, j will).
+     *
+     * Let n1,n2,n3,... be an inorder listing of nodes, such that
+     * n1.k <= n2.k <= n3.k <= ...
+     *
+     * Now consider the cumulative sum of keys starting with n1:
+     * s_0 = 0;  s_1 = s_0 + n1.k;  s_2 = s_1 + n2.k; ...
+     * As a special case, let S equal the sum of all nodes' keys.
+     *
+     * If it exists, this method finds a value j such that
+     * s_{j-1} < keysum <= s_j
+     * and if such a value exists, this returns the const_iterator of node nj.
+     *
+     * Degenerate cases:
+     * - If keysum is nonpositive, this returns the locator of n1.
+     * - If S <= keysum this method returns the locator of the last
+     *   node in the inorder listing.
+     */
+    const_iterator node_using_cumulative_key_sum( Key_tp keysum ) const
+    {
+        return c_node_using_cukes(keysum);
+    }
+    /// @brief same semantics as const version
+    iterator node_using_cumulative_key_sum( Key_tp keysum )
+    {
+        return const_cast<Node*>( c_node_using_cukes( keysum )->p_ );
+    }
+
+    /// @brief hack proxy to make this and a stochastic pri queue work alike
+    const_iterator Dijkstra_extraction() const { return get_min(); }
+
+    /// @brief hack proxy to make this and a stochastic pri queue work alike
+    iterator Dijkstra_extraction() { return get_min(); }
+
+
+    /*
+     * ==============================
+     *           ITERATOR
+     * ==============================
+     *
+     * The iterator just privately contains a node pointer.
+     * The end iterator for the entire tree is just a null pointer.
+     * This could almost be a bidirectional iterator except that you cannot
+     * perform operator--(end()).
+     */
+    friend class iterator;
+    friend class const_iterator;
+
+    /// @brief iterator class for a tree -- lets you access node locators.
+    class const_iterator
+    :   public std::iterator< std::forward_iterator_tag,
+                            Redblack_subtree_sum<SATELLITE_TYPE>::value_type >
+    {
+        const Node* p_;
+
+        bool is_nil_(Node* q) const
+        {
+            return 00 == q -> left && 00 == q -> right && 00 == q -> parent;
+        }
+
+    public:
+        friend class Redblack_subtree_sum<SATELLITE_TYPE>;
+        friend class iterator;
+
+        const_iterator(const Node* n) : p_(n) {}
+
+        const_iterator(iterator i) : p_(i.p_) {}
+
+        Redblack_subtree_sum<SATELLITE_TYPE>::value_type operator*() const
+        {
+            NTX(p_);
+            return std::make_pair(p_ -> key, p_ -> sat);
+        }
+
+        bool operator==(const const_iterator& i) const { return p_ == i.p_; }
+
+        bool operator!=(const const_iterator& i) const
+        {
+            return ! operator==(i);
+        }
+
+        const_iterator& operator++()
+        {
+            KJB(ASSERT(00 == p_ || 00 == p_ -> left || p_ -> right));
+            if (00 == p_)
+            {
+                return *this; // end()++ is end()
+            }
+            else if (00 == p_ -> left)
+            {
+                p_ = p_ -> right; // small list morphology
+            }
+            else if (! is_nil_( p_ -> right ))
+            {
+                // tree node with right subtree
+                p_ = p_ -> right;
+                KJB(ASSERT(p_ -> left));
+                while (! is_nil( p_ -> left ))
+                {
+                    p_ = p_ -> left;
+                }
+            }
+            else
+            {
+                while (p_ -> parent && p_ -> parent -> right == p_)
+                {
+                    p_ = p_ -> parent;
+                }
+                if (00 == p_ -> parent) p_ = 00;
+            }
+            return *this;
+        }
+        const_iterator operator++(int)
+        {
+            const_iterator temp(*this);
+            operator++();
+            return temp;
+        }
+
+        // There is no operator-- for a forward iterator.
+        // We almost could implement it, but not for the end() iterator.
+    };
+
+
+    const_iterator begin() const
+    {
+        return c_begin();
+    }
+    iterator begin()
+    {
+        return const_cast<Node*>( c_begin() );
+    }
+
+
+    const_iterator end() const
+    {
+        return 00;
+    }
+
+    iterator end()
+    {
+        return 0;
+    }
+
+
+
+    // FIXME this needs to be filled in
+    class iterator
+    :   public std::iterator< std::forward_iterator_tag,
+                             Redblack_subtree_sum<SATELLITE_TYPE>::value_type >
+    {
+        Node* p_;
+    public:
+        friend class Redblack_subtree_sum<SATELLITE_TYPE>;
+        iterator(Node* n) : p_(n) {}
+
+        // does not return an lvalue
+        Redblack_subtree_sum<SATELLITE_TYPE>::value_type operator*() const
+        {
+            NTX(p_);
+            return std::make_pair(p_ -> key, p_ -> sat);
+        }
+
+        bool operator==(const iterator& i) const { return p_ == i.p_; }
+
+        bool operator!=(const iterator& i) const
+        {
+            return ! operator==(i);
+        }
+
+        // pre-increment
+        iterator& operator++()
+        {
+#if 0
+            KJB(ASSERT(00 == p_ || 00 == p_ -> left || p_ -> right));
+            if (00 == p_)
+            {
+                return *this; // end()++ is end()
+            }
+            else if (00 == p_ -> left)
+            {
+                p_ = p_ -> right; // small list morphology
+            }
+            else if (! is_nil_( p_ -> right ))
+            {
+                // tree node with right subtree
+                p_ = p_ -> right;
+                KJB(ASSERT(p_ -> left));
+                while (! is_nil( p_ -> left ))
+                {
+                    p_ = p_ -> left;
+                }
+            }
+            else
+            {
+                while (p_ -> parent && p_ -> parent -> right == p_)
+                {
+                    p_ = p_ -> parent;
+                }
+                if (00 == p_ -> parent) p_ = 00;
+            }
+#else
+            const_iterator j(*this);
+            j++;
+            p_ = const_cast<Node*>(j.p_);
+#endif
+            return *this;
+        }
+
+        // post-increment
+        iterator operator++(int)
+        {
+            const_iterator temp(*this);
+            operator++();
+            return temp;
+        }
+
+        // There is no operator-- for a forward iterator. 
+        // We almost could implement it, but not for the end() iterator.
+    };
+
+#if 0
+    /*
+     * DOES NOT WORK -- as designed, the tree not entirely "pimpl" since it
+     * has a member m_nil.  The leaf nodes all point to it.  If we swap the
+     * representations we would have to change all the pointers formerly to
+     * m_nil to the new member.  Otherwise, after the swap, ownership of m_nil
+     * and ownership of the nodes pointing to it will differ, which is
+     * intolerable.
+     */
+    void swap(Redblack_subtree_sum< SATELLITE_TYPE >& other)
+    {
+        std::swap(m_nil, other.m_nil);
+        std::swap(root, other.root);
+        std::swap(m_size, other.m_size);
+        location_list.swap(other.location_list);
+        free_locator_list.swap(other.free_locator_list);
+    }
+#endif
+};
+
+
+}
+}
+
+
+#if 0
+/// DOES NOT WORK -- see comment attached to swap member function.
+namespace std
+{
+    /// @brief swap the contents of two trees of the same type
+    template <typename S>
+    inline void swap(
+        kjb::qd::Redblack_subtree_sum< S >& rb1,
+        kjb::qd::Redblack_subtree_sum< S >& rb2
+    )
+    {
+        rb1.swap(rb2);
+    }
+}
+#endif
+
+#endif /* REDBLACK_H_PREDOEHL_12_DEC_2011_VISION */

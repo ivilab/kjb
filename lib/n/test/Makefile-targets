@@ -1,0 +1,23 @@
+
+# 
+# Machine generated file to set make targets
+#
+
+PROGRAMS = \
+        $(OBJ_DIR)diagonalize_2 \
+        $(OBJ_DIR)diagonalize \
+        $(OBJ_DIR)diagonalize_symmetric \
+        $(OBJ_DIR)invert_matrix \
+        $(OBJ_DIR)least_squares \
+        $(OBJ_DIR)svd \
+        $(OBJ_DIR)svd_file
+
+
+
+
+MAN_FROM_HELP_FILES = \
+
+
+
+MAN_FROM_WRITEUP_FILES = \
+

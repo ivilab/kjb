@@ -1,0 +1,32 @@
+
+# 
+# Machine generated file to set make targets
+#
+
+PROGRAMS = \
+        $(OBJ_DIR)check_initialize \
+        $(OBJ_DIR)check_same_matrix_dimensions \
+        $(OBJ_DIR)check_same_matrix_vector_dimensions \
+        $(OBJ_DIR)check_same_vector_lengths \
+        $(OBJ_DIR)concat_matrices_vertically \
+        $(OBJ_DIR)fpu \
+        $(OBJ_DIR)gauss_rand \
+        $(OBJ_DIR)get_matrix_from_matrix_vector \
+        $(OBJ_DIR)get_matrix_vector_from_matrix \
+        $(OBJ_DIR)interleave_matrix_cols \
+        $(OBJ_DIR)interleave_matrix_rows \
+        $(OBJ_DIR)noise \
+        $(OBJ_DIR)plot_matrix_values \
+        $(OBJ_DIR)remove_matrix_row \
+        $(OBJ_DIR)sort_indexed_vector \
+        $(OBJ_DIR)stat
+
+
+
+
+MAN_FROM_HELP_FILES = \
+
+
+
+MAN_FROM_WRITEUP_FILES = \
+

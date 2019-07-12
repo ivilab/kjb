@@ -1,0 +1,1373 @@
+# This is a patch written by Andrew Predoehl that attempts to convert
+# the source of triangle.c from K&R-style function defs to ANSI-style.
+# The first half was done by hand, and the second half was done using a vim
+# macro, so the modifications in the second half are much more uniform, but
+# not quite conformant to libkjb style.
+# Since this is such a huge change to a huge file, I am putting the patch here
+# on display so that it can be reviewed and corrected, if necessary.
+# $Id: triangle.c.patch 15875 2013-10-24 03:06:24Z predoehl $
+# ===================================================================
+--- triangle.c	(revision 15829)
++++ triangle.c	(working copy)
+@@ -349,7 +349,8 @@
+ 
+ /* A few forward declarations.                                               */
+ 
+-void poolrestart();
++struct memorypool;
++void poolrestart(struct memorypool *pool);
+ #ifndef TRILIBRARY
+ char *readline();
+ char *findfield();
+@@ -2705,9 +2706,7 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void parsecommandline(argc, argv)
+-int argc;
+-char **argv;
++void parsecommandline(int argc, char** argv)
+ {
+ #ifdef TRILIBRARY
+ #define STARTINDEX 0
+@@ -3050,8 +3049,9 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void printtriangle(t)
+-struct triedge *t;
++void printtriangle(
++    struct triedge *t
++)
+ {
+   struct triedge printtri;
+   struct edge printsh;
+@@ -3134,8 +3134,9 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void printshelle(s)
+-struct edge *s;
++void printshelle(
++    struct edge *s
++)
+ {
+   struct edge printsh;
+   struct triedge printtri;
+@@ -3214,12 +3215,13 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void poolinit(pool, bytecount, itemcount, wtype, alignment)
+-struct memorypool *pool;
+-int bytecount;
+-int itemcount;
+-enum wordtype wtype;
+-int alignment;
++void poolinit(
++    struct memorypool *pool,
++    int bytecount,
++    int itemcount,
++    enum wordtype wtype,
++    int alignment
++)
+ {
+   int wordsize;
+ 
+@@ -3272,8 +3274,9 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void poolrestart(pool)
+-struct memorypool *pool;
++void poolrestart(
++    struct memorypool *pool
++)
+ {
+   unsigned long alignptr;
+ 
+@@ -3300,8 +3303,7 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void pooldeinit(pool)
+-struct memorypool *pool;
++void pooldeinit(struct memorypool *pool)
+ {
+   while (pool->firstblock != (VOID **) NULL) {
+     pool->nowblock = (VOID **) *(pool->firstblock);
+@@ -3316,8 +3318,7 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-VOID *poolalloc(pool)
+-struct memorypool *pool;
++VOID *poolalloc(struct memorypool *pool)
+ {
+   VOID *newitem;
+   VOID **newblock;
+@@ -3383,9 +3384,10 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void pooldealloc(pool, dyingitem)
+-struct memorypool *pool;
+-VOID *dyingitem;
++void pooldealloc(
++    struct memorypool *pool,
++    VOID *dyingitem
++)
+ {
+   /* Push freshly killed item onto stack. */
+   *((VOID **) dyingitem) = pool->deaditemstack;
+@@ -3401,8 +3403,7 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void traversalinit(pool)
+-struct memorypool *pool;
++void traversalinit(struct memorypool *pool)
+ {
+   unsigned long alignptr;
+ 
+@@ -3432,8 +3433,7 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-VOID *traverse(pool)
+-struct memorypool *pool;
++VOID *traverse( struct memorypool *pool)
+ {
+   VOID *newitem;
+   unsigned long alignptr;
+@@ -3483,9 +3483,7 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void dummyinit(trianglewords, shellewords)
+-int trianglewords;
+-int shellewords;
++void dummyinit(int trianglewords, int shellewords)
+ {
+   unsigned long alignptr;
+ 
+@@ -3661,8 +3659,7 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void triangledealloc(dyingtriangle)
+-triangle *dyingtriangle;
++void triangledealloc(triangle *dyingtriangle)
+ {
+   /* Set triangle's vertices to NULL.  This makes it possible to        */
+   /*   detect dead triangles when traversing the list of all triangles. */
+@@ -3697,8 +3694,7 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void shelledealloc(dyingshelle)
+-shelle *dyingshelle;
++void shelledealloc(shelle *dyingshelle)
+ {
+   /* Set shell edge's vertices to NULL.  This makes it possible to */
+   /*   detect dead shells when traversing the list of all shells.  */
+@@ -3732,8 +3728,7 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void pointdealloc(dyingpoint)
+-point dyingpoint;
++void pointdealloc(point dyingpoint)
+ {
+   /* Mark the point as dead.  This makes it possible to detect dead points */
+   /*   when traversing the list of all points.                             */
+@@ -3769,8 +3764,7 @@
+ 
+ #ifndef CDT_ONLY
+ 
+-void badsegmentdealloc(dyingseg)
+-struct edge *dyingseg;
++void badsegmentdealloc(struct edge *dyingseg)
+ {
+   /* Set segment's orientation to -1.  This makes it possible to      */
+   /*   detect dead segments when traversing the list of all segments. */
+@@ -3815,8 +3809,7 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-point getpoint(number)
+-int number;
++point getpoint(int number)
+ {
+   VOID **getblock;
+   point foundpoint;
+@@ -3880,8 +3873,9 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void maketriangle(newtriedge)
+-struct triedge *newtriedge;
++void maketriangle(
++struct triedge *newtriedge
++)
+ {
+   int i;
+ 
+@@ -3917,8 +3911,9 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void makeshelle(newedge)
+-struct edge *newedge;
++void makeshelle(
++struct edge *newedge
++)
+ {
+   newedge->sh = (shelle *) poolalloc(&shelles);
+   /* Initialize the two adjoining shell edges to be the omnipresent */
+@@ -4133,12 +4128,13 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-int fast_expansion_sum_zeroelim(elen, e, flen, f, h)  /* h cannot be e or f. */
+-int elen;
+-REAL *e;
+-int flen;
+-REAL *f;
+-REAL *h;
++int fast_expansion_sum_zeroelim(  /* h cannot be e or f. */
++int elen,
++REAL *e,
++int flen,
++REAL *f,
++REAL *h
++)
+ {
+   REAL Q;
+   INEXACT REAL Qnew;
+@@ -4222,11 +4218,12 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-int scale_expansion_zeroelim(elen, e, b, h)   /* e and h cannot be the same. */
+-int elen;
+-REAL *e;
+-REAL b;
+-REAL *h;
++int scale_expansion_zeroelim(   /* e and h cannot be the same. */
++int elen,
++REAL *e,
++REAL b,
++REAL *h
++)
+ {
+   INEXACT REAL Q, sum;
+   REAL hh;
+@@ -4276,9 +4273,10 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-REAL estimate(elen, e)
+-int elen;
+-REAL *e;
++REAL estimate(
++int elen,
++REAL *e
++)
+ {
+   REAL Q;
+   int eindex;
+@@ -4310,11 +4308,12 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-REAL counterclockwiseadapt(pa, pb, pc, detsum)
+-point pa;
+-point pb;
+-point pc;
+-REAL detsum;
++REAL counterclockwiseadapt(
++point pa,
++point pb,
++point pc,
++REAL detsum
++)
+ {
+   INEXACT REAL acx, acy, bcx, bcy;
+   REAL acxtail, acytail, bcxtail, bcytail;
+@@ -4394,10 +4393,11 @@
+   return(D[Dlength - 1]);
+ }
+ 
+-REAL counterclockwise(pa, pb, pc)
+-point pa;
+-point pb;
+-point pc;
++REAL counterclockwise(
++point pa,
++point pb,
++point pc
++)
+ {
+   REAL detleft, detright, det;
+   REAL detsum, errbound;
+@@ -4455,12 +4455,13 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-REAL incircleadapt(pa, pb, pc, pd, permanent)
+-point pa;
+-point pb;
+-point pc;
+-point pd;
+-REAL permanent;
++REAL incircleadapt(
++point pa,
++point pb,
++point pc,
++point pd,
++REAL permanent
++)
+ {
+   INEXACT REAL adx, bdx, cdx, ady, bdy, cdy;
+   REAL det, errbound;
+@@ -5029,11 +5030,12 @@
+   return finnow[finlength - 1];
+ }
+ 
+-REAL incircle(pa, pb, pc, pd)
+-point pa;
+-point pb;
+-point pc;
+-point pd;
++REAL incircle(
++point pa,
++point pb,
++point pc,
++point pd
++)
+ {
+   REAL adx, bdx, cdx, ady, bdy, cdy;
+   REAL bdxcdy, cdxbdy, cdxady, adxcdy, adxbdy, bdxady;
+@@ -5117,8 +5119,9 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-unsigned long randomnation(choices)
+-unsigned int choices;
++unsigned long randomnation(
++unsigned int choices
++)
+ {
+   randomseed = (randomseed * 1366l + 150889l) % 714025l;
+   return randomseed / (714025l / choices + 1);
+@@ -5316,12 +5319,13 @@
+ 
+ #ifndef CDT_ONLY
+ 
+-void enqueuebadtri(instri, angle, insapex, insorg, insdest)
+-struct triedge *instri;
+-REAL angle;
+-point insapex;
+-point insorg;
+-point insdest;
++void enqueuebadtri(
++struct triedge *instri,
++REAL angle,
++point insapex,
++point insorg,
++point insdest
++)
+ {
+   struct badface *newface;
+   int queuenumber;
+@@ -5403,8 +5407,7 @@
+ 
+ #ifndef CDT_ONLY
+ 
+-int checkedge4encroach(testedge)
+-struct edge *testedge;
++int checkedge4encroach( struct edge *testedge)
+ {
+   struct triedge neighbortri;
+   struct edge testsym;
+@@ -5485,8 +5488,7 @@
+ 
+ #ifndef CDT_ONLY
+ 
+-void testtriangle(testtri)
+-struct triedge *testtri;
++void testtriangle( struct triedge *testtri)
+ {
+   struct triedge sametesttri;
+   struct edge edge1, edge2;
+@@ -5696,9 +5698,10 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-enum locateresult preciselocate(searchpoint, searchtri)
+-point searchpoint;
+-struct triedge *searchtri;
++enum locateresult preciselocate(
++point searchpoint,
++struct triedge *searchtri
++)
+ {
+   struct triedge backtracktri;
+   point forg, fdest, fapex;
+@@ -5830,9 +5833,7 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-enum locateresult locate(searchpoint, searchtri)
+-point searchpoint;
+-struct triedge *searchtri;
++enum locateresult locate( point searchpoint, struct triedge *searchtri)
+ {
+   VOID **sampleblock;
+   triangle *firsttri;
+@@ -5968,9 +5969,10 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void insertshelle(tri, shellemark)
+-struct triedge *tri;          /* Edge at which to insert the new shell edge. */
+-int shellemark;                            /* Marker for the new shell edge. */
++void insertshelle(
++struct triedge *tri,          /* Edge at which to insert the new shell edge. */
++int shellemark                             /* Marker for the new shell edge. */
++)
+ {
+   struct triedge oppotri;
+   struct edge newshelle;
+@@ -6067,8 +6069,9 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void flip(flipedge)
+-struct triedge *flipedge;                    /* Handle for the triangle abc. */
++void flip(
++struct triedge *flipedge                     /* Handle for the triangle abc. */
++)
+ {
+   struct triedge botleft, botright;
+   struct triedge topleft, topright;
+@@ -6210,13 +6213,13 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-enum insertsiteresult insertsite(insertpoint, searchtri, splitedge,
+-                                 segmentflaws, triflaws)
+-point insertpoint;
+-struct triedge *searchtri;
+-struct edge *splitedge;
+-int segmentflaws;
+-int triflaws;
++enum insertsiteresult insertsite(
++point insertpoint,
++struct triedge *searchtri,
++struct edge *splitedge,
++int segmentflaws,
++int triflaws 
++)
+ {
+   struct triedge horiz;
+   struct triedge top;
+@@ -6801,12 +6804,13 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void triangulatepolygon(firstedge, lastedge, edgecount, doflip, triflaws)
+-struct triedge *firstedge;
+-struct triedge *lastedge;
+-int edgecount;
+-int doflip;
+-int triflaws;
++void triangulatepolygon(
++struct triedge *firstedge,
++struct triedge *lastedge,
++int edgecount,
++int doflip,
++int triflaws
++)
+ {
+   struct triedge testtri;
+   struct triedge besttri;
+@@ -6889,8 +6893,7 @@
+ 
+ #ifndef CDT_ONLY
+ 
+-void deletesite(deltri)
+-struct triedge *deltri;
++void deletesite( struct triedge *deltri)
+ {
+   struct triedge countingtri;
+   struct triedge firstedge, lastedge;
+@@ -7020,9 +7023,10 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void pointsort(sortarray, arraysize)
+-point *sortarray;
+-int arraysize;
++void pointsort(
++point *sortarray,
++int arraysize
++)
+ {
+   int left, right;
+   int pivot;
+@@ -7089,11 +7093,12 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void pointmedian(sortarray, arraysize, median, axis)
+-point *sortarray;
+-int arraysize;
+-int median;
+-int axis;
++void pointmedian(
++point *sortarray,
++int arraysize,
++int median,
++int axis
++)
+ {
+   int left, right;
+   int pivot;
+@@ -7162,10 +7167,11 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void alternateaxes(sortarray, arraysize, axis)
+-point *sortarray;
+-int arraysize;
+-int axis;
++void alternateaxes(
++point *sortarray,
++int arraysize,
++int axis
++)
+ {
+   int divider;
+ 
+@@ -7221,12 +7227,13 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void mergehulls(farleft, innerleft, innerright, farright, axis)
+-struct triedge *farleft;
+-struct triedge *innerleft;
+-struct triedge *innerright;
+-struct triedge *farright;
+-int axis;
++void mergehulls(
++struct triedge *farleft,
++struct triedge *innerleft,
++struct triedge *innerright,
++struct triedge *farright,
++int axis
++)
+ {
+   struct triedge leftcand, rightcand;
+   struct triedge baseedge;
+@@ -7531,12 +7538,13 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void divconqrecurse(sortarray, vertices, axis, farleft, farright)
+-point *sortarray;
+-int vertices;
+-int axis;
+-struct triedge *farleft;
+-struct triedge *farright;
++void divconqrecurse(
++point *sortarray,
++int vertices,
++int axis,
++struct triedge *farleft,
++struct triedge *farright
++)
+ {
+   struct triedge midtri, tri1, tri2, tri3;
+   struct triedge innerleft, innerright;
+@@ -7686,8 +7694,9 @@
+   }
+ }
+ 
+-long removeghosts(startghost)
+-struct triedge *startghost;
++long removeghosts(
++struct triedge *startghost
++)
+ {
+   struct triedge searchedge;
+   struct triedge dissolveedge;
+@@ -8032,10 +8041,11 @@
+ 
+ #ifndef REDUCED
+ 
+-void eventheapinsert(heap, heapsize, newevent)
+-struct event **heap;
+-int heapsize;
+-struct event *newevent;
++void eventheapinsert(
++struct event **heap,
++int heapsize,
++struct event *newevent
++)
+ {
+   REAL eventx, eventy;
+   int eventnum;
+@@ -8068,10 +8078,11 @@
+ 
+ #ifndef REDUCED
+ 
+-void eventheapify(heap, heapsize, eventnum)
+-struct event **heap;
+-int heapsize;
+-int eventnum;
++void eventheapify(
++struct event **heap,
++int heapsize,
++int eventnum
++)
+ {
+   struct event *thisevent;
+   REAL eventx, eventy;
+@@ -8119,10 +8130,11 @@
+ 
+ #ifndef REDUCED
+ 
+-void eventheapdelete(heap, heapsize, eventnum)
+-struct event **heap;
+-int heapsize;
+-int eventnum;
++void eventheapdelete(
++struct event **heap,
++int heapsize,
++int eventnum
++)
+ {
+   struct event *moveevent;
+   REAL eventx, eventy;
+@@ -8157,10 +8169,11 @@
+ 
+ #ifndef REDUCED
+ 
+-void createeventheap(eventheap, events, freeevents)
+-struct event ***eventheap;
+-struct event **events;
+-struct event **freeevents;
++void createeventheap(
++struct event ***eventheap,
++struct event **events,
++struct event **freeevents
++)
+ {
+   point thispoint;
+   int maxevents;
+@@ -8204,9 +8217,10 @@
+ 
+ #ifndef REDUCED
+ 
+-int rightofhyperbola(fronttri, newsite)
+-struct triedge *fronttri;
+-point newsite;
++int rightofhyperbola(
++struct triedge *fronttri,
++point newsite
++)
+ {
+   point leftpoint, rightpoint;
+   REAL dxa, dya, dxb, dyb;
+@@ -8236,11 +8250,12 @@
+ 
+ #ifndef REDUCED
+ 
+-REAL circletop(pa, pb, pc, ccwabc)
+-point pa;
+-point pb;
+-point pc;
+-REAL ccwabc;
++REAL circletop(
++point pa,
++point pb,
++point pc,
++REAL ccwabc
++)
+ {
+   REAL xac, yac, xbc, ybc, xab, yab;
+   REAL aclen2, bclen2, ablen2;
+@@ -8264,11 +8279,12 @@
+ 
+ #ifndef REDUCED
+ 
+-void check4deadevent(checktri, freeevents, eventheap, heapsize)
+-struct triedge *checktri;
+-struct event **freeevents;
+-struct event **eventheap;
+-int *heapsize;
++void check4deadevent(
++struct triedge *checktri,
++struct event **freeevents,
++struct event **eventheap,
++int *heapsize
++)
+ {
+   struct event *deadevent;
+   point eventpoint;
+@@ -8290,10 +8306,11 @@
+ 
+ #ifndef REDUCED
+ 
+-struct splaynode *splay(splaytree, searchpoint, searchtri)
+-struct splaynode *splaytree;
+-point searchpoint;
+-struct triedge *searchtri;
++struct splaynode *splay(
++struct splaynode *splaytree,
++point searchpoint,
++struct triedge *searchtri
++)
+ {
+   struct splaynode *child, *grandchild;
+   struct splaynode *lefttree, *righttree;
+@@ -8402,10 +8419,11 @@
+ 
+ #ifndef REDUCED
+ 
+-struct splaynode *splayinsert(splayroot, newkey, searchpoint)
+-struct splaynode *splayroot;
+-struct triedge *newkey;
+-point searchpoint;
++struct splaynode *splayinsert(
++struct splaynode *splayroot,
++struct triedge *newkey,
++point searchpoint
++)
+ {
+   struct splaynode *newsplaynode;
+ 
+@@ -8431,13 +8449,14 @@
+ 
+ #ifndef REDUCED
+ 
+-struct splaynode *circletopinsert(splayroot, newkey, pa, pb, pc, topy)
+-struct splaynode *splayroot;
+-struct triedge *newkey;
+-point pa;
+-point pb;
+-point pc;
+-REAL topy;
++struct splaynode *circletopinsert(
++struct splaynode *splayroot,
++struct triedge *newkey,
++point pa,
++point pb,
++point pc,
++REAL topy
++)
+ {
+   REAL ccwabc;
+   REAL xac, yac, xbc, ybc;
+@@ -8462,13 +8481,13 @@
+ 
+ #ifndef REDUCED
+ 
+-struct splaynode *frontlocate(splayroot, bottommost, searchpoint, searchtri,
+-                              farright)
+-struct splaynode *splayroot;
+-struct triedge *bottommost;
+-point searchpoint;
+-struct triedge *searchtri;
+-int *farright;
++struct splaynode *frontlocate(
++struct splaynode *splayroot,
++struct triedge *bottommost,
++point searchpoint,
++struct triedge *searchtri,
++int *farright
++)
+ {
+   int farrightflag;
+   triangle ptr;                       /* Temporary variable used by onext(). */
+@@ -8772,26 +8791,26 @@
+ 
+ #ifdef TRILIBRARY
+ 
+-int reconstruct(trianglelist, triangleattriblist, trianglearealist, elements,
+-                corners, attribs, segmentlist, segmentmarkerlist,
+-                numberofsegments)
+-int *trianglelist;
+-REAL *triangleattriblist;
+-REAL *trianglearealist;
+-int elements;
+-int corners;
+-int attribs;
+-int *segmentlist;
+-int *segmentmarkerlist;
+-int numberofsegments;
++int reconstruct(
++int *trianglelist,
++REAL *triangleattriblist,
++REAL *trianglearealist,
++int elements,
++int corners,
++int attribs,
++int *segmentlist,
++int *segmentmarkerlist,
++int numberofsegments
++)
+ 
+ #else /* not TRILIBRARY */
+ 
+-long reconstruct(elefilename, areafilename, polyfilename, polyfile)
+-char *elefilename;
+-char *areafilename;
+-char *polyfilename;
+-FILE *polyfile;
++long reconstruct(
++char *elefilename,
++char *areafilename,
++char *polyfilename,
++FILE *polyfile
++)
+ 
+ #endif /* not TRILIBRARY */
+ 
+@@ -9301,9 +9320,10 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-enum finddirectionresult finddirection(searchtri, endpoint)
+-struct triedge *searchtri;
+-point endpoint;
++enum finddirectionresult finddirection(
++struct triedge *searchtri,
++point endpoint
++)
+ {
+   struct triedge checktri;
+   point startpoint;
+@@ -9388,10 +9408,11 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void segmentintersection(splittri, splitshelle, endpoint2)
+-struct triedge *splittri;
+-struct edge *splitshelle;
+-point endpoint2;
++void segmentintersection(
++struct triedge *splittri,
++struct edge *splitshelle,
++point endpoint2
++)
+ {
+   point endpoint1;
+   point torg, tdest;
+@@ -9488,10 +9509,11 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-int scoutsegment(searchtri, endpoint2, newmark)
+-struct triedge *searchtri;
+-point endpoint2;
+-int newmark;
++int scoutsegment(
++struct triedge *searchtri,
++point endpoint2,
++int newmark
++)
+ {
+   struct triedge crosstri;
+   struct edge crossedge;
+@@ -9566,10 +9588,11 @@
+ #ifndef REDUCED
+ #ifndef CDT_ONLY
+ 
+-void conformingedge(endpoint1, endpoint2, newmark)
+-point endpoint1;
+-point endpoint2;
+-int newmark;
++void conformingedge(
++point endpoint1,
++point endpoint2,
++int newmark
++)
+ {
+   struct triedge searchtri1, searchtri2;
+   struct edge brokenshelle;
+@@ -9682,9 +9705,10 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void delaunayfixup(fixuptri, leftside)
+-struct triedge *fixuptri;
+-int leftside;
++void delaunayfixup(
++struct triedge *fixuptri,
++int leftside
++)
+ {
+   struct triedge neartri;
+   struct triedge fartri;
+@@ -9793,10 +9817,11 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void constrainededge(starttri, endpoint2, newmark)
+-struct triedge *starttri;
+-point endpoint2;
+-int newmark;
++void constrainededge(
++struct triedge *starttri,
++point endpoint2,
++int newmark
++)
+ {
+   struct triedge fixuptri, fixuptri2;
+   struct edge fixupedge;
+@@ -9887,10 +9912,11 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void insertsegment(endpoint1, endpoint2, newmark)
+-point endpoint1;
+-point endpoint2;
+-int newmark;
++void insertsegment(
++point endpoint1,
++point endpoint2,
++int newmark
++)
+ {
+   struct triedge searchtri1, searchtri2;
+   triangle encodedtri;
+@@ -10030,16 +10056,18 @@
+ 
+ #ifdef TRILIBRARY
+ 
+-int formskeleton(segmentlist, segmentmarkerlist, numberofsegments)
+-int *segmentlist;
+-int *segmentmarkerlist;
+-int numberofsegments;
++int formskeleton(
++int *segmentlist,
++int *segmentmarkerlist,
++int numberofsegments
++)
+ 
+ #else /* not TRILIBRARY */
+ 
+-int formskeleton(polyfile, polyfilename)
+-FILE *polyfile;
+-char *polyfilename;
++int formskeleton(
++FILE *polyfile,
++char *polyfilename
++)
+ 
+ #endif /* not TRILIBRARY */
+ 
+@@ -10458,9 +10486,10 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void regionplague(attribute, area)
+-REAL attribute;
+-REAL area;
++void regionplague(
++REAL attribute,
++REAL area
++)
+ {
+   struct triedge testtri;
+   struct triedge neighbor;
+@@ -10563,11 +10592,12 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-void carveholes(holelist, holes, regionlist, regions)
+-REAL *holelist;
+-int holes;
+-REAL *regionlist;
+-int regions;
++void carveholes(
++REAL *holelist,
++int holes,
++REAL *regionlist,
++int regions
++)
+ {
+   struct triedge searchtri;
+   struct triedge triangleloop;
+@@ -10809,8 +10839,9 @@
+ 
+ #ifndef CDT_ONLY
+ 
+-void repairencs(flaws)
+-int flaws;
++void repairencs(
++int flaws
++)
+ {
+   struct triedge enctri;
+   struct triedge testtri;
+@@ -10987,14 +11018,14 @@
+ /*                                                                           */
+ /*****************************************************************************/
+ 
+-enum circumcenterresult findcircumcenter(torg, tdest, tapex, circumcenter,
+-                                         xi, eta)
+-point torg;
+-point tdest;
+-point tapex;
+-point circumcenter;
+-REAL *xi;
+-REAL *eta;
++enum circumcenterresult findcircumcenter(
++point torg,
++point tdest,
++point tapex,
++point circumcenter,
++REAL *xi,
++REAL *eta
++)
+ {
+   REAL xdo, ydo, xao, yao, xad, yad;
+   REAL dodist, aodist, addist;
+@@ -11055,8 +11086,9 @@
+ 
+ #ifndef CDT_ONLY
+ 
+-void splittriangle(badtri)
+-struct badface *badtri;
++void splittriangle(
++struct badface *badtri
++)
+ {
+   point borg, bdest, bapex;
+   point newpoint;
+@@ -11333,10 +11365,11 @@
+ 
+ #ifndef TRILIBRARY
+ 
+-char *readline(string, infile, infilename)
+-char *string;
+-FILE *infile;
+-char *infilename;
++char *readline(
++char *string,
++FILE *infile,
++char *infilename
++)
+ {
+   char *result;
+ 
+@@ -11376,8 +11409,9 @@
+ 
+ #ifndef TRILIBRARY
+ 
+-char *findfield(string)
+-char *string;
++char *findfield(
++char *string
++)
+ {
+   char *result;
+ 
+@@ -11412,10 +11446,11 @@
+ 
+ #ifndef TRILIBRARY
+ 
+-void readnodes(nodefilename, polyfilename, polyfile)
+-char *nodefilename;
+-char *polyfilename;
+-FILE **polyfile;
++void readnodes(
++char *nodefilename,
++char *polyfilename,
++FILE **polyfile
++)
+ {
+   FILE *infile;
+   point pointloop;
+@@ -11621,13 +11656,13 @@
+ 
+ #ifdef TRILIBRARY
+ 
+-void transfernodes(pointlist, pointattriblist, pointmarkerlist, numberofpoints,
+-                   numberofpointattribs)
+-REAL *pointlist;
+-REAL *pointattriblist;
+-int *pointmarkerlist;
+-int numberofpoints;
+-int numberofpointattribs;
++void transfernodes(
++REAL *pointlist,
++REAL *pointattriblist,
++int *pointmarkerlist,
++int numberofpoints,
++int numberofpointattribs
++)
+ {
+   point pointloop;
+   REAL x, y;
+@@ -11699,13 +11734,14 @@
+ 
+ #ifndef TRILIBRARY
+ 
+-void readholes(polyfile, polyfilename, hlist, holes, rlist, regions)
+-FILE *polyfile;
+-char *polyfilename;
+-REAL **hlist;
+-int *holes;
+-REAL **rlist;
+-int *regions;
++void readholes(
++FILE *polyfile,
++char *polyfilename,
++REAL **hlist,
++int *holes,
++REAL **rlist,
++int *regions
++)
+ {
+   REAL *holelist;
+   REAL *regionlist;
+@@ -11845,10 +11881,11 @@
+ 
+ #ifndef TRILIBRARY
+ 
+-void finishfile(outfile, argc, argv)
+-FILE *outfile;
+-int argc;
+-char **argv;
++void finishfile(
++FILE *outfile,
++int argc,
++char **argv
++)
+ {
+   int i;
+ 
+@@ -11874,17 +11911,19 @@
+ 
+ #ifdef TRILIBRARY
+ 
+-void writenodes(pointlist, pointattriblist, pointmarkerlist)
+-REAL **pointlist;
+-REAL **pointattriblist;
+-int **pointmarkerlist;
++void writenodes(
++REAL **pointlist,
++REAL **pointattriblist,
++int **pointmarkerlist
++)
+ 
+ #else /* not TRILIBRARY */
+ 
+-void writenodes(nodefilename, argc, argv)
+-char *nodefilename;
+-int argc;
+-char **argv;
++void writenodes(
++char *nodefilename,
++int argc,
++char **argv
++)
+ 
+ #endif /* not TRILIBRARY */
+ 
+@@ -12041,16 +12080,18 @@
+ 
+ #ifdef TRILIBRARY
+ 
+-void writeelements(trianglelist, triangleattriblist)
+-int **trianglelist;
+-REAL **triangleattriblist;
++void writeelements(
++int **trianglelist,
++REAL **triangleattriblist
++)
+ 
+ #else /* not TRILIBRARY */
+ 
+-void writeelements(elefilename, argc, argv)
+-char *elefilename;
+-int argc;
+-char **argv;
++void writeelements(
++char *elefilename,
++int argc,
++char **argv
++)
+ 
+ #endif /* not TRILIBRARY */
+ 
+@@ -12186,20 +12227,22 @@
+ 
+ #ifdef TRILIBRARY
+ 
+-void writepoly(segmentlist, segmentmarkerlist)
+-int **segmentlist;
+-int **segmentmarkerlist;
++void writepoly(
++int **segmentlist,
++int **segmentmarkerlist
++)
+ 
+ #else /* not TRILIBRARY */
+ 
+-void writepoly(polyfilename, holelist, holes, regionlist, regions, argc, argv)
+-char *polyfilename;
+-REAL *holelist;
+-int holes;
+-REAL *regionlist;
+-int regions;
+-int argc;
+-char **argv;
++void writepoly(
++char *polyfilename,
++REAL *holelist,
++int holes,
++REAL *regionlist,
++int regions,
++int argc,
++char **argv
++)
+ 
+ #endif /* not TRILIBRARY */
+ 
+@@ -12331,16 +12374,18 @@
+ 
+ #ifdef TRILIBRARY
+ 
+-void writeedges(edgelist, edgemarkerlist)
+-int **edgelist;
+-int **edgemarkerlist;
++void writeedges(
++int **edgelist,
++int **edgemarkerlist
++)
+ 
+ #else /* not TRILIBRARY */
+ 
+-void writeedges(edgefilename, argc, argv)
+-char *edgefilename;
+-int argc;
+-char **argv;
++void writeedges(
++char *edgefilename,
++int argc,
++char **argv
++)
+ 
+ #endif /* not TRILIBRARY */
+ 
+@@ -12491,22 +12536,23 @@
+ 
+ #ifdef TRILIBRARY
+ 
+-void writevoronoi(vpointlist, vpointattriblist, vpointmarkerlist, vedgelist,
+-                  vedgemarkerlist, vnormlist)
+-REAL **vpointlist;
+-REAL **vpointattriblist;
+-int **vpointmarkerlist;
+-int **vedgelist;
+-int **vedgemarkerlist;
+-REAL **vnormlist;
++void writevoronoi(
++REAL **vpointlist,
++REAL **vpointattriblist,
++int **vpointmarkerlist,
++int **vedgelist,
++int **vedgemarkerlist,
++REAL **vnormlist
++)
+ 
+ #else /* not TRILIBRARY */
+ 
+-void writevoronoi(vnodefilename, vedgefilename, argc, argv)
+-char *vnodefilename;
+-char *vedgefilename;
+-int argc;
+-char **argv;
++void writevoronoi(
++char *vnodefilename,
++char *vedgefilename,
++int argc,
++char **argv
++)
+ 
+ #endif /* not TRILIBRARY */
+ 
+@@ -12728,15 +12774,17 @@
+ 
+ #ifdef TRILIBRARY
+ 
+-void writeneighbors(neighborlist)
+-int **neighborlist;
++void writeneighbors(
++int **neighborlist
++)
+ 
+ #else /* not TRILIBRARY */
+ 
+-void writeneighbors(neighborfilename, argc, argv)
+-char *neighborfilename;
+-int argc;
+-char **argv;
++void writeneighbors(
++char *neighborfilename,
++int argc,
++char **argv
++)
+ 
+ #endif /* not TRILIBRARY */
+ 
+@@ -12841,10 +12889,11 @@
+ 
+ #ifndef TRILIBRARY
+ 
+-void writeoff(offfilename, argc, argv)
+-char *offfilename;
+-int argc;
+-char **argv;
++void writeoff(
++char *offfilename,
++int argc,
++char **argv
++)
+ {
+   FILE *outfile;
+   struct triedge triangleloop;
+@@ -13204,17 +13253,19 @@
+ 
+ #ifdef TRILIBRARY
+ 
+-void triangulate(triswitches, in, out, vorout)
+-char *triswitches;
+-struct triangulateio *in;
+-struct triangulateio *out;
+-struct triangulateio *vorout;
++void triangulate(
++char *triswitches,
++struct triangulateio *in,
++struct triangulateio *out,
++struct triangulateio *vorout
++)
+ 
+ #else /* not TRILIBRARY */
+ 
+-int main(argc, argv)
+-int argc;
+-char **argv;
++int main(
++int argc,
++char **argv
++)
+ 
+ #endif /* not TRILIBRARY */
+ 

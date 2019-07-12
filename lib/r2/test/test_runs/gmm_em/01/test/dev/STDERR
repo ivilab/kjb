@@ -1,0 +1,129 @@
+(no-kjb) dbs: kjb_verbose_str is -><- on source line 118 of /Volumes/home/kobus/src/lib/l/l_init.c
+dbi: num_points is 2000 on source line 319 of gmm_em.c
+<<TEST>> Executing untested code on line 3552 of file /Volumes/home/kobus/src/lib/r2/r2_gmm_em.c.
+dbi: num_clusters is 3 on source line 3797 of /Volumes/home/kobus/src/lib/r2/r2_gmm_em.c
+a_vp
+3.539694e-01  3.054658e-01  3.405647e-01
+
+#
+# mean_mp
+#
+  2.16774044   0.49208665
+  0.27194323   4.68919226
+ -4.98796506   3.64744396
+
+#
+# var_mp
+#
+  6.54617820   2.61295066
+  1.03395786   0.94011392
+  0.13608089   0.24246516
+
+dbi: num_points is 2000 on source line 319 of gmm_em.c
+dbi: num_held_out is 200 on source line 375 of gmm_em.c
+This is the version of get_independent_GMM_3() in lib/r2.
+
+dbi: num_clusters is 3 on source line 4328 of /Volumes/home/kobus/src/lib/r2/r2_gmm_em.c
+a_vp
+3.578864e-01  3.057773e-01  3.363363e-01
+
+#
+# mean_mp
+#
+  2.18081603   0.48503881
+  0.25662823   4.68084772
+ -4.99034776   3.64065046
+
+#
+# var_mp
+#
+  6.52877343   2.60521123
+  1.06968068   0.92347521
+  0.13568518   0.23010798
+
+dbi: num_points is 2000 on source line 319 of gmm_em.c
+dbi: num_clusters is 3 on source line 4922 of /Volumes/home/kobus/src/lib/r2/r2_gmm_em.c
+a_vp
+2.882741e-01  3.904590e-01  3.212670e-01
+
+#
+# mean_mp
+#
+  0.26229686   4.75102420
+ -4.99625520   3.65913623
+  2.33522613   0.31158083
+
+#
+# var_mp
+#
+  1.12566813   1.11566025
+  0.13509519   0.29350603
+  6.36854185   2.36457410
+
+dbi: num_points is 2000 on source line 319 of gmm_em.c
+<<TEST>> Executing untested code on line 2038 of file /Volumes/home/kobus/src/lib/r2/r2_gmm_em.c.
+<<TEST>> Executing untested code on line 2202 of file /Volumes/home/kobus/src/lib/r2/r2_gmm_em.c.
+<<TEST>> Executing untested code on line 4391 of file /Volumes/home/kobus/src/lib/m/m_mat_arith.c.
+#
+# var_mvp->elements[i]
+#
+  6.53041837   3.56695758
+  3.56695758   2.19641085
+
+#
+# var_mvp->elements[i]
+#
+  1.11207602   0.09906667
+  0.09906667   1.09976271
+
+#
+# var_mvp->elements[i]
+#
+  0.13645996   0.03556670
+  0.03556670   0.24334279
+
+a_vp
+3.295880e-01  3.294268e-01  3.409852e-01
+
+#
+# mean_mp
+#
+  2.31448601   0.29786862
+  0.27204075   4.57484810
+ -4.98785899   3.64681768
+
+var_mp: NULL
+dbi: num_points is 2000 on source line 319 of gmm_em.c
+dbi: num_clusters is 3 on source line 2885 of /Volumes/home/kobus/src/lib/r2/r2_gmm_em.c
+#
+# var_mvp->elements[i]
+#
+  1.05179773   0.08334201
+  0.08334201   0.95640408
+
+#
+# var_mvp->elements[i]
+#
+  0.13726561   0.03562081
+  0.03562081   0.24458520
+
+#
+# var_mvp->elements[i]
+#
+  6.57460711   2.96375866
+  2.96375866   2.64161477
+
+a_vp
+3.027715e-01  3.410220e-01  3.562065e-01
+
+#
+# mean_mp
+#
+  0.26117429   4.69406843
+ -4.98705116   3.65072272
+  2.17919336   0.50197356
+
+var_mp: NULL
+<<TEST>> Begin cleaning up system command process (3128) (ignore line for regression testing).
+<<TEST>> Wait result is 0 (ignore line for regression testing).
+<<TEST>> Done waiting for system command  process to finish (ignore line for regression testing).

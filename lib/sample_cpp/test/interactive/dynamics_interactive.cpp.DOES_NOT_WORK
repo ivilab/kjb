@@ -1,0 +1,743 @@
+#include <iostream>
+
+#include <sample_cpp/sample_dynamics.h> 
+#include <likelihood_cpp/edge_points_likelihood.h>
+#include <st_cpp/st_parapiped.h>
+#include <st_cpp/st_perspective_camera.h>
+#include <gr_cpp/gr_offscreen.h>
+#include <glut_cpp/glut_perspective_camera.h>
+#include <glut_cpp/glut_parapiped.h>
+#include <edge_cpp/edge.h>
+#include <boost/thread/thread.hpp>
+#include <boost/thread/mutex.hpp>
+#include <sample/sample_misc.h>
+#include <edge_cpp/features_manager.h>
+
+/** This is a multithreaded program. It must be compiled in
+ * PRODUCTION mode, otherwise it will not work.
+ * Also, GLUT is required
+ */
+using namespace std;
+
+#ifdef KJB_HAVE_OPENGL
+#ifdef KJB_HAVE_X11
+#ifdef MAC_OSX
+#include <OpenGL/OpenGL.h>
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
+#endif
+#endif
+#endif
+
+#ifdef KJB_HAVE_GLUT
+#ifdef MAC_OSX
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
+#include <sample_cpp/dynamics_moves.h>
+#define NONE 0
+#define CAMERA_SELECTED 1
+#define PARAPIPED_SELECTED 2
+
+#define WRITE_PARAPIPED 9
+#define EXIT_ID 10
+static kjb::Offscreen_buffer* offscreen2 = 0;
+static kjb::Perspective_camera * camera = 0;
+static kjb::Perspective_camera * best_camera = 0;
+static kjb::Parametric_parapiped * pp = 0;
+static kjb::Parametric_parapiped * best_pp = 0;
+static kjb::Edge_set * edge_set = 0;
+static kjb::Independent_edge_points_likelihood * likelihood = 0;
+static kjb::Image * background = 0;
+static float gwidth = 400;
+static float gheight = 300;
+static uint32_t _current_action = 0;
+static unsigned int object_selected = NONE;
+double best_ll = 0;
+string output_img_name;
+string room_name;
+string camera_name;
+
+
+static int _argc;
+static char ** _argv;
+
+boost::mutex _mutex;
+
+/* -------------------------------------------------------------------------- */
+
+void init_onscreen_buffer(int argc, char **argv);
+
+
+namespace kjb
+{
+
+/** Template specialization for computing the likelihood from
+ *  a model and a camera. In this case the model is a Parametric_Parapiped
+ *  and the camera is of type Perspective_camera
+ *
+ *  @param pp     The model to compute the likelihood for
+ *  @param camera The camera under which the parapiped is to be rendered
+ *  @param mode   The mode for the likelihood computation. Here only 0 is
+ *                supported (from model map and edges), because this is how
+ *                we compute the likelihood for parapipeds and cameras.
+ */
+template <>
+double Independent_edge_points_likelihood::compute_likelihood
+(
+	Parametric_parapiped & pp,
+	Perspective_camera & camera,
+	unsigned int mode
+)
+{
+	if(mode != FROM_MAP_AND_EDGES)
+	{
+		KJB_THROW_2(Illegal_argument, "Likelihood computation mode not supported for camera and parapiped");
+	}
+
+	/** We update the camera and the parapiped so that their
+	 * rendering interfaces reflect the values of their parameters.
+	 * At the same time the gl rendering context is prepared for rendering */
+	camera.prepare_for_rendering(true);
+	pp.update_if_needed();
+
+    /** We compute the model map and prepare the model edges needed for
+     * the likelihood computation */
+	const Polymesh & polymesh = pp.get_polymesh();
+    prepare_model_map(model_map,polymesh);
+    std::vector<Model_edge> model_edges;
+    prepare_model_edges(model_edges, polymesh, camera.get_rendering_interface());
+
+    /** Finally, we compute the likelihood */
+    return this->operator()(model_map, model_edges);
+
+}
+
+}
+
+using namespace kjb;
+
+
+double compute_likelihood(Parametric_parapiped & ipp,Perspective_camera & ic)
+{
+	//std::cout << "Compute the goddamn ll" << std::endl;
+	double ll = likelihood->compute_likelihood<Parametric_parapiped, Perspective_camera>(ipp, ic);
+	return ll;
+}
+
+void logger(const Parametric_parapiped & ipp, const Perspective_camera & ic, double ll)
+{
+	std::cout << "LOGGER" << std::endl;
+	_mutex.lock();
+	(*pp) = ipp;
+    (*camera) = ic;
+    if(ll > best_ll)
+    {
+    	(*best_camera) = (*camera);
+    	(*best_pp) = (*pp);
+    	best_ll = ll;
+    }
+    _mutex.unlock();
+}
+
+void getter(Parametric_parapiped & ipp, Perspective_camera & ic)
+{
+	_mutex.lock();
+	ipp = (*pp);
+	ic = (*camera);
+	_mutex.unlock();
+}
+
+
+static void display_glut()
+{
+	unsigned t0=clock();
+	glDrawBuffer(GL_BACK);
+    glReadBuffer(GL_BACK);
+
+    glClearColor(0, 0, 0, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glColor3f(0.0,0.0,1.0);
+
+    _mutex.lock();
+    camera->prepare_for_rendering(true);
+    pp->wire_render();
+    //std::cout << "GLUT:" << pp->get_centre_x() << std::endl;
+    _mutex.unlock();
+
+    kjb::Image image;
+    glFlush();
+    camera->get_rendering_interface().capture_gl_view(image);
+    edge_set->draw(image, 255.0, 0.0, 0.0);
+    //edge_set->randomly_color(image);
+    camera->get_rendering_interface().set_gl_view(image);
+    glFlush();
+
+    glutSwapBuffers();
+
+}
+
+void dynamics_function()
+{
+	double alpha = 0.95;
+	unsigned int kick = 0;
+
+	offscreen2 = kjb::create_and_initialize_offscreen_buffer(gwidth, gheight);
+
+
+	kjb::Vector deltas(3);
+	deltas(0) = 0.02;
+	deltas(1) = 0.02;
+	deltas(2) = 0.02;
+	kjb::Vector etas(3);
+	etas(0) = 20.0; //50
+	etas(1) = 20.0; //100
+	etas(2) = 20.0; //50
+
+	Parapiped_stretch_dynamics stretch1
+	(
+		deltas,
+		etas,
+		&compute_likelihood,
+		&getter,
+		&logger,
+		true,
+		false,
+		true,
+		alpha,
+		kick,
+		true,
+		true,
+		true
+
+	);
+
+	Parapiped_stretch_dynamics stretch2
+	(
+		deltas,
+		etas,
+		&compute_likelihood,
+		&getter,
+		&logger,
+		false,
+		true,
+		false,
+		alpha,
+		kick,
+		false,
+		true,
+		false
+
+	);
+	std::cout << "Created offscreen buffer" << std::endl;
+	kjb::Vector deltas1(1);
+	deltas1(0) = 0.08;
+	kjb::Vector etas1(1);
+	etas1(0) = 10.0;
+
+	Focal_scale_dynamics focal_scale
+	(
+		deltas1,
+		etas1,
+		&compute_likelihood,
+		&getter,
+		&logger,
+		alpha,
+		kick
+	);
+
+	std::cout << "Created move" << std::endl;
+
+	std::cout << "Ready to run" << std::endl;
+	//dynamics2.run(200);
+
+	etas(0) = 10.0; //2.5
+	etas(1) = 10.0; //2.5
+	etas(2) = 10.0; //2.5
+
+	Parapiped_stretch_dynamics stretch1long
+	(
+		deltas,
+		etas,
+		&compute_likelihood,
+		&getter,
+		&logger,
+		true,
+		false,
+		true,
+		alpha,
+		kick,
+		true,
+		true,
+		true
+
+	);
+	//dynamicsc.run(100);
+
+	Parapiped_stretch_dynamics stretch2long
+	(
+		deltas,
+		etas,
+		&compute_likelihood,
+		&getter,
+		&logger,
+		false,
+		true,
+		false,
+		alpha,
+		kick,
+		false,
+		true,
+		false
+
+	);
+
+
+	kjb::Vector deltaall(10);
+	deltaall(PCD_PARAPIPED_X) = 0.03; //0.05
+	deltaall(PCD_PARAPIPED_Y) = 0.03; //0.05
+	deltaall(PCD_PARAPIPED_Z) = 0.03; //0.05
+	deltaall(PCD_PARAPIPED_WIDTH) = 0.03; //0.05
+	deltaall(PCD_PARAPIPED_HEIGHT) = 0.03; //0.05
+	deltaall(PCD_PARAPIPED_LENGTH) = 0.03; //0.05
+	deltaall(PCD_PARAPIPED_YAW) = 0.000008; //0.00000
+	deltaall(PCD_CAMERA_FOCAL) = 0.05;
+	deltaall(PCD_CAMERA_PITCH) =  0.000003;//8
+	deltaall(PCD_CAMERA_ROLL) =  0.000003;//8
+	kjb::Vector etaall(10);
+	etaall(PCD_PARAPIPED_X) = 4.0; //10
+	etaall(PCD_PARAPIPED_Y) = 4.0; //10
+	etaall(PCD_PARAPIPED_Z) = 4.0; //10
+	etaall(PCD_PARAPIPED_WIDTH) = 4.0; //10
+	etaall(PCD_PARAPIPED_HEIGHT) = 4.0; //10
+	etaall(PCD_PARAPIPED_LENGTH) = 4.0;  //10
+	etaall(PCD_PARAPIPED_YAW) = 0.00003; //3
+	etaall(PCD_CAMERA_FOCAL) = 10.0;
+	etaall(PCD_CAMERA_PITCH) =  0.00001; //3
+	etaall(PCD_CAMERA_ROLL) =  0.00001; //3
+
+	Parapiped_camera_dynamics fulldynamics
+	(
+		deltaall,
+	    etaall,
+	    &compute_likelihood,
+	    &getter,
+	    &logger,
+	    alpha,
+	    kick,
+	    true,
+	    true,
+	    true,
+	    true,
+	    true,
+	    true,
+	    true,
+	    true,
+	    true,
+	    true
+	);
+
+	Discrete_change_size dc1
+	(
+	    1,
+	    true,
+	    &compute_likelihood,
+		&getter,
+		&logger
+	);
+
+	Discrete_change_size dc2
+	(
+		1,
+		false,
+		&compute_likelihood,
+		&getter,
+		&logger
+	);
+
+	Discrete_change_size dc3
+	(
+		0,
+		true,
+		&compute_likelihood,
+		&getter,
+		&logger
+	);
+
+	Discrete_change_size dc4
+	(
+		0,
+		false,
+		&compute_likelihood,
+		&getter,
+		&logger
+	);
+
+    Discrete_change_size dc5
+	(
+		2,
+		true,
+		&compute_likelihood,
+		&getter,
+		&logger
+	);
+
+	Discrete_change_size dc6
+	(
+		2,
+		false,
+		&compute_likelihood,
+		&getter,
+		&logger
+	);
+
+	std::vector<Likelihood_dynamics *> continuous_moves;
+	continuous_moves.push_back(&fulldynamics);
+	continuous_moves.push_back(&stretch1);
+	continuous_moves.push_back(&stretch2);
+	continuous_moves.push_back(&focal_scale);
+
+	std::vector<Likelihood_dynamics *> discrete_moves;
+	discrete_moves.push_back(&dc1);
+	discrete_moves.push_back(&dc2);
+	discrete_moves.push_back(&dc3);
+	discrete_moves.push_back(&dc4);
+	discrete_moves.push_back(&dc5);
+	discrete_moves.push_back(&dc6);
+
+	//continuous_moves[1]->run(280);
+	//continuous_moves[2]->run(280);
+	try
+	{
+	for(unsigned int i = 0; i < 500; i++) //110
+	{
+		double cvd = kjb_c::sample_from_uniform_distribution(0.0, 1.0);
+		if(cvd < 0.85)
+		{
+		    Vector distr(4, 1.0/4.0);
+		    int position;
+		    kjb_c::sample_from_discrete_distribution(&position, distr.get_c_vector());
+		    std::cout << "Position:" << position << std::endl;
+		    if(position == 0)
+		    {
+		        continuous_moves[position]->run(80);
+		    }
+		    else
+		    {
+		    	continuous_moves[position]->run(20);
+		    }
+		}
+		else
+		{
+			//Vector distr(6, 1.0/6.0);
+			//int position;
+			//kjb_c::sample_from_discrete_distribution(&position, distr.get_c_vector());
+			std::cout << "DISCRETE MOVE" << std::endl;
+			for(unsigned int j = 0; j < discrete_moves.size(); j++)
+			{
+			    discrete_moves[j]->run(1);
+			}
+			std::cout << "AFTER DISCRETE MOVE" << std::endl;
+		}
+	    }
+	}
+	catch (KJB_error e)
+	{
+		e.print_details(cout);
+	}
+
+	//continuous_moves[0]->run(400);
+	//focal_scale.run(500);
+
+	best_camera->write(camera_name.c_str());
+	best_pp->write(room_name.c_str());
+
+	std::cout << "Render" << std::endl;
+	glColor3f(255.0, 0.0, 0.0);
+	std::cout << "Prepare for rendering" << std::endl;
+	best_camera->prepare_for_rendering(true);
+	std::cout << "Done Prepare for rendering" << std::endl;
+	Base_gl_interface::set_gl_view(*background);
+	std::cout << "Render pp" << std::endl;
+	best_pp->wire_render();
+	std::cout << "After render pp" << std::endl;
+	kjb_c::KJB_image * capture = NULL;
+	Base_gl_interface::capture_gl_view(&capture);
+	Image img2(capture);
+	img2.write(output_img_name.c_str());
+
+
+}
+
+static void camera_callback(int i)
+{
+    object_selected = CAMERA_SELECTED;
+}
+
+static void pp_callback(int i)
+{
+    object_selected = PARAPIPED_SELECTED;
+}
+
+static void reshape_glut(int w, int h)
+{
+    float s = (float)h / (float)gheight;
+    glPointSize(s+0.49999);
+    glLineWidth(s);
+
+    glClearColor(0, 0, 0, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    gwidth = w;
+    gheight = h;
+    glViewport(0, 0, gwidth, gheight);
+
+}
+static void keyboard_glut(unsigned char key, int a, int b)
+{
+
+	if(object_selected == CAMERA_SELECTED)
+	{
+	    Glut_perspective_camera::keyboard_callback(key);
+	}
+	else if(object_selected == PARAPIPED_SELECTED)
+	{
+		Glut_parapiped::keyboard_callback(key);
+	}
+
+	if(key == 'w')
+	{
+		string ppname = "parapiped";
+		_mutex.lock();
+		pp->write(ppname.c_str());
+		camera->write("perspective_camera");
+		_mutex.unlock();
+	}
+
+	else if( (key == 'k' ) || (key == 'j'))
+	{
+		_mutex.lock();
+		double ll = likelihood->compute_likelihood<Parametric_parapiped, Perspective_camera>(*pp, *camera);
+		_mutex.unlock();
+		std::cout << "The likelihood is" << ll << std::endl;
+	}
+}
+
+static void timer_glut(int ignored)
+{
+    glutPostRedisplay();
+    glutTimerFunc(10, timer_glut, 0);
+}
+
+
+static void main_menu_glut(int id)
+{
+    using namespace kjb;
+	_current_action = id;
+
+	if(id == EXIT_ID)
+    {
+        delete pp;
+        delete camera;
+        exit(EXIT_SUCCESS);
+    }
+}
+
+void init_onscreen_buffer(int argc, char **argv)
+{
+
+	glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_ACCUM
+                                        | GLUT_ALPHA | GLUT_STENCIL);
+    glutInitWindowSize(gwidth, gheight);
+    glutCreateWindow("Dynamics");
+    glutDisplayFunc(display_glut);
+    glutReshapeFunc(reshape_glut);
+    glutKeyboardFunc(keyboard_glut);
+    glutTimerFunc(10, timer_glut, 0);
+
+    kjb::opengl::default_init_opengl(gwidth, gheight);
+
+    int camera_menu = Glut_perspective_camera::create_glut_perspective_camera_submenu(camera_callback, camera);
+    Glut_perspective_camera::update_width_increment(29);
+    Glut_perspective_camera::update_height_increment(29);
+    Glut_perspective_camera::update_aspect_ratio_increment(0.05);
+    Glut_perspective_camera::update_focal_length_increment(20.0);
+    Glut_perspective_camera::update_pitch_increment(0.03);
+    Glut_perspective_camera::update_yaw_increment(0.03);
+    Glut_perspective_camera::update_roll_increment(0.1);
+    Glut_perspective_camera::update_skew_increment(0.05);
+    Glut_perspective_camera::update_translation_x_increment(4.0);
+    Glut_perspective_camera::update_translation_y_increment(4.0);
+    Glut_perspective_camera::update_translation_z_increment(4.0);
+    Glut_perspective_camera::update_world_scale_increment(0.1);
+
+    int pp_menu = Glut_parapiped::create_glut_parapiped_submenu(pp_callback, pp);
+    Glut_parapiped::update_translation_x_increment(1.0);
+    Glut_parapiped::update_translation_y_increment(5.0);
+    Glut_parapiped::update_translation_z_increment(5.0);
+    Glut_parapiped::update_pitch_increment(0.1);
+    Glut_parapiped::update_yaw_increment(0.1);
+    Glut_parapiped::update_roll_increment(0.1);
+
+	glutCreateMenu(main_menu_glut);
+	glutAddSubMenu("Camera", camera_menu);
+	glutAddSubMenu("Parapiped", pp_menu);
+
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
+
+}
+
+
+int main(int argc, char** argv)
+{
+	_argc = argc;
+	_argv = argv;
+
+	if(argc < 4)
+	{
+		std::cout << "Usage: <base_dir> <output_dir> <image_number>" << std::endl;
+		return 1;
+	}
+
+	string base(argv[1]);
+	base.append("/");
+
+	string features_file(base);
+	features_file.append("validation/features/");
+	features_file.append(argv[3]);
+	features_file.append("_features.txt");
+
+	string image_name(base);
+	image_name.append(argv[3]);
+	image_name.append(".jpg");
+	Image img(image_name);
+
+	string orientation_name(base);
+	orientation_name.append("orientation_maps/or_");
+	orientation_name.append(argv[3]);
+	orientation_name.append(".tif");
+
+	string out_base(argv[2]);
+	out_base.append("/");
+	output_img_name.append(out_base);
+	output_img_name.append(argv[3]);
+	output_img_name.append("gt.jpg");
+	room_name.append(out_base);
+	room_name.append(argv[3]);
+	room_name.append("_room.txt");
+	camera_name.append(out_base);
+	camera_name.append(argv[3]);
+	camera_name.append("_camera.txt");
+
+
+	Image orientation(orientation_name);
+	gwidth = orientation.get_num_cols();
+	gheight = orientation.get_num_rows();
+
+
+	//background = new Image(orientation);
+	background = new Image(img);
+
+	bool found = false;
+
+	Features_manager fm(features_file.c_str());
+	unsigned int corner_index = 0;
+
+	pp = new Parametric_parapiped(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
+	camera = new Perspective_camera();
+	for(unsigned int i = 0; i < fm.get_manhattan_world().get_num_corners3(); i++)
+	{
+		try
+		{
+			const Manhattan_corner & corner = fm.get_manhattan_world().get_corner_3(i);
+			kjb::robustly_propose_parapiped_and_camera_from_orthogonal_corner(*pp, *camera, corner,
+				fm.get_manhattan_world().get_focal_length(), img.get_num_rows(), img.get_num_cols(), 1000);
+			found = true;
+			corner_index = i;
+			break;
+		}
+		catch(KJB_error e)
+		{
+			continue;
+		}
+	}
+
+	best_camera = new Perspective_camera(*camera);
+	best_pp = new Parametric_parapiped(*pp);
+
+
+	if(!found)
+	{
+		std::cout << "Could not do it!" << std::endl;
+		KJB_THROW_2(KJB_error,"Could not do it");
+	}
+	init_onscreen_buffer(argc, argv);
+
+	//Canny_edge_detector canny(1.0, 10, 5, 20, true);
+	Canny_edge_detector canny(0.9, 2.55, 2.04, 20, true);
+	edge_set =  canny.detect_edges(orientation);
+	std::cout << "Num edges:" << edge_set->num_edges() << std::endl;
+	edge_set->break_edges_at_corners(0.9, 7);
+	edge_set->break_edges_at_corners(0.99, 60);
+	edge_set->remove_short_edges(20);
+
+	likelihood = new Independent_edge_points_likelihood(
+		*edge_set,
+		60, //Number of angle bins
+		orientation.get_num_rows(), //Number of image rows
+		orientation.get_num_cols(), //Number of image cols
+		10.0, //stdev for difference in orientation  1.0
+		1.0, //stdev for distance
+		20.0, // max dist allowed
+		1.0, //background probability
+		1e-80, //noise probability, 80
+		1e-20, //silhouette miss probability //13
+		1e-20 //inner edge miss probability  ///13
+	 );
+	Image imgg(img);
+	edge_set->randomly_color(imgg);
+	imgg.write("edges.jpg");
+
+	double ll = likelihood->compute_likelihood<Parametric_parapiped, Perspective_camera>(*pp, *camera);
+	best_ll = ll;
+	std::cout << "The likelihood is" << ll << std::endl;
+
+	//dynamics_function();
+	try
+	{
+	    boost::thread t1(dynamics_function);
+		//dynamics_function();
+	}
+	catch(KJB_error e)
+	{
+		e.print_details();
+	}
+	//t1.join();
+
+    std::cout << "Glut main loop" << std::endl;
+    glutMainLoop();
+    delete camera;
+    delete pp;
+    delete best_pp;
+    delete best_camera;
+    delete likelihood;
+    delete edge_set;
+    delete background;
+    return 0;
+
+}
+
+#else
+
+//Temporary, fix it so that it works on Linux as well
+int main(int argc, char **argv)
+{
+	std::cout << "Glut is not available, cannot run this interactive program" << std::endl;
+    return 0;
+}
+
+#endif

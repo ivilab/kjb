@@ -1,0 +1,352 @@
+	.version 1.4
+	.target sm_10, map_f64_to_f32
+	// compiled with /usr/local/cuda/open64/lib//be
+	// nvopencc 3.1 built on 2010-06-07
+
+	//-----------------------------------------------------------
+	// Compiling /tmp/tmpxft_00005c16_00000000-7_util.cpp3.i (/tmp/ccBI#.kEa25g)
+	//-----------------------------------------------------------
+
+	//-----------------------------------------------------------
+	// Options:
+	//-----------------------------------------------------------
+	//  Target:ptx, ISA:sm_10, Endian:little, Pointer Size:64
+	//  -O3	(Optimization level)
+	//  -g0	(Debug level)
+	//  -m2	(Report advisories)
+	//-----------------------------------------------------------
+
+	.file	1	"<command-line>"
+	.file	2	"/tmp/tmpxft_00005c16_00000000-6_util.cudafe2.gpu"
+	.file	3	"/usr/lib/gcc/x86_64-linux-gnu/4.4.3/include/stddef.h"
+	.file	4	"/usr/local/cuda/bin/../include/crt/device_runtime.h"
+	.file	5	"/usr/local/cuda/bin/../include/host_defines.h"
+	.file	6	"/usr/local/cuda/bin/../include/builtin_types.h"
+	.file	7	"/usr/local/cuda/bin/../include/device_types.h"
+	.file	8	"/usr/local/cuda/bin/../include/driver_types.h"
+	.file	9	"/usr/local/cuda/bin/../include/surface_types.h"
+	.file	10	"/usr/local/cuda/bin/../include/texture_types.h"
+	.file	11	"/usr/local/cuda/bin/../include/vector_types.h"
+	.file	12	"/usr/local/cuda/bin/../include/device_launch_parameters.h"
+	.file	13	"/usr/local/cuda/bin/../include/crt/storage_class.h"
+	.file	14	"/usr/include/bits/types.h"
+	.file	15	"/usr/include/time.h"
+	.file	16	"util.cu"
+	.file	17	"/usr/local/cuda/bin/../include/common_functions.h"
+	.file	18	"/usr/local/cuda/bin/../include/math_functions.h"
+	.file	19	"/usr/local/cuda/bin/../include/math_constants.h"
+	.file	20	"/usr/local/cuda/bin/../include/device_functions.h"
+	.file	21	"/usr/local/cuda/bin/../include/sm_11_atomic_functions.h"
+	.file	22	"/usr/local/cuda/bin/../include/sm_12_atomic_functions.h"
+	.file	23	"/usr/local/cuda/bin/../include/sm_13_double_functions.h"
+	.file	24	"/usr/local/cuda/bin/../include/sm_20_atomic_functions.h"
+	.file	25	"/usr/local/cuda/bin/../include/sm_20_intrinsics.h"
+	.file	26	"/usr/local/cuda/bin/../include/surface_functions.h"
+	.file	27	"/usr/local/cuda/bin/../include/texture_fetch_functions.h"
+	.file	28	"/usr/local/cuda/bin/../include/math_functions_dbl_ptx1.h"
+
+
+	.entry ow_ew_multiply_uint_float (
+		.param .u64 __cudaparm_ow_ew_multiply_uint_float_data1,
+		.param .u64 __cudaparm_ow_ew_multiply_uint_float_data2,
+		.param .u32 __cudaparm_ow_ew_multiply_uint_float_n)
+	{
+	.reg .u16 %rh<4>;
+	.reg .u32 %r<8>;
+	.reg .u64 %rd<8>;
+	.reg .f32 %f<5>;
+	.reg .pred %p<3>;
+	.loc	16	75	0
+$LDWbegin_ow_ew_multiply_uint_float:
+	.loc	16	77	0
+	mov.u16 	%rh1, %ctaid.x;
+	mov.u16 	%rh2, %ntid.x;
+	mul.wide.u16 	%r1, %rh1, %rh2;
+	cvt.u32.u16 	%r2, %tid.x;
+	add.u32 	%r3, %r2, %r1;
+	ld.param.u32 	%r4, [__cudaparm_ow_ew_multiply_uint_float_n];
+	setp.le.u32 	%p1, %r4, %r3;
+	@%p1 bra 	$Lt_0_1026;
+	.loc	16	68	0
+	cvt.u64.u32 	%rd1, %r3;
+	mul.wide.u32 	%rd2, %r3, 4;
+	ld.param.u64 	%rd3, [__cudaparm_ow_ew_multiply_uint_float_data1];
+	add.u64 	%rd4, %rd3, %rd2;
+	ld.global.u32 	%r5, [%rd4+0];
+	.loc	16	69	0
+	cvt.rn.f32.u32 	%f1, %r5;
+	ld.param.u64 	%rd5, [__cudaparm_ow_ew_multiply_uint_float_data2];
+	add.u64 	%rd6, %rd5, %rd2;
+	ld.global.f32 	%f2, [%rd6+0];
+	mul.f32 	%f3, %f1, %f2;
+	cvt.rzi.u32.f32 	%r6, %f3;
+	.loc	16	70	0
+	st.global.u32 	[%rd4+0], %r6;
+$Lt_0_1026:
+	.loc	16	78	0
+	exit;
+$LDWend_ow_ew_multiply_uint_float:
+	} // ow_ew_multiply_uint_float
+
+	.entry ow_ew_multiply_float (
+		.param .u64 __cudaparm_ow_ew_multiply_float_data1,
+		.param .u64 __cudaparm_ow_ew_multiply_float_data2,
+		.param .u32 __cudaparm_ow_ew_multiply_float_n)
+	{
+	.reg .u16 %rh<4>;
+	.reg .u32 %r<6>;
+	.reg .u64 %rd<8>;
+	.reg .f32 %f<5>;
+	.reg .pred %p<3>;
+	.loc	16	81	0
+$LDWbegin_ow_ew_multiply_float:
+	.loc	16	83	0
+	mov.u16 	%rh1, %ctaid.x;
+	mov.u16 	%rh2, %ntid.x;
+	mul.wide.u16 	%r1, %rh1, %rh2;
+	cvt.u32.u16 	%r2, %tid.x;
+	add.u32 	%r3, %r2, %r1;
+	ld.param.u32 	%r4, [__cudaparm_ow_ew_multiply_float_n];
+	setp.le.u32 	%p1, %r4, %r3;
+	@%p1 bra 	$Lt_1_1026;
+	.loc	16	70	0
+	cvt.u64.u32 	%rd1, %r3;
+	mul.wide.u32 	%rd2, %r3, 4;
+	ld.param.u64 	%rd3, [__cudaparm_ow_ew_multiply_float_data1];
+	add.u64 	%rd4, %rd3, %rd2;
+	ld.global.f32 	%f1, [%rd4+0];
+	ld.param.u64 	%rd5, [__cudaparm_ow_ew_multiply_float_data2];
+	add.u64 	%rd6, %rd5, %rd2;
+	ld.global.f32 	%f2, [%rd6+0];
+	mul.f32 	%f3, %f1, %f2;
+	st.global.f32 	[%rd4+0], %f3;
+$Lt_1_1026:
+	.loc	16	84	0
+	exit;
+$LDWend_ow_ew_multiply_float:
+	} // ow_ew_multiply_float
+
+	.entry ow_ew_multiply_uint (
+		.param .u64 __cudaparm_ow_ew_multiply_uint_data1,
+		.param .u64 __cudaparm_ow_ew_multiply_uint_data2,
+		.param .u32 __cudaparm_ow_ew_multiply_uint_n)
+	{
+	.reg .u16 %rh<4>;
+	.reg .u32 %r<9>;
+	.reg .u64 %rd<8>;
+	.reg .pred %p<3>;
+	.loc	16	87	0
+$LDWbegin_ow_ew_multiply_uint:
+	.loc	16	89	0
+	mov.u16 	%rh1, %ctaid.x;
+	mov.u16 	%rh2, %ntid.x;
+	mul.wide.u16 	%r1, %rh1, %rh2;
+	cvt.u32.u16 	%r2, %tid.x;
+	add.u32 	%r3, %r2, %r1;
+	ld.param.u32 	%r4, [__cudaparm_ow_ew_multiply_uint_n];
+	setp.le.u32 	%p1, %r4, %r3;
+	@%p1 bra 	$Lt_2_1026;
+	.loc	16	70	0
+	cvt.u64.u32 	%rd1, %r3;
+	mul.wide.u32 	%rd2, %r3, 4;
+	ld.param.u64 	%rd3, [__cudaparm_ow_ew_multiply_uint_data1];
+	add.u64 	%rd4, %rd3, %rd2;
+	ld.global.u32 	%r5, [%rd4+0];
+	ld.param.u64 	%rd5, [__cudaparm_ow_ew_multiply_uint_data2];
+	add.u64 	%rd6, %rd5, %rd2;
+	ld.global.u32 	%r6, [%rd6+0];
+	mul.lo.u32 	%r7, %r5, %r6;
+	st.global.u32 	[%rd4+0], %r7;
+$Lt_2_1026:
+	.loc	16	90	0
+	exit;
+$LDWend_ow_ew_multiply_uint:
+	} // ow_ew_multiply_uint
+
+	.entry ow_ew_multiply_int (
+		.param .u64 __cudaparm_ow_ew_multiply_int_data1,
+		.param .u64 __cudaparm_ow_ew_multiply_int_data2,
+		.param .u32 __cudaparm_ow_ew_multiply_int_n)
+	{
+	.reg .u16 %rh<4>;
+	.reg .u32 %r<9>;
+	.reg .u64 %rd<8>;
+	.reg .pred %p<3>;
+	.loc	16	93	0
+$LDWbegin_ow_ew_multiply_int:
+	.loc	16	95	0
+	mov.u16 	%rh1, %ctaid.x;
+	mov.u16 	%rh2, %ntid.x;
+	mul.wide.u16 	%r1, %rh1, %rh2;
+	cvt.u32.u16 	%r2, %tid.x;
+	add.u32 	%r3, %r2, %r1;
+	ld.param.u32 	%r4, [__cudaparm_ow_ew_multiply_int_n];
+	setp.le.u32 	%p1, %r4, %r3;
+	@%p1 bra 	$Lt_3_1026;
+	.loc	16	70	0
+	cvt.u64.u32 	%rd1, %r3;
+	mul.wide.u32 	%rd2, %r3, 4;
+	ld.param.u64 	%rd3, [__cudaparm_ow_ew_multiply_int_data1];
+	add.u64 	%rd4, %rd3, %rd2;
+	ld.global.s32 	%r5, [%rd4+0];
+	ld.param.u64 	%rd5, [__cudaparm_ow_ew_multiply_int_data2];
+	add.u64 	%rd6, %rd5, %rd2;
+	ld.global.s32 	%r6, [%rd6+0];
+	mul.lo.s32 	%r7, %r5, %r6;
+	st.global.s32 	[%rd4+0], %r7;
+$Lt_3_1026:
+	.loc	16	96	0
+	exit;
+$LDWend_ow_ew_multiply_int:
+	} // ow_ew_multiply_int
+
+	.entry detect_changes_float (
+		.param .u64 __cudaparm_detect_changes_float_data,
+		.param .u32 __cudaparm_detect_changes_float_n)
+	{
+	.reg .u16 %rh<4>;
+	.reg .u32 %r<8>;
+	.reg .u64 %rd<10>;
+	.reg .f32 %f<8>;
+	.reg .pred %p<5>;
+	.loc	16	132	0
+$LDWbegin_detect_changes_float:
+	.loc	16	134	0
+	mov.u16 	%rh1, %ctaid.x;
+	mov.u16 	%rh2, %ntid.x;
+	mul.wide.u16 	%r1, %rh1, %rh2;
+	cvt.u32.u16 	%r2, %tid.x;
+	add.u32 	%r3, %r2, %r1;
+	mov.u32 	%r4, 0;
+	setp.ne.u32 	%p1, %r3, %r4;
+	@%p1 bra 	$Lt_4_3074;
+	.loc	16	114	0
+	mov.f32 	%f1, 0f00000000;     	// 0
+	ld.param.u64 	%rd1, [__cudaparm_detect_changes_float_data];
+	cvt.u64.u32 	%rd2, %r3;
+	mul.wide.u32 	%rd3, %r3, 4;
+	add.u64 	%rd4, %rd1, %rd3;
+	st.global.f32 	[%rd4+0], %f1;
+	bra.uni 	$LDWendi__Z23detect_changes_dispatchIfEvPT_j_214_1;
+$Lt_4_3074:
+	ld.param.u32 	%r5, [__cudaparm_detect_changes_float_n];
+	add.u32 	%r6, %r3, 1;
+	setp.le.u32 	%p2, %r5, %r6;
+	@%p2 bra 	$Lt_4_3586;
+	.loc	16	120	0
+	ld.param.u64 	%rd5, [__cudaparm_detect_changes_float_data];
+	cvt.u64.u32 	%rd6, %r3;
+	mul.wide.u32 	%rd7, %r3, 4;
+	add.u64 	%rd8, %rd5, %rd7;
+	mov.f32 	%f2, 0f00000000;     	// 0
+	mov.f32 	%f3, 0f3f800000;     	// 1
+	ld.global.f32 	%f4, [%rd8+0];
+	ld.global.f32 	%f5, [%rd8+4];
+	setp.eq.f32 	%p3, %f4, %f5;
+	selp.f32 	%f6, %f2, %f3, %p3;
+	st.global.f32 	[%rd8+4], %f6;
+$Lt_4_3586:
+$LDWendi__Z23detect_changes_dispatchIfEvPT_j_214_1:
+	.loc	16	135	0
+	exit;
+$LDWend_detect_changes_float:
+	} // detect_changes_float
+
+	.entry detect_changes_int (
+		.param .u64 __cudaparm_detect_changes_int_data,
+		.param .u32 __cudaparm_detect_changes_int_n)
+	{
+	.reg .u16 %rh<4>;
+	.reg .u32 %r<13>;
+	.reg .u64 %rd<10>;
+	.reg .pred %p<4>;
+	.loc	16	138	0
+$LDWbegin_detect_changes_int:
+	.loc	16	140	0
+	mov.u16 	%rh1, %ctaid.x;
+	mov.u16 	%rh2, %ntid.x;
+	mul.wide.u16 	%r1, %rh1, %rh2;
+	cvt.u32.u16 	%r2, %tid.x;
+	add.u32 	%r3, %r2, %r1;
+	mov.u32 	%r4, 0;
+	setp.ne.u32 	%p1, %r3, %r4;
+	@%p1 bra 	$Lt_5_3074;
+	.loc	16	114	0
+	mov.s32 	%r5, 0;
+	ld.param.u64 	%rd1, [__cudaparm_detect_changes_int_data];
+	cvt.u64.u32 	%rd2, %r3;
+	mul.wide.u32 	%rd3, %r3, 4;
+	add.u64 	%rd4, %rd1, %rd3;
+	st.global.s32 	[%rd4+0], %r5;
+	bra.uni 	$LDWendi__Z23detect_changes_dispatchIiEvPT_j_215_1;
+$Lt_5_3074:
+	ld.param.u32 	%r6, [__cudaparm_detect_changes_int_n];
+	add.u32 	%r7, %r3, 1;
+	setp.le.u32 	%p2, %r6, %r7;
+	@%p2 bra 	$Lt_5_3586;
+	.loc	16	120	0
+	ld.param.u64 	%rd5, [__cudaparm_detect_changes_int_data];
+	cvt.u64.u32 	%rd6, %r3;
+	mul.wide.u32 	%rd7, %r3, 4;
+	add.u64 	%rd8, %rd5, %rd7;
+	ld.global.s32 	%r8, [%rd8+0];
+	ld.global.s32 	%r9, [%rd8+4];
+	set.ne.u32.s32 	%r10, %r8, %r9;
+	neg.s32 	%r11, %r10;
+	st.global.s32 	[%rd8+4], %r11;
+$Lt_5_3586:
+$LDWendi__Z23detect_changes_dispatchIiEvPT_j_215_1:
+	.loc	16	141	0
+	exit;
+$LDWend_detect_changes_int:
+	} // detect_changes_int
+
+	.entry detect_changes_uint (
+		.param .u64 __cudaparm_detect_changes_uint_data,
+		.param .u32 __cudaparm_detect_changes_uint_n)
+	{
+	.reg .u16 %rh<4>;
+	.reg .u32 %r<13>;
+	.reg .u64 %rd<10>;
+	.reg .pred %p<4>;
+	.loc	16	145	0
+$LDWbegin_detect_changes_uint:
+	.loc	16	147	0
+	mov.u16 	%rh1, %ctaid.x;
+	mov.u16 	%rh2, %ntid.x;
+	mul.wide.u16 	%r1, %rh1, %rh2;
+	cvt.u32.u16 	%r2, %tid.x;
+	add.u32 	%r3, %r2, %r1;
+	mov.u32 	%r4, 0;
+	setp.ne.u32 	%p1, %r3, %r4;
+	@%p1 bra 	$Lt_6_3074;
+	.loc	16	114	0
+	mov.u32 	%r5, 0;
+	ld.param.u64 	%rd1, [__cudaparm_detect_changes_uint_data];
+	cvt.u64.u32 	%rd2, %r3;
+	mul.wide.u32 	%rd3, %r3, 4;
+	add.u64 	%rd4, %rd1, %rd3;
+	st.global.u32 	[%rd4+0], %r5;
+	bra.uni 	$LDWendi__Z23detect_changes_dispatchIjEvPT_j_216_1;
+$Lt_6_3074:
+	ld.param.u32 	%r6, [__cudaparm_detect_changes_uint_n];
+	add.u32 	%r7, %r3, 1;
+	setp.le.u32 	%p2, %r6, %r7;
+	@%p2 bra 	$Lt_6_3586;
+	.loc	16	120	0
+	ld.param.u64 	%rd5, [__cudaparm_detect_changes_uint_data];
+	cvt.u64.u32 	%rd6, %r3;
+	mul.wide.u32 	%rd7, %r3, 4;
+	add.u64 	%rd8, %rd5, %rd7;
+	ld.global.u32 	%r8, [%rd8+0];
+	ld.global.u32 	%r9, [%rd8+4];
+	set.ne.u32.u32 	%r10, %r8, %r9;
+	neg.s32 	%r11, %r10;
+	st.global.u32 	[%rd8+4], %r11;
+$Lt_6_3586:
+$LDWendi__Z23detect_changes_dispatchIjEvPT_j_216_1:
+	.loc	16	148	0
+	exit;
+$LDWend_detect_changes_uint:
+	} // detect_changes_uint
+

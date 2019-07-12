@@ -1,0 +1,73 @@
+
+################################################################################
+#                             Options
+
+# For programs, speical purpose compile options are set in Makefile-2. For
+# library modules, the must go in Makefile-include. 
+#
+# For example, to force no optimization for C compiles, replace CC_FLAGS with
+# DONT_OPTIMIZE_CC_FLAGS. 
+#     
+# To force a C99 compile in an emergency, replace
+#     $(CC_FLAGS)
+# below with 
+#      $(CC_C99_BASE_FLAGS) $(CC_TEST_OR_OPTIMIZE)
+# In developing KJB library code for the U.A. vision lab, this capability MUST
+# BE USED ONLY FOR TRANSITION. 
+#
+################################################################################
+
+MM_LIB_CC_FLAGS = $(CC_FLAGS)
+MM_LIB_CC_WARNING_FLAGS = $(CC_KJB_WARNINGS)
+MM_LIB_CXX_FLAGS = $(CXX_FLAGS)
+MM_LIB_CXX_WARNING_FLAGS = $(CXX_KJB_WARNINGS)
+MM_LIB_EXTRA_COMPILE_FLAGS =
+
+################################################################################
+
+MM_LIB_PREFIX = mm
+MM_LIB_UC_PREFIX = MM
+
+MM_LIB_SRC_DIR = $(MM_DIR)
+MM_LIB_REAL_SRC_DIR = $(REAL_MM_DIR)
+
+MM_LIB_ARCHIVE = $(MM_DIR)$(OBJ_DIR)libKJB$(MM_LIB_PREFIX).a
+MM_LIB_LD = -L$(MM_DIR)$(OBJ_DIR) -lKJB$(MM_LIB_PREFIX) 
+
+################################################################################
+
+$(MM_DIR)Makefile-library.$(MAKE_FLAVOR) : $(MAKE_DIR)Makefile-library.$(MAKE_FLAVOR)
+	sed 's/LIB_COMPONENT/MM_LIB/g' < $< > $@
+
+include $(MM_DIR)Makefile-library.$(MAKE_FLAVOR)
+
+################################################################################
+
+$(MM_DIR)Makefile-library : $(MAKE_DIR)Makefile-library
+	sed 's/LIB_COMPONENT/MM_LIB/g' < $< > $@
+
+include $(MM_DIR)Makefile-library
+
+################################################################################
+
+# As of 19/01/02, we do this in Makefile-library. Delete eventually. 
+#
+### # What if Include_lines/header_file_list does not exist?
+### $(MM_DIR)Include_lines/header_file_list : 
+### 	$(KJB_MKDIR) $(MM_DIR)Include_lines
+### 	$(KJB_RM) $@.new
+### 	$(KJB_TOUCH) $@
+### 
+### $(MM_DIR)$(MM_LIB_PREFIX)_incl.h : $(MAKE_SCRIPT_PATH)build_incl_dot_h $(MM_DIR)Include_lines/header_file_list
+### 	@$(ECHO_IF_VERBOSE) "Building $@ because of $?" 
+### 	$(MAKE_SCRIPT_PATH)build_incl_dot_h $(MM_DIR)
+### 
+### ################################################################################
+### 
+### # Custom compile lines go here. Unfortunately, patterns cannot be used. However,
+### # if you want to change the compile for the entire directory, you can probably
+### # do what you want by changing the flags above (e.g., CC_FLAGS). 
+### 
+### 
+### 
+### 

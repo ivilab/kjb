@@ -1,0 +1,21 @@
+
+# 
+# Machine generated file to set make targets
+#
+
+PROGRAMS = \
+        $(OBJ_DIR)get_full_GMM \
+        $(OBJ_DIR)get_independent_GMM \
+        $(OBJ_DIR)get_independent_GMM_using_CEM \
+        $(OBJ_DIR)normalize_cluster_data \
+        $(OBJ_DIR)perturb
+
+
+
+
+MAN_FROM_HELP_FILES = \
+
+
+
+MAN_FROM_WRITEUP_FILES = \
+

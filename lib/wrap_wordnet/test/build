@@ -1,0 +1,98 @@
+#!/bin/csh -f
+
+##################################################################################
+#
+# Build script 
+# ============
+#
+# This file is generally called by "make". It can also be called directly. The
+# main purpose is to normalize the make environment, and to implement some
+# functionality that is difficult to do in a robust portable way for all flavors
+# of make. 
+#
+# This file should be a copy of: 
+#     ${SRC_DIR}/Make/scripts/build 
+#
+# The chief functionallity implemented here is to determine the value of
+# SRC_DIR, followed by sourcing ${SRC_DIR}Make/scripts/build-2. 
+#
+# This is a copy of ${SRC_DIR}/Make/scripts/build so that source directories can
+# be moved up and down in the src directory tree without additional manual
+# operations. If we instead were to link to ${SRC_DIR}/Make/scripts/build, then
+# changing the depth in the tree would require repairing the link by hand.  
+#
+
+##################################################################################
+#
+#                      Manipulating the build
+#                      ----------------------
+#
+# Build options can be manipulated by changing environment variables, some of
+# which are documented in this file. If you prefer, these can be set in the file
+# build_env. One way to get started with this plan is to copy build_env from
+# ${SRC_DIR}/Make/ to this directory which has some comments about what might go
+# in there. 
+#
+# If build_env exits, this file will source it before calling
+# ${SRC_DIR}/Make/build-2 which does the heavy lifting. 
+
+if (-e build_env) then
+    source build_env
+endif 
+
+##################################################################################
+
+# Find out where we are in the source tree. In particular, we want to find a dir
+# that has Make as a sub-dir and Make/init_compile as a file in that (to further
+# check that we have the right one). 
+
+set found = 0
+set src_dir = ""
+
+pushd `pwd` > /dev/null
+
+while ("`pwd`" != "/")
+    if (-e Make/init_compile) then
+        set found = 1
+        break
+    endif 
+
+    set src_dir = "../${src_dir}"
+
+    cd ..
+end
+
+popd > /dev/null
+
+if (${found}) then
+    if ("${src_dir}" == "") then
+        set src_dir = "./"
+    endif 
+
+    setenv SRC_DIR "${src_dir}"
+else
+   if ($?SRC_DIR == 0) then 
+       setenv SRC_DIR "${HOME}/src/"
+   endif 
+
+   if (! -e ${SRC_DIR}Make/init_compile) then
+       echo " " >> /dev/stderr
+       echo "This directory does not seem to be below a src dirctory with KJB installed." >> /dev/stderr
+       echo "Nor does ${SRC_DIR}/Make/init_compile exist. " >> /dev/stderr
+       echo "Hence this build will fail."  >> /dev/stderr
+       echo " " >> /dev/stderr
+       echo "Try setting SRC_DIR to a directory with Make as a sub-dir." >> /dev/stderr
+       echo " " >> /dev/stderr
+
+       exit 1 
+   endif 
+endif 
+
+# if ($?KJB_ABSOLUTE_SRC_PATH) then
+    pushd ${SRC_DIR} > /dev/null
+    setenv SRC_DIR "${cwd}/"
+    popd > /dev/null
+# endif 
+
+source ${SRC_DIR}Make/scripts/build-2 
+

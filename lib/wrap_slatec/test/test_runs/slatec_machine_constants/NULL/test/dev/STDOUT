@@ -1,0 +1,3 @@
+<<  2 >> Verbose level at program startup is 2.
+<<TEST>> Parent process in create_system_command_process() is 56041 (ignore line for regression testing).
+<<TEST>> Child process in create_system_command_process() is 56042 (ignore line for regression testing).
