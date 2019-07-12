@@ -1,7 +1,0 @@
-
-Error reported during non-interactive run.
-Execution of "cd NOT_A_DIRECTORY" reported failure status (1).
-sh: line 0: cd: NOT_A_DIRECTORY: No such file or directory
-<<TEST>> Skipping cleanup of the system command process (not the originating process).
-
-dbi: prog_rc is 1 on source line 31 of kjb_system_2.c

@@ -1,0 +1,6 @@
+<<TEST>> Parent process in create_system_command_process() is 42089 (IL4RT).
+<<TEST>> Child process in create_system_command_process(dbx: first_mp->elements is ) is 42113 (IL4RT).0
+ on source line 35 of matrix.c
+<<TEST>> Begin cleaning up system command process (42113) (IL4RT).
+<<TEST>> Wait result is 0 (IL4RT).
+<<TEST>> Done waiting for system command  process to finish (IL4RT).

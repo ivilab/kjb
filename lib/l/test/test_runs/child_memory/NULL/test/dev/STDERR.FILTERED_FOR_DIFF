@@ -1,4 +1,0 @@
-<<TEST>> Using kjb_system() despite gcc and DEBUGGING.
-<<TEST>> As a result, gdb may not work properly.
-<<TEST>> (This has not been verified with recent versions of gdb).
-<<TEST>> Use a debug level at least 25 to force the standard system().

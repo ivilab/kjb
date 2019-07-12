@@ -1,0 +1,6 @@
+(no-kjb) dbs: kjb_verbose_str is -><- on source line 117 of /Volumes/home/kobus/src/lib/l/l_init.c
+<<TEST>> Parent process in create_system_command_process() is 15260 (IL4RT).
+<<TEST>> Child process in create_system_command_process() is 15270 (IL4RT).
+<<TEST>> Begin cleaning up system command process (15270) (IL4RT).
+<<TEST>> Wait result is 0 (IL4RT).
+<<TEST>> Done waiting for system command  process to finish (IL4RT).

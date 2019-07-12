@@ -1,0 +1,10 @@
+<<TEST>> Parent process in create_system_command_process() is 42147 (IL4RT).
+<<TEST>> Child process in create_system
+_co
+mman****************************************************d_process() is 
+4Using home brew, possibly buggy quick_sort2167 
+(IL4RT).
+Sort is OK.
+<<TEST>> Begin cleaning up system command process (42167) (IL4RT).
+<<TEST>> Wait result is 0 (IL4RT).
+<<TEST>> Done waiting for system command  process to finish (IL4RT).

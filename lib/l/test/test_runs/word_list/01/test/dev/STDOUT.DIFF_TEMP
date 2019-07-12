@@ -1,0 +1,1464 @@
+<<  2 >> Verbose level at program startup is 5.
+                                                               num_cols );
+                                                              num_cols );
+                                report_failure( "3D double array failure.\n" );
+                                report_failure( "3D float array failure.\n" );
+                                report_failure( "3D int array failure.\n" );
+                                report_failure( "3D kjb_int16 array failure.\n" );
+                                report_failure( "3D kjb_int32 array failure.\n" );
+                                report_failure( "3D long array failure.\n" );
+                                report_failure( "3D short array failure.\n" );
+                                report_failure( "3D unsigned char array failure.\n" );
+                            */
+                            */
+                            /*
+                            /*
+                            // Dangerous "exact" test, but OK for this purpose.
+                            // Dangerous "exact" test, but OK for this purpose.
+                            byte_ptr_ptr_ptr[ i ][ j][ k ] = TEST_BYTE;
+                            double_ptr_ptr_ptr[ i ][ j][ k ] = TEST_DOUBLE;
+                            float_ptr_ptr_ptr[ i ][ j][ k ] = TEST_FLOAT;
+                            if ( byte_ptr_ptr_ptr[ i ][ j][ k ] != TEST_BYTE )
+                            if ( double_ptr_ptr_ptr[ i ][ j][ k ] != TEST_DOUBLE )
+                            if ( float_ptr_ptr_ptr[ i ][ j][ k ] != TEST_FLOAT )
+                            if ( int16_ptr_ptr_ptr[ i ][ j][ k ] != TEST_INT16 )
+                            if ( int32_ptr_ptr_ptr[ i ][ j][ k ] != TEST_INT32 )
+                            if ( int_ptr_ptr_ptr[ i ][ j][ k ] != TEST_INT )
+                            if ( long_ptr_ptr_ptr[ i ][ j][ k ] != TEST_LONG )
+                            if ( short_ptr_ptr_ptr[ i ][ j][ k ] != TEST_SHORT )
+                            int16_ptr_ptr_ptr[ i ][ j][ k ] = TEST_INT16;
+                            int32_ptr_ptr_ptr[ i ][ j][ k ] = TEST_INT32;
+                            int_ptr_ptr_ptr[ i ][ j][ k ] = TEST_INT;
+                            long_ptr_ptr_ptr[ i ][ j][ k ] = TEST_LONG;
+                            short_ptr_ptr_ptr[ i ][ j][ k ] = TEST_SHORT;
+                            {
+                            {
+                            {
+                            {
+                            {
+                            {
+                            {
+                            {
+                            }
+                            }
+                            }
+                            }
+                            }
+                            }
+                            }
+                            }
+                          dx, kri, ri);
+                        for (k=0; k<num_cols; k++)
+                        for (k=0; k<num_cols; k++)
+                        for (k=0; k<num_cols; k++)
+                        for (k=0; k<num_cols; k++)
+                        for (k=0; k<num_cols; k++)
+                        for (k=0; k<num_cols; k++)
+                        for (k=0; k<num_cols; k++)
+                        for (k=0; k<num_cols; k++)
+                        for (k=0; k<num_cols; k++)
+                        for (k=0; k<num_cols; k++)
+                        for (k=0; k<num_cols; k++)
+                        for (k=0; k<num_cols; k++)
+                        for (k=0; k<num_cols; k++)
+                        for (k=0; k<num_cols; k++)
+                        for (k=0; k<num_cols; k++)
+                        for (k=0; k<num_cols; k++)
+                        report_failure( "2D double array failure.\n" );
+                        report_failure( "2D float array failure.\n" );
+                        report_failure( "2D int array failure.\n" );
+                        report_failure( "2D kjb_int16 array failure.\n" );
+                        report_failure( "2D kjb_int32 array failure.\n" );
+                        report_failure( "2D long array failure.\n" );
+                        report_failure( "2D short array failure.\n" );
+                        report_failure( "2D unsigned char array failure.\n" );
+                        report_failure( "3D double array failure.\n" );
+                        report_failure( "3D float array failure.\n" );
+                        report_failure( "3D int array failure.\n" );
+                        report_failure( "3D kjb_int16 array failure.\n" );
+                        report_failure( "3D kjb_int32 array failure.\n" );
+                        report_failure( "3D long array failure.\n" );
+                        report_failure( "3D short array failure.\n" );
+                        report_failure( "3D unsigned char array failure.\n" );
+                        {
+                        {
+                        {
+                        {
+                        {
+                        {
+                        {
+                        {
+                        {
+                        {
+                        {
+                        {
+                        {
+                        {
+                        {
+                        {
+                        }
+                        }
+                        }
+                        }
+                        }
+                        }
+                        }
+                        }
+                        }
+                        }
+                        }
+                        }
+                        }
+                        }
+                        }
+                        }
+                      (double)fx, kri, ri, dkri, dri);
+                      (double)fx, kri, ri, dkri, dri);
+                      (double)fx, kri, ri, dkri, dri);
+                      dx, kri, ri);
+                      dx, kri, ri);
+                    */
+                    */
+                    */
+                    */
+                    *byte_ptr = TEST_BYTE;
+                    *double_ptr = TEST_DOUBLE;
+                    *float_ptr = TEST_FLOAT;
+                    *int16_ptr = TEST_INT16;
+                    *int32_ptr = TEST_INT32;
+                    *int_ptr = TEST_INT;
+                    *long_ptr = TEST_LONG;
+                    *short_ptr = TEST_SHORT;
+                    /*
+                    /*
+                    /*
+                    /*
+                    // Dangerous "exact" test, but OK for this purpose.
+                    // Dangerous "exact" test, but OK for this purpose.
+                    // Dangerous "exact" test, but OK for this purpose.
+                    // Dangerous "exact" test, but OK for this purpose.
+                    EPETE(get_int_matrix_col(&col_vp, first_mp, j));
+                    EPETE(get_int_matrix_row(&row_vp, first_mp, i));
+                    EPETE(put_int_matrix_col(second_mp, row_vp, i));
+                    EPETE(put_int_matrix_row(third_mp, col_vp, j));
+                    byte_ptr = **byte_ptr_ptr_ptr;
+                    byte_ptr = **byte_ptr_ptr_ptr;
+                    byte_ptr++;
+                    byte_ptr++;
+                    byte_ptr_ptr[ i ][ j] = TEST_BYTE;
+                    db_cv(col_vp);
+                    db_rv(row_vp);
+                    dbi(mp->elements[ i ][ j ]); 
+                    dbi(try + i*j); 
+                    double_ptr = **double_ptr_ptr_ptr;
+                    double_ptr = **double_ptr_ptr_ptr;
+                    double_ptr++;
+                    double_ptr++;
+                    double_ptr_ptr[ i ][ j] = TEST_DOUBLE;
+                    float_ptr = **float_ptr_ptr_ptr;
+                    float_ptr = **float_ptr_ptr_ptr;
+                    float_ptr++;
+                    float_ptr++;
+                    float_ptr_ptr[ i ][ j] = TEST_FLOAT;
+                    for (j=0; j<num_rows; j++)
+                    for (j=0; j<num_rows; j++)
+                    for (j=0; j<num_rows; j++)
+                    for (j=0; j<num_rows; j++)
+                    for (j=0; j<num_rows; j++)
+                    for (j=0; j<num_rows; j++)
+                    for (j=0; j<num_rows; j++)
+                    for (j=0; j<num_rows; j++)
+                    for (j=0; j<num_rows; j++)
+                    for (j=0; j<num_rows; j++)
+                    for (j=0; j<num_rows; j++)
+                    for (j=0; j<num_rows; j++)
+                    for (j=0; j<num_rows; j++)
+                    for (j=0; j<num_rows; j++)
+                    for (j=0; j<num_rows; j++)
+                    for (j=0; j<num_rows; j++)
+                    if ( *byte_ptr != TEST_BYTE )
+                    if ( *double_ptr != TEST_DOUBLE )
+                    if ( *float_ptr != TEST_FLOAT )
+                    if ( *int16_ptr != TEST_INT16 )
+                    if ( *int32_ptr != TEST_INT32 )
+                    if ( *int_ptr != TEST_INT )
+                    if ( *long_ptr != TEST_LONG )
+                    if ( *short_ptr != TEST_SHORT )
+                    if ( byte_ptr_ptr[ i ][ j] != TEST_BYTE )
+                    if ( double_ptr_ptr[ i ][ j] != TEST_DOUBLE )
+                    if ( float_ptr_ptr[ i ][ j] != TEST_FLOAT )
+                    if ( int16_ptr_ptr[ i ][ j] != TEST_INT16 )
+                    if ( int32_ptr_ptr[ i ][ j] != TEST_INT32 )
+                    if ( int_ptr_ptr[ i ][ j] != TEST_INT )
+                    if ( long_ptr_ptr[ i ][ j] != TEST_LONG )
+                    if ( short_ptr_ptr[ i ][ j] != TEST_SHORT )
+                    int16_ptr = **int16_ptr_ptr_ptr;
+                    int16_ptr = **int16_ptr_ptr_ptr;
+                    int16_ptr++;
+                    int16_ptr++;
+                    int16_ptr_ptr[ i ][ j] = TEST_INT16;
+                    int32_ptr = **int32_ptr_ptr_ptr;
+                    int32_ptr = **int32_ptr_ptr_ptr;
+                    int32_ptr++;
+                    int32_ptr++;
+                    int32_ptr_ptr[ i ][ j] = TEST_INT32;
+                    int_ptr = **int_ptr_ptr_ptr;
+                    int_ptr = **int_ptr_ptr_ptr;
+                    int_ptr++;
+                    int_ptr++;
+                    int_ptr_ptr[ i ][ j] = TEST_INT;
+                    long_ptr = **long_ptr_ptr_ptr;
+                    long_ptr = **long_ptr_ptr_ptr;
+                    long_ptr++;
+                    long_ptr++;
+                    long_ptr_ptr[ i ][ j] = TEST_LONG;
+                    p_stderr("Preservation condition failed for element (%d, %d).\n", i, j);
+                    p_stderr("Problem with first test (%d != 0).\n", diff_1);
+                    p_stderr("Problem with second test (%d != 0).\n", diff_2);
+                    p_stderr("Problem with third test (%d != 0).\n", diff_3);
+                    report_failure( "2D double array failure.\n" );
+                    report_failure( "2D float array failure.\n" );
+                    report_failure( "2D int array failure.\n" );
+                    report_failure( "2D kjb_int16 array failure.\n" );
+                    report_failure( "2D kjb_int32 array failure.\n" );
+                    report_failure( "2D long array failure.\n" );
+                    report_failure( "2D short array failure.\n" );
+                    report_failure( "2D unsigned char array failure.\n" );
+                    result = EXIT_FAILURE;
+                    result = EXIT_FAILURE;
+                    result = EXIT_FAILURE;
+                    return EXIT_FAILURE;
+                    short_ptr = **short_ptr_ptr_ptr;
+                    short_ptr = **short_ptr_ptr_ptr;
+                    short_ptr++;
+                    short_ptr++;
+                    short_ptr_ptr[ i ][ j] = TEST_SHORT;
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    {
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                */
+                */
+                */   
+                *byte_ptr = TEST_BYTE;
+                *double_ptr = TEST_DOUBLE;
+                *float_ptr = TEST_FLOAT;  
+                *int16_ptr = TEST_INT16;
+                *int32_ptr = TEST_INT32;
+                *int_ptr = TEST_INT;
+                *long_ptr = TEST_LONG;
+                *short_ptr = TEST_SHORT;
+                /*
+                /*
+                /*
+                //   pso("%d %d %d\n", count, num_rows, num_cols);
+                // Dangerous "exact" test, but OK for this purpose.
+                // Dangerous "exact" test, but OK for this purpose.
+                EPETE(copy_matrix_to_int_matrix(&first_mp, rand_mp));
+                EPETE(get_int_transpose(&trans_mp, first_mp));
+                EPETE(get_int_transpose(&trans_mp, trans_mp));
+                EPETE(get_random_matrix(&rand_mp, num_rows, num_cols));
+                EPETE(get_target_int_matrix(&second_mp, num_cols, num_rows));
+                EPETE(get_target_int_matrix(&third_mp, num_cols, num_rows));
+                EPETE(ow_multiply_matrix_by_scalar(rand_mp, 2000.0)); 
+                EPETE(ow_subtract_scalar_from_matrix(rand_mp, 0.5)); 
+                byte_ptr = *byte_ptr_ptr;
+                byte_ptr = *byte_ptr_ptr;
+                byte_ptr++;
+                byte_ptr++;
+                byte_ptr_ptr_ptr = allocate_3D_byte_array( num_blocks, num_rows, num_cols );
+                byte_ptr_ptr_ptr = allocate_3D_byte_array( num_blocks, num_rows, num_cols );
+                db_mat(first_mp);
+                db_mat(second_mp);
+                db_mat(third_mp);
+                db_mat(trans_mp); 
+                dbp("\n -------------------------------------------------- \n");
+                diff_1 = max_abs_int_matrix_difference(trans_mp, second_mp);
+                diff_2 = max_abs_int_matrix_difference(trans_mp, third_mp);
+                diff_3 = max_abs_int_matrix_difference(trans_mp, first_mp);
+                double_ptr = *double_ptr_ptr;
+                double_ptr = *double_ptr_ptr;
+                double_ptr++;
+                double_ptr++;
+                double_ptr_ptr_ptr = allocate_3D_double_array( num_blocks, num_rows, 
+                double_ptr_ptr_ptr = allocate_3D_double_array( num_blocks, num_rows, 
+                float_ptr = *float_ptr_ptr;
+                float_ptr = *float_ptr_ptr;
+                float_ptr++;
+                float_ptr++;
+                float_ptr_ptr_ptr = allocate_3D_float_array( num_blocks, num_rows, num_cols );
+                float_ptr_ptr_ptr = allocate_3D_float_array( num_blocks, num_rows, num_cols );
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks * num_rows * num_cols; i++)
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_blocks; i++) 
+                for (i=0; i<num_rows; i++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                for (j=0; j<num_cols; j++)
+                free_3D_byte_array( byte_ptr_ptr_ptr );
+                free_3D_byte_array(byte_ptr_ptr_ptr);
+                free_3D_double_array( double_ptr_ptr_ptr );
+                free_3D_double_array(double_ptr_ptr_ptr);
+                free_3D_float_array( float_ptr_ptr_ptr );
+                free_3D_float_array(float_ptr_ptr_ptr);
+                free_3D_int16_array( int16_ptr_ptr_ptr );
+                free_3D_int16_array(int16_ptr_ptr_ptr);
+                free_3D_int32_array( int32_ptr_ptr_ptr );
+                free_3D_int32_array(int32_ptr_ptr_ptr);
+                free_3D_int_array( int_ptr_ptr_ptr );
+                free_3D_int_array(int_ptr_ptr_ptr);
+                free_3D_long_array( long_ptr_ptr_ptr );
+                free_3D_long_array(long_ptr_ptr_ptr);
+                free_3D_short_array( short_ptr_ptr_ptr );
+                free_3D_short_array(short_ptr_ptr_ptr);
+                if ( *byte_ptr != TEST_BYTE )
+                if ( *double_ptr != TEST_DOUBLE )
+                if ( *float_ptr != TEST_FLOAT )
+                if ( *int16_ptr != TEST_INT16 )
+                if ( *int32_ptr != TEST_INT32 )
+                if ( *int_ptr != TEST_INT )
+                if ( *long_ptr != TEST_LONG )
+                if ( *short_ptr != TEST_SHORT )
+                if ((num_blocks > 0) && (num_rows > 0))
+                if ((num_blocks > 0) && (num_rows > 0))
+                if ((num_blocks > 0) && (num_rows > 0))
+                if ((num_blocks > 0) && (num_rows > 0))
+                if ((num_blocks > 0) && (num_rows > 0))
+                if ((num_blocks > 0) && (num_rows > 0))
+                if ((num_blocks > 0) && (num_rows > 0))
+                if ((num_blocks > 0) && (num_rows > 0))
+                if ((num_blocks > 0) && (num_rows > 0))
+                if ((num_blocks > 0) && (num_rows > 0))
+                if ((num_blocks > 0) && (num_rows > 0))
+                if ((num_blocks > 0) && (num_rows > 0))
+                if ((num_blocks > 0) && (num_rows > 0))
+                if ((num_blocks > 0) && (num_rows > 0))
+                if ((num_blocks > 0) && (num_rows > 0))
+                if ((num_blocks > 0) && (num_rows > 0))
+                if (diff_1 != 0)
+                if (diff_2 != 0)
+                if (diff_3 != 0)
+                if (mp->elements[ i ][ j ] != (try + i*j))
+                int  diff_1;
+                int  diff_2;
+                int  diff_3;
+                int  i, j; 
+                int16_ptr = *int16_ptr_ptr;
+                int16_ptr = *int16_ptr_ptr;
+                int16_ptr++;
+                int16_ptr++;
+                int16_ptr_ptr_ptr = allocate_3D_int16_array( num_blocks, num_rows, num_cols );
+                int16_ptr_ptr_ptr = allocate_3D_int16_array( num_blocks, num_rows, num_cols );
+                int32_ptr = *int32_ptr_ptr;
+                int32_ptr = *int32_ptr_ptr;
+                int32_ptr++;
+                int32_ptr++;
+                int32_ptr_ptr_ptr = allocate_3D_int32_array( num_blocks, num_rows, num_cols );
+                int32_ptr_ptr_ptr = allocate_3D_int32_array( num_blocks, num_rows, num_cols );
+                int_ptr = *int_ptr_ptr;
+                int_ptr = *int_ptr_ptr;
+                int_ptr++;
+                int_ptr++;
+                int_ptr_ptr_ptr = allocate_3D_int_array( num_blocks, num_rows, num_cols );
+                int_ptr_ptr_ptr = allocate_3D_int_array( num_blocks, num_rows, num_cols );
+                kjb_print_error();
+                kjb_print_error();
+                long_ptr = *long_ptr_ptr;
+                long_ptr = *long_ptr_ptr;
+                long_ptr++;
+                long_ptr++;
+                long_ptr_ptr_ptr = allocate_3D_long_array( num_blocks, num_rows, num_cols );
+                long_ptr_ptr_ptr = allocate_3D_long_array( num_blocks, num_rows, num_cols );
+                mp->elements[ i ][ j ] = 1 + try + i*j;
+                num_cols += kjb_rint(5.0 * kjb_rand()); 
+                p_stderr("Preservation condition failed.\n");
+                result = EXIT_FAILURE;
+                result = EXIT_FAILURE;
+                return EXIT_FAILURE;
+                set_error("Test 3: Problem rounding double %.3e (%d != %d).", 
+                set_error("Test 6: Problem rounding float %.3e (%d != %d)    [ Double results are %d and %d ].", 
+                short_ptr = *short_ptr_ptr;
+                short_ptr = *short_ptr_ptr;
+                short_ptr++;
+                short_ptr++;
+                short_ptr_ptr_ptr = allocate_3D_short_array( num_blocks, num_rows, num_cols );
+                short_ptr_ptr_ptr = allocate_3D_short_array( num_blocks, num_rows, num_cols );
+                verbose_pso(1, "%d X %d X %d\n", num_blocks, num_rows, num_cols); 
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                {
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                } 
+                } 
+                } 
+                } 
+                } 
+                } 
+                } 
+                } 
+            byte_ptr_ptr = allocate_2D_byte_array( num_rows, num_cols );
+            byte_ptr_ptr = allocate_2D_byte_array(num_rows, num_cols);
+            dbx(mp->elements[ 0 ]); 
+            dkri = kjb_rint((double)fx); 
+            double_ptr_ptr = allocate_2D_double_array( num_rows, num_cols );
+            double_ptr_ptr = allocate_2D_double_array( num_rows, num_cols );
+            dri = rint((double)fx);
+            dx = (double)i + kjb_rand();
+            float_ptr_ptr = allocate_2D_float_array( num_rows, num_cols );
+            float_ptr_ptr = allocate_2D_float_array( num_rows, num_cols );
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows * num_cols; i++)
+            for (i=0; i<num_rows; i++)
+            for (i=0; i<num_rows; i++)
+            for (i=0; i<num_rows; i++)
+            for (i=0; i<num_rows; i++)
+            for (i=0; i<num_rows; i++)
+            for (i=0; i<num_rows; i++)
+            for (i=0; i<num_rows; i++)
+            for (i=0; i<num_rows; i++)
+            for (i=0; i<num_rows; i++)
+            for (i=0; i<num_rows; i++)
+            for (i=0; i<num_rows; i++)
+            for (i=0; i<num_rows; i++)
+            for (i=0; i<num_rows; i++)
+            for (i=0; i<num_rows; i++)
+            for (i=0; i<num_rows; i++)
+            for (i=0; i<num_rows; i++)
+            for (j = 0; j < MIN_OF(num_cols, prev_num_cols); j++)
+            for (j = 0; j < mp->num_cols; j++)
+            for (num_cols=1; num_cols<NUM_LOOPS; num_cols++)
+            free_2D_byte_array(byte_ptr_ptr);
+            free_2D_byte_array(byte_ptr_ptr);
+            free_2D_double_array( double_ptr_ptr );
+            free_2D_double_array( double_ptr_ptr);
+            free_2D_float_array( float_ptr_ptr );
+            free_2D_float_array(float_ptr_ptr);
+            free_2D_int16_array( int16_ptr_ptr );
+            free_2D_int16_array(int16_ptr_ptr);
+            free_2D_int32_array( int32_ptr_ptr );
+            free_2D_int32_array(int32_ptr_ptr);
+            free_2D_int_array( int_ptr_ptr );
+            free_2D_int_array(int_ptr_ptr);
+            free_2D_long_array( long_ptr_ptr );
+            free_2D_long_array(long_ptr_ptr);
+            free_2D_short_array( short_ptr_ptr );
+            free_2D_short_array(short_ptr_ptr );
+            fx = (float)i + (float)kjb_rand();
+            if (kri != ri)
+            if (kri != ri)
+            if (num_rows > 0)
+            if (num_rows > 0)
+            if (num_rows > 0)
+            if (num_rows > 0)
+            if (num_rows > 0)
+            if (num_rows > 0)
+            if (num_rows > 0)
+            if (num_rows > 0)
+            if (num_rows > 0)
+            if (num_rows > 0)
+            if (num_rows > 0)
+            if (num_rows > 0)
+            if (num_rows > 0)
+            if (num_rows > 0)
+            if (num_rows > 0)
+            if (num_rows > 0)
+            if (vp->elements[ i ] != try + i)
+            int16_ptr_ptr = allocate_2D_int16_array( num_rows, num_cols );
+            int16_ptr_ptr = allocate_2D_int16_array( num_rows, num_cols );
+            int32_ptr_ptr = allocate_2D_int32_array( num_rows, num_cols );
+            int32_ptr_ptr = allocate_2D_int32_array( num_rows, num_cols );
+            int_ptr_ptr = allocate_2D_int_array( num_rows, num_cols );
+            int_ptr_ptr = allocate_2D_int_array( num_rows, num_cols );
+            kjb_print_error();
+            kjb_print_error();
+            kjb_print_error();
+            kjb_print_error();
+            kri = kjb_rint(dx);
+            kri = kjb_rintf(fx);
+            len += MIN_OF(try, 100) * MAX_LEN;
+            long_ptr_ptr = allocate_2D_long_array( num_rows, num_cols );
+            long_ptr_ptr = allocate_2D_long_array( num_rows, num_cols );
+            mp->elements[ i ][ j ] = i*j;
+            num_cols += 20 * MAX_DIM;
+            num_cols += kjb_rint(5.0 * kjb_rand()); 
+            num_cols = 0;
+            num_cols = 0;
+            num_cols = prev_num_cols; 
+            num_rows += 20 * MAX_DIM;
+            num_rows += kjb_rint(5.0 * kjb_rand()); 
+            num_rows = 0;
+            num_tries *= test_factor;
+            num_tries *= test_factor;
+            num_tries *= test_factor;
+            num_tries *= test_factor;
+            num_tries = 100;
+            num_tries = 100;
+            num_tries = 100;
+            num_tries = 10;
+            p_stderr("Max diff (%d) is not zero (memcpy).\n", diff);
+            p_stderr("Max diff (%d) is not zero (without memcpy).\n", diff);
+            result = EXIT_FAILURE;
+            result = EXIT_FAILURE;
+            result = EXIT_FAILURE;
+            result = EXIT_FAILURE;
+            return EXIT_FAILURE;
+            return EXIT_FAILURE;
+            ri = rint(dx);
+            ri = rintf(fx);
+            set_error("Test 1: Problem rounding double %.3e (%d != %d).", 
+            set_error("Test 2: Problem rounding double %.3e (%d != %d).", 
+            set_error("Test 4: Problem rounding float %.3e (%d != %d)    [ Double results are %d and %d ].", 
+            set_error("Test 5: Problem rounding float %.3e (%d != %d)    [ Double results are %d and %d ].", 
+            short_ptr_ptr = allocate_2D_short_array( num_rows, num_cols );
+            short_ptr_ptr = allocate_2D_short_array(num_rows, num_cols);
+            test_factor = 1;
+            verbose_pso(1, "%d X %d\n", num_rows, num_cols); 
+            vp->elements[ i ] = 1 + try + i;
+            while (num_cols < max_num_cols)
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            {
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+         * Not all systems have rintf(). GNU systems generally have it. Test
+         * kjb_rintf() on those systems for now. 
+        */
+        /*
+        ASSERT_IS_LESS_INT(c, num_cols);
+        ASSERT_IS_LESS_INT(c, num_cols);
+        ASSERT_IS_LESS_INT(r, num_rows);
+        ASSERT_IS_LESS_INT(r, num_rows);
+        EPETE(copy_int_matrix(&mp2, mp));
+        EPETE(copy_int_matrix(&mp2, mp));
+        EPETE(copy_matrix_to_int_matrix(&mp, source_mp));
+        EPETE(get_random_matrix(&source_mp, num_rows, num_cols));
+        EPETE(ow_multiply_matrix_by_scalar(source_mp, 10000.0));
+        EPETE(ow_subtract_scalar_from_matrix(source_mp, 0.5));
+        EPETE(ra_get_target_int_matrix(&mp, num_rows, num_cols));
+        EPETE(ra_get_target_int_vector(&vp, len));
+        EPETE(ss1pi(argv[ 1 ], &test_factor)); 
+        EPETE(ss1pi(argv[ 1 ], &test_factor)); 
+        EPETE(ss1pi(argv[ 1 ], &test_factor)); 
+        EPETE(ss1pi(argv[ 1 ], &test_factor)); 
+        EPETE(ss1pi(argv[ 1 ], &test_factor)); 
+        EPETE(ss1pi(argv[ 1 ], &test_factor)); 
+        EPETE(ss1pi(argv[ 1 ], &test_factor)); 
+        EPETE(ss1pi(argv[ 1 ], &test_factor)); 
+        EPETE(ss1pi(argv[ 1 ], &test_factor)); 
+        c = MIN_OF(c , num_cols - 1);
+        c = MIN_OF(c , num_cols - 1);
+        c = kjb_rint((double)num_cols * kjb_rand());
+        c = kjb_rint((double)num_cols * kjb_rand());
+        dbi(i); 
+        dbi(memcpy_cpu);
+        dbi(num_cols);
+        dbi(num_rows);
+        dbi(prev_num_cols);
+        dbi(prev_num_rows);
+        dbi(std_cpy_cpu);
+        dbi_mat(mp); 
+        dbi_mat(mp); 
+        dbp("-----------------"); 
+        dbx(mp->elements); 
+        dbx(vp->elements); 
+        diff = max_abs_int_matrix_difference(mp, mp2);
+        diff = max_abs_int_matrix_difference(mp, mp2);
+        dkri = kjb_rint((double)fx); 
+        dkri = kjb_rint((double)fx); 
+        double d_max_num_blocks = (double)max_num_blocks * pow((double)test_factor, 1.0 / 3.0);
+        double d_max_num_cols = (double)max_num_cols * pow((double)test_factor, 1.0 / 3.0);
+        double d_max_num_cols = (double)max_num_cols * sqrt((double)test_factor);
+        double d_max_num_rows = (double)max_num_rows * pow((double)test_factor, 1.0 / 3.0);
+        double d_max_num_rows = (double)max_num_rows * sqrt((double)test_factor);
+        dri = rint((double)fx);
+        dri = rint((double)fx);
+        dx = (double)i + 0.5;
+        dx = (double)i - 0.5;
+        else
+        else
+        else
+        else
+        failure = TRUE; \
+        for (i = 0; i < MIN_OF(len, prev_len); i++)
+        for (i = 0; i < MIN_OF(num_rows, prev_num_rows); i++)
+        for (i = 0; i < len; i++)
+        for (i = 0; i < mp->num_rows; i++)
+        for (j = 0; j < mp->num_cols; j++)
+        for (j = 0; j < num_tries; j++)
+        for (j = 0; j < num_tries; j++)
+        for (num_rows=1; num_rows<NUM_LOOPS; num_rows++)
+        fx = (float)i + 0.5f;
+        fx = (float)i - 0.5f;
+        if (diff != 0) 
+        if (diff != 0) 
+        if (kri != ri)
+        if (kri != ri)
+        if (kri != ri)
+        if (kri != ri)
+        if (mp->elements != NULL)
+        if (test_factor == 0) 
+        if (test_factor == 0) 
+        if (test_factor == 0) 
+        if (test_factor == 0) 
+        if (test_factor == 0) 
+        if (try % 11 == 0)
+        if (try % 13 == 0)
+        if (try % 17 == 0)
+        if (try % 2 == 0)
+        if (try % 5 == 0)
+        if (try % 7 == 0)
+        init_cpu_time();
+        init_cpu_time();
+        int    c;
+        int    diff;
+        int    num_cols = 1 + MAX_NUM_COLS * kjb_rand();
+        int    num_rows = 1 + MAX_NUM_ROWS * kjb_rand();
+        int    r;
+        int len = MIN_OF(MAX_LEN - 1, 2.0 + (kjb_rand() * (double)MAX_LEN));
+        int num_cols = MIN_OF(MAX_DIM - 1, 2.0 + (kjb_rand() * (double)MAX_DIM));
+        int num_rows = MIN_OF(MAX_DIM - 1, 2.0 + (kjb_rand() * (double)MAX_DIM));
+        kjb_debug_level = 0; 
+        kjb_debug_level = 2;
+        kjb_l_set("use-memcpy", "f");
+        kjb_l_set("use-memcpy", "t");
+        kjb_set_debug_level(0); 
+        kjb_set_debug_level(0); 
+        kjb_set_debug_level(0); 
+        kjb_set_debug_level(0); 
+        kjb_set_debug_level(2);
+        kjb_set_debug_level(2); 
+        kjb_set_debug_level(2); 
+        kjb_set_debug_level(2); 
+        kjb_set_verbose_level(0); 
+        kjb_set_verbose_level(0); 
+        kjb_set_verbose_level(2);
+        kjb_set_verbose_level(2);
+        kri = kjb_rint(dx);
+        kri = kjb_rint(dx);
+        kri = kjb_rintf(fx);
+        kri = kjb_rintf(fx);
+        max_num_blocks = kjb_rint(d_max_num_blocks); 
+        max_num_cols = kjb_rint(d_max_num_cols); 
+        max_num_cols = kjb_rint(d_max_num_cols); 
+        max_num_rows = kjb_rint(d_max_num_rows); 
+        max_num_rows = kjb_rint(d_max_num_rows); 
+        memcpy_cpu += get_cpu_time(); 
+        mp->elements[ r ][ c ] = i;
+        mp->elements[ r ][ c ] = i;
+        num_blocks += kjb_rint(5.0 * kjb_rand()); 
+        num_cols = 0;
+        num_rows += kjb_rint(5.0 * kjb_rand()); 
+        num_rows = 0;
+        num_tries *= test_factor;
+        num_tries *= test_factor;
+        num_tries = 1;
+        num_tries = 1;
+        p_stderr("FALIED: "#X" is true.\n");  \
+        p_stderr("Passed: "#X" is true.\n");  \
+        prev_len = len;
+        prev_num_cols = num_cols;
+        prev_num_rows = num_rows;
+        r = MIN_OF(r, num_rows - 1);
+        r = MIN_OF(r, num_rows - 1);
+        r = kjb_rint((double)num_rows * kjb_rand());
+        r = kjb_rint((double)num_rows * kjb_rand());
+        return EXIT_FAILURE;
+        return EXIT_SUCCESS;
+        ri = rint(dx);
+        ri = rint(dx);
+        ri = rintf(fx);
+        ri = rintf(fx);
+        std_cpy_cpu += get_cpu_time(); 
+        vp->elements[ i ] = i;
+        while (num_cols < max_num_cols)
+        while (num_rows < max_num_rows)
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        {
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+     * Boiler plate not yet relavant here.
+     kjb_exit( EXIT_FAILURE );
+     kjb_exit( EXIT_FAILURE );
+     kjb_fputs(stderr, message);
+     kjb_fputs(stderr, message);
+     p_stderr("!!!!!!!!!!!!  FAILURE   !!!!!!!!!!!!\n\n");
+     p_stderr("!!!!!!!!!!!!  FAILURE   !!!!!!!!!!!!\n\n");
+     p_stderr("------------------------------------\n");
+     p_stderr("------------------------------------\n");
+     p_stderr("\n");
+     p_stderr("\n");
+     p_stderr("\n");
+     p_stderr("\n");
+     p_stderr("\n");
+     p_stderr("\n");
+     set_high_light(stderr);
+     set_high_light(stderr);
+     unset_high_light(stderr);
+     unset_high_light(stderr);
+    */
+    /*
+    CHECK_TRUE( ! IS_ZERO_DBL(1.0));
+    CHECK_TRUE( ! IS_ZERO_DBL(DBL_EPSILON / 10.0));
+    CHECK_TRUE( ! IS_ZERO_DBL(DBL_MIN * 10.0));
+    CHECK_TRUE(! IS_EQUAL_DBL(1.0, 1.0 + 10.0 * DBL_EPSILON));
+    CHECK_TRUE(! IS_EQUAL_DBL(1.0, 1.00001));
+    CHECK_TRUE(! IS_EQUAL_DBL(1.0, 2.0));
+    CHECK_TRUE(0.0 < DBL_EPSILON); 
+    CHECK_TRUE(1e+300 < DBL_MAX); 
+    CHECK_TRUE(1e-15 > DBL_EPSILON); 
+    CHECK_TRUE(1e-300 > DBL_MIN); 
+    CHECK_TRUE(ADD_RELATIVE_DBL(1.0, 2*DBL_EPSILON) < 1.0 + 5*DBL_EPSILON);
+    CHECK_TRUE(ADD_RELATIVE_DBL(1.0, 2*DBL_EPSILON) > 1.0);
+    CHECK_TRUE(IS_EQUAL_DBL(0.0, 0.0));
+    CHECK_TRUE(IS_EQUAL_FLT(FLT_ZERO, FLT_ZERO));
+    CHECK_TRUE(IS_NEARLY_EQUAL_DBL(0.0, 0.0, 0.0));
+    CHECK_TRUE(IS_NEARLY_EQUAL_DBL(0.0, 0.0, DBL_EPSILON));
+    CHECK_TRUE(IS_NEARLY_EQUAL_FLT(FLT_ZERO, FLT_ZERO, FLT_EPSILON));
+    CHECK_TRUE(IS_NEARLY_EQUAL_FLT(FLT_ZERO, FLT_ZERO, FLT_ZERO));
+    CHECK_TRUE(IS_ZERO_DBL(-DBL_MIN));
+    CHECK_TRUE(IS_ZERO_DBL(0.0));
+    CHECK_TRUE(IS_ZERO_DBL(DBL_MIN));
+    CHECK_TRUE(SUB_RELATIVE_DBL(1.0, 2*DBL_EPSILON) < 1.0);
+    CHECK_TRUE(SUB_RELATIVE_DBL(1.0, 2*DBL_EPSILON) > 1.0 - 5*DBL_EPSILON);
+    EPETE(ra_get_target_int_matrix(&mp, prev_num_rows, prev_num_cols));
+    EPETE(ra_get_target_int_vector(&vp, prev_len));
+    EPETE(read_word_list(&word_list_ptr, NULL));
+    EPETE(write_word_list(word_list_ptr, NULL));
+    IMPORT int kjb_debug_level;
+    Int_matrix* first_mp = NULL;
+    Int_matrix* mp = NULL;
+    Int_matrix* mp = NULL; 
+    Int_matrix* mp2 = NULL;
+    Int_matrix* second_mp = NULL;
+    Int_matrix* third_mp = NULL;
+    Int_matrix* trans_mp = NULL;
+    Int_vector* col_vp = NULL;
+    Int_vector* row_vp = NULL;
+    Int_vector* vp = NULL; 
+    Matrix*   rand_mp = NULL; 
+    Matrix* source_mp = NULL;
+    Word_list* word_list_ptr = NULL; 
+    double dx;
+    double*          double_ptr;
+    double*  double_ptr;
+    double** double_ptr_ptr;
+    double***        double_ptr_ptr_ptr;
+    else
+    else
+    else 
+    else 
+    else 
+    else 
+    else 
+    else 
+    else 
+    else 
+    else if (is_interactive()) \
+    failure = TRUE;
+    float  fx;
+    float*           float_ptr;
+    float*   float_ptr;
+    float**  float_ptr_ptr;
+    float***         float_ptr_ptr_ptr;
+    for (count=0; count<num_tries; count++)
+    for (i = -num_tries; i< num_tries; i++)
+    for (i = -test_factor * 1000; i< test_factor * 1000; i++)
+    for (i = 0; i < mp->num_rows; i++)
+    for (i = 0; i < num_tries; i++)
+    for (i = 0; i < prev_len; i++)
+    for (try = 0; try< num_tries; try++)
+    for (try = 0; try< num_tries; try++)
+    free_int_matrix(first_mp);
+    free_int_matrix(mp);
+    free_int_matrix(mp); 
+    free_int_matrix(mp2); 
+    free_int_matrix(second_mp);
+    free_int_matrix(third_mp); 
+    free_int_matrix(trans_mp); 
+    free_int_vector(col_vp); 
+    free_int_vector(row_vp); 
+    free_int_vector(vp);
+    free_matrix(rand_mp); 
+    free_matrix(source_mp); 
+    free_word_list(word_list_ptr); 
+    if ( ! (X) ) \
+    if (argc > 1)
+    if (argc > 1)
+    if (argc > 1)
+    if (argc > 1)
+    if (argc > 1)
+    if (argc > 1)
+    if (argc > 1)
+    if (argc > 1)
+    if (argc > 1)
+    if (failure)
+    if (is_interactive())
+    if (is_interactive())
+    if (is_interactive())
+    if (is_interactive())
+    if (is_interactive())
+    if (is_interactive())
+    if (is_interactive())
+    if (is_interactive())
+    if (test_factor <= 0)
+    if (test_factor == 0)
+    if (test_factor > 1)
+    if (test_factor > 1)
+    int              i, j, k, num_rows, num_cols;
+    int              max_num_blocks = MAX_NUM_BLOCKS;
+    int              max_num_cols = MAX_NUM_COLS;
+    int              max_num_rows = MAX_NUM_ROWS;
+    int              num_blocks;
+    int              test_factor    = 1;
+    int      i, j;
+    int      max_num_cols = MAX_NUM_COLS; 
+    int      max_num_rows = MAX_NUM_ROWS;
+    int      num_rows, num_cols; 
+    int      test_factor = 1; 
+    int    failure = FALSE;
+    int    i, j;
+    int    i;
+    int    ri, kri, dri, dkri; 
+    int    test_factor = 1; 
+    int    test_factor = 1; 
+    int    test_factor = 1; 
+    int    test_factor = 1; 
+    int    test_factor = 1; 
+    int    try, i, j;
+    int    try, i;
+    int    try, i;
+    int  num_tries = BASE_NUM_TRIES;
+    int  num_tries = BASE_NUM_TRIES;
+    int  test_factor = 1;
+    int  test_factor = 1;
+    int count;
+    int i;
+    int num_cols; 
+    int num_rows;
+    int num_tries = BASE_NUM_TRIES; 
+    int num_tries = BASE_NUM_TRIES; 
+    int num_tries = BASE_NUM_TRIES; 
+    int num_tries = BASE_NUM_TRIES; 
+    int prev_len;
+    int prev_num_cols;
+    int prev_num_rows;
+    int result = EXIT_SUCCESS;
+    int result = EXIT_SUCCESS;
+    int*             int_ptr;
+    int*     int_ptr;
+    int**    int_ptr_ptr;
+    int***           int_ptr_ptr_ptr;
+    kjb_cleanup();
+    kjb_cleanup();
+    kjb_cleanup();
+    kjb_cleanup();
+    kjb_cleanup();
+    kjb_init();
+    kjb_init();
+    kjb_init();
+    kjb_init();
+    kjb_init();
+    kjb_init(); 
+    kjb_init(); 
+    kjb_init(); 
+    kjb_init(); 
+    kjb_int16*       int16_ptr;
+    kjb_int16*   int16_ptr;
+    kjb_int16**  int16_ptr_ptr;
+    kjb_int16***     int16_ptr_ptr_ptr;
+    kjb_int32*       int32_ptr;
+    kjb_int32*   int32_ptr;
+    kjb_int32**  int32_ptr_ptr;
+    kjb_int32***     int32_ptr_ptr_ptr;
+    kjb_l_set("debug", "2");
+    kjb_l_set("page", "off");
+    long memcpy_cpu = 0;
+    long std_cpy_cpu   = 0; 
+    long*            long_ptr;
+    long*    long_ptr;
+    long**   long_ptr_ptr;
+    long***          long_ptr_ptr_ptr;
+    num_blocks = 0; 
+    num_rows = 0;
+    p_stderr("Some machine constant is not available on this system.\n");
+    p_stderr("\nPassed: MACHINE_CONSTANT_NOT_AVAILABLE is not defined.\n\n");
+    prev_len = 100; 
+    prev_num_cols = MAX_DIM / 10; 
+    prev_num_rows = MAX_DIM / 10; 
+    return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
+    return EXIT_SUCCESS; 
+    return EXIT_SUCCESS; 
+    return EXIT_SUCCESS; 
+    return result;
+    return result; 
+    short*           short_ptr;
+    short*   short_ptr;
+    short**  short_ptr_ptr;
+    short***         short_ptr_ptr_ptr;
+    unsigned char*    byte_ptr;
+    unsigned char*   byte_ptr;
+    unsigned char**   byte_ptr_ptr;
+    unsigned char*** byte_ptr_ptr_ptr;
+    while (num_blocks < max_num_blocks)
+    while (num_rows < max_num_rows)
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    {
+    { \
+    { \
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    } 
+    } \
+*/
+/*
+/*  /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\   */
+/*  /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\   */
+/* #define VERBOSE 1 */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/*ARGSUSED*/
+/*ARGSUSED*/
+\
+int main(int  argc, char *argv[] )
+int main(int  argc, char *argv[] )
+int main(int argc, char **argv)
+int main(int argc, char **argv)
+int main(int argc, char **argv)
+int main(int argc, char **argv)
+int main(int argc, char **argv)
+int main(int argc, char **argv)
+int main(int argc, char **argv)
+static void report_failure(const char* message)
+static void report_failure(const char* message)
+static void report_failure(const char*);
+static void report_failure(const char*);
+{
+{
+{
+{
+{
+{
+{
+{
+{
+{
+{
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}

@@ -1,20 +1,42 @@
 #
+# This Makefile is almost invariably deals with only one target so we don't have
+# to worry about ensuring that it builds serially. Note that we control the
+# number of make threads in the build script based on the number of cpu's. 
+#
 # The strategy here to execute the script "build" which sets up a sub-shell with
 # the appropriate environment, and then do a make with Makefile-2. We list
 # possible targets here, but for most versions of make, a line below should
 # be able to catch all cases. 
 #
-# IMPORTANT: None of the explicilty mentioned targets on the next non-comment
-# line can be actual files or directories. For example, we cannot be attempting
-# to make the directory "doc". Since the purpose of this file is to call the
-# build script, the dependencies for "doc" will be hidden. If you suspect that
-# this is the case for a target XXX, try "./build XXX". 
+# None of the explicilty mentioned targets that get sent to the build
+# script are meant to be actual files or directories. To protect against a name
+# clash, we declare the targets handled here as .PHONY.
+#
 
-# This Makefile is almost invariably deals with only one target so we don't have
-# to worry about ensuring that it builds serially. Note that we control the
-# number of make threads in the build script based on the number of cpu's. 
+.PHONY : all
+.PHONY : dir_made
+.PHONY : init_clean
+.PHONY : confess
+.PHONY : depend_very_clean
+.PHONY : depend_clean
+.PHONY : obj_clean
+.PHONY : clean
+.PHONY : code
+.PHONY : depend
+.PHONY : depend_again
+.PHONY : doc
+.PHONY : doc_dir_made
+.PHONY : lint
+.PHONY : proto
+.PHONY : regress_clean
+.PHONY : bin
+.PHONY : work
+.PHONY : misc
 
 # Some targets, such as confess are implemented in build-2. 
+#
+# Each target in the following list needs to be declared .PHONY above. So, if
+# you add one, you need to add a .PHONY line above. 
 #
 all dir_made init_clean confess depend_very_clean depend_clean obj_clean clean code depend depend_again doc doc_dir_made lint proto regress_clean bin work misc: 
 	$(ECHO_MAKE_CMD)./build $@
@@ -71,7 +93,9 @@ build : FORCE
 
 #
 # The catch all line. Any target not handled above should be handled here. This
-# works fine with gmake. 
+# works fine with gmake. The only small risk is that the target should really be
+# declared .PHONY, which itself protects against the possiblity that we have a
+# directory with the same name as the target. 
 #
 % : FORCE
 	$(ECHO_MAKE_CMD)./build $@

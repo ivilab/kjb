@@ -1,0 +1,9 @@
+<<TEST>> Using kjb_system() despite gcc and DEBUGGING.
+<<TEST>> As a result, gdb may not work properly.
+<<TEST>> (This has not been verified with recent versions of gdb).
+<<TEST>> Use a debug level at least 25 to force the standard system().
+<<TEST>> Parent process in create_system_command_process() is 15438 (IL4RT).
+<<TEST>> Child process in create_system_command_process() is 15443 (IL4RT).
+<<TEST>> Begin cleaning up system command process (15443) (IL4RT).
+<<TEST>> Wait result is 0 (IL4RT).
+<<TEST>> Done waiting for system command  process to finish (IL4RT).

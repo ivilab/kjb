@@ -29,14 +29,22 @@
 #
 # Build options can be manipulated by changing environment variables, some of
 # which are documented in this file. If you prefer, these can be set in the file
-# build_env. One way to get started with this plan is to copy build_env from
+# BUILD_ENV. One way to get started with this plan is to copy BUILD_ENV from
 # ${SRC_DIR}/Make/ to this directory which has some comments about what might go
 # in there. 
 #
 # If build_env exits, this file will source it before calling
 # ${SRC_DIR}/Make/build-2 which does the heavy lifting. 
 
-if (-e build_env) then
+if (-e BUILD_ENV) then
+    if ($?KJB_VERBOSE) then
+        echo "Sourcing BUILD_ENV in directory ${cwd}, which can overide shell settings."
+    endif 
+
+    source BUILD_ENV
+    if (${status}) exit ${status}
+else if (-e build_env) then
+    echo "Warning: Using file 'build_env' is obsolute. Use BUILD_ENV instead."
     if ($?KJB_VERBOSE) then
         echo "Sourcing build_env in directory ${cwd}, which can overide shell settings."
     endif 
