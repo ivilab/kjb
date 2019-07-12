@@ -1,3 +1,3 @@
 
-And now parallel changes in two sub dirs. 
+Editing test.txt in Make.
 
