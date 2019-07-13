@@ -1,5 +1,0 @@
-(no-kjb) dbs: kjb_verbose_str is -><- on source line 118 of /Volumes/home/kobus/src/lib/l/l_init.c
-dbi: num_clusters is 3 on source line 2885 of /Volumes/home/kobus/src/lib/r2/r2_gmm_em.c
-<<TEST>> Begin cleaning up system command process (9229) (ignore line for regression testing).
-<<TEST>> Wait result is 0 (ignore line for regression testing).
-<<TEST>> Done waiting for system command  process to finish (ignore line for regression testing).
