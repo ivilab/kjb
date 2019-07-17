@@ -56,6 +56,14 @@
 #     given sub-directory, irrespective of arguments or parent directory, which
 #     is is not a big issue as it is simply overly conservative. 
 #
+#     If KJB_LOCKFILE_NAME looks like a path, we do not add ".lock" to the name,
+#     but if it is a simple string without '/', then we do add '.lock'. This
+#     behavior might confuse some (and is easy to change), but the reasoning is
+#     that one should be able to have full control if needed, by specifying the
+#     full path, and we arbitrarily keep that same behavior for relative paths,
+#     as the path is now relative to where you are running things, not the
+#     KJB_LOCKFILE_DIR (which might also confuse). This scenario seems unlikely.
+#
 # Author:
 #     Kobus Barnard 
 #
@@ -90,10 +98,18 @@ if (! $?KJB_LOCKING_METHOD) then
     endif 
 endif 
 
-# Even if we give use a lockfile , we still need to have 
+# Even if we give use a lockfile , we still need to have a directory to put the
+# lock timestamp file. 
+#
 if (! $?KJB_LOCKFILE_DIR) then
     setenv KJB_LOCKFILE_DIR ${TMPDIR}/${USER}/lockfiles/
 endif 
+
+set dir_str = `echo ${cwd} | sed 's#.*/##'`
+set cmd_str = `echo ${1} | sed 's#.*/##'`
+
+setenv KJB_LOCK_TIME_STAMP "${KJB_LOCKFILE_DIR}/${cmd_str}_${dir_str}.lock.$$"
+${KJB_TOUCH} ${KJB_LOCK_TIME_STAMP}
 
 ${KJB_MKDIR} "${KJB_LOCKFILE_DIR}"
 
@@ -103,22 +119,22 @@ if ($status) then
 endif 
 
 if ($?KJB_LOCKFILE_NAME) then
+    set looks_like_abs_path = `echo ${KJB_LOCKFILE_NAME} | grep -c '^/'`
     set looks_like_path = `echo ${KJB_LOCKFILE_NAME} | grep -c '/'`
 
-    if (${looks_like_path}) then
+    if (${looks_like_abs_path}) then
         set lock_file = "${KJB_LOCKFILE_NAME}"
+    else if (${looks_like_path}) then
+        set lock_file = "`pwd`/${KJB_LOCKFILE_NAME}"
     else 
         set lock_file = ${KJB_LOCKFILE_DIR}/${KJB_LOCKFILE_NAME}.lock
     endif 
 else
-    set dir_str = `echo ${cwd} | sed 's#.*/##'`
-    set cmd_str = `echo ${1} | sed 's#.*/##'`
-
     set lock_file = ${KJB_LOCKFILE_DIR}/${cmd_str}_${dir_str}.lock
 endif 
 
-setenv KJB_LOCK_TIME_STAMP "${KJB_LOCKFILE_DIR}/${cmd_str}_${dir_str}.lock.$$"
-${KJB_TOUCH} ${KJB_LOCK_TIME_STAMP}
+# Mostly for testing and debugging.
+setenv KJB_LOCKFILE_PATH "${lock_file}"
 
 onintr bail
 
