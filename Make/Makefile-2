@@ -1,0 +1,68 @@
+
+################################################################################
+#                             Options
+
+# Uncomment and modify the following line to add arbitrary compile flags. At UA,
+# this should not be used for include or link dirs, which should be done using
+# the variables below. Hacking these flags should only be done on an
+# experimental basis. If it is not clear why, consider that having this
+# mechanism be permanent implies that you are confident that the flags are
+# appropriate for compilers that you do not use (but others might) for decades
+# to come.
+# 
+# HACK_CC_FLAGS = 
+# HACK_CXX_FLAGS = 
+
+# Uncomment and modify the following lines to add include directory search
+# lines.  HACK_BEFORE_INCLUDES specifies include locations that preceed all
+# those that the build scripts want to use, and HACK_AFTER_INCLUDES specifies
+# locations that are checked last.  (HACK_AFTER_INCLUDES is far less likely to
+# cause problems). At UA, this mechanism should be used only as a temporary
+# measure to figure out what works. As soon as it is clear what is needed, we
+# should fix init_compile and comment out these variabile settings. Pretending
+# that this is where you hack things to make them work and then forgetting about
+# it has lead to build bugs.
+#
+# HACK_BEFORE_INCLUDES =
+# HACK_AFTER_INCLUDES =
+
+# Uncomment and modify the following lines to add library directory search lines
+# or to add libraries. They can also be used to experiment with other linking
+# options. HACK_BEFORE_LOAD_FLAGS override those from the build script, and
+# HACK_AFTER_LOAD_FLAGS appends to the build script flags.
+# (HACK_AFTER_LOAD_FLAGS is far less likely to cause problems). At UA, this
+# mechanism should be used only as a temporary measure to figure out what works.
+# As soon as it is clear what is needed, we should fix init_compile and comment
+# out these variabile settings.  Pretending that this is where you hack things
+# to make them work and then forgetting about it has lead to build bugs.
+#
+# HACK_BEFORE_LOAD_FLAGS =
+# HACK_AFTER_LOAD_FLAGS =
+
+################################################################################
+
+PROGRAM_CC_WARNING_FLAGS = $(CC_KJB_WARNINGS) 
+PROGRAM_CXX_WARNING_FLAGS = $(CXX_KJB_WARNINGS) 
+
+################################################################################
+
+
+################################################################################
+
+all         : program
+depend_agin : depend
+depend      : depend_program
+doc         : doc_program
+misc_doc    : misc_doc_program
+lint        : lint_program
+proto       : proto_program
+splint      : splint_program
+
+
+
+include $(MAKE_PATH)Makefile-program
+
+
+
+
+

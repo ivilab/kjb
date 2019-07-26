@@ -1,0 +1,49 @@
+#!/bin/csh -f
+
+set num_args = $#argv
+
+if ("${num_args}" != "2") then
+    ${P_STDERR} "Script copy_if_different should have exactly 2 arguments."
+    exit 1
+endif 
+
+if (! -e $1) then
+    ${P_STDERR} "First arg to copy_if_different \(${1}\) is not a file."
+    exit 1
+endif 
+
+if (! $?KJB_VERBOSE_INDENT) then
+    setenv KJB_VERBOSE_INDENT ""
+endif 
+
+if (-e $2) then
+    diff -q $1 $2 >& /dev/null
+    if (${status}) then 
+        # Ensure time stamp is later than any file built by the process that
+        # called this script. 
+        
+        if ($?KJB_VERBOSE) then
+            echo "${KJB_VERBOSE_INDENT}Script copy_if_different found a difference with args $1 and $2."
+            echo "${KJB_VERBOSE_INDENT}Script copy_if_different is sleeping for 1 seconds."
+        endif
+
+        sleep 1
+
+        if ($?KJB_VERBOSE) then
+            echo "${KJB_VERBOSE_INDENT}Script copy_if_different is executing  /bin/cp -f $1 $2."
+        endif
+
+        /bin/cp -f $1 $2
+    else if ($?KJB_VERBOSE_2) then
+        echo "${KJB_VERBOSE_INDENT}Skipping copying $1 to $2 because there is no difference."
+    endif 
+else
+    if ($?KJB_VERBOSE) then
+        echo "${KJB_VERBOSE_INDENT}Script copy_if_different is copying $1 to $2 because $2 does not exist."
+    endif
+
+    /bin/cp -f $1 $2
+endif 
+
+
+

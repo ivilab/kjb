@@ -1,0 +1,142 @@
+
+# Included by Makefile-program for programs and by Makefile-2 by library
+# modules. 
+
+#
+# We must know KJB_LIB_PATH, KJB_SRC_PATH
+#
+
+###############################################################################
+
+# Conveneint place to make "depend_again" an alias for "depend"
+#
+depend_again : depend
+
+###############################################################################
+
+# This uses to be in Makefile-program, but libraries need it too. 
+
+# This symbol identifies all compile flags that may needed due to includes for
+# optional libraries within header files of components.  
+#
+# Note that when this line is processed, none of the symbols are defined. We
+# rely on late binding of them as a result of other included Makefiles. 
+#
+# Best to keep the order so such that anything that has dependencies comes
+# before its dependences. 
+#
+WITH_LIBS_HAVE = \
+                 $(WITH_LIBS_HAVE_XXX) \
+                 $(WITH_LIBS_HAVE_FLTK) \
+                 $(WITH_LIBS_HAVE_SUNDIALS_SVEC) \
+                 $(WITH_LIBS_HAVE_SUNDIALS_NVEC) \
+                 $(WITH_LIBS_HAVE_SUNDIALS_CVODE) \
+                 $(WITH_LIBS_HAVE_VLFEAT) \
+                 $(WITH_LIBS_HAVE_ERGO) \
+                 $(WITH_LIBS_HAVE_XSD) \
+                 $(WITH_LIBS_HAVE_XERCES) \
+                 $(WITH_LIBS_HAVE_PYTHON) \
+                 $(WITH_LIBS_HAVE_WN) \
+                 $(WITH_LIBS_HAVE_KDTREEXX) \
+                 $(WITH_LIBS_HAVE_ANN) \
+                 $(WITH_LIBS_HAVE_OPENFACE) \
+                 $(WITH_LIBS_HAVE_DLIB) \
+                 $(WITH_LIBS_HAVE_OPENCV) \
+                 $(WITH_LIBS_HAVE_GANDALF) \
+                 $(WITH_LIBS_HAVE_LIBSVM) \
+                 $(WITH_LIBS_HAVE_BOOST) \
+                 $(WITH_LIBS_HAVE_BST_POPTIONS) \
+                 $(WITH_LIBS_HAVE_BST_SERIAL) \
+                 $(WITH_LIBS_HAVE_BST_FILESYSTEM) \
+                 $(WITH_LIBS_HAVE_BST_SYSTEM) \
+                 $(WITH_LIBS_HAVE_BST_THREAD) \
+                 $(WITH_LIBS_HAVE_VRJ) \
+                 $(WITH_LIBS_HAVE_VTK) \
+                 $(WITH_LIBS_HAVE_DGL) \
+                 $(WITH_LIBS_HAVE_OSMESA) \
+                 $(WITH_LIBS_HAVE_GLEW) \
+                 $(WITH_LIBS_HAVE_GLUT) \
+                 $(WITH_LIBS_HAVE_OPENGL) \
+                 $(WITH_LIBS_HAVE_FONTCONFIG) \
+                 $(WITH_LIBS_HAVE_XFT) \
+                 $(WITH_LIBS_HAVE_XINERAMA) \
+                 $(WITH_LIBS_HAVE_X11) \
+                 $(WITH_LIBS_HAVE_FFMPEG) \
+                 $(WITH_LIBS_HAVE_TIFF) \
+                 $(WITH_LIBS_HAVE_JPEG) \
+                 $(WITH_LIBS_HAVE_CASADI) \
+                 $(WITH_LIBS_HAVE_ODE) \
+                 $(WITH_LIBS_HAVE_GSL) \
+                 $(WITH_LIBS_HAVE_FFTW) \
+                 $(WITH_LIBS_HAVE_LEVMAR) \
+                 $(WITH_LIBS_HAVE_SLATEC) \
+                 $(WITH_LIBS_HAVE_LAPACK) \
+                 $(WITH_LIBS_HAVE_F2C) \
+                 $(WITH_LIBS_HAVE_OPENCL) \
+                 $(WITH_LIBS_HAVE_CUDPP) \
+                 $(WITH_LIBS_HAVE_CUDCVT) \
+                 $(WITH_LIBS_HAVE_CUDART) \
+                 $(WITH_LIBS_HAVE_CUDA) \
+                 $(WITH_LIBS_HAVE_OPENSSL) \
+                 $(WITH_LIBS_HAVE_CURSES) \
+                 $(WITH_LIBS_HAVE_TBB) \
+                 $(WITH_LIBS_HAVE_PTHREAD) \
+                 \
+
+###############################################################################
+
+SHELL = $(SHELL_FOR_MAKE)
+
+CC_FLAGS = $(CC_BASE_FLAGS) $(CC_TEST_OR_OPTIMIZE)
+DONT_OPTIMIZE_CC_FLAGS = $(CC_BASE_FLAGS) $(CC_DONT_OPTIMIZE) $(LIB_CC_FLAGS)
+ALWAYS_OPTIMIZE_CC_FLAGS = $(CC_BASE_FLAGS) $(CC_ALWAYS_OPTIMIZE) $(LIB_CC_FLAGS)
+
+
+CXX_FLAGS = $(CXX_BASE_FLAGS) $(CXX_TEST_OR_OPTIMIZE)
+DONT_OPTIMIZE_CXX_FLAGS = $(CXX_BASE_FLAGS) $(CXX_DONT_OPTIMIZE)
+ALWAYS_OPTIMIZE_CXX_FLAGS = $(CXX_BASE_FLAGS) $(CXX_ALWAYS_OPTIMIZE) 
+
+
+F77_FLAGS = $(F77_BASE_FLAGS) $(F77_TEST_OR_OPTIMIZE) 
+DONT_OPTIMIZE_F77_FLAGS = $(F77_BASE_FLAGS) $(F77_DONT_OPTIMIZE)
+ALWAYS_OPTIMIZE_F77_FLAGS = $(F77_BASE_FLAGS) $(F77_ALWAYS_OPTIMIZE)
+
+
+CUR_DIR_INCLUDE = $(INCLUDE_FLAG)$(KJB_CUR_DIR_STR)
+KJB_LIB_DIR_INCLUDE = $(INCLUDE_FLAG)$(KJB_LIB_PATH)
+
+# 
+# This is where we would put include directories that need to preempt system
+# directories. However, this is not currently needed. 
+#     SRC_DIR_INCLUDE = $(INCLUDE_FLAG)$(KJB_SRC_PATH)include
+# SRC_DIR_INCLUDE = 
+# SRC_DIR_INCLUDE_AFTER = $(INCLUDE_AFTER_FLAG)$(KJB_SRC_PATH)include_after
+
+KJB_LIB_DIR_INCLUDE = $(INCLUDE_FLAG)$(KJB_LIB_PATH)
+
+C2MAN_FLAGS = -L -A -k $(MD_DEFINES) $(C2MAN_MD_DEFINES) 
+
+# PUBLIC_LIB_DIR = ~$(USER)/lib/<MACHINE>
+# PUBLIC_INCLUDE = ~$(USER)/include
+
+# COMPILE_INFO = \A
+#   -C"cc <files> -D<MACHINE> -D<OS> -I<include_dir> -L<lib_dir> -lKJB" \
+#   -C"<MACHINE> is one of SUN5, LINUX_386_ATHLON, HPUX, ... " \
+#   -C"<OS> is one of SUN5, LINUX_386, HPUX, ... " \
+#   -C"<include_dir> is something like $(PUBLIC_INCLUDE)" \
+#   -C"<lib_dir> is something like $(PUBLIC_LIB_DIR)" \
+#   -C" " \
+#   -C"Normally this routine is used in conjunction with Kobus's source"  \
+#   -C"directories and makefiles which simplifies building."
+
+
+#
+# MAKEDEPEND_ARGS = -DMAKE_DEPEND -DMAKE_DEPEND_DIR $(MD_DEFINES) $(KJB_HAVE) 
+
+#
+# Prevent the implicit rule for over-writing .c files in the case that make has
+# been called without the -r option.
+#
+%.c : %.w 
+
+

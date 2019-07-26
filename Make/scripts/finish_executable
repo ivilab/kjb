@@ -1,0 +1,126 @@
+#!/bin/csh -f 
+
+if ($# != 2) then
+    ${P_STDERR} "Script finish_executable needs two arguments."
+    exit 1
+endif 
+
+set exec_path = "$1"
+set exec_name = "$2"
+
+${KJB_PERMIT_EXECUTION} "${exec_path}" 
+
+set link_to_top = 1
+
+#
+# The following could be made fancier by consulting the currently inactive
+# script:
+#     check_executable_path
+
+# Generally, we do not use this script if this environment variables are set.
+# However, we check them here to be sure.
+# 
+if ($?KJB_ENVIRONMENT) then
+    if (${?KJB_VERBOSE_2}) then
+        echo "KJB_ENVIRONMENT is set to ->${KJB_ENVIRONMENT}<- in script finish_executable."
+    endif 
+
+    if (${KJB_ENVIRONMENT}) then 
+        set link_to_top = 0
+    endif 
+else 
+    if (${?KJB_VERBOSE_2}) then
+        echo "KJB_ENVIRONMENT is not set in script finish_executable."
+    endif 
+endif 
+
+# Currently, DONT_LINK_EXECUTABLE is only used in this script.  However, it is
+# not clear if we should also consult it in init_compile as we do with
+# KJB_ENVIRONMENT.
+#
+if ($?DONT_LINK_EXECUTABLE) then
+    if (${?KJB_VERBOSE_2}) then
+        echo "DONT_LINK_EXECUTABLE is set to ->${KJB_ENVIRONMENT}<- in script finish_executable."
+    endif 
+
+    # DONT_LINK_EXECUTABLE is a toggle, either it is set or not. But if we
+    # forget that, and set it to 0, then we probably are trying to unset it.
+    #
+    if ("${DONT_LINK_EXECUTABLE}" != 0) then 
+        set link_to_top = 0
+    endif 
+else
+    if (${?KJB_VERBOSE_2}) then
+        echo "DONT_LINK_EXECUTABLE is not set in script finish_executable."
+    endif 
+endif 
+
+# Currently, FORCE_LINK_EXECUTABLE is only used in this script. It is not clear
+# if this should override DONT_LINK_EXECUTABLE or the other way arround. 
+#
+if ($?FORCE_LINK_EXECUTABLE) then
+    if (${?KJB_VERBOSE_2}) then
+        echo "FORCE_LINK_EXECUTABLE is set to ->${FORCE_LINK_EXECUTABLE}<- in script finish_executable."
+    endif 
+
+    # FORCE_LINK_EXECUTABLE is a toggle, either it is set or not. But if we
+    # forget that, and set it to 0, then we probably are trying to unset it.
+    #
+    if ("${FORCE_LINK_EXECUTABLE}" != 0) then 
+        set link_to_top = 1
+    endif 
+else
+    if (${?KJB_VERBOSE_2}) then
+        echo "FORCE_LINK_EXECUTABLE is not set in script finish_executable."
+    endif 
+endif 
+
+pushd ${LD_OBJ_TOP_DIR} > /dev/null
+    ${MAKE_SCRIPT_PATH}kjb_lock ${MAKE_SCRIPT_PATH}make_link ${LD_OBJ_SUB_DIR} ${EXEC_LINK_NAME}
+popd > /dev/null
+
+if (${link_to_top}) then
+    if (! $?KJB_QUIET) then 
+        echo "Linking executable ${EXEC_LINK}/${exec_name} to ./${exec_name}."
+        echo "This can be disabled by 'unsetenv FORCE_LINK_EXECUTABLE; setenv DONT_LINK_EXECUTABLE 1'"
+        echo " "
+    endif
+
+    if (-e "${exec_name}") then
+        if (! -l "${exec_name}") then
+            ${P_STDERR} "Executable ${exec_name} exists and is not a link."
+            ${P_STDERR} "Forcing removal of ${exec_name} to reduce confusion due to apparantly being up to date."
+        endif 
+
+        ${KJB_RM} "${exec_name}"
+    endif 
+
+    ${KJB_LN} "${EXEC_LINK}/${exec_name}" .
+
+    set is_dylib = `echo ${exec_name} | grep -c '\.dylib$'`
+    set is_so = `echo ${exec_name} | grep -c '\.so$'`
+    set is_archive = `echo ${exec_name} | grep -c '\.a$'`
+    
+    if ((${is_dylib}) || (${is_so}) || (${is_archive})) then
+        set base_name = `echo ${exec_name} | sed 's/\.[^\.][^\.]*$//'`
+
+        if (! $?KJB_QUIET) then 
+            echo "Linking library ${exec_name} to ${base_name}."
+        endif 
+        
+        if (-e "${base_name}") then
+            if (! -l "${base_name}") then
+                ${P_STDERR} "Executable ${base_name} exists and is not a link."
+                ${P_STDERR} "Forcing removal of ${base_name} to reduce confusion due to apparantly being up to date."
+            endif 
+
+            ${KJB_RM} "${base_name}"
+        endif 
+
+        ${KJB_LN} "${exec_name}" "${base_name}"
+    endif 
+endif 
+
+
+
+

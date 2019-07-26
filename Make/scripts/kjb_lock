@@ -1,0 +1,315 @@
+#!/bin/csh -f 
+
+##############################################################################
+#
+# Identification:
+#     A script to execute commands so that only one instance is run at a time. 
+#
+# Description:
+#     This is a simple script for locking. It trades limited capability for
+#     simplicity (see deficiencies below). Using it is a lot like using "flock",
+#     and in fact, it is implemented using flock if flock is available. The
+#     main justification for this script is that locking is not universally
+#     available. Most notably good locking facilities are not available in the
+#     mac OS. Hence, this script implements a fall back method that is less than
+#     ideal, but usually works. 
+#
+#     The argument to kjb_lock is the command to be executed including its
+#     arguments. This script supports two forms of simple locking. One is based
+#     on the command, and the other is based on a resource labled by the value
+#     of the environment variable KJB_LOCKFILE_NAME. 
+#
+#     For command based locking (simplest), this script constructs a lock name
+#     based on the command and a piece of the current directory.  This makes
+#     sense if the command is the only way that particular files get modified
+#     and/or might do a sequence of steps that all need to be protected, and/or
+#     actions needing protection are not described as modifying an obvious
+#     resource (e.g., updating an SVN repo).
+#
+#     However, command based locking does not support multiple scripts that
+#     share a resource that needs to be protected. For this scenario, the set of
+#     scripts can set a specific named lock via the environment variable
+#     KJB_LOCKFILE_NAME. Usually this is a an informative string (no slashes
+#     are allowed). However, if KJB_LOCKFILE_NAME holds a path, then that path
+#     is taken as the precise lockfile, and the behaviour is similar to "flock",
+#     especially if flock is the underlying implemenation.
+#
+#     Unlike flock, this script sets an environment variable KJB_LOCK_TIME_STAMP
+#     that holds the path to a process specific file that timestamps the locking
+#     process. This environment variable is (only) available to the command that
+#     kjb_lock executes. The purpose of this is to enable processes that are
+#     hoping to modify the same resource to test the modification time against
+#     the lock time stamp, and back off from modifying the resource if it is
+#     newer than the lock, under the assumption that it was just created by a
+#     different instance of the same process. 
+#
+#     If the environment variable KJB_LOCKING_METHOD is set, this script will
+#     use its value for the locking method. Otherwise it will try flock, then
+#     lockfile-progs, and then the built in fall back method. 
+#
+#     If the environment variable KJB_LOCKFILE_DIR is set, this script will use
+#     its value as a directory to create lockfiles in. Otherwise, this script
+#     will use ${TMPDIR}/${USER}/lockfiles/, creating it if needed.
+#
+# Deficiencies
+#     The current implementation locks all runs of a command operating in a
+#     given sub-directory, irrespective of arguments or parent directory, which
+#     is is not a big issue as it is simply overly conservative. 
+#
+#     If KJB_LOCKFILE_NAME looks like a path, we do not add ".lock" to the name,
+#     but if it is a simple string without '/', then we do add '.lock'. This
+#     behavior might confuse some (and is easy to change), but the reasoning is
+#     that one should be able to have full control if needed, by specifying the
+#     full path, and we arbitrarily keep that same behavior for relative paths,
+#     as the path is now relative to where you are running things, not the
+#     KJB_LOCKFILE_DIR (which might also confuse). This scenario seems unlikely.
+#
+# Author:
+#     Kobus Barnard 
+#
+##############################################################################
+
+# set echo
+
+if ($# < 1) then
+    ${P_STDERR} "Script kjb_lock needs at least one argument."
+    exit 1
+endif 
+
+set exit_status = 0
+
+if ($?KJB_VERBOSE) then
+    if ($?KJB_VERBOSE_INDENT) then
+        set verbose_indent = "${KJB_VERBOSE_INDENT}"
+    else
+        set verbose_indent = ""
+    endif
+endif 
+
+if (! $?KJB_LOCKING_METHOD) then
+    # Sync this code with that in init_compile!
+
+    if (`${MAKE_SCRIPT_PATH}can_execute flock`) then
+        setenv KJB_LOCKING_METHOD "flock" 
+    else if ((`${MAKE_SCRIPT_PATH}can_execute lockfile-create`) && (`${MAKE_SCRIPT_PATH}can_execute lockfile-remove`)) then
+        setenv KJB_LOCKING_METHOD "lockfile-progs" 
+    else
+        setenv KJB_LOCKING_METHOD "fallback"
+    endif 
+endif 
+
+# Even if we give use a lockfile , we still need to have a directory to put the
+# lock timestamp file. 
+#
+if (! $?KJB_LOCKFILE_DIR) then
+    setenv KJB_LOCKFILE_DIR ${TMPDIR}/${USER}/lockfiles/
+endif 
+
+set dir_str = `echo ${cwd} | sed 's#.*/##'`
+set cmd_str = `echo ${1} | sed 's#.*/##'`
+
+setenv KJB_LOCK_TIME_STAMP "${KJB_LOCKFILE_DIR}/${cmd_str}_${dir_str}.lock.$$"
+${KJB_TOUCH} ${KJB_LOCK_TIME_STAMP}
+
+${KJB_MKDIR} "${KJB_LOCKFILE_DIR}"
+
+if ($status) then
+    $P_STDERR "Unable to make directory ${KJB_LOCKFILE_DIR}"
+    exit 1
+endif 
+
+if ($?KJB_LOCKFILE_NAME) then
+    set looks_like_abs_path = `echo ${KJB_LOCKFILE_NAME} | grep -c '^/'`
+    set looks_like_path = `echo ${KJB_LOCKFILE_NAME} | grep -c '/'`
+
+    if (${looks_like_abs_path}) then
+        set lock_file = "${KJB_LOCKFILE_NAME}"
+    else if (${looks_like_path}) then
+        set lock_file = "`pwd`/${KJB_LOCKFILE_NAME}"
+    else 
+        set lock_file = ${KJB_LOCKFILE_DIR}/${KJB_LOCKFILE_NAME}.lock
+    endif 
+else
+    set lock_file = ${KJB_LOCKFILE_DIR}/${cmd_str}_${dir_str}.lock
+endif 
+
+# Mostly for testing and debugging.
+setenv KJB_LOCKFILE_PATH "${lock_file}"
+
+onintr bail
+
+# Best not to use VERBOSE_PSO here.
+if ($?KJB_VERBOSE) then
+    echo "${verbose_indent}Script kjb_lock process $$ running ${cmd_str}"
+    echo "${verbose_indent}    in `pwd` using lockfile '${lock_file}'"
+endif
+
+if  ("${KJB_LOCKING_METHOD}" == "flock") then
+    # Best not to use VERBOSE_PSO here.
+    if ($?KJB_VERBOSE) then
+        echo "${verbose_indent}Process $$ running ${cmd_str} in `pwd` using 'flock'"
+    endif
+
+    flock ${lock_file} $*
+    set exit_status = ${status}
+
+    if (! ${exit_status}) then
+        # Best not to use VERBOSE_PSO here.
+        if ($?KJB_VERBOSE) then
+            echo "${verbose_indent}Process $$ successfully ran ${cmd_str} in `pwd` using 'flock'"
+        endif
+    endif
+else if ("${KJB_LOCKING_METHOD}" == "lockfile-progs") then
+    # if ($?KJB_VERBOSE) then
+        echo "Process $$ running ${cmd_str} in `pwd` using lockfile-progs"
+    # endif 
+#     echo "Exiting with error as this is unfinished."
+#     exit 1
+
+    lockfile-create ${lock_file}
+    $*
+    set exit_status = $status 
+    lockfile-remove ${lock_file}
+
+    if (! ${exit_status}) then 
+        # Best not to use VERBOSE_PSO here.
+        if ($?KJB_VERBOSE) then
+            echo "${verbose_indent}Process $$ successfully ran ${cmd_str} in `pwd` using lockfile-progs locking method."
+        endif
+    endif 
+else 
+    # Fallback locking method. Doing locking robustly in scripts is hard, but
+    # often (e.g., mac) we do not have a good solution. The following is better
+    # than nothing.
+
+    # Best not to use VERBOSE_PSO here.
+    if ($?KJB_VERBOSE) then
+        echo "${verbose_indent}Process $$ running ${cmd_str} in `pwd` using fallback locking system."
+    endif
+
+    # Reduce the chances of everyone wanting to start at the same time.
+    # I do not know how likely this is to fail, or even to return success
+    # without doing the right thing, but it seems to work on the mac. 
+    set x = $$ ; @ x %= 100 ; sleep 0.$x >& /dev/null
+    if (${status}) then
+        ${P_STDERR} "Fractional sleep failed in kjb_lock." 
+        set exit_status = 1
+        goto cleanup
+    endif
+
+    if (! -e "${lock_file}") then
+        echo $$ >! ${lock_file}
+
+        if ($?KJB_VERBOSE) then
+            echo "${verbose_indent}Process $$ setting lock file ${lock_file}."
+            # ps -l $$
+        endif 
+    else 
+        set count = 0
+        set got_it = 0
+
+        while (-e "${lock_file}")
+            set lock_proc = `cat ${lock_file}`
+
+            # Happens! 
+            if ($status) then 
+                echo $$ >! ${lock_file}
+                echo "Lock file ${lock_file} disappeared! Taking the lock."
+                set got_it = 1
+                break
+            endif 
+
+            if ($?KJB_VERBOSE_2) then
+                echo "${verbose_indent}Lock file ${lock_file} exists."
+                echo "${verbose_indent}Checking on lock file process ${lock_proc}." 
+            endif 
+
+            ps ${lock_proc} >& /dev/null
+            set ps_status = "${status}" 
+
+            if (${ps_status}) then
+                echo $$ >! ${lock_file}
+
+                if ($?KJB_VERBOSE) then
+                    echo "${verbose_indent}Process $$ resetting lock file ${lock_file} as process ${lock_proc} does not exist."
+                endif 
+
+                set got_it = 1
+                break
+            else if (${count} > 180) then
+                echo "Process $$ waited too long for ${lock_file}. "
+                echo "Information about the process holding the lock:"
+                ps -l ${lock_proc} 
+                echo "Sleeping for one minute for debugging" 
+                sleep 60
+                echo "Ignoring the lock."
+                echo $$ >! ${lock_file}
+                set got_it = 1
+                break
+            else  
+                if ($?KJB_VERBOSE) then
+                    echo "${verbose_indent}Process $$ waiting for ${lock_file} held by process ${lock_proc}."
+                endif 
+
+                # Add some fractional seconds to reduce the chances of everyone
+                # wanting to start at the same time.
+                set x = $$ ; @ x %= 100 ; sleep 1.$x >& /dev/null
+                if (${status}) then
+                    ${P_STDERR} "Fractional sleep failed in kjb_lock." 
+                    set exit_status = 1
+                    goto cleanup
+                endif
+
+                @ count ++
+            endif
+        end
+
+        # If we got_it is still false, then the lock file was removed by the
+        # process we were waiting on.
+        #
+        if (! ${got_it}) then
+            echo $$ >! ${lock_file}
+
+            if ($?KJB_VERBOSE) then
+                echo "${verbose_indent}Process $$ setting lock file ${lock_file} as it no longer exists."
+            endif 
+        endif 
+    endif 
+
+    # Run the command
+    $*
+    set exit_status = $status
+
+    ${KJB_RM} "${lock_file}"
+   
+    if (${exit_status}) exit 1
+
+    # Best not to use VERBOSE_PSO here.
+    if ($?KJB_VERBOSE) then
+        echo "${verbose_indent}Process $$ successfully ran ${cmd_str} in `pwd` using fallback locking method."
+    endif
+endif 
+
+cleanup: 
+    
+${KJB_RM} ${KJB_LOCK_TIME_STAMP}
+
+exit ${exit_status}
+
+
+# We should not be here unless onintr
+
+bail:
+
+if (-e "${lock_file}") then 
+    echo "Script kjb_lock process $$ removing lock file ${lock_file} because of interrupt."
+    echo " "
+    ${KJB_RM} "${lock_file}"
+endif 
+
+${KJB_RM} ${KJB_LOCK_TIME_STAMP}
+
+exit 1
+
+
+   

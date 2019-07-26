@@ -1,0 +1,31 @@
+#!/bin/csh -f
+
+# We assume that we have sourced init_compile. 
+
+setenv KJB_LOCKING_METHOD "lockfile-progs"
+setenv KJB_LOCKING_METHOD "flock"
+setenv KJB_LOCKING_METHOD "fallback"
+
+setenv KJB_LOCKFILE_NAME "dodo"
+setenv KJB_LOCKFILE_NAME "test/dodo.lock"
+unsetenv KJB_LOCKFILE_NAME 
+
+# Each instant of test_kjb_lock_2 will add its PID to this file, which needs to
+# we remove here to start. 
+$KJB_RM test_kjb_lock.result
+
+${MAKE_SCRIPT_PATH}kjb_lock ${MAKE_SCRIPT_PATH}test/test_kjb_lock_2 & 
+${MAKE_SCRIPT_PATH}kjb_lock ${MAKE_SCRIPT_PATH}test/test_kjb_lock_2 & 
+${MAKE_SCRIPT_PATH}kjb_lock ${MAKE_SCRIPT_PATH}test/test_kjb_lock_2 & 
+${MAKE_SCRIPT_PATH}kjb_lock ${MAKE_SCRIPT_PATH}test/test_kjb_lock_2 & 
+${MAKE_SCRIPT_PATH}kjb_lock ${MAKE_SCRIPT_PATH}test/test_kjb_lock_2 & 
+
+echo "Script test_kjb_lock is now doing a wait."
+
+wait
+
+echo "=============="
+${KJB_CAT} test_kjb_lock.result
+echo "=============="
+
+

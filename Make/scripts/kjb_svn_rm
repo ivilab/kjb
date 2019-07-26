@@ -1,0 +1,47 @@
+#!/bin/csh -f 
+
+##############################################################################
+#
+# Identification:
+#     A script to remove a path that might be under svn control
+#
+# Description:
+#     This script removes paths either with "rm" or "svn rm" depending on
+#     whether the path is under svn control.  Originally we tried "svn rm
+#     --force" but this is not reliable and can give confusing messages.  We
+#     assume that init_compile has been sourced, and that svn is available. 
+#
+# Author:
+#     Kobus Barnard 
+#
+##############################################################################
+
+# Script to remove a path that might be under svn control. Originally we tried
+# "svn rm --force" but this is not reliable and can give confusing messages. 
+# We assume that init_compile has been sourced, and that svn is available. 
+
+# set echo
+
+if ($# != 1) then
+    ${P_STDERR} "Script kjb_lock needs exactly one argument."
+    exit 1
+endif 
+
+set path_to_remove = "$1"
+
+if (-e "${path_to_remove}") then
+    svn info "${path_to_remove}" >& /dev/null
+
+    if (${status}) then
+        rm -r -f "${path_to_remove}"
+    else 
+        svn rm --force "${path_to_remove}"
+    endif 
+
+    if (-e "${path_to_remove}") then
+        "Path ${path_to_remove} still exists even though script kjb_svn_rm tried to remove it."
+        exit 1 
+    endif
+endif 
+
+

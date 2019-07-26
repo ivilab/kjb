@@ -1,0 +1,263 @@
+# $Id: init_ua_hpc 22172 2018-06-23 23:03:18Z kobus $
+
+# UA_HPC makes use of LD_LIBRARY_PATH and other environment variables. The
+# modulecmd script largely (only?) sets environment variables. Users of
+# UA_HPC need to make sure that at least LD_LIBRARY_PATH is set for runtime,
+# possibly by linking  ~kobus/.cshrc, if you go with the default shell of
+# tcsh, or perhaps sourcing ~kobus/.cshrc. 
+#
+# This script needs to be able to undo what it did. There is a modulecmd
+# "clear", but it wants interactive input and does not really undo things. So we
+# hack the undo as best as we can.
+#
+# This script needs to be sourced, and thus all parameter inputs are based on
+# shell variables. If ua_hpc_init is set to 1, then we initialize. If
+# ua_hpc_clear is set to 1, we clear. If the result is that modules are loaded,
+# then UA_HPC_MODULES becomes set to 1. If the result is that they are not
+# loaded, either due to a failed attempt, or due to a clear, then UA_HPC_MODULES
+# becomes 0. If neither ua_hpc_init or ua_hpc_clear are set to 1, this script
+# does nothing and does not touch UA_HPC_MODULES.
+
+
+set desired_modules = "intel fftw gsl boost cmake"
+
+set ua_hpc_save_file = ""
+
+if($?TMPDIR) then
+    set ua_hpc_tmp = "${TMPDIR}"
+else
+    set ua_hpc_tmp = "/tmp"
+endif
+
+set ua_hpc_save_dir  = "${ua_hpc_tmp}/${USER}"
+
+mkdir -p ${ua_hpc_save_dir}
+if (! $status) then 
+    if (! -w ${ua_hpc_save_dir} ) then
+        echo 'Writable temp directory not found. Suppressing saving state before loading modules.'
+    else
+        set ua_hpc_save_file = "$ua_hpc_save_dir/ua_hpc_saved_state"
+    endif
+endif 
+
+if ($?ua_hpc_init) then
+    if ($ua_hpc_init) then
+        set complete = 0
+
+        which modulecmd >& /dev/null
+
+        if (${status}) then 
+            echo "The script modulecmd is not available."
+        else 
+            if ($?LOADEDMODULES) then
+                set complete = 1
+
+                foreach desired_module (${desired_modules}) 
+                    set found = `echo "${LOADEDMODULES}" | grep -c "${desired_module}/"`
+                    if (! ${found}) then
+                        echo "Module ${desired_module} is not yet loaded."
+                        set complete = 0
+                    endif 
+                end
+            else
+                set complete = 0
+            endif 
+
+            if (! ${complete}) then
+                if ("${ua_hpc_save_file}" != "") then
+                    echo "" > ${ua_hpc_save_file}
+                    #
+                    # For PATH/MANPATH, which are operated on by other scripts,
+                    # we want to determine the proposed changes. 
+                    #
+                    if (! $?PATH) then
+                        echo "unsetenv PATH" >>! ${ua_hpc_save_file}
+                        set save_path = ""
+                    else
+                        echo "setenv PATH '${PATH}'" >>! ${ua_hpc_save_file}
+                        set save_path = "${PATH}"
+                    endif 
+
+                    if (! $?MANPATH) then
+                        echo "unsetenv MANPATH" >> ${ua_hpc_save_file}
+                        set save_manpath = ""
+                    else
+                        echo "setenv MANPATH '${MANPATH}'" >>! ${ua_hpc_save_file}
+                        set save_manpath = "${MANPATH}"
+                    endif 
+
+                    if (! $?LD_LIBRARY_PATH) then
+                        echo "unsetenv LD_LIBRARY_PATH" >>! ${ua_hpc_save_file}
+                    else
+                        echo "setenv LD_LIBRARY_PATH '${LD_LIBRARY_PATH}'" >>! ${ua_hpc_save_file}
+                    endif 
+
+                    if (! $?INCLUDE) then
+                        echo "unsetenv INCLUDE" >>! ${ua_hpc_save_file}
+                    else
+                        echo "setenv INCLUDE '${INCLUDE}'" >>! ${ua_hpc_save_file}
+                    endif 
+                endif 
+                
+                # These names are obsolete. If we wanted to do this, then
+                # consult Makefile-2.  But we should not need to set them.
+                # Delete this soon. (And do init_compile also). 
+
+#                 if (! $?EXTRA_CC_FLAGS) then 
+#                     setenv EXTRA_CC_FLAGS ""
+#                 endif 
+# 
+#                 if (! $?EXTRA_LOAD_FLAGS) then 
+#                     setenv EXTRA_LOAD_FLAGS ""
+#                 endif 
+# 
+#                 if (! $?INCLUDE) then 
+#                     setenv INCLUDE ""
+#                 endif 
+
+                
+                # Need to store this because we are taking PATH away! 
+                set modulecmd = `which modulecmd`
+
+                setenv PATH ""
+                setenv MANPATH ""
+
+                set complete = 1
+
+                foreach desired_module (${desired_modules}) 
+                    echo "Trying to add module: ${desired_module}."
+
+                    setenv CPPFLAGS "" 
+                    setenv LDFLAGS ""
+
+                    eval `${modulecmd} tcsh load ${desired_module}` 
+
+                    setenv EXTRA_LOAD_FLAGS "${EXTRA_LOAD_FLAGS} ${LDFLAGS}"
+                    setenv EXTRA_CC_FLAGS "${EXTRA_CC_FLAGS} ${CPPFLAGS}"
+
+                    if (${status}) then 
+                         echo "Load of module ${desired_module} failed."
+                         set complete = 0
+                    endif
+                end 
+
+                setenv EXTRA_PATH "${PATH}"
+                setenv EXTRA_MANPATH "${MANPATH}"
+
+                if ($?KJB_VERBOSE) then
+                    echo " "
+                    echo "After adding modules ${desired_modules}, EXTRA_PATH is:"
+                    echo "    ${EXTRA_PATH}" 
+                    echo " "
+                    echo "After adding modules ${desired_modules}, EXTRA_MANPATH is:"
+                    echo "    ${EXTRA_MANPATH}" 
+                    echo " "
+                    echo "After adding modules ${desired_modules}, LD_LIBRARY_PATH is:"
+                    echo "    ${LD_LIBRARY_PATH}" 
+                    echo " "
+                    echo "After adding modules ${desired_modules}, INCLUDE is:"
+                    echo "    ${INCLUDE}" 
+                    echo " "
+                    echo "After adding modules ${desired_modules}, EXTRA_CC_FLAGS is:"
+                    echo "    ${EXTRA_CC_FLAGS}" 
+                    echo " "
+                    echo "After adding modules ${desired_modules}, EXTRA_LOAD_FLAGS is:"
+                    echo "    ${EXTRA_LOAD_FLAGS}" 
+                    echo " "
+                endif 
+
+                setenv PATH "${save_path}"
+
+                # Kobus. Adding code to help figure out why the inapproapriate
+                # libraries were there in the first place. This can be removed
+                # once we figure it out. 
+                #
+                set have_ia32 = `echo ${LD_LIBRARY_PATH} | grep -c lib/ia32`
+
+                if (${have_ia32}) then 
+                    echo "LD_LIBRARY_PATH has ia32 in it. This will be stripped." 
+                endif  
+               
+
+                # Remove inapproapriate libraries. 
+                setenv LD_LIBRARY_PATH `echo ${LD_LIBRARY_PATH} | sed 's#:[^:]*lib/ia32##'`
+                #
+                # Kobus. Check this? Are we simply setting LIBRARY_PATH to be
+                # LD_LIBRARY_PATH? Then the seed cannot be needed. 
+                setenv LIBRARY_PATH `echo ${LD_LIBRARY_PATH} | sed 's#:[^:]*lib/ia32##'`
+
+                if ("${EXTRA_PATH}" != "") then
+                    if (! $?BASE_PATH) then 
+                         setenv BASE_PATH "${PATH}"
+                    endif 
+                    setenv BASE_PATH "${EXTRA_PATH}:${BASE_PATH}"
+                    setenv PATH "${EXTRA_PATH}:${PATH}"
+                    setenv EXTRA_PATH_ADDED 1 
+                endif 
+
+                setenv MANPATH "${save_manpath}"
+
+                if ("${EXTRA_MANPATH}" != "") then
+                    setenv MANPATH "${MANPATH}:${EXTRA_MANPATH}"
+                    setenv EXTRA_MANPATH_ADDED 1 
+                endif 
+            endif
+        endif
+
+        set complete = 0
+        set have_one = 0
+
+        if ($?LOADEDMODULES) then
+            set complete = 1
+
+            foreach desired_module (${desired_modules}) 
+                set found = `echo "${LOADEDMODULES}" | grep -c "${desired_module}/"`
+                if (! ${found}) then
+                    echo "Module ${desired_module} not loaded."
+                    set complete = 0
+                else 
+                    set have_one = 1
+                endif 
+            end
+        endif 
+
+        if (! ${complete}) then
+            echo "Using modules: ${desired_modules}. "
+        endif 
+
+        if (${have_one}) then
+            setenv UA_HPC_MODULES 1
+        endif 
+
+        echo " "
+    endif 
+endif 
+
+
+if ($?ua_hpc_clear) then
+    if ($ua_hpc_clear) then
+        echo "Undoing the UA HPC module load scripts (excepting variables having to do with licences)."
+
+        if (($?UA_HPC_MODULES) || ("${LOADEDMODULES}" != "")) then
+             if ($UA_HPC_MODULES) then 
+                 if ("${ua_hpc_save_file}" != "") then
+                     if (-e "${ua_hpc_save_file}") then
+                         source "${ua_hpc_save_file}"
+                     endif 
+                 endif 
+             endif 
+
+             unsetenv UA_HPC_MODULES
+             setenv LOADEDMODULES ""
+             echo "UA HPC module load scripts undone."
+        else 
+             echo "(Nothing to do)."
+        endif 
+    endif 
+endif 
+
+
+# Pretending that these are local variables. 
+unset ua_hpc_tmp ua_hpc_save_dir ua_hpc_save_file desired_modules complete
+unset have_one found save_path save_manpath modulecmd have_ia32 
+

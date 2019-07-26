@@ -1,0 +1,3702 @@
+#!/bin/tcsh -f
+
+##############################################################################
+#
+# Identification:
+#     A script to make vision code distributions
+#
+# Description:
+#     This script nominally makes vision code distributions, but to do that, it
+#     typically first proves that it can build the makefile, compile the code
+#     under different conditions, run regression tests, and build the
+#     documentation. Hence it has also grown into a convenient way to check the
+#     state of the code base. This script does a lot of things, and has lots of
+#     flexibility through a number of options. For some common cases, see
+#     EXAMPLES below.
+#
+#     Specific to making vision code distributions, there are two variants. The
+#     argument "archive" requests a snapshot of the code for backup or
+#     archiving. This is perhaps less relevant now that everything is under svn.
+#     
+#     The second variant "export" builds code source archives suitable for
+#     export.  This assumes that all components of the code can be distributed
+#     without copyright concerns.  This script helps matters by including only
+#     the library modules needed, and stripping out code that is protected by a
+#     number of #ifdef's such as TEST, HOW_IT_WAS_*, REGRESS_*, NOT_USED,
+#     OBSOLETE, and so on. 
+#
+#     Without any arguments, all library modules and programs in a hard coded
+#     list are compiled under several conditions. Alternatively, any arguments
+#     that are not otherwise recognized, but are directory names, are taken as
+#     directories to work on. These directories must be specified as relative to
+#     a src directory, specifified by KJB_SRC_PATH, or found by the script using some
+#     heuristica. Other options can specify that only library code is processed.
+#     Regardless, the first thing the script does is to output the programs it
+#     plans to work on. 
+#
+#     This script typically takes a lot of time, and creates a lot of output,
+#     so generally it is easiest to redirect output and run it in the
+#     background. 
+#
+# Option arguments: 
+#
+# |    archive
+#         This requests that distributions being processed are put
+#         into ${KJB_SRC_PATH}/DIST/archive, where ${KJB_SRC_PATH} is usually ${HOME}/src. 
+#
+# |    backup
+#         This requests that distributions being processed are put
+#         into ${KJB_SRC_PATH}/DIST/backup, where ${KJB_SRC_PATH} is usually ${HOME}/src.
+#         Since "archive" and "backup" behave the same, this would only make
+#         sense if the backup directory is linked to a different disk. 
+#
+# |     export 
+#          This request that archives suitable for code distribution be built.
+#          They are put into ${KJB_SRC_PATH}/DIST/export, where ${KJB_SRC_PATH} is usually
+#          ${HOME}/src. 
+#
+# |     export_only
+#          This request that archives suitable for code distribution be built,
+#          and that only minimal other work is done. 
+#
+# |     export_src_tree, skip_export_src_tree,
+# |     export_standalone, skip_export_standalone
+#          Exports can take two forms, and the plan is to be able to toggle them
+#          independently: 1) We export the relavent
+#          portion of the source tree, which means you get one copy of needed
+#          libraries, and subsequent exports can be tarred over the previous
+#          ones, preferablly with the "-u" flag; 2) Each requested export leads
+#          to a standalone package with an svn revision number in the directory
+#          name. This is the default. 
+#
+# |     export_lib_test_dirs
+#          By default we do a minimal set of files in an exported package, and
+#          thuse we do not include test code for libraries. This option requests
+#          adding themn. 
+#
+# |      skip_svn
+#           By default, if we are making a standalone export distribution, then
+#           we will include revision numbers in the exported directory names.
+#           For this, we need to do both svn updates and commits so that the
+#           revision number is correct. (For example, the revision number of a
+#           program can depend on having library code commited.) This option
+#           requests proceeding as though svn does not exist. This option
+#           currently only has an effect when we are exporting standalone
+#           packages, but we may use svn more in the future. For example,
+#           assuming good internet, it might be the easiest way to collect the
+#           needed files. If you are using this script without internet,
+#           and do not use this option, then you will get errors that can be
+#           made non-fatal with the keep_going option. 
+#           
+# |     skip_export_doc
+#          If we are making an export archive, then it won't have pre-built man
+#          pages along with it. 
+#
+# |     keep_going 
+#          By default, this scripts terminates when there is an error, including
+#          build errors and regression testing failures. If this option is set,
+#          then the script will continue if possible, and exit with 1 if any
+#          errors were encountered along the way.  
+#
+# |     lib (also "library") 
+#          This builds an exportable version of the library code, i.e., libKJB.a. 
+#
+# |     ctags
+#          This requests doing ctags. This is not always done by default, but
+#          options that build distributions (e.g., archive, export, lib)
+#          will also set this option. 
+#
+# |     skip_ctags
+#           Forces no ctags. 
+#
+# |     doc
+#          This requests building documentations. Like tags, this is not always
+#          done by default, but options that build distributions (e.g., archive,
+#          export) will also set this option. 
+#
+# |     skip_doc
+#           Forces no documentation to be built. 
+# 
+# |     regress (also, "regress-1" or "regress_1") 
+#           Do regression testing. 
+#
+# |      clean_regress
+#           Does "make regress_clean" in every test directory processed. 
+#           
+# |      skip_regress
+#           Force no regression testing even if it were to be done. If test
+#           directories are processed, then regression testing would
+#           normally force the makefiles to be built. This option
+#           disables that. Of course, makefiles that are out of date will be
+#           built regardless of this directive.
+#
+# |      skip_depend_lib
+#           This disables forced makefile building in the library directory. 
+#           If you are most interested in testing builds at the program level,
+#           this can save time. 
+#
+# |      skip_depend_lib_sub
+#           This disables forced makefile building in library sub-directories. 
+#           If you are most interested in testing builds at the program level,
+#           this can save time. 
+#
+# |      skip_export_depend
+#           This disables forced makefile building while the export version is
+#           constructed. This is mostly useful for debugging. Normally, one
+#           would want this test if the code was really being exported.  
+# 
+# |      skip_make
+#           This disables compiling. It is a bit of misnomer as make is used for
+#           building documentation, tags, regression, etc. These need to be
+#           deselected individually. This option only skips compiling. 
+#
+# |      skip_export_make
+#           This disables compiling  while the export version is
+#           constructed. This is mostly useful for debugging. Normally, one
+#           would want this test if the code was really being exported.  
+#
+# |      clean
+#           This requests a "make clean" before "make". This is reverse of the
+#           "opt out" convention for rebuilding makefiles, and perhaps should be
+#           changed to skip_clean? FIXME?
+#
+# |      skip_no_libs
+#           This disables compiling of libraries as if most external libraries
+#           are not installed. By default, this script checks that library code
+#           is properly protected from this. An important exception is boost.
+#           Even if we pretend that most libs are not available, we still use
+#           boost. To check that we are robust to even boost being missing, use
+#           test_no_boost. 
+#
+# |      test_no_boost 
+#           Provided that we are not skipping testing without libraries, we will
+#           still assume that boost is available. This option tests whether we
+#           can compile even if boost is not available. 
+#
+# |      skip_prog_no_libs
+#           This disables compiling of programs, including ones found in test
+#           directories, as if most external libraries are not installed. As
+#           with skip_no_libs, boost is excepted. 
+#
+# |      test_prog_no_boost 
+#           In analogy with test_no_boost, this option test whether we
+#           can compile even if boost is not available in the case of programs. 
+#
+# |      skip_cxx 
+#           This script normally checks that C code also compiles with the C++++
+#           compiler. This option disables this check. Note that C++++ code is
+#           always compiled with the C++ compiler. This option does not disable
+#           compiling of C++++ code. 
+#
+# |      skip_clean_src
+#           For export, source code is cleaned up to remove code protected by a
+#           number of #define's. This disables this behaviour, which can speed
+#           up debugging. 
+#
+# |      skip_sub_dirs 
+#           Skip library sub dirs. Note that if the directory is a dependency of
+#           a program being processes, it would get compiled anyway. 
+#
+# |      skip_cpp_dirs 
+#           Skip library *_cpp directories when src/lib is processed. Note that
+#           if the directory is a dependency of a program being processes, it
+#           would get compiled anyway. 
+#
+# |      skip_test_dirs
+#           This option requests skipping test dirs. 
+#           
+# |      skip_prog_dirs
+#           This option request skipping program dirs. This does not apply to
+#           library test directories. 
+#           
+# Non-option arguments: 
+#
+# |      [ PROGRAM_DIR ]
+#            Any option that is not one of the above is tested as to whether it
+#            is a subdirectory of ${KJB_SRC_PATH}, which is usually ${HOME}/src. If
+#            this test succeeds, then PROGRAM_DIR is added to the list of
+#            specified directories to be converted into a distribution. If there
+#            is no PROGRAM_DIR argument, then we assume we are creating a
+#            distribution for a hard coded subset of programs, which we often
+#            use to check that things build. 
+#
+# Examples (more to come):
+#     To build a standalone version of a single program (e.g., hdp_hmm_lt), specified relative to
+#     the source directory (which holds Make, lib, and include_after) without
+#     extra checking of library code, assuming we are in the src direction and
+#     that we are using bash: 
+#
+# |       Make/scripts/make_src_dist export_only projects/hdp_hmm_lt \
+# |           1>make_src_dist.stdout 2>make_src_dist.stderr &
+# 
+# Author:
+#     Kobus Barnard 
+#
+#
+##############################################################################
+
+if (${?KJB_SET_ECHO}) then
+    set echo
+endif 
+
+set exit_status = 0
+
+set error_file = "`\pwd`/make_src_dist.err"
+cat /dev/null > ${error_file}
+
+# One might think that we want to control build variables for reproducible
+# behaviour, but we want to be able to do a complete test with some of them set
+# by the user. In particular, leave these alone:
+#
+# unsetenv ALT_LIBS
+# unsetenv FORCE_DEBUG
+# unsetenv FORCE_TEST
+# unsetenv FORCE_OPTIMIZE
+# unsetenv PREFER_PCH
+# unsetenv BOOST_VERSION
+
+setenv KJB_PREFER_CXX 0
+unsetenv KJB_CC
+setenv PRODUCTION 1
+
+setenv NO_LIBS 0
+setenv NO_BOOST 0
+
+if (! $?FORCE_MAKE_SRC_DIST ) then
+    setenv FORCE_MAKE_SRC_DIST 0
+endif 
+
+cd
+if (${status}) then
+    echo "Command failed in `pwd`: cd" | tee -a ${error_file}
+    set exit_status = 1
+    goto end_of_script
+endif 
+
+if (${?KJB_SRC_PATH}) then 
+    cd ${KJB_SRC_PATH}
+    if (${status}) then
+        echo "Command failed in `pwd`: cd ${KJB_SRC_PATH}" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+else if (-d src) then
+    cd src
+    if (${status}) then
+        echo "Command failed in `pwd`: cd src" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    setenv KJB_SRC_PATH ${cwd}/
+else if (-d src.ua_cs_home) then
+    cd src.ua_cs_home
+    if (${status}) then
+        echo "Command failed in `pwd`: cd src.ua_cs_home" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    setenv KJB_SRC_PATH ${cwd}/
+else 
+    if (${status}) then
+        echo "No src dir in ${cwd}" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+endif 
+
+Make/scripts/clean_cache all 
+
+source Make/init_machine
+
+source Make/init_compile
+
+setenv FORCE_INIT_COMPILE 1
+
+set time_stamp = `date +%y-%m-%d-%H-%M`
+
+if (! ${?TMPDIR}) then
+    setenv TMPDIR "/tmp"
+endif 
+
+if (! -w "${TMPDIR}") then
+    echo "Writable temp directory not found." | tee -a ${error_file}
+    echo "Specifically, ${TMPDIR} is not writable." | tee -a ${error_file}
+    set exit_status = 1
+    goto end_of_script
+endif
+
+###############################################################################
+
+setenv SKIP_DEPEND_RETRY
+
+set cp_with_follow = "/bin/cp -f -R -p"
+
+if ("${OS}" == "sun5") then
+    set file_list_flag = "-I"
+else if ("${OS}" == "linux_386") then
+    set file_list_flag = "-T"
+    set cp_with_follow = "/bin/cp -R -L -p"
+else if ("${OS}" == "linux_x86_64") then
+    set file_list_flag = "-T"
+    set cp_with_follow = "/bin/cp -R -L -p"
+else if ("${OS}" == "mac_osx") then
+    set file_list_flag = "-T"
+    set cp_with_follow = "/bin/cp -R -L -p"
+else
+    echo "This script needs a tar file list flag for ${OS}" | tee -a ${error_file}
+    set exit_status = 1
+    goto end_of_script
+endif
+
+set short_host = `hostname | sed "s/\([^.]*\).*/\1/g"`
+set regress_failure_log = "regress_failure_log.${short_host}"
+
+# We exclude a few things if the g++ version is too old. 
+
+set gxx_version_str = `g++ -v |& grep "gcc version"` 
+
+if (${status}) then
+    set gxx_version = 0
+    set gxx_major = 0
+else
+    set gxx_version = `echo ${gxx_version_str} | sed "s/gcc version \([0-9.]*\).*/\1/"`
+    set gxx_major = `echo ${gxx_version} | sed "s/\([0-9]*\)\..*/\1/"`
+endif 
+
+set prog_dir_places = "projects tools"
+
+###############################################################################
+
+set specified_prog_dirs = ""
+set revision = ""
+set regress_failed = 0
+
+set export_test_code = 0
+set export_doc = 1
+set export_standalone = 1
+set export_src_tree = 0
+set export_lib_test_dirs = 0
+
+set do_something = 0
+set do_ctags = 0
+set do_archive = 0
+set do_backup = 0
+set do_doc = 0
+set do_export = 0
+set collect_files = 0
+set do_lib = 0
+set do_clean_regress = 0
+set do_clean = 0
+set keep_going = 0
+
+
+set skip_regress = 0
+set skip_depend = 0
+set skip_depend_lib = 0
+set skip_depend_lib_sub = 0
+set skip_export_depend = 0
+set skip_make = 0
+set skip_export_make = 0
+set skip_doc = 0
+set skip_ctags = 0
+set skip_no_libs = 0
+set test_no_boost = 0
+set skip_prog_no_libs = 0
+set test_prog_no_boost = 0
+set skip_cxx = 0
+set skip_clean_src = 0
+set skip_cpp_dirs = 0
+set skip_sub_dirs = 0
+set skip_test_dirs = 0
+set skip_prog_dirs = 0
+set skip_svn = 0
+
+foreach option ($*)
+    if ("${option}" == "archive") then
+        set do_archive = 1
+        set do_something = 1
+    else if ("${option}" == "backup") then
+        set do_backup = 1
+        set do_something = 1
+    else if (("${option}" == "ctags") || ("${option}" == "tags")) then
+        set do_ctags = 1
+        set do_something = 1
+    else if ("${option}" == "compile") then
+        set do_something = 1
+    else if ("${option}" == "doc") then
+        set do_doc = 1
+        set do_something = 1
+    else if ("${option}" == "export") then
+        set do_export = 1
+        set do_something = 1
+    else if ("${option}" == "export_lib_test_dirs") then
+        set export_lib_test_dirs = 1
+    else if ("${option}" == "export_only") then
+        set do_export = 1
+        set do_something = 1
+        set skip_depend = 1
+        set skip_make = 1
+        set skip_doc = 1
+        set skip_ctags = 1
+        set skip_regress = 1
+        set skip_cxx = 1
+        set skip_no_libs = 1
+    else if ("${option}" == "skip_export_doc") then
+        set export_doc = 0
+    else if ("${option}" == "export_standalone") then
+        set export_standalone = 1
+    else if ("${option}" == "skip_export_standalone") then
+        set export_standalone = 0
+    else if ("${option}" == "export_src_tree") then
+        set export_src_tree = 1
+    else if ("${option}" == "skip_export_src_tree") then
+        set export_standalone = 0
+    else if ("${option}" == "lib") then
+        set do_lib = 1
+        set do_something = 1
+    else if ("${option}" == "library") then
+        set do_lib = 1
+        set do_something = 1
+    else if ("${option}" == "keep_going") then
+        set keep_going = 1
+    else if ("${option}" == "clean_regress") then
+        set do_clean_regress = 1
+        set do_something = 1
+    else if ("${option}" == "skip_regress") then
+        set skip_regress = 1
+    else if ("${option}" == "regress") then
+        set skip_regress = 0
+        set do_something = 1
+    else if ("${option}" == "skip_depend") then
+        set skip_depend = 1
+    else if ("${option}" == "skip_depend_lib") then
+        set skip_depend_lib = 1
+    else if ("${option}" == "skip_depend_lib_sub") then
+        set skip_depend_lib_sub = 1
+    else if ("${option}" == "skip_export_depend") then
+        set skip_export_depend = 1
+    else if ("${option}" == "skip_compile") then
+        set skip_make = 1
+    else if ("${option}" == "skip_make") then
+        set skip_make = 1
+    else if ("${option}" == "clean") then
+        set do_clean = 1
+    else if ("${option}" == "skip_export_make") then
+        set skip_export_make = 1
+    else if ("${option}" == "skip_doc") then
+        set skip_doc = 1
+    else if (("${option}" == "skip_ctags") || ("${option}" == "skip_tags")) then
+        set skip_ctags = 1
+    else if ("${option}" == "skip_no_libs") then
+        set skip_no_libs = 1
+    else if ("${option}" == "test_no_boost") then
+        set test_no_boost = 1
+    else if ("${option}" == "skip_prog_no_libs") then
+        set skip_prog_no_libs = 1
+    else if ("${option}" == "test_prog_no_boost") then
+        set test_prog_no_boost = 1
+    else if (("${option}" == "skip_cxx") || ("${option}" == "skip_cpp") ) then
+        set skip_cxx = 1
+    else if ("${option}" == "skip_clean_src") then
+        set skip_clean_src = 1
+    else if ("${option}" == "skip_sub_dirs") then
+        set skip_sub_dirs = 1
+    else if ("${option}" == "skip_cpp_dirs") then
+        set skip_cpp_dirs = 1
+    else if ("${option}" == "skip_test_dirs") then
+        set skip_test_dirs = 1
+    else if ("${option}" == "skip_svn") then
+        set skip_svn = 1
+    else if ("${option}" == "skip_prog_dirs") then
+        set skip_prog_dirs = 1
+    else if (! -d "${option}") then
+        echo "${option} is neither an option, nor a subdirectory of `pwd`." | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    else 
+         set specified_prog_dirs = "${specified_prog_dirs} ${option}"
+    endif
+end
+
+if (! $do_something ) then
+    if (! $skip_ctags) set do_ctags = 1
+    if (! $skip_doc) set do_doc = 1
+endif
+
+if (($do_export ) || ($do_archive) || ($do_backup)) then
+    set collect_files = 1
+endif
+
+
+# echo "do_archive is $do_archive"
+# echo "do_doc is $do_doc"
+# echo "do_ctags is $do_ctags"
+
+
+if (! ${skip_make}) then
+    ${KJB_MKDIR} -p ${TMPDIR}/${USER}
+    set compile_res = ${TMPDIR}/${USER}/compile.res 
+    cat /dev/null >! ${compile_res} 
+    set compile_warn_res = ${TMPDIR}/${USER}/compile_warn.res 
+else 
+    set compile_res = ""
+endif 
+
+if (! "${skip_cxx}") then
+    ${KJB_MKDIR} -p ${TMPDIR}/${USER}
+    set compile_cxx_res = ${TMPDIR}/${USER}/compile_cxx.res 
+    cat /dev/null >! ${compile_cxx_res} 
+    set compile_cxx_warn_res = ${TMPDIR}/${USER}/compile_cxx_warn.res 
+else 
+    set compile_cxx_res = ""
+endif 
+
+
+set noglob
+
+# Local programs that need to be able compile without any libs. These programs
+# have the property that one of the libraries that they could potentially link
+# against is not critical to them, and hence they should compile even if the
+# libraries are not available.
+#
+set no_lib_build_dirs = "SLIC/frame2frame gamut sensor spect image HER/behave KJB KJB_cpp it it/util fix_seg pipeline segment tools util math var_illum"
+
+if (${skip_prog_dirs}) then 
+    set export_prog_dirs = ""
+    set prog_dirs = ""
+else if ("${specified_prog_dirs}" != "") then 
+    set export_prog_dirs = "${specified_prog_dirs}"
+    set prog_dirs = "${specified_prog_dirs}"
+else
+    # Exported to the world. export_prog_dirs is forced to be a subset of prog_dirs
+    #
+    # TODO. Perhaps the lists for export_prog_dirs and proj_dirs should be in
+    # files.
+    #
+    set export_prog_dirs = "KJB KJB_cpp projects/ties projects/gamut projects/sensor projects/spect tools/kjb_image projects/words_and_pictures/pipeline projects/HER/behave examples/CEM"
+
+    # Currently, these only build on basic linux boxes. 
+    #
+    if ("${OS}" == "linux_386") then
+        set export_prog_dirs = "${export_prog_dirs} tools/ncuts_modified"
+    endif 
+
+    set prog_dirs = "${export_prog_dirs} examples/templates/* examples/kjb projects/words_and_pictures/it projects/words_and_pictures/it/util examples/segment tools/kjb_tools tools/kjb_util tools/kjb_math projects/color/var_illum projects/SLIC/slide_match projects/SLIC/slide_match_v02" 
+
+    if ("${OS}" == "linux_386") then
+        #
+        # These only build on basic linux boxes. 
+        #
+        set prog_dirs = "${prog_dirs} projects/words_and_pictures/fix_seg"
+
+        which libgcrypt-config >& /dev/null
+        if (! ${status}) then 
+            set prog_dirs = "${prog_dirs} projects/findtrails"
+        endif
+    endif 
+
+
+    # This does not depend on any KJB code, and currently breaks on the mac
+    # because the mac cannot deal with an archive that has no members. This
+    # should be fixed because we should better handle code that does not use
+    # any KJB library code. Currently, we simply link against an empty libKJB.a,
+    # but again, using "ar" to get this on the max breaks. 
+    #
+    if ("${OS}" != "mac_osx") then
+        if ("${KJB_HAVE_LIBSVM}" != "") then
+            set prog_dirs = "${prog_dirs} examples/libsvm"
+        endif 
+    endif 
+
+    # Sort of similar to the above, but currently we include "m" for fun.
+    if ("${KJB_HAVE_OPENCV}" != "") then
+        set prog_dirs = "${prog_dirs} examples/opencv"
+    endif 
+endif 
+
+set no_libs_prog_dirs = ""
+
+foreach prog_dir (${prog_dirs} ) 
+    set found = 0
+
+    foreach no_libs_dir ( ${no_lib_build_dirs} ) 
+        if ("${prog_dir}" == "${no_libs_dir}") then
+            set found = 1
+            break
+        endif
+    end
+
+    if (${found}) then
+        set no_libs_prog_dirs = "${no_libs_prog_dirs} ${prog_dir}"
+    endif 
+end 
+
+unset noglob
+
+set collected_prog_dirs = ""
+
+set prog_build_files = "build Makefile Makefile-2 Makefile-dirs Makefile-libs-needed Makefile-depend Include_lines"
+set lib_build_files = "build Makefile Makefile-2 Makefile-include"
+
+###############################################################################
+
+echo " "
+echo "===================================================================="
+echo " "
+echo "Script make_src_dist"
+echo " "
+echo "    Run on ${HOST} (${MACHINE})"
+echo " "
+echo "    Start time is ${time_stamp}"
+echo " "
+echo "    Options are: $*"
+echo " "
+echo "    Program dirs:"
+
+foreach prog_dir (${prog_dirs})
+    echo "        ${prog_dir}"
+end 
+
+echo " "
+echo "    Programs to build without libraries:"
+
+foreach no_libs_prog_dir (${no_libs_prog_dirs})
+    echo "        ${no_libs_prog_dir}"
+end 
+
+echo " "
+
+if (${do_export}) then
+    if (! ${skip_svn}) then 
+        set svn_dirs = "include_before Make lib ${export_prog_dirs}"
+        set svn_error = 0
+
+        foreach svn_dir (${svn_dirs}) 
+            if (${svn_error}) break
+            svn up ${svn_dir} < /dev/null
+            if ($status) set svn_error = 1
+        end
+
+        foreach svn_dir (${svn_dirs}) 
+            if (${svn_error}) break
+            svn commit -m 'Commit of linguring changes via script make_src_dist' ${svn_dir} < /dev/null
+            if ($status) set svn_error = 1
+        end
+
+        foreach svn_dir (${svn_dirs}) 
+            if (${svn_error}) break
+            svn up ${svn_dir} < /dev/null
+            if ($status) set svn_error = 1
+        end
+
+        if (${svn_error}) then
+            echo "An SVN operation failed." | tee -a ${error_file}
+            set exit_status = 1
+            if (! ${keep_going}) goto end_of_script
+        endif 
+
+        set save_revision = ""
+
+        # Use the revision numbers that we have, even though they might very
+        # well be wrong. 
+
+        foreach svn_dir (${svn_dirs}) 
+            set revision = `svn info ${svn_dir} < /dev/null | grep "Revision:" | sed 's/.*: *//'` 
+
+            if ($status) then
+                set svn_error = 1
+                break
+            endif
+
+            if ("${save_revision}" != "") then
+                if ("${revision}" != "${save_revision}") then
+                    echo "Inconsistant revision numbers among ${svn_dirs}." | tee -a ${error_file}
+                    set exit_status = 1
+                    if (! ${keep_going}) goto end_of_script
+                endif 
+            else
+                set save_revision = "${revision}"
+            endif 
+        end
+    endif
+
+    set export_dir_count =  0
+
+    echo "    MSD: Export dirs:"
+
+    foreach export_prog_dir (${export_prog_dirs})
+        echo "        ${export_prog_dir}"
+        @ export_dir_count ++
+    end 
+
+#     if (${export_dir_count} > 1) then
+#         echo "    MSD: Multiple program dirs to export. We will create a baby version of src."
+#     else if (${export_dir_count} == 1)
+#         echo "    MSD: Exporting a single program dir. We will create a program centric version."
+#     else 
+
+    if (${export_dir_count} == 0) then
+        echo "    MSD: Program export requested, but not programs to export. This could be a bug."
+    endif 
+else 
+    echo "    MSL Program export is not requested."
+endif 
+
+echo " "
+echo "===================================================================="
+echo " "
+echo " "
+
+# goto we_got_here
+
+###############################################################################
+
+#
+# Make the tools. Also make everything very clean if needed. 
+#
+
+echo -------------------------------------------------------------
+echo MSD: Making the tools. Also make everything very clean if needed. 
+echo ------------------------------------------------------------
+echo
+
+if (${?KJB_ENVIRONMENT}) then
+    echo "MSD: KJB_ENVIRONMENT is set to ${KJB_ENVIRONMENT}"
+else 
+    echo "MSD: KJB_ENVIRONMENT is NOT set"
+endif 
+
+pushd Make/util > /dev/null
+if (${status}) then
+    echo "Command failed in `pwd`: pushd Make/util > /dev/null" | tee -a ${error_file}
+    set exit_status = 1
+    goto end_of_script
+endif 
+
+echo " " 
+echo "MSD: Now in directory"`pwd`
+echo " " 
+
+if (! ${skip_depend}) then
+    ${KJB_MAKE} depend_very_clean 
+    ${KJB_MAKE} depend 
+
+    if (${status}) then
+        echo "Make depend failed in ${cwd}" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif
+endif
+
+if (! ${skip_doc}) then 
+    pushd c2man-2.40-kobus > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd c2man-2.40-kobus > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    echo " " 
+    echo "MSD: Now in directory"`pwd`
+    echo " " 
+
+    ${KJB_MAKE} make_bin 
+    if (${status}) then
+        echo "Command failed in `pwd`: ${KJB_MAKE} make_bin" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    popd > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    echo " " 
+    echo "MSD: Now in directory"`pwd`
+    echo " " 
+endif 
+
+echo ""
+
+${KJB_MAKE} make_bin 
+if (${status}) then
+    echo "Command failed in `pwd`: ${KJB_MAKE} make_bin" | tee -a ${error_file}
+    set exit_status = 1
+    goto end_of_script
+endif 
+popd > /dev/null
+if (${status}) then
+    echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+    set exit_status = 1
+    goto end_of_script
+endif 
+
+echo " " 
+echo "MSD: Now in directory"`pwd`
+echo " " 
+
+###############################################################################
+
+if (! $skip_regress) then
+    echo -------------------------------------------------------
+    echo MSD: Setting up for running tests 
+    echo -------------------------------------------------------
+
+    if (-e ${regress_failure_log}) then
+        if (! -z ${regress_failure_log}) then
+            mv ${regress_failure_log} ${regress_failure_log}.${time_stamp}
+        endif
+    endif
+
+    cat /dev/null > ${regress_failure_log}
+endif
+
+###############################################################################
+
+set src_dist_file_dir = `pwd`
+
+echo ------------------------------------------------------------------
+echo MSD: Collecting files into ${src_dist_file_dir}/src_dist_files
+echo ------------------------------------------------------------------
+
+if ($collect_files) then
+    cat /dev/null > src_dist_files
+    if (${status}) then
+        echo "Command failed in `pwd`: cat /dev/null > src_dist_files" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    cat /dev/null  > src_dist_extra_files
+    if (${status}) then
+        echo "Command failed in `pwd`:  cat /dev/null  > src_dist_extra_files" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    # TODO FIXME
+    # Much of this boiler plate should probably come from svn instead. 
+         
+    echo Make/build >> ${src_dist_file_dir}/src_dist_files
+    echo Make/template_incl.h >> ${src_dist_file_dir}/src_dist_files
+    echo Make/Makefile >> ${src_dist_file_dir}/src_dist_files
+    echo Make/Makefile-defs >> ${src_dist_file_dir}/src_dist_files
+    echo Make/Makefile-library >> ${src_dist_file_dir}/src_dist_files
+    echo Make/Makefile-library.sun5 >> ${src_dist_file_dir}/src_dist_files
+    echo Make/Makefile-library.gmake >> ${src_dist_file_dir}/src_dist_files
+    echo Make/Makefile-program >> ${src_dist_file_dir}/src_dist_files
+    echo Make/Makefile-program.sun5 >> ${src_dist_file_dir}/src_dist_files
+    echo Make/Makefile-program.gmake >> ${src_dist_file_dir}/src_dist_files
+    echo Make/init_machine >> ${src_dist_file_dir}/src_dist_files
+    echo Make/init_compile >> ${src_dist_file_dir}/src_dist_files
+
+    # TODO FIXME
+    # In theory, this should not be needed, but it requires adjusting the
+    # dependency on it within init_compile.
+    #
+    echo Make/init_ua_hpc >> ${src_dist_file_dir}/src_dist_files
+
+    # Not yet exported (should we export them)?
+    #     kjb_add_makefiles
+    #     make_src_dist (this file)
+    
+    echo Make/scripts/assert_non_null_arg >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/boost_warn_filter.pl >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/build-2 >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/build_file_list >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/build_file_list_2 >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/build_incl_dot_h >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/build_include_lines >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/build_include_lines_2 >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/build_makefile_dirs >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/build_makefile_dirs_2 >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/build_makefile_libs_needed >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/build_makefile_libs_needed_2 >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/build_sub_libs_needed >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/build_test_depend >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/can_execute >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/check_executable_path>> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/clean_cache >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/clean_build >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/clean_global >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/clean_local >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/copy_if_not_empty >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/copy_if_different >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/do_ctags >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/echo_if_verbose >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/echo_unless_quiet >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/fancy_nop >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/finish_executable >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/fix_header_html_pages >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/fix_header_man_pages >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/fix_mac_dylib_location_ids >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/fix_protoize >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/get_link_target >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/get_local_include_dirs >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/is_link >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/kjb_lock >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/kjb_makedepend >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/kjb_svn_rm >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/make_src_shadow_dir >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/p_stderr >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/stream_file_names >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/stream_script_names >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/test_older_than >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/test_program >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/test_program_2 >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/touch_if_exists >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/update_bin >> ${src_dist_file_dir}/src_dist_files
+    echo Make/scripts/update_include_line_file >> ${src_dist_file_dir}/src_dist_files
+
+    foreach vim_file (Make/vim/*.ex Make/vim/*.ex7 Make/vim/*.vim Make/vim/Makefile)  
+        echo ${vim_file} >> ${src_dist_file_dir}/src_dist_files
+    end
+
+    foreach build_file (${prog_build_files}) 
+        if (-e "Make/util/${build_file}") then
+            echo Make/util/${build_file} >> ${src_dist_file_dir}/src_dist_files
+        else 
+            echo "MSD: Warning: Missing file Make/util/${build_file}."
+        endif 
+    end 
+
+    foreach build_file (Make/util/*.[ch]) 
+        echo ${build_file} >> ${src_dist_file_dir}/src_dist_files
+    end 
+
+    foreach build_file (Make/util/c2man-2.40-kobus/*) 
+        if (-l "${build_file}") continue
+        if (-d "${build_file}") continue
+
+        echo ${build_file} >> ${src_dist_file_dir}/src_dist_files
+    end 
+
+    if (-e include_after) then
+        echo include_after >> ${src_dist_file_dir}/src_dist_files
+    endif 
+endif
+
+###############################################################################
+
+#
+# First do all the lib dirs, then all the lib sub dirs and sub sub dirs. 
+pushd lib > /dev/null
+if (${status}) then
+    echo "Command failed in `pwd`: pushd lib > /dev/null" | tee -a ${error_file}
+    set exit_status = 1
+    goto end_of_script
+endif 
+
+echo ---------------------------------------------------------------
+echo MSD: Compiling KJB sub-libraries.
+echo ---------------------------------------------------------------
+
+foreach sub_lib_dir (*)
+
+    if (! -d "${sub_lib_dir}") continue
+
+    echo 
+    echo -------------------------------------------------------
+    echo MSD: Considering compiling lib/$sub_lib_dir
+    echo 
+
+    if (${skip_sub_dirs}) then
+        echo "MSD: Skipping ${sub_lib_dir} because we are skipping sub lib dirs."
+        continue
+    endif
+
+    set is_cpp_dir = `echo ${sub_lib_dir} | grep '_cpp$'`
+
+    if (${skip_cpp_dirs}) then
+        if ("${is_cpp_dir}" != "")  then
+            echo "MSD: Skipping ${sub_lib_dir} because we are skipping cpp dirs."
+            continue
+        endif
+    endif
+
+    if (! -e "${sub_lib_dir}/Makefile") then
+        echo "MSD: Skipping ${sub_lib_dir} because no Makefile."
+        continue
+    endif
+
+    if (! -e "${sub_lib_dir}/Makefile-2") then
+        echo "MSD: Skipping ${sub_lib_dir} because no Makefile-2."
+        continue
+    endif
+
+    if (! -e "${sub_lib_dir}/Makefile-include") then
+        echo "MSD: Skipping ${sub_lib_dir} because no Makefile-include."
+        continue
+    endif
+
+    if (! -e "${sub_lib_dir}/build") then
+        echo "MSD: Skipping ${sub_lib_dir} because no 'build'."
+        continue
+    endif
+
+    # Obsolete or not ready dirs are handled next.
+
+    if (("${sub_lib_dir}" == "rpc") || ("${sub_lib_dir}" == "cpp_m")) then
+        echo "MSD: Skipping ${sub_lib_dir} because it is either obsolete or not ready."
+        continue
+    endif 
+
+    if ((${gxx_major} < 3) && ("${sub_lib_dir}" == "wrap_sift")) then
+        echo "MSD: Skipping ${sub_lib_dir} because GXX version is ${gxx_version}"
+        continue
+    endif 
+
+    if (("${OS}" == "sun5") && ("${sub_lib_dir}" == "wrap_sift")) then
+        echo "MSD: Skipping ${sub_lib_dir} because we have not made it work on SUN5."
+        continue
+    endif 
+
+    if ((! ${FORCE_MAKE_SRC_DIST}) && (-e "${sub_lib_dir}/SKIP_MAKE_SRC_DIST")) then
+        echo "MSD: Skipping ${sub_lib_dir} because ${sub_lib_dir}/SKIP_MAKE_SRC_DIST exists."
+        continue
+    endif 
+
+    if ((! ${FORCE_MAKE_SRC_DIST}) && (-e "${sub_lib_dir}/SKIP_MAKE_SRC_DIST.${OS}")) then
+        echo "MSD: Skipping ${sub_lib_dir} because ${sub_lib_dir}/SKIP_MAKE_SRC_DIST.${OS} exists."
+        continue
+    endif 
+
+    pushd ${sub_lib_dir} > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd ${sub_lib_dir} > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+        # It is not clear if we want to proceed if there are only header files. Here
+        # we include header files via the flag '-h'.
+        # 
+        set have_code = `${MAKE_SCRIPT_PATH}stream_file_names -t -s -h`
+    popd > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    if ("${have_code}" == "") then
+        echo "MSD: Skipping ${sub_lib_dir} because it has no source files."
+        continue
+    endif 
+
+    # End exclusions. 
+    
+    pushd ${sub_lib_dir} > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd ${sub_lib_dir} > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    if ((! $skip_depend) && (! $skip_depend_lib) && (-e Makefile-2)) then
+        setenv PRODUCTION 1
+        ${KJB_MAKE} depend_clean 
+        ${KJB_MAKE} depend 
+
+        if (${status}) then
+            echo "Make depend failed in ${cwd}" | tee -a ${error_file}
+            set exit_status = 1
+            if (! ${keep_going}) goto end_of_script
+        endif
+    else
+        echo "MSD Skipping make depend in `pwd` due to options."
+    endif
+
+    if (! ${skip_make}) then
+        setenv PRODUCTION 0
+
+        if (${do_clean}) then
+            ${KJB_MAKE} clean 
+        endif 
+
+        ${KJB_MAKE} |& tee -a  ${compile_res} 
+
+        if (${status}) then
+            echo " " | tee -a ${error_file}
+            echo "Make failed in ${cwd}." | tee -a ${error_file}
+            echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+            echo " " | tee -a ${error_file}
+            set exit_status = 1
+            if (! ${keep_going}) goto end_of_script
+        endif
+
+        setenv PRODUCTION 1
+
+        if (${do_clean}) then
+            ${KJB_MAKE} clean 
+        endif 
+
+        ${KJB_MAKE}  
+
+        if (${status}) then
+            echo " " | tee -a ${error_file}
+            echo "Make failed in ${cwd}." | tee -a ${error_file}
+            echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+            echo " " | tee -a ${error_file}
+            set exit_status = 1
+            if (! ${keep_going}) goto end_of_script
+        endif
+
+        if ((! "${skip_no_libs}") && ( ! -e "SKIP_NO_LIBS")) then
+            setenv NO_LIBS 1
+            
+            if (("${test_no_boost}") && ( ! -e "SKIP_NO_BOOST")) then
+                 setenv NO_BOOST 1
+            else 
+                 setenv NO_BOOST 0
+            endif 
+
+            # We only do NO_LIBS with production code. Checking development code
+            # as well would be overkill. 
+            #
+            setenv PRODUCTION 1
+
+            if (${do_clean}) then
+                ${KJB_MAKE} clean 
+            endif 
+
+            ${KJB_MAKE} 
+
+            if (${status}) then
+                echo " " | tee -a ${error_file}
+                echo "Make failed in ${cwd}." | tee -a ${error_file}
+                echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+                echo " " | tee -a ${error_file}
+                set exit_status = 1
+                if (! ${keep_going}) goto end_of_script
+            endif
+
+            # Reset. 
+            setenv NO_LIBS 0
+            setenv NO_BOOST 0
+        endif
+
+        if ((! "${skip_cxx}") && ( ! -e "SKIP_CXX")) then
+            setenv KJB_PREFER_CXX 1
+
+            if (${do_clean}) then
+                ${KJB_MAKE} clean 
+            endif 
+
+            ${KJB_MAKE} |& tee -a ${compile_cxx_res} 
+
+            if (${status}) then
+                echo " " | tee -a ${error_file}
+                echo "Make failed in ${cwd}." | tee -a ${error_file}
+                echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+                echo " " | tee -a ${error_file}
+                set exit_status = 1
+                if (! ${keep_going}) goto end_of_script
+            endif
+
+            # Reset.
+            setenv KJB_PREFER_CXX 0
+            unsetenv KJB_CC
+        endif
+
+        # This seems to do nothing?
+        set sub_lib_dir = "${sub_lib_dir}"
+    else
+        echo "MSD: Skipping make in `pwd` due to options."
+    endif
+
+    if (($do_doc) && ("${is_cpp_dir}" == "") && (! -e "SKIP_C2MAN"))  then
+        ${KJB_MAKE} doc 
+
+        if (${status}) then
+            echo "Make doc failed in ${cwd}." | tee -a ${error_file}
+            set exit_status = 1
+            if (! ${keep_going}) goto end_of_script
+        endif
+    else
+        echo "MSD: Skipping doc in `pwd` due to options."
+    endif
+
+    if ($do_ctags) then
+        ${KJB_MAKE} tags 
+
+        if (${status}) then
+            echo "Make tags failed in ${cwd}." | tee -a ${error_file}
+            set exit_status = 1
+            if (! ${keep_going}) goto end_of_script
+        else if ($collect_files) then
+            # Tags is buildable. We currently save resources by not archiving.
+            #
+            ### echo lib/${sub_lib_dir}/tags >> ${src_dist_file_dir}/src_dist_files
+        endif
+    else
+        echo "MSD: Skipping ctags in `pwd` due to options."
+    endif
+
+    if ($collect_files) then
+        echo "MSD: Collecting files in `pwd` due to options."
+
+        foreach file (*.[chC] *.[chit]pp *.cxx)
+            echo lib/${sub_lib_dir}/${file} >> ${src_dist_file_dir}/src_dist_files
+        end
+
+        foreach build_file (${lib_build_files}) 
+            if (-e "${build_file}") then
+                echo lib/${sub_lib_dir}/${build_file} >> ${src_dist_file_dir}/src_dist_files
+            else
+                echo "MSD: Warning: Missing file lib/${sub_lib_dir}/${build_file}."
+            endif 
+        end 
+    endif
+
+    set sub_sub_dir_list = "" 
+
+    if (! ${skip_test_dirs}) then
+        set sub_sub_dir_list = "${sub_sub_dir_list} test"
+    endif 
+
+    foreach sub_sub_dir (${sub_sub_dir_list})
+        if ( ! -d "${sub_sub_dir}") then
+            continue
+        endif
+
+        echo 
+        echo -------------------------------------------------------
+        echo MSD: Considering sub-sub dir lib/${sub_lib_dir}/${sub_sub_dir}
+        echo 
+
+        if ((! ${FORCE_MAKE_SRC_DIST}) && (-e "${sub_sub_dir}/SKIP_MAKE_SRC_DIST")) then
+            echo "MSD: Skipping ${sub_lib_dir}/${sub_sub_dir} because ${sub_lib_dir}/${sub_sub_dir}/SKIP_MAKE_SRC_DIST exists."
+            continue
+        endif 
+
+        if ((! ${FORCE_MAKE_SRC_DIST}) && (-e "${sub_sub_dir}/SKIP_MAKE_SRC_DIST.${OS}")) then
+            echo "MSD: Skipping ${sub_lib_dir}/${sub_sub_dir} because ${sub_lib_dir}/${sub_sub_dir}/SKIP_MAKE_SRC_DIST.${OS} exists."
+            continue
+        endif 
+
+        pushd ${sub_sub_dir} > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: pushd ${sub_sub_dir} > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+            # It is not clear if we want to proceed if there are only header files. Here
+            # we include header files via the flag '-h'.
+            # 
+            set have_code = `${MAKE_SCRIPT_PATH}stream_file_names -t -s -h`
+
+            if (("${have_code}" == "1") && (-e Makefile-2)) then
+                if ((! $skip_depend) && (! $skip_depend_lib_sub) && (-e Makefile-2)) then
+                    #
+                    # We need this in case we are doing NO_LIBS also. In this case, the
+                    # values of the libraries will be wrong on the second time through the
+                    # loop.
+                    #
+                    setenv PRODUCTION 1
+                    ${KJB_MAKE} depend_clean 
+                    ${KJB_MAKE} build 
+                    ${KJB_MAKE} depend 
+
+                    if (${status}) then
+                        echo "Make depend failed in ${cwd}." | tee -a ${error_file}
+                        set exit_status = 1
+                        if (! ${keep_going}) goto end_of_script
+                    endif
+                endif
+
+                if (! ${skip_make}) then
+                    setenv PRODUCTION 0
+
+                    if (${do_clean}) then
+                        ${KJB_MAKE} clean 
+                    endif 
+
+                    ${KJB_MAKE} 
+
+                    if (${status}) then
+                        echo " " | tee -a ${error_file}
+                        echo "Make failed in ${cwd}." | tee -a ${error_file}
+                        echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+                        echo " " | tee -a ${error_file}
+                        set exit_status = 1
+                        if (! ${keep_going}) goto end_of_script
+                    endif
+
+                    setenv PRODUCTION 1
+
+                    if (${do_clean}) then
+                        ${KJB_MAKE} clean 
+                    endif 
+
+                    ${KJB_MAKE} 
+
+                    if (${status}) then
+                        echo " " | tee -a ${error_file}
+                        echo "Make failed in ${cwd}." | tee -a ${error_file}
+                        echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+                        echo " " | tee -a ${error_file}
+                        set exit_status = 1
+                        if (! ${keep_going}) goto end_of_script
+                    endif
+
+                    if ((! "${skip_prog_no_libs}") && ( ! -e "SKIP_NO_LIBS") && ( ! -e "../SKIP_NO_LIBS")) then
+                        setenv NO_LIBS 1
+
+                        if (("${test_prog_no_boost}") && ( ! -e "SKIP_NO_BOOST")) then
+                             setenv NO_BOOST 1
+                        else 
+                             setenv NO_BOOST 0
+                        endif 
+
+                        # We only do NO_LIBS with production code. Checking
+                        # development code also would be overkill. 
+                        #
+                        setenv PRODUCTION 1
+
+                        if (${do_clean}) then
+                            ${KJB_MAKE} clean 
+                        endif 
+
+                        ${KJB_MAKE} 
+
+                        if (${status}) then
+                            echo " " | tee -a ${error_file}
+                            echo "Make failed in ${cwd}." | tee -a ${error_file}
+                            echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+                            echo " " | tee -a ${error_file}
+                            set exit_status = 1
+                            if (! ${keep_going}) goto end_of_script
+                        endif
+
+                        setenv NO_LIBS 0
+                        setenv NO_BOOST 0
+                    endif 
+
+                    if ((! "${skip_cxx}") && ( ! -e "SKIP_CXX") && ( ! -e "../SKIP_CXX")) then
+                        setenv KJB_PREFER_CXX 1
+
+                        if (${do_clean}) then
+                            ${KJB_MAKE} clean 
+                        endif 
+
+                        ${KJB_MAKE} 
+
+                        if (${status}) then
+                            echo " " | tee -a ${error_file}
+                            echo "Make failed in ${cwd}." | tee -a ${error_file}
+                            echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+                            echo " " | tee -a ${error_file}
+                            set exit_status = 1
+                            if (! ${keep_going}) goto end_of_script
+                        endif
+
+                        setenv KJB_PREFER_CXX 0
+                        unsetenv KJB_CC
+                    endif
+                endif
+
+                if (${export_test_code}) then
+                    set tar_list_file = src_dist_files
+                else
+                    set tar_list_file = src_dist_extra_files
+                endif 
+
+
+                if ($do_ctags) then
+                    ${KJB_MAKE} tags 
+
+                    if (${status}) then
+                        echo "Make tags failed in ${cwd}." | tee -a ${error_file}
+                        set exit_status = 1
+                        if (! ${keep_going}) goto end_of_script
+                    else if ($collect_files) then
+                        # Tags is buildable. We currently save resources by not archiving.
+                        #
+                        ### echo lib/${sub_lib_dir}/${sub_sub_dir}/tags >> ${src_dist_file_dir}/${tar_list_file}
+                    endif
+                endif 
+
+                if (($do_archive) || (($do_export) && ($export_lib_test_dirs))) then
+                    foreach file (*.[chC] *.[chit]pp *.cxx)
+                        echo lib/${sub_lib_dir}/${sub_sub_dir}/${file} >> ${src_dist_file_dir}/${tar_list_file}
+                    end
+
+                    foreach build_file (${prog_build_files}) 
+                        if (-e "${build_file}") then
+                            echo lib/${sub_lib_dir}/${sub_sub_dir}/${build_file} >> ${src_dist_file_dir}/${tar_list_file}
+                        else if ("${build_file}" != "Makefile-include") then
+                            echo "MSD: Warning: Missing file lib/${sub_lib_dir}/${sub_sub_dir}/${build_file}."
+                        endif 
+                    end 
+                endif
+            endif
+
+            # Next level down (directories within `test` (for example).
+            
+            foreach msd_sub_sub_dir (interactive)
+                if ( ! -d "${msd_sub_sub_dir}") then
+                    continue
+                endif
+
+                # It is not clear if we want to proceed if there are only header files. Here
+                # we include header files via the flag '-h'.
+                # 
+                set have_code = `${MAKE_SCRIPT_PATH}stream_file_names -t -s -h`
+
+                if (("${have_code}" == "") || (-e Makefile-2)) then
+                    continue
+                endif
+
+                pushd ${msd_sub_sub_dir} > /dev/null
+                if (${status}) then
+                    echo "Command failed in `pwd`: pushd ${msd_sub_sub_dir} > /dev/null" | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+
+                if ((! ${skip_depend}) && (! ${skip_depend_lib_sub}) && (-e Makefile-2)) then
+                    #
+                    # We need this in case we are doing NO_LIBS also. In this case, the
+                    # values of the libraries will be wrong on the second time through the
+                    # loop.
+                    #
+                    setenv PRODUCTION 1
+                    
+                    ${KJB_MAKE} depend_clean 
+                    ${KJB_MAKE} build 
+                    ${KJB_MAKE} depend 
+
+                    if (${status}) then
+                        echo "Make depend failed in ${cwd}." | tee -a ${error_file}
+                        set exit_status = 1
+                        if (! ${keep_going}) goto end_of_script
+                    endif
+                endif
+
+                if (! ${skip_make}) then
+                    setenv PRODUCTION 0
+
+                    if (${do_clean}) then
+                        ${KJB_MAKE} clean 
+                    endif 
+
+                    ${KJB_MAKE} 
+
+                    if (${status}) then
+                        echo " " | tee -a ${error_file}
+                        echo "Make failed in ${cwd}." | tee -a ${error_file}
+                        echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+                        echo " " | tee -a ${error_file}
+                        set exit_status = 1
+                        if (! ${keep_going}) goto end_of_script
+                    endif
+
+                    setenv PRODUCTION 1
+
+                    if (${do_clean}) then
+                        ${KJB_MAKE} clean 
+                    endif 
+
+                    ${KJB_MAKE} 
+
+                    if (${status}) then
+                        echo " " | tee -a ${error_file}
+                        echo "Make failed in ${cwd}." | tee -a ${error_file}
+                        echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+                        echo " " | tee -a ${error_file}
+                        set exit_status = 1
+                        if (! ${keep_going}) goto end_of_script
+                    endif
+
+                    if ((! "${skip_prog_no_libs}") && ( ! -e "SKIP_NO_LIBS") && ( ! -e "../SKIP_NO_LIBS") && ( ! -e "../../SKIP_NO_LIBS")) then
+                        setenv NO_LIBS 1
+
+                        if (("${test_prog_no_boost}") && ( ! -e "SKIP_NO_BOOST")) then
+                             setenv NO_BOOST 1
+                        else 
+                             setenv NO_BOOST 0
+                        endif 
+
+                        # We only do NO_LIBS with production code. Checking
+                        # development code also would be overkill. 
+                        #
+                        setenv PRODUCTION 1
+
+                        if (${do_clean}) then
+                            ${KJB_MAKE} clean 
+                        endif 
+
+                        ${KJB_MAKE} 
+
+                        if (${status}) then
+                            echo " " | tee -a ${error_file}
+                            echo "Make failed in ${cwd}." | tee -a ${error_file}
+                            echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+                            echo " " | tee -a ${error_file}
+                            set exit_status = 1
+                            if (! ${keep_going}) goto end_of_script
+                        endif
+
+                        setenv NO_LIBS 0
+                        setenv NO_BOOST 0
+                    endif 
+
+                    if ((! "${skip_cxx}") && ( ! -e "SKIP_CXX") && ( ! -e "../SKIP_CXX") && ( ! -e "../../SKIP_CXX")) then
+                        setenv KJB_PREFER_CXX 1
+
+                        if (${do_clean}) then
+                            ${KJB_MAKE} clean 
+                        endif 
+
+                        ${KJB_MAKE} 
+
+                        if (${status}) then
+                            echo " " | tee -a ${error_file}
+                            echo "Make failed in ${cwd}." | tee -a ${error_file}
+                            echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+                            echo " " | tee -a ${error_file}
+                            set exit_status = 1
+                            if (! ${keep_going}) goto end_of_script
+                        endif
+
+                        setenv KJB_PREFER_CXX 0
+                        unsetenv KJB_CC
+                    endif
+                endif
+
+                if ($do_ctags) then
+                    ${KJB_MAKE} tags 
+
+                    if (${status}) then
+                        echo "Make tags failed in ${cwd}." > /dev/stderr | tee -a ${error_file}
+                        set exit_status = 1
+                        if (! ${keep_going}) goto end_of_script
+                    else if ($do_archive) then
+                        # Tags is buildable. We currently save resources by not archiving.
+                        #
+                        ### echo lib/${sub_lib_dir}/${sub_sub_dir}/${msd_sub_sub_dir}/tags >> ${src_dist_file_dir}/src_dist_extra_files
+                    endif
+                endif
+
+                if ($do_archive) then
+                    foreach file (*.[chC] *.[chit]pp *.cxx)
+                        echo lib/${sub_lib_dir}/${sub_sub_dir}/${msd_sub_sub_dir}/${file} >> ${src_dist_file_dir}/src_dist_extra_files
+                    end
+
+                    foreach build_file (${prog_build_files}) 
+                        if (-e "${build_file}") then
+                            echo lib/${sub_lib_dir}/${sub_sub_dir}/${msd_sub_sub_dir}/${build_file} >> ${src_dist_file_dir}/src_dist_files
+                        else 
+                            echo "Warning: Missing file lib/${sub_lib_dir}/${sub_sub_dir}/${msd_sub_sub_dir}/${build_file}."
+                        endif 
+                    end 
+                endif 
+
+                popd  > /dev/null
+                if (${status}) then
+                    echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+            end
+        popd  > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+    end
+
+    if ($do_clean_regress) then
+        foreach sub_sub_dir (test)
+            if ( ! -d "${sub_sub_dir}") then
+                continue
+            endif
+
+            pushd ${sub_sub_dir} > /dev/null
+            if (${status}) then
+                echo "Command failed in `pwd`: pushd ${sub_sub_dir} > /dev/null" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+
+            # It is not clear if we want to proceed if there are only header files. Here
+            # we include header files via the flag '-h'.
+            # 
+            set have_code = `${MAKE_SCRIPT_PATH}stream_file_names -t -s -h`
+
+            if (("${have_code}" == "1") && (-e Makefile-2)) then
+                ${KJB_MAKE} regress_clean  
+                if (${status}) then
+                    echo "Making regress clean failed in ${cwd}." | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+            endif 
+
+            popd  > /dev/null
+            if (${status}) then
+                echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+        end
+    endif
+
+    if (! ${skip_regress}) then
+        foreach sub_sub_dir (test)
+            if ( ! -d "${sub_sub_dir}") then
+                continue
+            endif
+
+            pushd ${sub_sub_dir} > /dev/null
+            if (${status}) then
+                echo "Command failed in `pwd`: pushd ${sub_sub_dir} > /dev/null" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+
+            # It is not clear if we want to proceed if there are only header files. Here
+            # we include header files via the flag '-h'.
+            # 
+            set have_code = `${MAKE_SCRIPT_PATH}stream_file_names -t -s -h`
+
+            if (("${have_code}" == "1") && (-e Makefile-2)) then
+                echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                echo Regression testing in $cwd. Load dir is ${LD_OBJ_DIR}.
+                echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+                ${KJB_MAKE} regress >& regress.res
+                if (${status}) then
+                    echo " "  > regress.log
+                    echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"  >> regress.log
+                    echo " "  >> regress.log
+                    echo "Regression testing failed in ${cwd}. "  >> regress.log
+                    echo "To reproduce this try:"  >> regress.log
+                    echo "    cd ${cwd}; ${KJB_MAKE} regress"  >> regress.log
+                    echo " "  >> regress.log
+                    cat regress.res >> regress.log
+
+                    set regress_failed = 1
+                    cat regress.log >> ${KJB_SRC_PATH}${regress_failure_log}
+
+                    cat regress.log
+                    /bin/rm regress.log 
+                else 
+                    cat regress.res 
+                endif 
+
+                /bin/rm regress.res
+            endif 
+
+            popd > /dev/null
+            if (${status}) then
+                echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+        end
+    endif
+
+    popd > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+end
+
+popd > /dev/null
+if (${status}) then
+    echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+    set exit_status = 1
+    goto end_of_script
+endif 
+
+###############################################################################
+
+echo -------------------------------------------------------
+echo MSD: Compiling programs
+echo -------------------------------------------------------
+
+foreach msd_dir ($prog_dirs)
+    if (! -d "${msd_dir}") then
+        if ("${msd_dir}" != "src_dist_files") then 
+            echo "MSD: Warning ${msd_dir} does not seem to be a subdir of ${cwd}" 
+        endif 
+
+        continue
+    endif 
+
+    if (! -e "${msd_dir}/Makefile-2") then
+        echo "MSD: ${msd_dir}/Makefile-2 not found."
+        echo "MSD: Skipping ${msd_dir}"
+        continue
+    endif 
+
+    set have_code = `${MAKE_SCRIPT_PATH}stream_file_names -t -s ${msd_dir}`
+
+    if ("${have_code}" == "") then
+        echo "MSD: ${msd_dir} does not have source files."
+        echo "MSD: Skipping it."
+        continue
+    endif 
+
+    echo 
+    echo -------------------------------------------------------
+    echo MSD: Compiling in $msd_dir 
+
+    set collected_prog_dirs = "${collected_prog_dirs} ${msd_dir}"
+
+    pushd $msd_dir > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd $msd_dir > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    echo "MSD: Now in directory `pwd`"
+    echo -------------------------------------------------------
+    echo 
+
+    if ((! $skip_depend) && (-e Makefile-2)) then
+        #
+        # We need this in case we are doing NO_LIBS also. In this case, the
+        # values of the libraries will be wrong on the second time through the
+        # loop.
+        #
+        setenv PRODUCTION 1
+        
+        ${KJB_MAKE} depend_clean 
+        ${KJB_MAKE} build 
+        ${KJB_MAKE} depend 
+
+        if (${status}) then
+            echo "Make depend failed in ${cwd}." | tee -a ${error_file}
+            set exit_status = 1
+            if (! ${keep_going}) goto end_of_script
+        endif
+    endif
+
+    if (! ${skip_make}) then
+        setenv PRODUCTION 0
+
+        if (${do_clean}) then
+            ${KJB_MAKE} clean 
+        endif 
+
+        ${KJB_MAKE} 
+
+        if (${status}) then
+            echo " " | tee -a ${error_file}
+            echo "Make failed in ${cwd}." | tee -a ${error_file}
+            echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+            echo " " | tee -a ${error_file}
+            set exit_status = 1
+            if (! ${keep_going}) goto end_of_script
+        endif
+
+        setenv PRODUCTION 1
+
+        if (${do_clean}) then
+            ${KJB_MAKE} clean 
+        endif 
+
+        ${KJB_MAKE} 
+
+        if (${status}) then
+            echo " " | tee -a ${error_file}
+            echo "Make failed in ${cwd}." | tee -a ${error_file}
+            echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+            echo " " | tee -a ${error_file}
+            set exit_status = 1
+            if (! ${keep_going}) goto end_of_script
+        endif
+
+        if ((! "${skip_prog_no_libs}") && ( ! -e "SKIP_NO_LIBS")) then
+            #
+            # There is no requirement that a generic program needs to be able to
+            # do without libraries if they are clearly critical. We first check
+            # that the program at hand is one that we want to check for this.
+            #
+            set found = 0
+
+            foreach no_libs_dir (${no_libs_prog_dirs}) 
+                if ("${no_libs_dir}" == "${msd_dir}") then 
+                    set found = 1
+                    break
+                endif
+            end
+
+            if ($found) then
+                setenv NO_LIBS 1
+
+                if (("${test_prog_no_boost}") && ( ! -e "SKIP_NO_BOOST")) then
+                     setenv NO_BOOST 1
+                else 
+                     setenv NO_BOOST 0
+                endif 
+
+                # We only do NO_LIBS with production code. Checking development
+                # code also would be overkill. 
+                #
+                setenv PRODUCTION 1
+
+                if (${do_clean}) then
+                    ${KJB_MAKE} clean 
+                endif 
+
+                ${KJB_MAKE} 
+
+                if (${status}) then
+                    echo " " | tee -a ${error_file}
+                    echo "Make failed in ${cwd}." | tee -a ${error_file}
+                    echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+                    echo " " | tee -a ${error_file}
+                    set exit_status = 1
+                    if (! ${keep_going}) goto end_of_script
+                endif
+
+                setenv NO_LIBS 0
+                setenv NO_BOOST 0
+            endif 
+        endif 
+
+        if ((! "${skip_cxx}") && ( ! -e "SKIP_CXX")) then
+            setenv KJB_PREFER_CXX 1
+
+            if (${do_clean}) then
+                ${KJB_MAKE} clean 
+            endif 
+
+            ${KJB_MAKE} 
+
+            if (${status}) then
+                echo " " | tee -a ${error_file}
+                echo "Make failed in ${cwd}." | tee -a ${error_file}
+                echo "    [ PRODUCTION=${PRODUCTION}; KJB_PREFER_CXX=${KJB_PREFER_CXX}; NO_LIBS=${NO_LIBS}; NO_BOOST=${NO_BOOST} ]" | tee -a ${error_file}
+                echo " " | tee -a ${error_file}
+                set exit_status = 1
+                if (! ${keep_going}) goto end_of_script
+            endif
+
+            setenv KJB_PREFER_CXX 0
+            unsetenv KJB_CC
+        endif
+    endif
+
+    if ($do_ctags) then
+        ${KJB_MAKE} tags 
+
+        if (${status}) then
+            echo "Make tags in $msd_dir failed." | tee -a ${error_file}
+            echo " " | tee -a ${error_file}
+            set exit_status = 1
+            if (! ${keep_going}) goto end_of_script
+        else if ($collect_files) then
+            # Tags is buildable. We currently save resources by not archiving.
+            #
+            ### echo ${msd_dir}/tags >> ${src_dist_file_dir}/src_dist_files
+        endif
+    endif
+
+    if ($collect_files) then
+        # Possibly want to have an option to add to this list.
+        set aux_items_to_collect = "README README.txt Doxyfile doc"
+
+        foreach aux_item (${aux_items_to_collect})
+            if (-e "${aux_item}") then
+                echo ${msd_dir}/${aux_item} >> ${src_dist_file_dir}/src_dist_files
+            endif
+        end
+    endif 
+
+    if (-e "${msd_dir}.help") then
+        if ($do_doc) then
+             ${KJB_MKDIR}  ${WORK_DIR}/doc/man/cat1
+             help_to_man ${msd_dir}.help > ${WORK_DIR}/doc/man/cat1/${msd_dir}.1
+
+             if (${status}) then
+                echo "Help_to_man failed in ${cwd}." | tee -a ${error_file}
+                set exit_status = 1
+                if (! ${keep_going}) goto end_of_script
+             endif
+        endif
+
+        if ($collect_files) then
+            echo ${msd_dir}/${msd_dir}.help >> ${src_dist_file_dir}/src_dist_files
+        endif
+    else if (-e "${msd_dir}.w") then
+        if ($do_doc) then
+            ${KJB_MKDIR}  ${WORK_DIR}/doc/man/cat1
+            writeup_to_man ${msd_dir}.w > ${WORK_DIR}/doc/man/cat1/${msd_dir}.1
+
+            if (${status}) then
+                echo "Writeup_to_man failed in ${cwd}." | tee -a ${error_file}
+                set exit_status = 1
+                if (! ${keep_going}) goto end_of_script
+            endif
+        endif
+
+        if ($collect_files) then
+            echo ${msd_dir}/${msd_dir}.w >> ${src_dist_file_dir}/src_dist_files
+        endif
+    else
+        # It is not clear if we want to proceed if there are only header files. Here
+        # we include header files via the flag '-h'.
+        # 
+        set have_code = `${MAKE_SCRIPT_PATH}stream_file_names -t -s -h`
+
+        if ("${have_code}" == "1") then
+            foreach file (*.h *.c *.C *.cpp *.cxx)
+                set base_name = `echo $file | sed 's/.[cC]p*x*$//'`
+
+                if (-e "${base_name}.w") then
+                    if ($do_doc) then
+                        ${KJB_MKDIR}  ${WORK_DIR}/doc/man/cat1
+                        writeup_to_man ${base_name}.w > ${WORK_DIR}/doc/man/cat1/${base_name}.1
+
+                        if (${status}) then
+                            echo "Writeup_to_man failed in ${cwd}." | tee -a ${error_file}
+                            set exit_status = 1
+                            if (! ${keep_going}) goto end_of_script
+                        endif
+                    endif 
+
+                    if ($collect_files) then
+                        echo ${msd_dir}/${base_name}.w >> ${src_dist_file_dir}/src_dist_files
+                    endif
+                endif
+            end
+        endif
+    endif
+
+    popd > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+end
+
+###############################################################################
+
+if ("${compile_res}" != "") then
+    echo " "
+    echo "MSD:           Summary of warnings."
+    echo " "
+    #
+    # TODO. This is too gcc specific.
+    #
+    grep "warning:" ${compile_res} | grep -v "^make" > ${compile_warn_res}
+
+    cat ${compile_warn_res}
+
+    echo ""
+    echo =======================================================
+    echo ""
+endif 
+
+if ("${compile_cxx_res}" != "") then
+    echo " "
+    echo "MSD:           Summary of cxx warnings."
+    echo " "
+    #
+    # TODO. This is too gcc specific.
+    #
+    grep "warning:" ${compile_cxx_res} | grep -v "^make" > ${compile_cxx_warn_res}
+
+    cat ${compile_cxx_warn_res}
+
+    echo ""
+    echo =======================================================
+    echo ""
+endif 
+
+###############################################################################
+
+if (! ${skip_regress}) then
+    echo ""
+    echo ""
+    echo =======================================================
+    echo ""
+    echo MSD: Reporting regression test results. 
+    echo ""
+
+    if ( ! -z ${regress_failure_log}) then
+        echo " " | tee -a ${error_file}
+        echo "Regression testing failed in at least one library test sub-directory" | tee -a ${error_file}
+        echo " " | tee -a ${error_file}
+        echo "Details follow (copied from ${cwd}/${regress_failure_log}" | tee -a ${error_file}
+        echo " " | tee -a ${error_file}
+        echo "----------" | tee -a ${error_file}
+        echo "" | tee -a ${error_file}
+        cat ${regress_failure_log} | tee -a ${error_file}
+        echo "" | tee -a ${error_file}
+        echo "----------" | tee -a ${error_file}
+        echo "" | tee -a ${error_file}
+        set exit_status = 1
+        if (! ${keep_going}) goto end_of_script
+    else 
+        echo " "
+        echo "MSD: No failed tests."
+        echo " "
+        echo =======================================================
+    endif 
+endif
+
+###############################################################################
+
+if ($do_doc) then
+    echo 
+    echo -------------------------------------------------------
+    echo "MSD: (doc) KJB"
+    echo -------------------------------------------------------
+    echo 
+
+    pushd KJB > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd KJB > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    ${KJB_MAKE} doc 
+
+    if (${status}) then
+        echo "Make doc failed in ${cwd}." | tee -a ${error_file}
+        set exit_status = 1
+        if (! ${keep_going}) goto end_of_script
+    endif
+
+    popd > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+endif
+
+###############################################################################
+
+if ($do_lib) then
+    echo -------------------------------------------------------
+    echo MSD: Building the exported version of the kjb library
+    echo -------------------------------------------------------
+
+    pushd KJB > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd KJB > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    setenv PRODUCTION 1
+
+    ${KJB_MAKE} 
+    if (${status}) then
+        echo "Command failed in `pwd`: ${KJB_MAKE}" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    if ($do_doc) then
+        ${KJB_MAKE} doc 
+
+        if (${status}) then
+            echo "Make doc failed in ${cwd}." | tee -a ${error_file}
+            set exit_status = 1
+            if (! ${keep_going}) goto end_of_script
+        endif
+    endif
+
+    ${KJB_MKDIR} ${HOME}/include
+    set include_path = "${HOME}/include"
+    set include_paths = "${include_path}"
+
+    pushd ${include_path} > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd ${include_path} > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    set real_include_path = `pwd`
+    popd > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    set include_path_2 = "${WORK_DIR}include"
+
+    if (-d ${include_path_2}) then
+        pushd ${include_path_2} > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: pushd ${include_path_2} > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        set real_include_path_2 = `pwd`
+
+        popd > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        if ("${real_include_path}" != "${real_include_path_2}") then
+            set include_paths = "${include_path} ${include_path_2}"
+        endif
+    endif
+
+    set sub_libs_needed = `cat Include_lines/sub_libs_needed`
+
+    foreach include_path (${include_paths})
+        set backup_dir = ${include_path}/kjb/backups/$time_stamp
+        ${KJB_MKDIR} ${backup_dir}
+
+        rsync -au --backup --backup-dir=$backup_dir kjb.h ${include_path}/kjb
+
+        foreach dir (${sub_libs_needed})
+            if (! -d "${KJB_LIB_PATH}${dir}") then 
+                echo "Needed sub-lib ${dir} does not exist in ${KJB_LIB_PATH}." | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script 
+            endif 
+
+            echo -----------------------------------------------------------------
+            echo MSD: Updating includes for ${KJB_LIB_PATH}$dir in ${include_path}
+            echo -----------------------------------------------------------------
+
+            ${KJB_MKDIR}  ${include_path}/kjb/${dir}
+            set backup_dir = ${include_path}/kjb/backups/${time_stamp}/${dir}
+            rsync -au --backup --backup-dir=${backup_dir} ${KJB_LIB_PATH}${dir}/*.h ${include_path}/kjb/${dir}
+        end
+
+        pushd ${include_path} > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: pushd ${include_path} > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        # ln -s -f ${include_path}/kjb/* .
+        ln -s -f kjb/* .
+        if (${status}) then
+            echo "Command failed in `pwd`: ln -s -f kjb/* ." | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        popd > /dev/null 
+        if (${status}) then
+            echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+    end
+    
+    ${KJB_MKDIR} ${HOME}/load/${MACHINE}
+    set load_path = "${HOME}/load/${MACHINE}"
+    set load_paths = "${load_path}"
+
+    pushd ${load_path} > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd ${load_path} > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    set real_load_path = `pwd`
+
+    popd > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    if (-d "${WORK_DIR}load") then
+        set load_path_2 = "${WORK_DIR}load/${MACHINE}"
+
+        pushd ${load_path_2} > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`:  pushd ${load_path_2} > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        set real_load_path_2 = `pwd`
+
+        popd > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        if ("${real_load_path}" != "${real_load_path_2}") then
+            set load_paths = "${load_path} ${load_path_2}"
+        endif
+    endif
+
+    foreach load_path ($load_paths)
+        echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        echo MSD: Updating libKJB.a in ${load_path}
+        echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+        ${MAKE_SCRIPT_PATH}update_bin ${LD_OBJ_DIR}libKJB.a  ${load_path}/libKJB.a
+    end
+
+    popd > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+endif 
+
+###############################################################################
+
+#
+# Support for do_archive and do_export. 
+#
+#
+if ($collect_files) then
+    foreach dir ($collected_prog_dirs)
+        if (! -d "${dir}") then 
+            echo "MSD: Warning: ${dir} does not seem to be a sub-dir of ${cwd}" 
+            continue
+        endif 
+
+        pushd $dir > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: pushd $dir > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        foreach file (*.[chC] *.[chit]pp *.[chit]xx)
+            echo ${dir}/${file} >> ${src_dist_file_dir}/src_dist_files
+        end
+
+        foreach build_file (${prog_build_files}) 
+            if (-e "${build_file}") then
+                echo ${dir}/${build_file} >> ${src_dist_file_dir}/src_dist_files
+            else if ("${build_file}" != "Makefile-include") then
+                echo "MSD: Warning: Missing file ${dir}/${build_file}."
+            endif 
+        end 
+
+        if (-d lib) then
+            pushd lib > /dev/null
+            if (${status}) then
+                echo "Command failed in `pwd`: pushd lib > /dev/null" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+
+            set sub_dirs = `/bin/ls -1`
+
+            foreach sub_dir (${sub_dirs}) 
+                if (-l ${sub_dir}) then
+                    echo "MSD: Ignoring link ${dir}/lib/${sub_dir}"
+                else if (-d ${sub_dir}) then
+                    pushd ${sub_dir} > /dev/null
+                    if (${status}) then
+                        echo "Command failed in `pwd`: pushd ${sub_dir} > /dev/null" | tee -a ${error_file}
+                        set exit_status = 1
+                        goto end_of_script
+                    endif 
+
+                    if (-e Makefile-2) then
+                        # It is not clear if we want to proceed if there are only header files. Here
+                        # we include header files via the flag '-h'.
+                        # 
+                        set have_code = `${MAKE_SCRIPT_PATH}stream_file_names -t -s -h`
+                        
+                        if ("${have_code}" == "1") then
+                            foreach file (*.[chC] *.[chit]pp *.[chit]xx README* *.txt)
+                                echo ${dir}/lib/${sub_dir}/${file} >> ${src_dist_file_dir}/src_dist_files
+                            end
+
+                            foreach build_file (${lib_build_files}) 
+                                if (-e "${build_file}") then
+                                    echo ${dir}/lib/${sub_dir}/${build_file} >> ${src_dist_file_dir}/src_dist_files
+                                else
+                                    echo "MSD: Warning: Missing file ${dir}/lib/${sub_dir}/${build_file}."
+                                endif 
+                            end 
+                        endif 
+                    endif 
+
+                    popd > /dev/null
+                    if (${status}) then
+                        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+                        set exit_status = 1
+                        goto end_of_script
+                    endif 
+                endif
+            end
+
+            popd > /dev/null
+            if (${status}) then
+                echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+        endif 
+
+        popd > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+    end
+endif
+
+###############################################################################
+
+if ($do_archive) then
+    echo -------------------------------------------------------
+    echo MSD: Archiving
+    echo -------------------------------------------------------
+
+    ${KJB_MKDIR} ${TMPDIR}/${USER}/src
+    /bin/rm -fr ${TMPDIR}/${USER}/src/*  >& /dev/null
+
+#     echo 
+#     echo ==========================================================
+#     echo ==========================================================
+#     echo 
+# 
+#     pwd
+#     
+#     echo 
+# 
+#     cat ${src_dist_file_dir}/src_dist_extra_files >> ${src_dist_file_dir}/src_dist_files
+# 
+#     cat ${src_dist_file_dir}/src_dist_files
+#     
+#     echo 
+#     echo ==========================================================
+#     echo ==========================================================
+#     echo 
+    
+    tar cf ${TMPDIR}/${USER}/src/src.${time_stamp}.tar ${file_list_flag} ${src_dist_file_dir}/src_dist_files
+    if (${status}) then
+        echo "Command failed in `pwd`: tar cf ${TMPDIR}/${USER}/src/src.${time_stamp}.tar ${file_list_flag} ${src_dist_file_dir}/src_dist_files" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    foreach archive_dir (${KJB_SRC_PATH}/DIST/archive)
+        ${KJB_MKDIR} ${archive_dir}
+        if (${status}) then
+            echo "Command failed in `pwd`: ${KJB_MKDIR} ${archive_dir}" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        pushd $archive_dir > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: pushd $archive_dir > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        /bin/rm -rf src.${time_stamp}
+        if (${status}) then
+            echo "Command failed in `pwd`: /bin/rm -rf src.${time_stamp}" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        ${KJB_MKDIR} src.${time_stamp}
+        if (${status}) then
+            echo "Command failed in `pwd`: ${KJB_MKDIR} src.${time_stamp}" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        pushd src.${time_stamp} > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: pushd src.${time_stamp} > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        tar xf ${TMPDIR}/${USER}/src/src.${time_stamp}.tar
+        if (${status}) then
+            echo "Command failed in `pwd`: tar xf ${TMPDIR}/${USER}/src/src.${time_stamp}.tar" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        chmod -R a+r *
+        if (${status}) then
+            echo "Command failed in `pwd`: chmod -R a+r *" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        popd  > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        /bin/rm -f latest
+        if (${status}) then
+            echo "Command failed in `pwd`: /bin/rm -f latest" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        ln -s src.${time_stamp} latest
+        if (${status}) then
+            echo "Command failed in `pwd`: ln -s src.${time_stamp} latest" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        pushd latest > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: pushd latest > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+        
+        foreach dir (${collected_prog_dirs})
+            if (! -d "${dir}") then
+                 echo "MSD: Warning: ${dir} does not seem to be a sub-dir of ${cwd}" 
+                 continue
+            endif  
+        end 
+
+        popd > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        foreach dir ($collected_prog_dirs)
+            echo "MSD: processing collected program dir: $dir" 
+
+            ${KJB_MKDIR} $dir
+
+            if (-e latest/${dir}/version.h) then
+                set major = `grep "#define MAJOR_VERSION" latest/${dir}/version.h | sed 's/.*#define MAJOR_VERSION *//'`
+                set minor = `grep "#define MINOR_VERSION" latest/${dir}/version.h | sed 's/.*#define MINOR_VERSION *//'`
+                set patch = `grep "#define PATCH_LEVEL" latest/${dir}/version.h | sed 's/.*#define PATCH_LEVEL *//'`
+                set dev_stage = `grep "#define DEVELOPMENT_STAGE" latest/${dir}/version.h | sed 's/.*#define DEVELOPMENT_STAGE *\"\(.*\)\"/\1/'`
+            else
+                set major = ""
+                set minor = ""
+                set patch = ""
+                set dev_stage = ""
+            endif 
+
+            if (("${major}" != "") && ("${minor}" != "") && ("${patch}" != "")) then
+                set version = "$major.$minor.${patch}${dev_stage}"
+                set prog_name = `echo ${dir} | sed 's#.*/\([^/]*$\)*#\1#'`
+
+                /bin/rm -f $dir/${prog_name}-$version
+                ln -s ../src.${time_stamp}/${dir} ${dir}/${prog_name}-${version}
+                /bin/rm -f ${dir}/latest
+                ln -s $dir}-${version} ${dir}/latest
+                # set suffix = "-$version"
+            else
+                /bin/rm -f $dir/latest
+                ln -s $cwd/src.${time_stamp}/$dir $dir/latest
+                # set suffix = ""
+            endif
+        end
+
+        popd > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+    end
+endif
+
+###############################################################################
+
+# If we delete we_got_here, we can delete the next two lines also. 
+# we_got_here: 
+# set src_dist_file_dir = $KJB_SRC_PATH
+# set src_dist_files = ${src_dist_file_dir}src_dist_files
+
+if ($do_export) then
+    echo -------------------------------------------------------
+    echo MSD: Building exported versions of programs. 
+    echo MSD:     We are exporting: ${export_prog_dirs}
+    echo -------------------------------------------------------
+
+    if (${?KJB_ENVIRONMENT}) then
+        echo "Unsetting KJB_ENVIRONMENT" 
+        unsetenv KJB_ENVIRONMENT
+    endif 
+
+    set export_parent_dir = "${KJB_SRC_PATH}/DIST/export"
+    set export_dir = "${export_parent_dir}/${time_stamp}"
+    ${KJB_MKDIR} ${export_dir}
+    if (${status}) then
+        echo "Command failed in `pwd`: ${KJB_MKDIR} ${export_dir}" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    pushd ${export_parent_dir} > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd ${export_parent_dir} > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    /bin/rm -f latest
+    if (${status}) then
+        echo "Command failed in `pwd`: /bin/rm -f latest" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    /bin/ln -s -f ${time_stamp} latest 
+    if (${status}) then
+        echo "Command failed in `pwd`: /bin/ln -s -f ${time_stamp} latest" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    popd > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    set export_temp_dir = "${TMPDIR}/${USER}/export"
+    if (-e "${export_temp_dir}") then 
+        /bin/rm -fr ${export_temp_dir}  >& /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: /bin/rm -fr ${export_temp_dir}  >& /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+    endif 
+
+    ${KJB_MKDIR} ${export_temp_dir}
+    if (${status}) then
+        echo "Command failed in `pwd`: ${KJB_MKDIR} ${export_temp_dir}" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    if (-e "${TMPDIR}/${USER}/src") then 
+        /bin/rm -fr ${TMPDIR}/${USER}/src  >& /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: /bin/rm -fr ${TMPDIR}/${USER}/src  >& /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+    endif 
+
+    ${KJB_MKDIR} ${TMPDIR}/${USER}/src
+    if (${status}) then
+        echo "Command failed in `pwd`:  ${KJB_MKDIR} ${TMPDIR}/${USER}/src" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    #
+    # Make a mirror of the archived parts of the src directory in /tmp. The
+    # exported parts are assumed to be a subset of the archived parts. 
+    #
+    tar cf ${TMPDIR}/${USER}/src/src.${time_stamp}.tar ${file_list_flag} ${src_dist_file_dir}/src_dist_files 
+    if (${status}) then
+        echo "Command failed in `pwd`: tar cf ${TMPDIR}/${USER}/src/src.${time_stamp}.tar ${file_list_flag} ${src_dist_file_dir}/src_dist_files" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    # /bin/rm -f ${TMPDIR}/${USER}/src/src.${time_stamp}.tar
+
+    pushd ${TMPDIR}/${USER}/ > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd ${TMPDIR}/${USER}/ > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    pushd src > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd src > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    tar xf src.${time_stamp}.tar  
+    if (${status}) then
+        echo "Command failed in `pwd`: tar xf src.${time_stamp}.tar" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    echo "MSD: Now in `pwd`"
+    echo "MSD: Editing the build script for export."
+    ${VIM_FOR_MAKE} -e -c :%s/kjb_setenv NOT_EXPORTED_SOURCE/kjb_setenv EXPORTED_SOURCE/ -c :wq Make/init_compile < /dev/null >& /dev/null
+    echo " "
+    
+    Make/scripts/clean_cache all 
+    if (${status}) then
+        echo "Command failed in `pwd`: Make/scripts/clean_cache all" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+ 
+    # Get rid of program dirs that are not exported in order to speed up the
+    # src cleaning stage which is expensive. 
+    #
+    foreach prog_dir (${prog_dirs})
+        set found = 0
+    
+        foreach test_dir (${export_prog_dirs})
+            if ("${test_dir}" == "${prog_dir}") then
+                set found = 1
+                break
+            endif 
+        end
+
+        if (! $found) then
+           echo "MSD: Removing ${prog_dir} from ${cwd} as it is not exported."
+           /bin/rm -R -f ${prog_dir}
+        else 
+            pushd ${prog_dir} > /dev/null
+            if (${status}) then
+                echo "Command failed in `pwd`: pushd ${prog_dir} > /dev/null" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+
+            echo " "
+            echo "MSD: Building Include_lines/sub_libs_needed for ${prog_dir} in ${cwd}" 
+            echo "" 
+
+            ${KJB_MAKE} depend_clean  
+            if (${status}) then
+                echo "Command failed in `pwd`: ${KJB_MAKE} depend_clean" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+
+            ${KJB_MAKE} Include_lines/sub_libs_needed 
+            if (${status}) then
+                echo "Command failed in `pwd`: ${KJB_MAKE} Include_lines/sub_libs_needed" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+
+            popd > /dev/null
+            if (${status}) then
+                echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+        endif 
+    end
+
+    #
+    # Get rid of libs that are not used by any exported programs. We do this to
+    # speed up the src cleaning stage which is expensive. The libs will be
+    # further trimmed on an individual basis later.
+    #
+    set all_sub_libs_needed = ""
+
+    foreach export_prog_dir (${export_prog_dirs})
+        set export_prog_dir = `echo ${export_prog_dir} | sed 's#/$##'`
+
+        pushd ${export_prog_dir} > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: pushd ${export_prog_dir} > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        echo "MSD: Now in `pwd`"
+
+        if (! -e Include_lines/sub_libs_needed) then
+            echo
+            echo "MSD: Missing  Include_lines/sub_libs_needed in `pwd`"
+            echo "MSD: Possibly due to options restricting them getting built earlier."
+            echo "MSD: Doing a make depend."
+            echo
+
+            ${KJB_MAKE} depend  
+            if (${status}) then
+                echo "Command failed in `pwd`: ${KJB_MAKE} depend" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+        endif 
+
+        if (! -e Include_lines/sub_libs_needed) then
+            echo "No Include_lines/sub_libs_needed file in ${cwd}" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+        
+        set sub_libs_needed = `cat Include_lines/sub_libs_needed`
+        set all_sub_libs_needed = "${all_sub_libs_needed} ${sub_libs_needed}"
+        popd  > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+    end 
+
+    pushd lib > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd lib > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    if (${export_lib_test_dirs}) then
+        foreach lib_dir (*)
+            set test_dir = "${lib_dir}/test"
+
+            if (-d "${test_dir}") then
+                # It is possible that a test directory has code at the top level
+                # because, for example, we might be exporting
+                # l/test/interactive. So, while a missing sub_libs_needed would
+                # usually be a bug, we assume that we are not interested in it. 
+                #
+                if (-e ${lib_dir}/test/Include_lines/sub_libs_needed) then
+                    set sub_libs_needed = `cat ${lib_dir}/test/Include_lines/sub_libs_needed`
+                    set all_sub_libs_needed = "${all_sub_libs_needed} ${sub_libs_needed}"
+                endif 
+            endif 
+        end
+    endif 
+
+    echo " "
+    echo "MSD: Sub-libs needed for export : ${all_sub_libs_needed}" 
+    echo " " 
+
+    foreach lib_dir (*)
+        if (-d "${lib_dir}") then
+            set found = 0
+
+            foreach test_lib_dir (${all_sub_libs_needed})
+                if ("${test_lib_dir}" == "${lib_dir}") then
+                    set found = 1
+                    break
+                endif 
+            end
+
+            if (! $found) then
+               echo "MSD: Removing ${lib_dir} from ${cwd} as it is not needed by an exported program."
+               /bin/rm -R -f ${lib_dir}
+            endif 
+        endif 
+    end 
+
+    popd  > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+    
+    echo "MSD: We should be in ${TMPDIR}/kobus/src. Check against `pwd`"
+    echo "MSD: The files here are:"
+    /bin/ls
+    echo " "
+
+    if ( ! ${skip_clean_src} ) then
+        foreach KJB_SRC_PATH (*) 
+
+            if ((! -d "${KJB_SRC_PATH}") || ("${KJB_SRC_PATH}" == "include_after")) then
+                continue
+            endif 
+
+            set noglob
+
+            # This find command could probably be simpler. 
+            find ${KJB_SRC_PATH} \( \( -wholename 'Make' -o -wholename '*/Include_lines' \) -prune -false \) -o \( -name *.[chC] -o -name *.cpp -o -name *.cxx \) -exec ${MAKE_SCRIPT_PATH}clean_src {} \;
+            unset noglob
+        end 
+    endif 
+
+    ${KJB_MKDIR} lib
+    if (${status}) then
+        echo "Command failed in `pwd`: ${KJB_MKDIR} lib" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    ${KJB_TOUCH} lib/fake_out_glob
+    if (${status}) then
+        echo "Command failed in `pwd`: ${KJB_TOUCH} lib/fake_out_glob" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    pushd lib > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd lib > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    foreach lib_dir (*)
+        if (-d "${lib_dir}") then
+            pushd ${lib_dir} > /dev/null
+            if (${status}) then
+                echo "Command failed in `pwd`: pushd ${lib_dir} > /dev/null" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+
+            # Because of the cleaning for export, we need to rebuild the
+            # makefiles.
+            #
+            if (! ${skip_export_depend}) then 
+                ${KJB_MAKE} depend_clean 
+                if (${status}) then
+                    echo "Command failed in `pwd`: ${KJB_MAKE} depend_clean" | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+            endif 
+
+            if (! ${skip_export_make}) then 
+                ${KJB_MAKE} 
+                if (${status}) then
+                    echo "Command failed in `pwd`: ${KJB_MAKE}" | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+
+                # Ignore status on cleaning. 
+                ${KJB_MAKE} clean 
+                /bin/rm -rf ${MACHINE}
+                /bin/rm -rf make_doc 
+
+                ${KJB_MAKE} depend 
+                if (${status}) then
+                    echo "Command failed in `pwd`: ${KJB_MAKE} depend" | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+            endif 
+
+            # It is possible that a test directory has code at the top level
+            # because, for example, we might be exporting l/test/interactive.
+            # So, while a missing sub_libs_needed would usually be a bug, we
+            # assume that it is missing for legit reasons. 
+            #
+            if (-e test/Makefile) then
+                pushd test > /dev/null
+                if (${status}) then
+                    echo "Command failed in `pwd`: pushd test > /dev/null" | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+
+                if (! ${skip_export_depend}) then 
+                    ${KJB_MAKE} depend_clean 
+                    if (${status}) then
+                        echo "Command failed in `pwd`: ${KJB_MAKE} depend_clean" | tee -a ${error_file}
+                        set exit_status = 1
+                        goto end_of_script
+                    endif 
+                endif 
+
+                if (! ${skip_export_make}) then 
+                    ${KJB_MAKE} 
+                    if (${status}) then
+                        echo "Command failed in `pwd`: ${KJB_MAKE}" | tee -a ${error_file}
+                        set exit_status = 1
+                        goto end_of_script
+                    endif 
+
+                    # Ignore status on cleaning. 
+                    ${KJB_MAKE} clean 
+                    /bin/rm -rf ${MACHINE}
+
+                    ${KJB_MAKE} depend 
+                    if (${status}) then
+                        echo "Command failed in `pwd`: ${KJB_MAKE} depend" | tee -a ${error_file}
+                        set exit_status = 1
+                        goto end_of_script
+                    endif 
+                endif 
+
+                popd  > /dev/null
+                if (${status}) then
+                    echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+            endif 
+
+            popd  > /dev/null
+            if (${status}) then
+                echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+        endif 
+    end
+
+    popd  > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    /bin/rm lib/fake_out_glob
+    if (${status}) then
+        echo "Command failed in `pwd`: /bin/rm lib/fake_out_glob" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    ${KJB_MKDIR} include_after
+    if (${status}) then
+        echo "Command failed in `pwd`: ${KJB_MKDIR} include_after" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    # Because of the cleaning for export, we need to rebuild the
+    # makefiles. We may be able to further remove some sub-libs which is
+    # relevant if we want to export the whole works. 
+    #
+    set all_sub_libs_needed = ""
+    foreach export_prog_dir (${export_prog_dirs})
+        set export_prog_dir = `echo ${export_prog_dir} | sed 's#/$##'`
+        pushd ${export_prog_dir} > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: pushd ${export_prog_dir} > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        echo "MSD: Now in `pwd`"
+
+        # Because of the cleaning for export, we need to rebuild the makefiles.
+        #
+        if (! ${skip_export_depend}) then 
+            ${KJB_MAKE} depend_clean  
+            if (${status}) then
+                echo "Command failed in `pwd`: ${KJB_MAKE} depend_clean" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+        endif 
+
+        if (! ${skip_export_make}) then 
+            ${KJB_MAKE}   
+            if (${status}) then
+                echo "Command failed in `pwd`: ${KJB_MAKE}" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+        endif 
+
+        ${KJB_MAKE} clean 
+        if (${status}) then
+            echo "Command failed in `pwd`: ${KJB_MAKE} clean" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        if ("${MACHINE}" != "") then
+            if (-d ${MACHINE}) then
+                /bin/rm -f -R ${MACHINE}
+                if (${status}) then
+                    echo "Command failed in `pwd`: /bin/rm -f -R ${MACHINE}" | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+            endif 
+        endif 
+
+        if (-d lib) then
+            foreach lib_dir (lib/*)
+                if ("${MACHINE}" != "") then
+                    if (-d ${lib_dir}/${MACHINE}) then
+                        /bin/rm -f -R ${lib_dir}/${MACHINE}
+                        if (${status}) then
+                            echo "Command failed in `pwd`: /bin/rm -f -R ${lib_dir}/${MACHINE}" | tee -a ${error_file}
+                            set exit_status = 1
+                            goto end_of_script
+                        endif 
+                    endif 
+                endif 
+            end
+        endif 
+
+        #
+        # One more make of "depend" to update lagards.
+        #
+        if (! ${skip_export_depend}) then 
+            ${KJB_MAKE} depend  
+            if (${status}) then
+                echo "Command failed in `pwd`: ${KJB_MAKE} depend" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+        endif 
+
+        if (! -e Include_lines/sub_libs_needed) then
+            echo
+            echo "MSD: Missing  Include_lines/sub_libs_needed in `pwd`"
+            echo "MSD: Possibly due to options restricting them getting built earlier."
+            echo "MSD: Doing a make depend."
+            echo
+
+            ${KJB_MAKE} depend  
+            if (${status}) then
+                echo "Command failed in `pwd`: ${KJB_MAKE} depend" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+        endif 
+
+        if (! -e Include_lines/sub_libs_needed) then
+            echo "No Include_lines/sub_libs_needed file in ${cwd}" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+        
+        set sub_libs_needed = `cat Include_lines/sub_libs_needed`
+        set all_sub_libs_needed = "${all_sub_libs_needed} ${sub_libs_needed}"
+
+        popd  > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+    end 
+
+    #
+    # Try to remove some more sub libs.  Some might have become superfluous as
+    # the result of clean_src, followed by a rebuild of the makefiles. 
+    #
+    pushd lib > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd lib > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    foreach lib_dir (*)
+        if (-d "${lib_dir}") then
+            set found = 0
+
+            foreach test_lib_dir (${all_sub_libs_needed})
+                if ("${test_lib_dir}" == "${lib_dir}") then
+                    set found = 1
+                    break
+                endif 
+            end
+
+            if (! $found) then
+               echo "MSD: Removing ${lib_dir} from ${cwd} is it is not needed by an exported program."
+               /bin/rm -R -f ${lib_dir}
+            endif 
+        endif 
+    end 
+    popd  > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    echo =======================================================================
+    echo =======================================================================
+    echo =======================================================================
+    echo =======================================================================
+
+    #
+    # Because we just rebuilt the makefiles for each export dir, all needed
+    # libraries should be in Include_lines/sub_libs_needed. 
+    #
+    set export_prog_names = ""
+
+    foreach export_prog_dir (${export_prog_dirs})
+        set export_prog_dir = `echo ${export_prog_dir} | sed 's#//*$##'`
+
+        set have_lib_str = `echo ${export_prog_dir} | grep -c 'lib/[^/][^/]*/'`
+
+        if (${have_lib_str}) then
+            set export_prog_name = `echo ${export_prog_dir} | sed 's#.*lib/##'`
+            set export_prog_name = `echo ${export_prog_name} | sed 's#/#_#g'`
+        else 
+            set export_prog_name = `echo ${export_prog_dir} | sed 's#.*/##'`
+        endif 
+
+        set export_prog_names = "${export_prog_names} ${export_prog_name}"
+
+        echo ------------------------------------------------------
+        echo "MSD: Working on export dir: ${export_prog_dir} in `pwd`."
+        echo "MSD: Temporary export name is: ${export_prog_name} in `pwd`."
+
+        echo "src/Make" > ${TMPDIR}/${USER}/src/${export_prog_name}_files
+
+        if ("${export_prog_dir}" != "${export_prog_name}") then
+            /bin/cp -r "${export_prog_dir}" "./${export_prog_name}"
+        endif 
+
+        echo "src/${export_prog_name}" >> ${TMPDIR}/${USER}/src/${export_prog_name}_files
+
+        pushd ${export_prog_name} > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: pushd ${export_prog_name} > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        if (! -e Include_lines/sub_libs_needed) then
+            echo
+            echo "MSD: Missing  Include_lines/sub_libs_needed in `pwd`"
+            echo "MSD: Possibly due to options restricting them getting built earlier."
+            echo "MSD: Doing a make depend."
+            echo
+
+            ${KJB_MAKE} depend  
+            if (${status}) then
+                echo "Command failed in `pwd`: ${KJB_MAKE} depend" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+        endif 
+
+        if (! -e Include_lines/sub_libs_needed) then
+            echo "No Include_lines/sub_libs_needed file in ${cwd}" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+        
+        set sub_libs_needed = `cat Include_lines/sub_libs_needed`
+
+        foreach kjb_sub_lib (${sub_libs_needed})
+            if (-d "../lib/${kjb_sub_lib}") then
+                echo "src/lib/${kjb_sub_lib}" >> ${TMPDIR}/${USER}/src/${export_prog_name}_files
+            endif 
+        end 
+
+        popd  > /dev/null
+        if (${status}) then
+            echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        touch include_after/fake_out_glob
+
+        echo " "
+        echo "MSD: Retaining the files include_after that are included, and hence might be needed."
+        echo " "
+
+        foreach inc_dir (include_after/*)
+            set inc_dir_name = `echo ${inc_dir} | sed 's#include_after/##'`
+
+            if ("${inc_dir_name}" == "fake_out_glob") continue
+
+            set grep_res = `grep -w -l ${inc_dir_name} ${export_prog_name}/*.[chC] ${export_prog_name}/*.cpp ${export_prog_name}/*.cxx  |& grep -v 'No match'`
+            # echo Grep for ${inc_dir_name} in ${cwd}/${export_prog_name} gives: $grep_res
+
+            if ("${grep_res}" != "") then
+                 echo "src/include_after/${inc_dir_name}" >> ${TMPDIR}/${USER}/src/${export_prog_name}_files
+                 echo "Keeping src/include_after/${inc_dir_name} due to ${export_prog_name}"
+                 break
+            else
+                foreach kjb_sub_lib (${sub_libs_needed})
+                    set grep_res = `grep -w -l ${inc_dir_name} lib/${kjb_sub_lib}/*.[chC] lib/${kjb_sub_lib}/*.[chC]} lib/${kjb_sub_lib}/*.[chC]} |& grep -v 'No match'`
+                    # echo Grep for ${inc_dir_name} in ${cwd}/lib/${kjb_sub_lib} gives: $grep_res
+
+                    if ("${grep_res}" != "") then
+                        echo "src/include_after/${inc_dir_name}" >> ${TMPDIR}/${USER}/src/${export_prog_name}_files
+                        echo "MSD: Keeping src/include_after/${inc_dir_name} due to lib/${kjb_sub_lib}"
+                        break
+                    else if (-d lib/${kjb_sub_lib}/test) then
+                        set grep_res = `grep -w -l ${inc_dir_name} lib/${kjb_sub_lib}/test/*.[chC] lib/${kjb_sub_lib}/test/*.cpp lib/${kjb_sub_lib}/test/*.cxx  |& grep -v 'No match'`
+                        # echo Grep for ${inc_dir_name} in ${cwd}/lib/${kjb_sub_lib}/test gives: ${grep_res}
+
+                        if ("${grep_res}" != "") then
+                             echo "src/include_after/${inc_dir_name}" >> ${TMPDIR}/${USER}/src/${export_prog_name}_files
+                             echo "MSD: Keeping src/include_after/${inc_dir_name} due to lib/${kjb_sub_lib}/test"
+                             break
+                        endif 
+                    endif 
+                end 
+            endif 
+        end 
+
+        /bin/rm include_after/fake_out_glob
+
+        echo " "
+        echo ------------------------------------------------------
+    end 
+
+    popd  > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    foreach export_prog_name (${export_prog_names})
+        # TODO CHECK The -H option is for mac. What about linux?
+        #
+        tar -H -c -f ${export_temp_dir}/${export_prog_name}.tar ${file_list_flag} ${TMPDIR}/${USER}/src/${export_prog_name}_files
+
+        if (${status}) then
+            echo "Command failed in `pwd`: tar -H -c -f ${export_temp_dir}/${export_prog_name}.tar ${file_list_flag} ${TMPDIR}/${USER}/src/${export_prog_name}_files
+" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+    end
+
+    popd  > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    pushd ${export_temp_dir} > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd ${export_temp_dir} > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    if (${export_standalone}) then 
+        foreach export_prog_name (${export_prog_names})
+            echo ------------------------------------------------------
+            echo "MSD: Working on export prog name: ${export_prog_name} in `pwd`."
+            /bin/ls 
+            echo " "
+
+            ${KJB_MKDIR} ${export_prog_name}
+
+            echo ------------------------------------------------------
+            echo "MSD: Moving  ${export_prog_name}.tar to ${export_prog_name}."
+            echo " "
+
+            /bin/mv ${export_prog_name}.tar ${export_prog_name}
+
+            set version_str = "" 
+
+            pushd ${export_prog_name} > /dev/null
+            if (${status}) then
+                echo "Command failed in `pwd`: pushd ${export_prog_name} > /dev/null" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+
+                echo ------------------------------------------------------
+                echo "MSD: Now in `pwd`."
+                echo " "
+
+                tar xf ${export_prog_name}.tar
+
+                if ((-d src/lib) && (-d src/${export_prog_name}/lib)) then
+                    echo "MSD: Moving program lib files to generic lib dir in `pwd`."
+                    /bin/mv src/${export_prog_name}/lib/* src/lib 
+                    if ${status} exit ${status}
+                    ${KJB_RM} src/${export_prog_name}/lib 
+                endif 
+                
+                /bin/cp -r -f src/${export_prog_name}/* . 
+                if (${status}) then
+                    echo "Command failed in `pwd`: /bin/cp -r -f src/${export_prog_name}/* ." | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+
+                ${KJB_RM} src/${export_prog_name} 
+                if (${status}) then
+                    echo "Command failed in `pwd`: ${KJB_RM} src/${export_prog_name}" | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+
+                ${KJB_MV} src/* . 
+                if (${status}) then
+                    echo "Command failed in `pwd`: ${KJB_MV} src/* . " | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+
+                ${KJB_RM} src
+                if (${status}) then
+                    echo "Command failed in `pwd`: ${KJB_RM} src" | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+
+                # We have moved stuff about. So ...
+                ${KJB_MAKE} depend_clean 
+                if (${status}) then
+                    echo "Command failed in `pwd`: ${KJB_MAKE} depend_clean" | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+
+                ${KJB_MAKE} clean 
+                if (${status}) then
+                    echo "Command failed in `pwd`: ${KJB_MAKE} clean " | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+
+                if (${export_doc}) then
+                    echo "MSD: Building documentation due to option export_doc in `pwd`."
+                    echo " "
+
+                    ${KJB_MAKE} doc 
+                    if (${status}) then
+                        echo "Command failed in `pwd`: ${KJB_MAKE} doc" | tee -a ${error_file}
+                        set exit_status = 1
+                        goto end_of_script
+                    endif 
+
+                    ${KJB_MAKE} clean 
+                    if (${status}) then
+                        echo "Command failed in `pwd`: ${KJB_MAKE} clean" | tee -a ${error_file}
+                        set exit_status = 1
+                        goto end_of_script
+                    endif 
+
+                    pushd Make/util > /dev/null
+                    if (${status}) then
+                        echo "Command failed in `pwd`: pushd Make/util > /dev/null" | tee -a ${error_file}
+                        set exit_status = 1
+                        goto end_of_script
+                    endif 
+
+                        pushd c2man-2.40-kobus > /dev/null
+                        if (${status}) then
+                            echo "Command failed in `pwd`: pushd c2man-2.40-kobus > /dev/nul" | tee -a ${error_file}
+                            set exit_status = 1
+                            goto end_of_script
+                        endif 
+
+                            ${KJB_MAKE} clean 
+                            if (${status}) then
+                                echo "Command failed in `pwd`: ${KJB_MAKE} clean" | tee -a ${error_file}
+                                set exit_status = 1
+                                goto end_of_script
+                            endif 
+
+                        popd > /dev/null
+                        if (${status}) then
+                            echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+                            set exit_status = 1
+                            goto end_of_script
+                        endif 
+
+                        ${KJB_MAKE} clean 
+                        if (${status}) then
+                            echo "Command failed in `pwd`: ${KJB_MAKE} clean" | tee -a ${error_file}
+                            set exit_status = 1
+                            goto end_of_script
+                        endif 
+
+                    popd > /dev/null
+                    if (${status}) then
+                        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+                        set exit_status = 1
+                        goto end_of_script
+                    endif 
+                endif 
+
+                echo "MSD: Doing a make clean in `pwd`."
+                echo " "
+
+                ${KJB_MAKE} clean 
+                if (${status}) then
+                    echo "Command failed in `pwd`: ${KJB_MAKE} clean" | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+                
+                find . -depth -type d -name make_doc -exec /bin/rm -f -R {} \;
+                if (${status}) then 
+                    echo "Removing make_doc dirs failed. " | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script 
+                endif 
+
+                find . -depth -type d -name ${MACHINE} -exec /bin/rm -f -R {} \;
+                if (${status}) then 
+                    echo "Removing ${MACHINE} dirs failed. " | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script 
+                endif 
+
+                ${KJB_MAKE} depend 
+                if (${status}) then
+                    echo "Command failed in `pwd`: ${KJB_MAKE} depend" | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+
+                # Do it again, even though it is probably not needed since the
+                # rewrite of build_2. 
+                #
+                ${KJB_MAKE} depend
+                if (${status}) then
+                    echo "Command failed in `pwd`: ${KJB_MAKE} depend" | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+
+                if (-e version.h) then
+                    set major = `grep "#define MAJOR_VERSION" version.h | sed 's/.*#define MAJOR_VERSION *//'`
+                    set minor = `grep "#define MINOR_VERSION" version.h | sed 's/.*#define MINOR_VERSION *//'`
+                    set patch = `grep "#define PATCH_LEVEL" version.h | sed 's/.*#define PATCH_LEVEL *//'`
+                    set dev_stage = `grep "#define DEVELOPMENT_STAGE" version.h | sed 's/.*#define DEVELOPMENT_STAGE *\"\(.*\)\"/\1/'`
+                else
+                    set major = ""
+                    set minor = ""
+                    set patch = ""
+                    set dev_stage = ""
+                endif 
+
+                if (("${major}" != "") && ("${minor}" != "") && ("${patch}" != "")) then
+                    set version_str = "-${major}.${minor}.${patch}${dev_stage}"
+                endif
+            popd > /dev/null 
+            if (${status}) then
+                echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+
+            if ("${revision}" != "") then
+                set version_str = "${version_str}-r${revision}"
+            endif
+
+            if ("${version_str}" != "") then
+                /bin/mv ${export_prog_name} ${export_prog_name}${version_str}
+                if (${status}) then
+                    echo "Command failed in `pwd`: /bin/mv ${export_prog_name} ${export_prog_name}${version_str}" | tee -a ${error_file}
+                    set exit_status = 1
+                    goto end_of_script
+                endif 
+            endif 
+
+            tar cf ${export_dir}/${export_prog_name}${version_str}.tar ${export_prog_name}${version_str}
+            if (${status}) then
+                echo "Command failed in `pwd`: tar cf ${export_dir}/${export_prog_name}${version_str}.tar" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+
+            ${KJB_COMPRESS} -f ${export_dir}/${export_prog_name}${version_str}.tar
+            if (${status}) then
+                echo "Command failed in `pwd`: ${KJB_COMPRESS} -f ${export_dir}/${export_prog_name}${version_str}.tar" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+
+            ${KJB_RM} ${export_prog_name}${version_str}
+            if (${status}) then
+                echo "Command failed in `pwd`: ${KJB_RM} ${export_prog_name}${version_str}" | tee -a ${error_file}
+                set exit_status = 1
+                goto end_of_script
+            endif 
+
+            echo " "
+            echo ------------------------------------------------------
+            echo ------------------------------------------------------
+        end
+    endif 
+
+    if (("${specified_prog_dirs}" == "") || (${export_src_tree})) then
+        set everything = "IVILAB-src-${time_stamp}"
+        ${KJB_MKDIR} ${everything} 
+
+        foreach sub_dir (../src/*)
+            if (-d ${sub_dir}) then
+                /bin/cp -r ${sub_dir} ${everything}
+            endif 
+        end
+
+        tar cf ${export_dir}/${everything}.tar ${everything}
+        if (${status}) then
+            echo "Command failed in `pwd`: tar cf ${export_dir}/${everything}.tar ${everything}" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+
+        ${KJB_COMPRESS} -f ${export_dir}/${everything}.tar
+        if (${status}) then
+            echo "Command failed in `pwd`: ${KJB_COMPRESS} -f ${export_dir}/${everything}.tar" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+    endif 
+
+    # unset echo 
+
+    popd  > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd  > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+endif
+
+###############################################################################
+
+if ($do_backup) then
+    echo -------------------------------------------------------
+    echo MSD: Backing up 
+    echo -------------------------------------------------------
+
+    pushd ${TMPDIR}/${USER}/src/ > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: pushd ${TMPDIR}/${USER}/src/ > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    tar xf src.${time_stamp}.tar
+    if (${status}) then
+        echo "Command failed in `pwd`: tar xf src.${time_stamp}.tar" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    /bin/rm src.${time_stamp}.tar
+    if (${status}) then
+        echo "Command failed in `pwd`: /bin/rm src.${time_stamp}.tar" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    pushd ..  > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`:  pushd ..  > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    tar cf src.${time_stamp}.tar src
+    if (${status}) then
+        echo "Command failed in `pwd`:  tar cf src.${time_stamp}.tar src" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    if (-l ${HOME}/backup) then
+        pushd ${HOME}/backup > /dev/null
+        if (${status}) then
+            echo "Unable to treat link ${HOME}/backup as a directory." | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+    else 
+        ${KJB_MKDIR} ${HOME}/backup
+        if (${status}) then
+            echo "Command failed in `pwd`: ${KJB_MKDIR} ${HOME}/backup" | tee -a ${error_file}
+            set exit_status = 1
+            goto end_of_script
+        endif 
+    endif 
+
+    ${KJB_MKDIR} ${HOME}/backup/src-dist
+    if (${status}) then
+        echo "Command failed in `pwd`: ${KJB_MKDIR} ${HOME}/backup/src-dist" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    ${KJB_COMPRESS} -f ${TMPDIR}/${USER}/src.${time_stamp}.tar
+    if (${status}) then
+        echo "Command failed in `pwd`: ${KJB_COMPRESS} -f ${TMPDIR}/${USER}/src.${time_stamp}.tar" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    /bin/mv -f ${TMPDIR}/${USER}/src.${time_stamp}.tar.${KJB_COMPRESS_SUFFIX} ${HOME}/backup/src-dist
+    if (${status}) then
+        echo "Command failed in `pwd`: /bin/mv -f ${TMPDIR}/${USER}/src.${time_stamp}.tar.${KJB_COMPRESS_SUFFIX} ${HOME}/backup/src-dist" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    popd > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+
+    popd > /dev/null
+    if (${status}) then
+        echo "Command failed in `pwd`: popd > /dev/null" | tee -a ${error_file}
+        set exit_status = 1
+        goto end_of_script
+    endif 
+endif
+
+
+end_of_script:
+
+echo "=============================================================================="
+echo ""
+echo ""
+
+if (${exit_status}) then
+    echo "MSD: Script make_src_dist failed." 
+    echo " "
+    echo "Error summary: "
+    echo " "
+    cat ${error_file}
+    echo " "
+else 
+    echo "MSD: Script make_src_dist finished successfully." 
+    echo " "
+
+    if ($do_export) then
+        echo MSD: ${export_prog_dirs} exported to ${export_dir}
+        echo ""
+    endif 
+
+    ${KJB_RM} ${error_file}
+endif 
+
+echo "=============================================================================="
+echo " "
+
+exit ${exit_status}
+ 
+
