@@ -1,0 +1,301 @@
+<<  2 >> Verbose level at program startup is 5.
+<<  1 >> Try 1 with num_rows = 1 and num_cols = 1.
+<<  1 >> Test 2 diff is 0.0000e+00
+<<  1 >> Test 2 diff is 0.0000e+00
+<<  1 >> Try 2 with num_rows = 9 and num_cols = 9.
+<<  1 >> Test 2 diff is 2.6042e-17
+<<  1 >> Test 2 diff is 6.5106e-18
+<<  1 >> Try 3 with num_rows = 192 and num_cols = 192.
+<<  1 >> Test 2 diff is 1.2529e-18
+<<  1 >> Test 2 diff is 1.6037e-19
+<<  1 >> Try 4 with num_rows = 17 and num_cols = 17.
+<<  1 >> Test 2 diff is 7.6832e-18
+<<  1 >> Test 2 diff is 4.8320e-18
+<<  1 >> Try 5 with num_rows = 139 and num_cols = 139.
+<<  1 >> Test 2 diff is 1.8388e-18
+<<  1 >> Test 2 diff is 3.1029e-19
+<<  1 >> Try 6 with num_rows = 91 and num_cols = 91.
+<<  1 >> Test 2 diff is 1.7161e-18
+<<  1 >> Test 2 diff is 5.6309e-19
+<<  1 >> Try 7 with num_rows = 56 and num_cols = 56.
+<<  1 >> Test 2 diff is 4.5315e-18
+<<  1 >> Test 2 diff is 1.1329e-18
+<<  1 >> Try 8 with num_rows = 71 and num_cols = 71.
+<<  1 >> Test 2 diff is 1.3214e-18
+<<  1 >> Test 2 diff is 6.7173e-19
+<<  1 >> Try 9 with num_rows = 142 and num_cols = 142.
+<<  1 >> Test 2 diff is 5.7262e-19
+<<  1 >> Test 2 diff is 3.1384e-19
+<<  1 >> Try 10 with num_rows = 190 and num_cols = 190.
+<<  1 >> Test 2 diff is 1.8698e-18
+<<  1 >> Test 2 diff is 1.6146e-19
+<<  1 >> Try 11 with num_rows = 179 and num_cols = 179.
+<<  1 >> Test 2 diff is 8.3160e-19
+<<  1 >> Test 2 diff is 1.8971e-19
+<<  1 >> Try 12 with num_rows = 62 and num_cols = 62.
+<<  1 >> Test 2 diff is 1.8484e-18
+<<  1 >> Test 2 diff is 1.2708e-18
+<<  1 >> Try 13 with num_rows = 106 and num_cols = 106.
+<<  1 >> Test 2 diff is 1.8971e-18
+<<  1 >> Test 2 diff is 5.3357e-19
+<<  1 >> Try 14 with num_rows = 82 and num_cols = 82.
+<<  1 >> Test 2 diff is 2.5097e-18
+<<  1 >> Test 2 diff is 6.6871e-19
+<<  1 >> Try 15 with num_rows = 54 and num_cols = 54.
+<<  1 >> Test 2 diff is 3.8073e-18
+<<  1 >> Test 2 diff is 1.7895e-18
+<<  1 >> Try 16 with num_rows = 133 and num_cols = 133.
+<<  1 >> Test 2 diff is 1.3557e-18
+<<  1 >> Test 2 diff is 3.6403e-19
+<<  1 >> Try 17 with num_rows = 133 and num_cols = 133.
+<<  1 >> Test 2 diff is 7.0295e-19
+<<  1 >> Test 2 diff is 3.7344e-19
+<<  1 >> Try 18 with num_rows = 102 and num_cols = 102.
+<<  1 >> Test 2 diff is 7.6832e-19
+<<  1 >> Test 2 diff is 4.8020e-19
+<<  1 >> Try 19 with num_rows = 159 and num_cols = 159.
+<<  1 >> Test 2 diff is 5.6212e-19
+<<  1 >> Test 2 diff is 2.1958e-19
+<<  1 >> Try 20 with num_rows = 74 and num_cols = 74.
+<<  1 >> Test 2 diff is 2.9195e-18
+<<  1 >> Test 2 diff is 7.7043e-19
+<<  1 >> Try 21 with num_rows = 176 and num_cols = 176.
+<<  1 >> Test 2 diff is 1.0322e-18
+<<  1 >> Test 2 diff is 2.3812e-19
+<<  1 >> Try 22 with num_rows = 62 and num_cols = 62.
+<<  1 >> Test 2 diff is 2.3106e-18
+<<  1 >> Test 2 diff is 8.5924e-19
+<<  1 >> Try 23 with num_rows = 189 and num_cols = 189.
+<<  1 >> Test 2 diff is 1.6410e-18
+<<  1 >> Test 2 diff is 2.6108e-19
+<<  1 >> Try 24 with num_rows = 187 and num_cols = 187.
+<<  1 >> Test 2 diff is 4.5718e-19
+<<  1 >> Test 2 diff is 1.6668e-19
+<<  1 >> Try 25 with num_rows = 137 and num_cols = 137.
+<<  1 >> Test 2 diff is 8.5179e-19
+<<  1 >> Test 2 diff is 3.0759e-19
+<<  1 >> Try 26 with num_rows = 95 and num_cols = 95.
+<<  1 >> Test 2 diff is 8.8572e-19
+<<  1 >> Test 2 diff is 4.6746e-19
+<<  1 >> Try 27 with num_rows = 32 and num_cols = 32.
+<<  1 >> Test 2 diff is 4.3368e-18
+<<  1 >> Test 2 diff is 2.1413e-18
+<<  1 >> Try 28 with num_rows = 33 and num_cols = 33.
+<<  1 >> Test 2 diff is 5.3013e-18
+<<  1 >> Test 2 diff is 2.3193e-18
+<<  1 >> Try 29 with num_rows = 124 and num_cols = 124.
+<<  1 >> Test 2 diff is 1.2708e-18
+<<  1 >> Test 2 diff is 4.9099e-19
+<<  1 >> Try 30 with num_rows = 99 and num_cols = 99.
+<<  1 >> Test 2 diff is 1.9030e-18
+<<  1 >> Test 2 diff is 4.9275e-19
+<<  1 >> Try 31 with num_rows = 46 and num_cols = 46.
+<<  1 >> Test 2 diff is 3.5678e-18
+<<  1 >> Test 2 diff is 1.5806e-18
+<<  1 >> Try 32 with num_rows = 50 and num_cols = 50.
+<<  1 >> Test 2 diff is 2.1316e-18
+<<  1 >> Test 2 diff is 1.1324e-18
+<<  1 >> Try 33 with num_rows = 2 and num_cols = 2.
+<<  1 >> Test 2 diff is 2.7756e-17
+<<  1 >> Test 2 diff is 0.0000e+00
+<<  1 >> Try 34 with num_rows = 35 and num_cols = 35.
+<<  1 >> Test 2 diff is 3.9877e-18
+<<  1 >> Test 2 diff is 2.1865e-18
+<<  1 >> Try 35 with num_rows = 112 and num_cols = 112.
+<<  1 >> Test 2 diff is 1.7701e-18
+<<  1 >> Test 2 diff is 4.1155e-19
+<<  1 >> Try 36 with num_rows = 87 and num_cols = 87.
+<<  1 >> Test 2 diff is 3.6377e-18
+<<  1 >> Test 2 diff is 4.9871e-19
+<<  1 >> Try 37 with num_rows = 106 and num_cols = 106.
+<<  1 >> Test 2 diff is 2.1343e-18
+<<  1 >> Test 2 diff is 3.8536e-19
+<<  1 >> Try 38 with num_rows = 14 and num_cols = 14.
+<<  1 >> Test 2 diff is 1.1329e-17
+<<  1 >> Test 2 diff is 5.3812e-18
+<<  1 >> Try 39 with num_rows = 90 and num_cols = 90.
+<<  1 >> Test 2 diff is 2.0834e-18
+<<  1 >> Test 2 diff is 6.1679e-19
+<<  1 >> Try 40 with num_rows = 118 and num_cols = 118.
+<<  1 >> Test 2 diff is 2.0412e-18
+<<  1 >> Test 2 diff is 3.9867e-19
+<<  1 >> Try 41 with num_rows = 87 and num_cols = 87.
+<<  1 >> Test 2 diff is 8.2141e-19
+<<  1 >> Test 2 diff is 5.2622e-19
+<<  1 >> Try 42 with num_rows = 184 and num_cols = 184.
+<<  1 >> Test 2 diff is 1.6527e-18
+<<  1 >> Test 2 diff is 1.5617e-19
+<<  1 >> Try 43 with num_rows = 9 and num_cols = 9.
+<<  1 >> Test 2 diff is 3.5637e-17
+<<  1 >> Test 2 diff is 7.3672e-18
+<<  1 >> Try 44 with num_rows = 117 and num_cols = 117.
+<<  1 >> Test 2 diff is 1.3788e-18
+<<  1 >> Test 2 diff is 4.3390e-19
+<<  1 >> Try 45 with num_rows = 77 and num_cols = 77.
+<<  1 >> Test 2 diff is 2.0972e-18
+<<  1 >> Test 2 diff is 6.8347e-19
+<<  1 >> Try 46 with num_rows = 187 and num_cols = 187.
+<<  1 >> Test 2 diff is 4.8258e-19
+<<  1 >> Test 2 diff is 1.7303e-19
+<<  1 >> Try 47 with num_rows = 45 and num_cols = 45.
+<<  1 >> Test 2 diff is 3.0702e-18
+<<  1 >> Test 2 diff is 1.4392e-18
+<<  1 >> Try 48 with num_rows = 90 and num_cols = 90.
+<<  1 >> Test 2 diff is 2.5220e-18
+<<  1 >> Test 2 diff is 6.6744e-19
+<<  1 >> Try 49 with num_rows = 186 and num_cols = 186.
+<<  1 >> Test 2 diff is 5.3913e-19
+<<  1 >> Test 2 diff is 2.1020e-19
+<<  1 >> Try 50 with num_rows = 44 and num_cols = 44.
+<<  1 >> Test 2 diff is 4.5877e-18
+<<  1 >> Test 2 diff is 1.6917e-18
+<<  1 >> Try 51 with num_rows = 164 and num_cols = 164.
+<<  1 >> Test 2 diff is 1.6511e-18
+<<  1 >> Test 2 diff is 2.0020e-19
+<<  1 >> Try 52 with num_rows = 56 and num_cols = 56.
+<<  1 >> Test 2 diff is 5.3812e-18
+<<  1 >> Test 2 diff is 1.6639e-18
+<<  1 >> Try 53 with num_rows = 47 and num_cols = 47.
+<<  1 >> Test 2 diff is 4.4228e-18
+<<  1 >> Test 2 diff is 1.6962e-18
+<<  1 >> Try 54 with num_rows = 27 and num_cols = 27.
+<<  1 >> Test 2 diff is 6.7009e-18
+<<  1 >> Test 2 diff is 2.7413e-18
+<<  1 >> Try 55 with num_rows = 186 and num_cols = 186.
+<<  1 >> Test 2 diff is 5.3913e-19
+<<  1 >> Test 2 diff is 1.9415e-19
+<<  1 >> Try 56 with num_rows = 114 and num_cols = 114.
+<<  1 >> Test 2 diff is 1.0251e-18
+<<  1 >> Test 2 diff is 3.9724e-19
+<<  1 >> Try 57 with num_rows = 154 and num_cols = 154.
+<<  1 >> Test 2 diff is 7.8646e-19
+<<  1 >> Test 2 diff is 2.7093e-19
+<<  1 >> Try 58 with num_rows = 25 and num_cols = 25.
+<<  1 >> Test 2 diff is 9.2371e-18
+<<  1 >> Test 2 diff is 3.5083e-18
+<<  1 >> Try 59 with num_rows = 85 and num_cols = 85.
+<<  1 >> Test 2 diff is 1.8440e-18
+<<  1 >> Test 2 diff is 5.9161e-19
+<<  1 >> Try 60 with num_rows = 109 and num_cols = 109.
+<<  1 >> Test 2 diff is 1.1961e-18
+<<  1 >> Test 2 diff is 4.5555e-19
+<<  1 >> Try 61 with num_rows = 165 and num_cols = 165.
+<<  1 >> Test 2 diff is 7.5034e-19
+<<  1 >> Test 2 diff is 2.3040e-19
+<<  1 >> Try 62 with num_rows = 99 and num_cols = 99.
+<<  1 >> Test 2 diff is 2.3562e-18
+<<  1 >> Test 2 diff is 4.9417e-19
+<<  1 >> Try 63 with num_rows = 180 and num_cols = 180.
+<<  1 >> Test 2 diff is 1.5899e-18
+<<  1 >> Test 2 diff is 1.5762e-19
+<<  1 >> Try 64 with num_rows = 193 and num_cols = 193.
+<<  1 >> Test 2 diff is 6.9149e-19
+<<  1 >> Test 2 diff is 1.6318e-19
+<<  1 >> Try 65 with num_rows = 77 and num_cols = 77.
+<<  1 >> Test 2 diff is 4.7937e-18
+<<  1 >> Test 2 diff is 7.4901e-19
+<<  1 >> Try 66 with num_rows = 22 and num_cols = 22.
+<<  1 >> Test 2 diff is 8.2579e-18
+<<  1 >> Test 2 diff is 3.0394e-18
+<<  1 >> Try 67 with num_rows = 49 and num_cols = 49.
+<<  1 >> Test 2 diff is 2.9594e-18
+<<  1 >> Test 2 diff is 1.3872e-18
+<<  1 >> Try 68 with num_rows = 8 and num_cols = 8.
+<<  1 >> Test 2 diff is 4.8572e-17
+<<  1 >> Test 2 diff is 7.8063e-18
+<<  1 >> Try 69 with num_rows = 164 and num_cols = 164.
+<<  1 >> Test 2 diff is 3.6325e-19
+<<  1 >> Test 2 diff is 2.0226e-19
+<<  1 >> Try 70 with num_rows = 75 and num_cols = 75.
+<<  1 >> Test 2 diff is 4.2633e-18
+<<  1 >> Test 2 diff is 9.7700e-19
+<<  1 >> Try 71 with num_rows = 86 and num_cols = 86.
+<<  1 >> Test 2 diff is 1.0808e-18
+<<  1 >> Test 2 diff is 5.8543e-19
+<<  1 >> Try 72 with num_rows = 182 and num_cols = 182.
+<<  1 >> Test 2 diff is 1.2334e-18
+<<  1 >> Test 2 diff is 1.7764e-19
+<<  1 >> Try 73 with num_rows = 9 and num_cols = 9.
+<<  1 >> Test 2 diff is 4.9343e-17
+<<  1 >> Test 2 diff is 4.1119e-18
+<<  1 >> Try 74 with num_rows = 190 and num_cols = 190.
+<<  1 >> Test 2 diff is 3.9365e-19
+<<  1 >> Test 2 diff is 1.9683e-19
+<<  1 >> Try 75 with num_rows = 80 and num_cols = 80.
+<<  1 >> Test 2 diff is 1.6653e-18
+<<  1 >> Test 2 diff is 5.9848e-19
+<<  1 >> Try 76 with num_rows = 64 and num_cols = 64.
+<<  1 >> Test 2 diff is 1.9516e-18
+<<  1 >> Test 2 diff is 1.3417e-18
+<<  1 >> Try 77 with num_rows = 51 and num_cols = 51.
+<<  1 >> Test 2 diff is 2.3903e-18
+<<  1 >> Test 2 diff is 1.1205e-18
+<<  1 >> Try 78 with num_rows = 62 and num_cols = 62.
+<<  1 >> Test 2 diff is 7.3938e-18
+<<  1 >> Test 2 diff is 7.9425e-19
+<<  1 >> Try 79 with num_rows = 17 and num_cols = 17.
+<<  1 >> Test 2 diff is 2.1513e-17
+<<  1 >> Test 2 diff is 4.9941e-18
+<<  1 >> Try 80 with num_rows = 111 and num_cols = 111.
+<<  1 >> Test 2 diff is 2.8835e-18
+<<  1 >> Test 2 diff is 5.4966e-19
+<<  1 >> Try 81 with num_rows = 121 and num_cols = 121.
+<<  1 >> Test 2 diff is 1.5166e-18
+<<  1 >> Test 2 diff is 3.2133e-19
+<<  1 >> Try 82 with num_rows = 30 and num_cols = 30.
+<<  1 >> Test 2 diff is 3.9475e-18
+<<  1 >> Test 2 diff is 2.5288e-18
+<<  1 >> Try 83 with num_rows = 82 and num_cols = 82.
+<<  1 >> Test 2 diff is 1.4530e-18
+<<  1 >> Test 2 diff is 6.6045e-19
+<<  1 >> Try 84 with num_rows = 4 and num_cols = 4.
+<<  1 >> Test 2 diff is 6.9389e-17
+<<  1 >> Test 2 diff is 0.0000e+00
+<<  1 >> Try 85 with num_rows = 29 and num_cols = 29.
+<<  1 >> Test 2 diff is 1.0033e-17
+<<  1 >> Test 2 diff is 2.1782e-18
+<<  1 >> Try 86 with num_rows = 136 and num_cols = 136.
+<<  1 >> Test 2 diff is 8.1634e-19
+<<  1 >> Test 2 diff is 3.8416e-19
+<<  1 >> Try 87 with num_rows = 6 and num_cols = 6.
+<<  1 >> Test 2 diff is 4.3175e-17
+<<  1 >> Test 2 diff is 1.2336e-17
+<<  1 >> Try 88 with num_rows = 184 and num_cols = 184.
+<<  1 >> Test 2 diff is 5.7715e-19
+<<  1 >> Test 2 diff is 2.0003e-19
+<<  1 >> Try 89 with num_rows = 48 and num_cols = 48.
+<<  1 >> Test 2 diff is 2.3130e-18
+<<  1 >> Test 2 diff is 1.6263e-18
+<<  1 >> Try 90 with num_rows = 187 and num_cols = 187.
+<<  1 >> Test 2 diff is 1.1938e-18
+<<  1 >> Test 2 diff is 2.2224e-19
+<<  1 >> Try 91 with num_rows = 172 and num_cols = 172.
+<<  1 >> Test 2 diff is 1.2309e-18
+<<  1 >> Test 2 diff is 1.9045e-19
+<<  1 >> Try 92 with num_rows = 126 and num_cols = 126.
+<<  1 >> Test 2 diff is 9.5106e-19
+<<  1 >> Test 2 diff is 3.8932e-19
+<<  1 >> Try 93 with num_rows = 48 and num_cols = 48.
+<<  1 >> Test 2 diff is 1.9275e-18
+<<  1 >> Test 2 diff is 1.3251e-18
+<<  1 >> Try 94 with num_rows = 23 and num_cols = 23.
+<<  1 >> Test 2 diff is 1.0494e-17
+<<  1 >> Test 2 diff is 3.3580e-18
+<<  1 >> Try 95 with num_rows = 128 and num_cols = 128.
+<<  1 >> Test 2 diff is 9.2157e-19
+<<  1 >> Test 2 diff is 3.7947e-19
+<<  1 >> Try 96 with num_rows = 49 and num_cols = 49.
+<<  1 >> Test 2 diff is 4.6240e-18
+<<  1 >> Test 2 diff is 1.2600e-18
+<<  1 >> Try 97 with num_rows = 23 and num_cols = 23.
+<<  1 >> Test 2 diff is 7.5554e-18
+<<  1 >> Test 2 diff is 3.2661e-18
+<<  1 >> Try 98 with num_rows = 129 and num_cols = 129.
+<<  1 >> Test 2 diff is 1.2809e-18
+<<  1 >> Test 2 diff is 2.8354e-19
+<<  1 >> Try 99 with num_rows = 185 and num_cols = 185.
+<<  1 >> Test 2 diff is 5.1902e-19
+<<  1 >> Test 2 diff is 1.9139e-19
+<<  1 >> Try 100 with num_rows = 46 and num_cols = 46.
+<<  1 >> Test 2 diff is 2.9382e-18
+<<  1 >> Test 2 diff is 1.5872e-18

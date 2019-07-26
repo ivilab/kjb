@@ -1,0 +1,58 @@
+/* $Id$ */
+/* =========================================================================== *
+   |
+   |  Copyright (c) 1994-2010 by Kobus Barnard (author)
+   |
+   |  Personal and educational use of this code is granted, provided that this
+   |  header is kept intact, and that the authorship is not misrepresented, that
+   |  its use is acknowledged in publications, and relevant papers are cited.
+   |
+   |  For other use contact the author (kobus AT cs DOT arizona DOT edu).
+   |
+   |  Please note that the code in this file has not necessarily been adequately
+   |  tested. Naturally, there is no guarantee of performance, support, or fitness
+   |  for any particular task. Nonetheless, I am interested in hearing about
+   |  problems that you encounter.
+   |
+   |  Author:  Kyle Simek
+ * =========================================================================== */
+
+#include <m/m_incl.h>
+#include <l/l_incl.h>
+#include <iostream>
+#include <cstdlib>
+
+#include <boost/concept_archetype.hpp>
+
+#include "sample_cpp/sample_step.h"
+#include "sample_cpp/sample_concept.h"
+
+
+//using namespace kjb;
+using namespace std;
+
+boost::detail::dummy_constructor dummy_cons;
+
+int main (int /*argc*/, char ** /*argv*/)
+{
+    kjb_c::kjb_init();
+
+    typedef base_model_archetype Model;
+    typedef model_evaluator_archetype<base_model_archetype> Likelihood;
+    typedef model_evaluator_archetype<base_model_archetype> Prior;
+    typedef model_proposer_archetype<base_model_archetype> Proposer;
+
+
+
+    typedef Basic_mh_step<Model, Proposer> Mh_step;
+
+    Model model;
+    Likelihood like(dummy_cons);
+    Prior prior(dummy_cons);
+    Proposer proposal(dummy_cons);
+
+    Mh_step step(like, proposal);
+    step(model, 0.0);
+
+    return EXIT_SUCCESS;
+}

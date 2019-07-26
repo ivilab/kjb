@@ -1,0 +1,71 @@
+
+################################################################################
+#                             Options
+
+# For programs, speical purpose compile options are set in Makefile-2. For
+# library modules, the must go in Makefile-include. 
+#
+# For example, to force no optimization for C compiles, replace CC_FLAGS with
+# DONT_OPTIMIZE_CC_FLAGS. 
+#     
+# To force a C99 compile in an emergency, replace
+#     $(CC_FLAGS)
+# below with 
+#      $(CC_C99_BASE_FLAGS) $(CC_TEST_OR_OPTIMIZE)
+# In developing KJB library code for the U.A. vision lab, this capability MUST
+# BE USED ONLY FOR TRANSITION. 
+#
+################################################################################
+
+WRAP_FLANDMARK_CPP_LIB_CC_FLAGS = $(CC_FLAGS)
+WRAP_FLANDMARK_CPP_LIB_CC_WARNING_FLAGS = $(CC_KJB_WARNINGS)
+WRAP_FLANDMARK_CPP_LIB_CXX_FLAGS = $(CXX_FLAGS)
+WRAP_FLANDMARK_CPP_LIB_CXX_WARNING_FLAGS = $(CXX_KJB_WARNINGS)
+WRAP_FLANDMARK_CPP_LIB_EXTRA_COMPILE_FLAGS =
+
+################################################################################
+
+WRAP_FLANDMARK_CPP_LIB_PREFIX = wrap_flandmark_cpp
+WRAP_FLANDMARK_CPP_LIB_UC_PREFIX = WRAP_FLANDMARK_CPP
+
+WRAP_FLANDMARK_CPP_LIB_SRC_DIR = $(WRAP_FLANDMARK_CPP_DIR)
+WRAP_FLANDMARK_CPP_LIB_REAL_SRC_DIR = $(REAL_WRAP_FLANDMARK_CPP_DIR)
+
+WRAP_FLANDMARK_CPP_LIB_ARCHIVE = $(WRAP_FLANDMARK_CPP_DIR)$(OBJ_DIR)libKJBwrap_flandmark_cpp.a
+WRAP_FLANDMARK_CPP_LIB_LD = -L$(WRAP_FLANDMARK_CPP_DIR)$(OBJ_DIR) -lKJBwrap_flandmark_cpp 
+
+################################################################################
+
+$(WRAP_FLANDMARK_CPP_DIR)Makefile-library.$(MAKE_FLAVOR) : $(MAKE_DIR)Makefile-library.$(MAKE_FLAVOR)
+	sed 's/LIB_COMPONENT/WRAP_FLANDMARK_CPP_LIB/g' < $< > $@
+
+include $(WRAP_FLANDMARK_CPP_DIR)Makefile-library.$(MAKE_FLAVOR)
+
+################################################################################
+
+$(WRAP_FLANDMARK_CPP_DIR)Makefile-library : $(MAKE_DIR)Makefile-library
+	sed 's/LIB_COMPONENT/WRAP_FLANDMARK_CPP_LIB/g' < $< > $@
+
+include $(WRAP_FLANDMARK_CPP_DIR)Makefile-library
+
+################################################################################
+
+# As of 19/01/02, we do this in Makefile-library. Delete eventually. 
+#
+### # What if Include_lines/header_file_list does not exist?
+### $(WRAP_FLANDMARK_CPP_DIR)Include_lines/header_file_list : 
+### 	$(KJB_MKDIR) $(WRAP_FLANDMARK_CPP_DIR)Include_lines
+### 	$(KJB_RM) $@.new
+### 	$(KJB_TOUCH) $@
+### 
+### $(WRAP_FLANDMARK_CPP_DIR)$(WRAP_FLANDMARK_CPP_LIB_PREFIX)_incl.h : $(MAKE_SCRIPT_PATH)build_incl_dot_h $(WRAP_FLANDMARK_CPP_DIR)Include_lines/header_file_list 
+### 	@$(ECHO_IF_VERBOSE) "Building $@ because of $?" 
+### 	$(MAKE_SCRIPT_PATH)build_incl_dot_h $(WRAP_FLANDMARK_CPP_DIR)
+### 
+### ################################################################################
+### 
+### # Custom compile lines go here. Unfortunately, patterns cannot be used. However,
+### # if you want to change the compile for the entire directory, you can probably
+### # do what you want by changing the flags above (e.g., CC_FLAGS). 
+### 
+### 

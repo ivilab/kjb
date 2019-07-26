@@ -1,0 +1,48 @@
+
+# Template for Makefile-2 for a library directory. Usually operated on by the
+# script kjb_add_makefiles. 
+#
+# The directory that we are in should have a different name than any KJB library
+# sub-dirs. 
+#
+# Replace 'gr_cpp' with the directory name, and GR_CPP with the upper case
+# counterpart.  The string that replaces 'gr_cpp' should not be a sub-dir of KJB
+# library. 
+#
+# Then, DELETE this comment block, because it is no longer a template! 
+#
+
+all          : all_gr_cpp
+dir_made     : dir_made_gr_cpp
+clean        : clean_gr_cpp
+depend       : depend_gr_cpp
+doc          : doc_gr_cpp
+misc_doc     : misc_doc_gr_cpp
+doxygen      : doxygen_gr_cpp
+doc_dir_made : doc_dir_made_gr_cpp
+lint         : lint_gr_cpp
+proto        : proto_gr_cpp
+shared       : shared_gr_cpp
+
+#
+# We include $(MAKE_DIR)Makefile-defs once per compile, so this include belongs
+# in Makefefile-2. We Note that we rely on late binding of make variables, as
+# the proper definition of symbols in $(MAKE_DIR)Makefile-defs require values in
+# Makefile-libs-needed, which is included later. 
+#
+include $(MAKE_DIR)Makefile-defs
+
+# This is for the case that Makefile-dirs does not exist.
+# Other updating is handled indirectly.
+#
+Makefile-dirs : 
+	$(MAKE_SCRIPT_PATH)build_file_list
+	$(MAKE_SCRIPT_PATH)build_include_lines
+
+include Makefile-dirs
+
+include Makefile-include
+
+init_clean:
+	$(MAKE_SCRIPT_PATH)clean_cache
+

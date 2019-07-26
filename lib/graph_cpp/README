@@ -1,0 +1,19 @@
+This directory contains basically just one function, min_bipartite_match(),
+which optimally solves the matching problem on a weighted complete bipartite
+graph (specifically, the edges are weighted by additive costs).
+
+This same problem can be solved using the so-called "Hungarian algorithm,"
+and there is an implementation in lib/graph.  However, that has a few problems.
+1. It only solves the problem for integer weights.
+2. It does not seem to work reliably.
+3. The code is incomprehensible.
+
+The version presented here uses a slower approach based on Dynamic Programming.
+To be honest, it is probably a lot slower, and I'm not even sure what the
+time complexity is -- I think maybe O(N^4) or perhaps O(N^3 log(N)).
+However, it works with real weights, it seems to be more reliable (although
+I have not extensively tested), and the code is easier to understand,
+so debugging should be possible.
+
+I based the design on a Python prototype that lives in the test subdirectory.
+If you're trying to understand the function, the Python script might help.

@@ -1,0 +1,19 @@
+
+# 
+# Machine generated file to set make targets
+#
+
+PROGRAMS = \
+        $(OBJ_DIR)matlab_invert \
+        $(OBJ_DIR)quadratic \
+        $(OBJ_DIR)quadratic2
+
+
+
+
+MAN_FROM_HELP_FILES = \
+
+
+
+MAN_FROM_WRITEUP_FILES = \
+

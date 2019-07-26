@@ -1,0 +1,36 @@
+
+all          : all_nr
+dir_made     : dir_made_nr
+clean        : clean_nr
+depend       : depend_nr
+doc          : doc_nr
+misc_doc     : misc_doc_nr
+misc_doc     : misc_doc_nr
+doxygen      : doxygen_nr
+doc_dir_made : doc_dir_made_nr
+lint         : lint_nr
+proto        : proto_nr
+shared       : shared_nr
+
+#
+# We include $(MAKE_DIR)Makefile-defs once per compile, so this include belongs
+# in Makefefile-2. We Note that we rely on late binding of make variables, as
+# the proper definition of symbols in $(MAKE_DIR)Makefile-defs require values in
+# Makefile-libs-needed, which is included later. 
+#
+include $(MAKE_DIR)Makefile-defs
+
+# This is for the case that Makefile-dirs does not exist.
+# Other updating is handled indirectly.
+#
+Makefile-dirs : 
+	$(MAKE_SCRIPT_PATH)build_file_list
+	$(MAKE_SCRIPT_PATH)build_include_lines
+
+include Makefile-dirs
+
+include Makefile-include
+
+init_clean:
+	$(MAKE_SCRIPT_PATH)clean_cache
+

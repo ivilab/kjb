@@ -1,0 +1,73 @@
+
+################################################################################
+#                             Options
+
+# For programs, speical purpose compile options are set in Makefile-2. For
+# library modules, the must go in Makefile-include. 
+#
+# For example, to force no optimization for C compiles, replace CC_FLAGS with
+# DONT_OPTIMIZE_CC_FLAGS. 
+#     
+# To force a C99 compile in an emergency, replace
+#     $(CC_FLAGS)
+# below with 
+#      $(CC_C99_BASE_FLAGS) $(CC_TEST_OR_OPTIMIZE)
+# In developing KJB library code for the U.A. vision lab, this capability MUST
+# BE USED ONLY FOR TRANSITION. 
+#
+################################################################################
+
+G_LIB_CC_FLAGS = $(CC_FLAGS)
+G_LIB_CC_WARNING_FLAGS = $(CC_KJB_WARNINGS)
+G_LIB_CXX_FLAGS = $(CXX_FLAGS)
+G_LIB_CXX_WARNING_FLAGS = $(CXX_KJB_WARNINGS)
+G_LIB_EXTRA_COMPILE_FLAGS =
+
+################################################################################
+
+G_LIB_PREFIX = g
+G_LIB_UC_PREFIX = G
+
+G_LIB_SRC_DIR = $(G_DIR)
+G_LIB_REAL_SRC_DIR = $(REAL_G_DIR)
+
+G_LIB_ARCHIVE = $(G_DIR)$(OBJ_DIR)libKJBg.a
+G_LIB_LD = -L$(G_DIR)$(OBJ_DIR) -lKJBg 
+
+################################################################################
+
+$(G_DIR)Makefile-library.$(MAKE_FLAVOR) : $(MAKE_DIR)Makefile-library.$(MAKE_FLAVOR)
+	sed 's/LIB_COMPONENT/G_LIB/g' < $< > $@
+
+include $(G_DIR)Makefile-library.$(MAKE_FLAVOR)
+
+################################################################################
+
+$(G_DIR)Makefile-library : $(MAKE_DIR)Makefile-library
+	sed 's/LIB_COMPONENT/G_LIB/g' < $< > $@
+
+include $(G_DIR)Makefile-library
+
+################################################################################
+
+# As of 19/01/02, we do this in Makefile-library. Delete eventually. 
+#
+### # What if Include_lines/header_file_list does not exist?
+### $(G_DIR)Include_lines/header_file_list : 
+### 	$(KJB_MKDIR) $(G_DIR)Include_lines
+### 	$(KJB_RM) $@.new
+### 	$(KJB_TOUCH) $@
+### 
+### $(G_DIR)$(G_LIB_PREFIX)_incl.h : $(MAKE_SCRIPT_PATH)build_incl_dot_h $(G_DIR)Include_lines/header_file_list 
+### 	@$(ECHO_IF_VERBOSE) "Building $@ because of $?" 
+### 	$(MAKE_SCRIPT_PATH)build_incl_dot_h $(G_DIR)
+### 
+### ################################################################################
+### 
+### # Custom compile lines go here. Unfortunately, patterns cannot be used. However,
+### # if you want to change the compile for the entire directory, you can probably
+### # do what you want by changing the flags above (e.g., CC_FLAGS). 
+### 
+### 
+### 
+### 

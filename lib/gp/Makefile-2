@@ -1,0 +1,35 @@
+
+all          : all_gp
+dir_made     : dir_made_gp
+clean        : clean_gp
+depend       : depend_gp
+doc          : doc_gp
+misc_doc     : misc_doc_gp
+doxygen      : doxygen_gp
+doc_dir_made : doc_dir_made_gp
+lint         : lint_gp
+proto        : proto_gp
+shared       : shared_gp
+
+#
+# We include $(MAKE_DIR)Makefile-defs once per compile, so this include belongs
+# in Makefefile-2. We Note that we rely on late binding of make variables, as
+# the proper definition of symbols in $(MAKE_DIR)Makefile-defs require values in
+# Makefile-libs-needed, which is included later. 
+#
+include $(MAKE_DIR)Makefile-defs
+
+# This is for the case that Makefile-dirs does not exist.
+# Other updating is handled indirectly.
+#
+Makefile-dirs : 
+	$(MAKE_SCRIPT_PATH)build_file_list
+	$(MAKE_SCRIPT_PATH)build_include_lines
+
+include Makefile-dirs
+
+include Makefile-include
+
+init_clean:
+	$(MAKE_SCRIPT_PATH)clean_cache
+

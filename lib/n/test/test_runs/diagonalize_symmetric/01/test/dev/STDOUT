@@ -1,0 +1,602 @@
+<<  2 >> Verbose level at program startup is 5.
+<<  1 >> Try 1 with num_rows = 1 and num_cols = 1.
+<<  1 >> Diff is 0.0000e+00
+<<  1 >> Diff is 0.0000e+00
+<<  1 >> Diff is 0.0000e+00
+<<  1 >> Diff is 0.0000e+00
+<<  1 >> Diff is 0.0000e+00
+<<  1 >> Try 2 with num_rows = 36 and num_cols = 109.
+<<  1 >> Diff is 4.2435e-15
+<<  1 >> Diff is 7.7099e-19
+<<  1 >> Diff is 1.7133e-18
+<<  1 >> Diff is 7.7099e-19
+<<  1 >> Diff is 1.7544e-16
+<<  1 >> Try 3 with num_rows = 179 and num_cols = 281.
+<<  1 >> Diff is 2.0324e-14
+<<  1 >> Diff is 5.5440e-20
+<<  1 >> Diff is 2.7027e-19
+<<  1 >> Diff is 5.5440e-20
+<<  1 >> Diff is 3.1934e-17
+<<  1 >> Try 4 with num_rows = 90 and num_cols = 150.
+<<  1 >> Diff is 2.5264e-14
+<<  1 >> Diff is 2.1930e-19
+<<  1 >> Diff is 6.0308e-19
+<<  1 >> Diff is 2.1930e-19
+<<  1 >> Diff is 6.3159e-17
+<<  1 >> Try 5 with num_rows = 187 and num_cols = 328.
+<<  1 >> Diff is 4.8636e-14
+<<  1 >> Diff is 5.0798e-20
+<<  1 >> Diff is 1.6192e-19
+<<  1 >> Diff is 5.0798e-20
+<<  1 >> Diff is 2.8609e-16
+<<  1 >> Try 6 with num_rows = 101 and num_cols = 263.
+<<  1 >> Diff is 1.8010e-14
+<<  1 >> Diff is 1.3060e-19
+<<  1 >> Diff is 3.4827e-19
+<<  1 >> Diff is 1.3060e-19
+<<  1 >> Diff is 2.6747e-16
+<<  1 >> Try 7 with num_rows = 36 and num_cols = 66.
+<<  1 >> Diff is 1.2632e-14
+<<  1 >> Diff is 8.5665e-19
+<<  1 >> Diff is 2.4843e-18
+<<  1 >> Diff is 8.5665e-19
+<<  1 >> Diff is 7.6756e-17
+<<  1 >> Try 8 with num_rows = 156 and num_cols = 232.
+<<  1 >> Diff is 1.1660e-14
+<<  1 >> Diff is 9.5803e-20
+<<  1 >> Diff is 3.4215e-19
+<<  1 >> Diff is 9.5803e-20
+<<  1 >> Diff is 1.1212e-16
+<<  1 >> Try 9 with num_rows = 126 and num_cols = 222.
+<<  1 >> Diff is 7.2182e-15
+<<  1 >> Diff is 1.1189e-19
+<<  1 >> Diff is 3.2168e-19
+<<  1 >> Diff is 1.1189e-19
+<<  1 >> Diff is 1.7902e-16
+<<  1 >> Try 10 with num_rows = 151 and num_cols = 308.
+<<  1 >> Diff is 4.8185e-14
+<<  1 >> Diff is 7.7907e-20
+<<  1 >> Diff is 3.0189e-19
+<<  1 >> Diff is 7.7907e-20
+<<  1 >> Diff is 5.9833e-17
+<<  1 >> Try 11 with num_rows = 27 and num_cols = 169.
+<<  1 >> Diff is 8.4212e-15
+<<  1 >> Diff is 1.6086e-18
+<<  1 >> Diff is 3.6551e-18
+<<  1 >> Diff is 1.6086e-18
+<<  1 >> Diff is 4.6785e-16
+<<  1 >> Try 12 with num_rows = 41 and num_cols = 209.
+<<  1 >> Diff is 1.1091e-14
+<<  1 >> Diff is 7.9254e-19
+<<  1 >> Diff is 2.1135e-18
+<<  1 >> Diff is 7.9254e-19
+<<  1 >> Diff is 1.6908e-16
+<<  1 >> Try 13 with num_rows = 124 and num_cols = 206.
+<<  1 >> Diff is 3.6673e-14
+<<  1 >> Diff is 1.0109e-19
+<<  1 >> Diff is 3.8991e-19
+<<  1 >> Diff is 1.0109e-19
+<<  1 >> Diff is 8.1332e-17
+<<  1 >> Try 14 with num_rows = 85 and num_cols = 89.
+<<  1 >> Diff is 5.3500e-15
+<<  1 >> Diff is 1.5366e-19
+<<  1 >> Diff is 3.5343e-19
+<<  1 >> Diff is 1.5366e-19
+<<  1 >> Diff is 2.7537e-17
+<<  1 >> Try 15 with num_rows = 119 and num_cols = 135.
+<<  1 >> Diff is 3.8214e-14
+<<  1 >> Diff is 1.2544e-19
+<<  1 >> Diff is 2.9792e-19
+<<  1 >> Diff is 1.2544e-19
+<<  1 >> Diff is 1.0838e-16
+<<  1 >> Try 16 with num_rows = 135 and num_cols = 137.
+<<  1 >> Diff is 6.7370e-15
+<<  1 >> Diff is 8.5285e-20
+<<  1 >> Diff is 2.3758e-19
+<<  1 >> Diff is 8.5285e-20
+<<  1 >> Diff is 1.0293e-16
+<<  1 >> Try 17 with num_rows = 80 and num_cols = 159.
+<<  1 >> Diff is 5.6843e-15
+<<  1 >> Diff is 2.7756e-19
+<<  1 >> Diff is 5.8981e-19
+<<  1 >> Diff is 2.7756e-19
+<<  1 >> Diff is 5.3291e-17
+<<  1 >> Try 18 with num_rows = 191 and num_cols = 360.
+<<  1 >> Diff is 1.9047e-14
+<<  1 >> Diff is 4.2606e-20
+<<  1 >> Diff is 1.3999e-19
+<<  1 >> Diff is 4.2606e-20
+<<  1 >> Diff is 4.9861e-17
+<<  1 >> Try 19 with num_rows = 106 and num_cols = 306.
+<<  1 >> Diff is 8.5801e-14
+<<  1 >> Diff is 1.3833e-19
+<<  1 >> Diff is 4.3476e-19
+<<  1 >> Diff is 1.3833e-19
+<<  1 >> Diff is 2.1248e-16
+<<  1 >> Try 20 with num_rows = 32 and num_cols = 78.
+<<  1 >> Diff is 1.4211e-14
+<<  1 >> Diff is 1.8431e-18
+<<  1 >> Diff is 2.9273e-18
+<<  1 >> Diff is 1.8431e-18
+<<  1 >> Diff is 1.1102e-16
+<<  1 >> Try 21 with num_rows = 119 and num_cols = 308.
+<<  1 >> Diff is 4.5857e-14
+<<  1 >> Diff is 1.2544e-19
+<<  1 >> Diff is 5.0960e-19
+<<  1 >> Diff is 1.2544e-19
+<<  1 >> Diff is 7.2316e-17
+<<  1 >> Try 22 with num_rows = 116 and num_cols = 146.
+<<  1 >> Diff is 1.5681e-14
+<<  1 >> Diff is 9.0758e-20
+<<  1 >> Diff is 2.9703e-19
+<<  1 >> Diff is 9.0758e-20
+<<  1 >> Diff is 7.6039e-17
+<<  1 >> Try 23 with num_rows = 182 and num_cols = 377.
+<<  1 >> Diff is 7.9956e-14
+<<  1 >> Diff is 6.7034e-20
+<<  1 >> Diff is 1.9105e-19
+<<  1 >> Diff is 6.7034e-20
+<<  1 >> Diff is 1.7847e-16
+<<  1 >> Try 24 with num_rows = 120 and num_cols = 302.
+<<  1 >> Diff is 3.0316e-14
+<<  1 >> Diff is 1.3878e-19
+<<  1 >> Diff is 3.0840e-19
+<<  1 >> Diff is 1.3878e-19
+<<  1 >> Diff is 7.8949e-17
+<<  1 >> Try 25 with num_rows = 157 and num_cols = 206.
+<<  1 >> Diff is 3.4758e-14
+<<  1 >> Diff is 6.3058e-20
+<<  1 >> Diff is 1.8017e-19
+<<  1 >> Diff is 6.3058e-20
+<<  1 >> Diff is 5.5347e-17
+<<  1 >> Try 26 with num_rows = 195 and num_cols = 338.
+<<  1 >> Diff is 1.8656e-14
+<<  1 >> Diff is 4.6715e-20
+<<  1 >> Diff is 2.1606e-19
+<<  1 >> Diff is 4.6715e-20
+<<  1 >> Diff is 6.5775e-17
+<<  1 >> Try 27 with num_rows = 78 and num_cols = 199.
+<<  1 >> Diff is 2.9150e-14
+<<  1 >> Diff is 2.5548e-19
+<<  1 >> Diff is 5.1095e-19
+<<  1 >> Diff is 2.5548e-19
+<<  1 >> Diff is 5.6059e-17
+<<  1 >> Try 28 with num_rows = 194 and num_cols = 302.
+<<  1 >> Diff is 3.7505e-14
+<<  1 >> Diff is 4.7198e-20
+<<  1 >> Diff is 1.5929e-19
+<<  1 >> Diff is 4.7198e-20
+<<  1 >> Diff is 7.5517e-17
+<<  1 >> Try 29 with num_rows = 104 and num_cols = 254.
+<<  1 >> Diff is 4.3726e-14
+<<  1 >> Diff is 1.6423e-19
+<<  1 >> Diff is 5.5429e-19
+<<  1 >> Diff is 1.6423e-19
+<<  1 >> Diff is 8.4088e-17
+<<  1 >> Try 30 with num_rows = 93 and num_cols = 271.
+<<  1 >> Diff is 7.8236e-14
+<<  1 >> Diff is 1.9255e-19
+<<  1 >> Diff is 4.8778e-19
+<<  1 >> Diff is 1.9255e-19
+<<  1 >> Diff is 9.2012e-17
+<<  1 >> Try 31 with num_rows = 200 and num_cols = 323.
+<<  1 >> Diff is 4.5475e-14
+<<  1 >> Diff is 4.9960e-20
+<<  1 >> Diff is 1.8596e-19
+<<  1 >> Diff is 4.9960e-20
+<<  1 >> Diff is 2.0464e-16
+<<  1 >> Try 32 with num_rows = 178 and num_cols = 193.
+<<  1 >> Diff is 3.0657e-14
+<<  1 >> Diff is 6.3073e-20
+<<  1 >> Diff is 1.2965e-19
+<<  1 >> Diff is 6.3073e-20
+<<  1 >> Diff is 1.0764e-16
+<<  1 >> Try 33 with num_rows = 162 and num_cols = 211.
+<<  1 >> Diff is 1.9737e-15
+<<  1 >> Diff is 8.4608e-20
+<<  1 >> Diff is 2.4536e-19
+<<  1 >> Diff is 8.4608e-20
+<<  1 >> Diff is 4.3319e-17
+<<  1 >> Try 34 with num_rows = 84 and num_cols = 221.
+<<  1 >> Diff is 3.2482e-14
+<<  1 >> Diff is 1.8881e-19
+<<  1 >> Diff is 5.0350e-19
+<<  1 >> Diff is 1.8881e-19
+<<  1 >> Diff is 6.4448e-17
+<<  1 >> Try 35 with num_rows = 44 and num_cols = 117.
+<<  1 >> Diff is 4.6508e-14
+<<  1 >> Diff is 5.7346e-19
+<<  1 >> Diff is 1.1469e-18
+<<  1 >> Diff is 5.7346e-19
+<<  1 >> Diff is 2.4957e-16
+<<  1 >> Try 36 with num_rows = 197 and num_cols = 349.
+<<  1 >> Diff is 7.3868e-14
+<<  1 >> Diff is 4.0050e-20
+<<  1 >> Diff is 1.7164e-19
+<<  1 >> Diff is 4.0050e-20
+<<  1 >> Diff is 1.9920e-16
+<<  1 >> Try 37 with num_rows = 114 and num_cols = 167.
+<<  1 >> Diff is 3.1912e-14
+<<  1 >> Diff is 1.3668e-19
+<<  1 >> Diff is 4.6985e-19
+<<  1 >> Diff is 1.3668e-19
+<<  1 >> Diff is 3.4991e-17
+<<  1 >> Try 38 with num_rows = 145 and num_cols = 302.
+<<  1 >> Diff is 8.7813e-14
+<<  1 >> Diff is 9.5049e-20
+<<  1 >> Diff is 2.7987e-19
+<<  1 >> Diff is 9.5049e-20
+<<  1 >> Diff is 1.7844e-16
+<<  1 >> Try 39 with num_rows = 189 and num_cols = 199.
+<<  1 >> Diff is 4.8121e-14
+<<  1 >> Diff is 4.3513e-20
+<<  1 >> Diff is 1.6162e-19
+<<  1 >> Diff is 4.3513e-20
+<<  1 >> Diff is 5.7287e-17
+<<  1 >> Try 40 with num_rows = 135 and num_cols = 188.
+<<  1 >> Diff is 1.3474e-14
+<<  1 >> Diff is 9.7468e-20
+<<  1 >> Diff is 3.4114e-19
+<<  1 >> Diff is 9.7468e-20
+<<  1 >> Diff is 3.7428e-17
+<<  1 >> Try 41 with num_rows = 86 and num_cols = 112.
+<<  1 >> Diff is 5.2878e-15
+<<  1 >> Diff is 1.8013e-19
+<<  1 >> Diff is 5.1038e-19
+<<  1 >> Diff is 1.8013e-19
+<<  1 >> Diff is 3.0743e-17
+<<  1 >> Try 42 with num_rows = 13 and num_cols = 135.
+<<  1 >> Diff is 1.3118e-14
+<<  1 >> Diff is 5.2555e-18
+<<  1 >> Diff is 6.5694e-18
+<<  1 >> Diff is 5.2555e-18
+<<  1 >> Diff is 1.1772e-15
+<<  1 >> Try 43 with num_rows = 121 and num_cols = 230.
+<<  1 >> Diff is 2.2549e-14
+<<  1 >> Diff is 1.0616e-19
+<<  1 >> Diff is 3.0332e-19
+<<  1 >> Diff is 1.0616e-19
+<<  1 >> Diff is 6.9885e-17
+<<  1 >> Try 44 with num_rows = 80 and num_cols = 190.
+<<  1 >> Diff is 3.9790e-14
+<<  1 >> Diff is 2.4286e-19
+<<  1 >> Diff is 5.2042e-19
+<<  1 >> Diff is 2.4286e-19
+<<  1 >> Diff is 5.9484e-17
+<<  1 >> Try 45 with num_rows = 45 and num_cols = 109.
+<<  1 >> Diff is 2.0211e-14
+<<  1 >> Diff is 5.4826e-19
+<<  1 >> Diff is 1.4255e-18
+<<  1 >> Diff is 5.4826e-19
+<<  1 >> Diff is 3.2281e-16
+<<  1 >> Try 46 with num_rows = 164 and num_cols = 363.
+<<  1 >> Diff is 2.2183e-14
+<<  1 >> Diff is 5.7790e-20
+<<  1 >> Diff is 2.4767e-19
+<<  1 >> Diff is 5.7790e-20
+<<  1 >> Diff is 7.6084e-17
+<<  1 >> Try 47 with num_rows = 24 and num_cols = 208.
+<<  1 >> Diff is 1.8948e-14
+<<  1 >> Diff is 1.9275e-18
+<<  1 >> Diff is 3.4694e-18
+<<  1 >> Diff is 1.9275e-18
+<<  1 >> Diff is 4.8264e-16
+<<  1 >> Try 48 with num_rows = 37 and num_cols = 212.
+<<  1 >> Diff is 1.2290e-14
+<<  1 >> Diff is 1.1354e-18
+<<  1 >> Diff is 3.2439e-18
+<<  1 >> Diff is 1.1354e-18
+<<  1 >> Diff is 6.2283e-16
+<<  1 >> Try 49 with num_rows = 95 and num_cols = 249.
+<<  1 >> Diff is 9.5736e-15
+<<  1 >> Diff is 1.4762e-19
+<<  1 >> Diff is 5.1667e-19
+<<  1 >> Diff is 1.4762e-19
+<<  1 >> Diff is 1.6376e-16
+<<  1 >> Try 50 with num_rows = 87 and num_cols = 167.
+<<  1 >> Diff is 1.0454e-14
+<<  1 >> Diff is 2.0535e-19
+<<  1 >> Diff is 3.2270e-19
+<<  1 >> Diff is 2.0535e-19
+<<  1 >> Diff is 7.5100e-17
+<<  1 >> Try 51 with num_rows = 200 and num_cols = 372.
+<<  1 >> Diff is 9.0949e-14
+<<  1 >> Diff is 3.8858e-20
+<<  1 >> Diff is 1.9706e-19
+<<  1 >> Diff is 3.8858e-20
+<<  1 >> Diff is 1.5916e-16
+<<  1 >> Try 52 with num_rows = 11 and num_cols = 12.
+<<  1 >> Diff is 3.8757e-15
+<<  1 >> Diff is 5.5626e-18
+<<  1 >> Diff is 7.3403e-18
+<<  1 >> Diff is 5.5626e-18
+<<  1 >> Diff is 1.6149e-16
+<<  1 >> Try 53 with num_rows = 23 and num_cols = 57.
+<<  1 >> Diff is 2.4715e-15
+<<  1 >> Diff is 2.3086e-18
+<<  1 >> Diff is 4.8271e-18
+<<  1 >> Diff is 2.3086e-18
+<<  1 >> Diff is 1.3432e-16
+<<  1 >> Try 54 with num_rows = 193 and num_cols = 263.
+<<  1 >> Diff is 3.0925e-15
+<<  1 >> Diff is 3.5767e-20
+<<  1 >> Diff is 1.3711e-19
+<<  1 >> Diff is 3.5767e-20
+<<  1 >> Diff is 8.8510e-17
+<<  1 >> Try 55 with num_rows = 9 and num_cols = 59.
+<<  1 >> Diff is 9.4739e-15
+<<  1 >> Diff is 5.5468e-18
+<<  1 >> Diff is 6.2964e-18
+<<  1 >> Diff is 5.5468e-18
+<<  1 >> Diff is 1.9600e-16
+<<  1 >> Try 56 with num_rows = 96 and num_cols = 294.
+<<  1 >> Diff is 5.6843e-14
+<<  1 >> Diff is 2.1684e-19
+<<  1 >> Diff is 4.5777e-19
+<<  1 >> Diff is 2.1684e-19
+<<  1 >> Diff is 7.8930e-17
+<<  1 >> Try 57 with num_rows = 182 and num_cols = 361.
+<<  1 >> Diff is 1.9989e-14
+<<  1 >> Diff is 5.3627e-20
+<<  1 >> Diff is 1.8099e-19
+<<  1 >> Diff is 5.3627e-20
+<<  1 >> Diff is 1.7847e-16
+<<  1 >> Try 58 with num_rows = 77 and num_cols = 224.
+<<  1 >> Diff is 3.5435e-14
+<<  1 >> Diff is 2.9960e-19
+<<  1 >> Diff is 5.9921e-19
+<<  1 >> Diff is 2.9960e-19
+<<  1 >> Diff is 9.5874e-17
+<<  1 >> Try 59 with num_rows = 87 and num_cols = 122.
+<<  1 >> Diff is 2.0908e-14
+<<  1 >> Diff is 2.0535e-19
+<<  1 >> Diff is 5.1338e-19
+<<  1 >> Diff is 2.0535e-19
+<<  1 >> Diff is 3.7550e-17
+<<  1 >> Try 60 with num_rows = 43 and num_cols = 181.
+<<  1 >> Diff is 1.0576e-14
+<<  1 >> Diff is 4.8036e-19
+<<  1 >> Diff is 1.4411e-18
+<<  1 >> Diff is 4.8036e-19
+<<  1 >> Diff is 1.2297e-16
+<<  1 >> Try 61 with num_rows = 150 and num_cols = 225.
+<<  1 >> Diff is 1.2127e-14
+<<  1 >> Diff is 8.3884e-20
+<<  1 >> Diff is 2.3685e-19
+<<  1 >> Diff is 8.3884e-20
+<<  1 >> Diff is 5.0527e-17
+<<  1 >> Try 62 with num_rows = 2 and num_cols = 168.
+<<  1 >> Diff is 7.1054e-15
+<<  1 >> Diff is 5.5511e-17
+<<  1 >> Diff is 5.5511e-17
+<<  1 >> Diff is 5.5511e-17
+<<  1 >> Diff is 0.0000e+00
+<<  1 >> Try 63 with num_rows = 183 and num_cols = 342.
+<<  1 >> Diff is 5.9639e-14
+<<  1 >> Diff is 4.9728e-20
+<<  1 >> Diff is 1.8565e-19
+<<  1 >> Diff is 4.9728e-20
+<<  1 >> Diff is 8.8264e-17
+<<  1 >> Try 64 with num_rows = 159 and num_cols = 251.
+<<  1 >> Diff is 9.1521e-14
+<<  1 >> Diff is 5.7090e-20
+<<  1 >> Diff is 2.5032e-19
+<<  1 >> Diff is 5.7090e-20
+<<  1 >> Diff is 1.7988e-16
+<<  1 >> Try 65 with num_rows = 97 and num_cols = 137.
+<<  1 >> Diff is 2.8129e-14
+<<  1 >> Diff is 1.7699e-19
+<<  1 >> Diff is 4.6018e-19
+<<  1 >> Diff is 1.7699e-19
+<<  1 >> Diff is 1.1479e-16
+<<  1 >> Try 66 with num_rows = 28 and num_cols = 133.
+<<  1 >> Diff is 4.0602e-15
+<<  1 >> Diff is 1.4161e-18
+<<  1 >> Diff is 2.2658e-18
+<<  1 >> Diff is 1.4161e-18
+<<  1 >> Diff is 2.9002e-16
+<<  1 >> Try 67 with num_rows = 149 and num_cols = 302.
+<<  1 >> Diff is 3.6624e-14
+<<  1 >> Diff is 7.5012e-20
+<<  1 >> Diff is 3.8506e-19
+<<  1 >> Diff is 7.5012e-20
+<<  1 >> Diff is 5.6329e-17
+<<  1 >> Try 68 with num_rows = 81 and num_cols = 131.
+<<  1 >> Diff is 2.2457e-14
+<<  1 >> Diff is 2.0306e-19
+<<  1 >> Diff is 5.0765e-19
+<<  1 >> Diff is 2.0306e-19
+<<  1 >> Diff is 6.0647e-17
+<<  1 >> Try 69 with num_rows = 29 and num_cols = 37.
+<<  1 >> Diff is 1.9601e-15
+<<  1 >> Diff is 1.5841e-18
+<<  1 >> Diff is 2.3762e-18
+<<  1 >> Diff is 1.5841e-18
+<<  1 >> Diff is 6.7590e-17
+<<  1 >> Try 70 with num_rows = 134 and num_cols = 155.
+<<  1 >> Diff is 6.7873e-15
+<<  1 >> Diff is 1.1129e-19
+<<  1 >> Diff is 2.8442e-19
+<<  1 >> Diff is 1.1129e-19
+<<  1 >> Diff is 3.7988e-17
+<<  1 >> Try 71 with num_rows = 127 and num_cols = 252.
+<<  1 >> Diff is 2.8646e-14
+<<  1 >> Diff is 9.6368e-20
+<<  1 >> Diff is 3.1664e-19
+<<  1 >> Diff is 9.6368e-20
+<<  1 >> Diff is 1.0573e-16
+<<  1 >> Try 72 with num_rows = 104 and num_cols = 148.
+<<  1 >> Diff is 4.3726e-14
+<<  1 >> Diff is 1.3344e-19
+<<  1 >> Diff is 3.4900e-19
+<<  1 >> Diff is 1.3344e-19
+<<  1 >> Diff is 4.7299e-17
+<<  1 >> Try 73 with num_rows = 3 and num_cols = 16.
+<<  1 >> Diff is 2.3685e-15
+<<  1 >> Diff is 6.1679e-17
+<<  1 >> Diff is 8.6351e-17
+<<  1 >> Diff is 6.1679e-17
+<<  1 >> Diff is 3.7007e-16
+<<  1 >> Try 74 with num_rows = 114 and num_cols = 175.
+<<  1 >> Diff is 4.7868e-14
+<<  1 >> Diff is 1.0251e-19
+<<  1 >> Diff is 3.0754e-19
+<<  1 >> Diff is 1.0251e-19
+<<  1 >> Diff is 3.9365e-17
+<<  1 >> Try 75 with num_rows = 72 and num_cols = 118.
+<<  1 >> Diff is 3.7896e-14
+<<  1 >> Diff is 3.8549e-19
+<<  1 >> Diff is 8.5665e-19
+<<  1 >> Diff is 3.8549e-19
+<<  1 >> Diff is 1.8093e-16
+<<  1 >> Try 76 with num_rows = 146 and num_cols = 166.
+<<  1 >> Diff is 2.4918e-14
+<<  1 >> Diff is 8.3334e-20
+<<  1 >> Diff is 3.2813e-19
+<<  1 >> Diff is 8.3334e-20
+<<  1 >> Diff is 3.7334e-17
+<<  1 >> Try 77 with num_rows = 36 and num_cols = 84.
+<<  1 >> Diff is 1.8997e-15
+<<  1 >> Diff is 8.5665e-19
+<<  1 >> Diff is 2.2273e-18
+<<  1 >> Diff is 8.5665e-19
+<<  1 >> Diff is 1.0965e-16
+<<  1 >> Try 78 with num_rows = 188 and num_cols = 222.
+<<  1 >> Diff is 3.8702e-14
+<<  1 >> Diff is 5.6541e-20
+<<  1 >> Diff is 1.9161e-19
+<<  1 >> Diff is 5.6541e-20
+<<  1 >> Diff is 1.5761e-16
+<<  1 >> Try 79 with num_rows = 79 and num_cols = 97.
+<<  1 >> Diff is 5.7563e-15
+<<  1 >> Diff is 2.8463e-19
+<<  1 >> Diff is 4.8031e-19
+<<  1 >> Diff is 2.8463e-19
+<<  1 >> Diff is 1.2296e-16
+<<  1 >> Try 80 with num_rows = 99 and num_cols = 103.
+<<  1 >> Diff is 1.2201e-15
+<<  1 >> Diff is 2.0390e-19
+<<  1 >> Diff is 4.0780e-19
+<<  1 >> Diff is 2.0390e-19
+<<  1 >> Diff is 6.9597e-17
+<<  1 >> Try 81 with num_rows = 177 and num_cols = 274.
+<<  1 >> Diff is 8.2214e-14
+<<  1 >> Diff is 4.9613e-20
+<<  1 >> Diff is 2.1263e-19
+<<  1 >> Diff is 4.9613e-20
+<<  1 >> Diff is 1.7781e-16
+<<  1 >> Try 82 with num_rows = 176 and num_cols = 345.
+<<  1 >> Diff is 8.2681e-14
+<<  1 >> Diff is 4.6594e-20
+<<  1 >> Diff is 1.5770e-19
+<<  1 >> Diff is 4.6594e-20
+<<  1 >> Diff is 1.4681e-16
+<<  1 >> Try 83 with num_rows = 135 and num_cols = 319.
+<<  1 >> Diff is 4.0422e-14
+<<  1 >> Diff is 1.0965e-19
+<<  1 >> Diff is 3.5332e-19
+<<  1 >> Diff is 1.0965e-19
+<<  1 >> Diff is 1.4347e-16
+<<  1 >> Try 84 with num_rows = 55 and num_cols = 65.
+<<  1 >> Diff is 1.4469e-14
+<<  1 >> Diff is 4.4042e-19
+<<  1 >> Diff is 1.2479e-18
+<<  1 >> Diff is 4.4042e-19
+<<  1 >> Diff is 3.7582e-17
+<<  1 >> Try 85 with num_rows = 49 and num_cols = 77.
+<<  1 >> Diff is 3.0162e-14
+<<  1 >> Diff is 4.6240e-19
+<<  1 >> Diff is 1.0173e-18
+<<  1 >> Diff is 4.6240e-19
+<<  1 >> Diff is 1.3021e-16
+<<  1 >> Try 86 with num_rows = 197 and num_cols = 310.
+<<  1 >> Diff is 1.0157e-13
+<<  1 >> Diff is 5.1493e-20
+<<  1 >> Diff is 1.8309e-19
+<<  1 >> Diff is 5.1493e-20
+<<  1 >> Diff is 5.8588e-17
+<<  1 >> Try 87 with num_rows = 136 and num_cols = 145.
+<<  1 >> Diff is 6.6875e-15
+<<  1 >> Diff is 9.0038e-20
+<<  1 >> Diff is 3.0013e-19
+<<  1 >> Diff is 9.0038e-20
+<<  1 >> Diff is 5.2246e-17
+<<  1 >> Try 88 with num_rows = 171 and num_cols = 226.
+<<  1 >> Diff is 1.0637e-14
+<<  1 >> Diff is 5.3155e-20
+<<  1 >> Diff is 1.4428e-19
+<<  1 >> Diff is 5.3155e-20
+<<  1 >> Diff is 3.4991e-17
+<<  1 >> Try 89 with num_rows = 10 and num_cols = 167.
+<<  1 >> Diff is 3.4106e-14
+<<  1 >> Diff is 9.9920e-18
+<<  1 >> Diff is 1.5543e-17
+<<  1 >> Diff is 9.9920e-18
+<<  1 >> Diff is 9.9476e-16
+<<  1 >> Try 90 with num_rows = 72 and num_cols = 190.
+<<  1 >> Diff is 4.4212e-14
+<<  1 >> Diff is 1.9275e-19
+<<  1 >> Diff is 8.3524e-19
+<<  1 >> Diff is 1.9275e-19
+<<  1 >> Diff is 7.6756e-17
+<<  1 >> Try 91 with num_rows = 154 and num_cols = 350.
+<<  1 >> Diff is 2.3623e-14
+<<  1 >> Diff is 7.4901e-20
+<<  1 >> Diff is 2.5279e-19
+<<  1 >> Diff is 7.4901e-20
+<<  1 >> Diff is 6.7111e-17
+<<  1 >> Try 92 with num_rows = 10 and num_cols = 88.
+<<  1 >> Diff is 3.4106e-14
+<<  1 >> Diff is 4.4409e-18
+<<  1 >> Diff is 6.6613e-18
+<<  1 >> Diff is 4.4409e-18
+<<  1 >> Diff is 9.2371e-16
+<<  1 >> Try 93 with num_rows = 31 and num_cols = 67.
+<<  1 >> Diff is 3.6673e-15
+<<  1 >> Diff is 1.1553e-18
+<<  1 >> Diff is 1.9640e-18
+<<  1 >> Diff is 1.1553e-18
+<<  1 >> Diff is 2.3660e-16
+<<  1 >> Try 94 with num_rows = 116 and num_cols = 283.
+<<  1 >> Diff is 3.1362e-14
+<<  1 >> Diff is 1.4851e-19
+<<  1 >> Diff is 4.4554e-19
+<<  1 >> Diff is 1.4851e-19
+<<  1 >> Diff is 1.3518e-16
+<<  1 >> Try 95 with num_rows = 47 and num_cols = 116.
+<<  1 >> Diff is 4.8377e-15
+<<  1 >> Diff is 6.0311e-19
+<<  1 >> Diff is 1.6585e-18
+<<  1 >> Diff is 6.0311e-19
+<<  1 >> Diff is 3.6026e-16
+<<  1 >> Try 96 with num_rows = 57 and num_cols = 193.
+<<  1 >> Diff is 1.5956e-14
+<<  1 >> Diff is 4.1005e-19
+<<  1 >> Diff is 1.1618e-18
+<<  1 >> Diff is 4.1005e-19
+<<  1 >> Diff is 6.9983e-17
+<<  1 >> Try 97 with num_rows = 96 and num_cols = 133.
+<<  1 >> Diff is 5.6843e-14
+<<  1 >> Diff is 1.5661e-19
+<<  1 >> Diff is 4.0959e-19
+<<  1 >> Diff is 1.5661e-19
+<<  1 >> Diff is 7.4015e-17
+<<  1 >> Try 98 with num_rows = 75 and num_cols = 167.
+<<  1 >> Diff is 2.4253e-14
+<<  1 >> Diff is 2.5658e-19
+<<  1 >> Diff is 9.0792e-19
+<<  1 >> Diff is 2.5658e-19
+<<  1 >> Diff is 7.0738e-17
+<<  1 >> Try 99 with num_rows = 16 and num_cols = 186.
+<<  1 >> Diff is 2.1316e-14
+<<  1 >> Diff is 5.2042e-18
+<<  1 >> Diff is 6.0715e-18
+<<  1 >> Diff is 5.2042e-18
+<<  1 >> Diff is 8.8818e-16
+<<  1 >> Try 100 with num_rows = 1 and num_cols = 144.
+<<  1 >> Diff is 0.0000e+00
+<<  1 >> Diff is 0.0000e+00
+<<  1 >> Diff is 0.0000e+00
+<<  1 >> Diff is 0.0000e+00
+<<  1 >> Diff is 0.0000e+00
+<<  1 >> Relative time saved by symmetric routine is 71.365% (ignore line for regression testing).

@@ -1,0 +1,67 @@
+This directory contains C++ code used to manipulate GIS data structures,
+aerial imagery, and digial elevation models (DEMs).
+The primary authors are Scott and Alan Morris and Andrew Predoehl.  The Morris
+code is derived from TopoFusion.  The DEM code is written by Andrew Predoehl.
+
+The main GIS classes are called "pt," "seg,"
+"track," and "layer."  A pt is a location on the earth implemented as UTM
+coordinates.  A seg is a sequence of points, a track is a seg with some extra
+metadata attached, and a layer is a sequence of tracks and waypoints.
+(A waypoint is a pt with some attached metadata.)  This code is used by the
+Finding Trails project.  Another portion of this code supports aerial
+orthoimagery.
+
+layer.h, autolayer.h:
+File layer.h gives access to the above
+GIS data structures.  The layer structure is the highest level one, and it
+is built with malloc()/free() in mind, so you will probably prefer to
+include autolayer.h, which will wrap up the layer structure and destroy all
+its pieces with a proper destructor.
+
+xml.h:
+This gives one access to file IO functions for a track data structure.  You can
+read a track from a GPX format file, or write a track to a GPX format file.
+
+dorthoquad.h:
+Two classes are declared in this header:  DOrthoQuad and Tile_manager.
+
+Tile_manager offers an RAII solution to the task of opening and closing the
+tile index cache that is available in lib/topo, and required by DOrthoQuad.
+It will use a certain local cache on the internal SISTA-network NFS filesystem,
+or use the internet otherwise, and it will try to make the proper decisions
+dynamically and transparently.  It's designed to be very easy to use.
+
+DOrthoQuad is a class that supports Digital Orthoquads (orthographic
+quadrangles) of aerial imagery from MSR Maps.  You can download a large square
+aerial image at any given point, keep it in a buffer, read it or convert it to
+a kjb::Image object.  It relies on the cache functionality in lib/topo,
+possibly as provided by Tile_manager (or you can use lib/topo directly, if you
+want).  See the test_doq program in test/interactive.
+
+download.h:
+This file is used to download aerial orthoquad imagery from MSR Maps
+(Microsoft) in the form of tiles.  This routine complements the
+functionality exposed by lib/topo.  It is used as a component of
+class DOrthoQuad (which you should prefer to use, if it meets your needs).
+
+
+nedget.h:
+Functions in this file support using Digital Elevation Model (DEM) data, i.e.,
+the heights of mountains, valleys, and all points between.
+The DEM "brand" we use is the American database known as NED13, which
+is maintained by the USGS.  The usual function to call is get_ned_matrix, which
+writes output to a kjb::Matrix, but some other low-level output formats are
+exposed too.  The test directory contains examples of working with example NED
+data in data_3/trails/elevation.
+
+The nedget code is still in flux and more functionality is expected soon.
+There are options to accomodate different preference for interpolation,
+and I also want to add code that supports not just elevation, but also
+elevation gradient interpolated at each query point.
+This README file is thus doomed to be out of date until development is closer
+to complete.
+
+Andy Predoehl
+29 Nov 2012
+Summer 2013
+

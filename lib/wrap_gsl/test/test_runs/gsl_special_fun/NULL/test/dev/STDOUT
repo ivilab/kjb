@@ -1,0 +1,41 @@
+<<  2 >> Verbose level at program startup is 2.
+<<TEST>> Parent process in create_system_command_process() is 46176 (ignore line for regression testing).
+<<TEST>> Child process in create_system_command_process() is 46177 (ignore line for regression testing).
+<<  2 >> Input test, expected values: 0.000000e+00, 1.000000e-10
+<<  2 >> Error tolerance: 2.000000e+00 	Difference: 1.000000e-10 less than product 2.000000e-10:  success.
+<<  2 >> Input test, expected values: 5.204999e-01, 5.205000e-01
+<<  2 >> Error tolerance: 1.000000e-04 	Difference: 1.221870e-07 less than product 1.041000e-04:  success.
+<<  2 >> Input test, expected values: -5.204999e-01, -5.205000e-01
+<<  2 >> Error tolerance: 1.000000e-04 	Difference: 1.221870e-07 less than product 1.041000e-04:  success.
+<<  2 >> Input test, expected values: 8.427008e-01, 8.427000e-01
+<<  2 >> Error tolerance: 1.000000e-04 	Difference: 7.929497e-07 less than product 1.685401e-04:  success.
+<<  2 >> Input test, expected values: -8.427008e-01, -8.427000e-01
+<<  2 >> Error tolerance: 1.000000e-04 	Difference: 7.929497e-07 less than product 1.685401e-04:  success.
+<<  2 >> Input test, expected values: 1.000000e+00, 1.000000e+00
+<<  2 >> Error tolerance: 1.000000e-03 	Difference: 0.000000e+00 less than product 2.000000e-03:  success.
+<<  2 >> Input test, expected values: 1.266066e+00, 1.266000e+00
+<<  2 >> Error tolerance: 1.000000e-03 	Difference: 6.587775e-05 less than product 2.532066e-03:  success.
+<<  2 >> Input test, expected values: 2.279585e+00, 2.280000e+00
+<<  2 >> Error tolerance: 1.000000e-03 	Difference: 4.146977e-04 less than product 4.559585e-03:  success.
+<<  2 >> Input test, expected values: 4.880793e+00, 4.881000e+00
+<<  2 >> Error tolerance: 1.000000e-03 	Difference: 2.074141e-04 less than product 9.761793e-03:  success.
+<<  2 >> Input test, expected values: 1.000000e+00, 1.000000e+00
+<<  2 >> Error tolerance: 1.000000e-03 	Difference: 0.000000e+00 less than product 2.000000e-03:  success.
+<<  2 >> Input test, expected values: 3.678800e-01, 3.678794e-01
+<<  2 >> Error tolerance: 1.000000e-05 	Difference: 5.588286e-07 less than product 7.357594e-06:  success.
+<<  2 >> Input test, expected values: 1.000000e+00, 1.000000e+00
+<<  2 >> Error tolerance: 1.000000e-03 	Difference: 0.000000e+00 less than product 2.000000e-03:  success.
+<<  2 >> Input test, expected values: 2.430004e-01, 2.430107e-01
+<<  2 >> Error tolerance: 1.000000e-03 	Difference: 1.032654e-05 less than product 4.860110e-04:  success.
+<<  2 >> Input test, expected values: 1.349595e-01, 1.346401e-01
+<<  2 >> Error tolerance: 3.000000e-03 	Difference: 3.194283e-04 less than product 8.087989e-04:  success.
+<<  2 >> Input test, expected values: 1.000000e+00, 1.000000e+00
+<<  2 >> Error tolerance: 1.000000e-03 	Difference: 0.000000e+00 less than product 2.000000e-03:  success.
+<<  2 >> Input test, expected values: 3.678800e-01, 3.678794e-01
+<<  2 >> Error tolerance: 1.000000e-05 	Difference: 5.588286e-07 less than product 7.357594e-06:  success.
+<<  2 >> Input test, expected values: 2.079104e-01, 2.079255e-01
+<<  2 >> Error tolerance: 1.000000e-03 	Difference: 1.504480e-05 less than product 4.158359e-04:  success.
+<<  2 >> Input test, expected values: 1.787508e-01, 1.787423e-01
+<<  2 >> Error tolerance: 1.000000e-03 	Difference: 8.519587e-06 less than product 3.574932e-04:  success.
+<<  2 >> Input test, expected values: 1.272250e-01, 1.272355e-01
+<<  2 >> Error tolerance: 3.000000e-03 	Difference: 1.052408e-05 less than product 7.633815e-04:  success.

@@ -1,0 +1,14 @@
+(no-kjb) dbs: kjb_verbose_str is -><- on source line 118 of /Volumes/home/kobus/src/lib/l/l_init.c
+dbi: num_clusters is 3 on source line 5386 of /Volumes/home/kobus/src/lib/r2/r2_gmm_em.c
+Heap checker reporting on process 15731.
+dbi: MY_PID is 15731 on source line 2647 of /Volumes/home/kobus/src/lib/l/l_sys_mal.c
+Freeing a ptr not allocated / already been freed.
+Heap checker reporting on process 15731.
+dbi: MY_PID is 15731 on source line 2647 of /Volumes/home/kobus/src/lib/l/l_sys_mal.c
+Freeing a ptr not allocated / already been freed.
+Heap checker reporting on process 15731.
+dbi: MY_PID is 15731 on source line 2647 of /Volumes/home/kobus/src/lib/l/l_sys_mal.c
+Freeing a ptr not allocated / already been freed.
+<<TEST>> Begin cleaning up system command process (15732) (ignore line for regression testing).
+<<TEST>> Wait result is 0 (ignore line for regression testing).
+<<TEST>> Done waiting for system command  process to finish (ignore line for regression testing).

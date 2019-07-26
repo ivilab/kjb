@@ -1,0 +1,440 @@
+/* =========================================================================== *
+|
+|  Copyright (c) 1994-2008 by Kobus Barnard (author).
+|
+|  Personal and educational use of this code is granted, provided that this
+|  header is kept intact, and that the authorship is not misrepresented, that
+|  its use is acknowledged in publications, and relevant papers are cited.
+|
+|  For other use contact the author (kobus AT cs DOT arizona DOT edu).
+|
+|  Please note that the code in this file has not necessarily been adequately
+|  tested. Naturally, there is no guarantee of performance, support, or fitness
+|  for any particular task. Nonetheless, I am interested in hearing about
+|  problems that you encounter.
+|
+| Authors:
+|     Ernesto Brau, Jinyan Guan
+|
+* =========================================================================== */
+
+/* $Id: optical_flow_likelihood_old.cpp.bak 16928 2014-05-30 00:05:48Z ernesto $ */
+
+#include <people_tracking_cpp/pt_optical_flow_likelihood.h>
+#include <people_tracking_cpp/pt_visibility.h>
+#include <people_tracking_cpp/pt_util.h>
+#include <people_tracking_cpp/pt_box_trajectory.h>
+#include <flow_cpp/flow_feature_set.h>
+#include <m_cpp/m_vector.h>
+#include <m_cpp/m_matrix.h>
+#include <g_cpp/g_util.h>
+#include <gr_cpp/gr_opengl.h>
+#include <gr_cpp/gr_glut.h>
+#include <l_cpp/l_filesystem.h>
+#include <l/l_sys_mal.h>
+#include <detector_cpp/d_bbox.h>
+#include <vector>
+#include <algorithm>
+#include <boost/lexical_cast.hpp>
+
+using namespace std;
+using namespace kjb;
+using namespace kjb::pt;
+using namespace kjb::opengl;
+
+double win_width = 1000;
+double win_height = 650;
+double img_width;
+double img_height;
+
+const double m_thresh = 0.5;
+const double scale_xs = 0.148199;
+const double scale_ys = 0.074347;
+const double scale_xm = 3.419287;
+const double scale_ym = 0.956642;
+const double bg_scale_x = 2.0*scale_xm;
+const double bg_scale_y = 2.0*scale_ym;
+double dx = 1.0;
+double dy = 1.0;
+double dw = 1.0;
+double dh = 1.0;
+
+size_t cur_frame;
+int left_edge;
+int right_edge;
+int bot_edge;
+int top_edge;
+Bbox cur_box;
+Bbox next_box;
+
+Bbox* cur_box_p;
+
+const vector<Flow_feature_set>* feature_sets_p;
+const vector<Integral_flow>* x_flows_p;
+const vector<Integral_flow>* y_flows_p;
+const Optical_flow_likelihood* of_lh_p; 
+
+bool display_flow;
+
+/** @brief  Display scene. */
+void display();
+
+/** @brief  Reshape scene. */
+void reshape(int, int);
+
+/** @brief  Handle key input. */
+void handle_key(unsigned char, int, int);
+
+/** @brief  Render a box. */
+void draw_box(const Bbox&);
+
+/** @brief  Render an arrow from src to dest. */
+void draw_arrow(const Vector& src, const Vector& dest);
+
+/** @brief  Main -- all the magic happens here. */
+int main(int argc, char** argv)
+{
+#ifdef TEST
+    kjb_c::kjb_init();
+    kjb_c::kjb_l_set("heap-checking", "off");
+    kjb_c::kjb_l_set("initialization-checking", "off");
+#endif
+
+    if(argc != 4)
+    {
+        cout << "Usage: optical_flow_likelihood FEAT-DIR GT-DIR IMG-FILE\n";
+        return EXIT_FAILURE;
+    }
+
+    string feat_dp = argv[1];
+    string gt_dp = argv[2];
+    string image_fp = argv[3];
+
+    try
+    {
+        // read image to get size
+        Image tmp_img(image_fp);
+        img_width = tmp_img.get_num_cols();
+        img_height = tmp_img.get_num_rows();
+
+        // read OF features
+        /*vector<string> of_fps = file_names_from_format(feat_dp + "/%05d.txt");
+        vector<Flow_feature_set> feature_sets(of_fps.size());
+        transform(
+            of_fps.begin(),
+            of_fps.end(),
+            feature_sets.begin(),
+            read_flow_features);
+            */
+        vector<string> x_of_fps = 
+            file_names_from_format(feat_dp + "/x_int_s4/%05d.txt");
+        vector<string> y_of_fps = 
+            file_names_from_format(feat_dp + "/y_int_s4/%05d.txt");
+
+        // make likelihood object
+        /*Optical_flow_likelihood of_likelihood(
+            feature_sets, img_width, img_height,
+            scale_xm, scale_ym, bg_scale_x, bg_scale_y);
+            */
+
+        // set initial boxes
+        Box_trajectory_map gt_box_trajs;
+        gt_box_trajs.parse(gt_dp, "person");
+        cur_frame = gt_box_trajs.begin()->second.start_time() + 10;
+        cur_box = gt_box_trajs.begin()->second[cur_frame - 1]->value;
+        next_box = gt_box_trajs.begin()->second[cur_frame]->value;
+        standardize(cur_box, img_width, img_height);
+        standardize(next_box, img_width, img_height);
+        cur_box_p = &cur_box; 
+
+        vector<Integral_flow> flows_x;
+        vector<Integral_flow> flows_y;
+        KJB(ASSERT(x_of_fps.size() == y_of_fps.size()));
+        size_t num_frames = x_of_fps.size();
+        //const size_t ss_rate = 4;
+        //double time;
+        for(size_t i = 0; i < num_frames; i++)
+        {
+            flows_x.push_back(Integral_flow(x_of_fps[i]));
+            flows_y.push_back(Integral_flow(y_of_fps[i]));
+        }
+        
+
+        Optical_flow_likelihood of_likelihood(
+            flows_x, flows_y, img_width, img_height,
+            scale_xm, scale_ym, bg_scale_x, bg_scale_y);
+
+
+        left_edge = std::min(cur_box.get_left(), next_box.get_left()) - 40;
+        right_edge = std::min(cur_box.get_right(), next_box.get_right()) + 40;
+        bot_edge = std::min(cur_box.get_bottom(), next_box.get_bottom()) - 20;
+        top_edge = std::min(cur_box.get_top(), next_box.get_top()) + 20;
+
+        // set global pointers
+        //feature_sets_p = &feature_sets;
+        x_flows_p = &flows_x;
+        y_flows_p = &flows_y;
+        of_lh_p = &of_likelihood; 
+        display_flow = true;
+
+        // GL stuff
+        Glut_window win(win_width, win_height);
+        win.set_display_callback(display);
+        win.set_reshape_callback(reshape);
+        win.set_keyboard_callback(handle_key);
+
+        glEnable(GL_DEPTH_TEST);
+        glutMainLoop();
+    }
+    catch(const kjb::Exception& ex)
+    {
+        ex.print_details();
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void display()
+{
+    // clear stuff
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+
+    // display flow features
+    if(display_flow)
+    {
+        glColor3d(1.0, 1.0, 0.0);
+        glLineWidth(1.0);
+        //const vector<Flow_feature_set>& feature_sets = *feature_sets_p;
+        const vector<Integral_flow>& x_flows = *x_flows_p;
+        const vector<Integral_flow>& y_flows = *y_flows_p;
+
+        for(size_t i = 0; i < img_height; i = i + 4)
+        {
+            for(size_t j = 0; j < img_width; j = j + 4)
+            {
+                Bbox box(Vector((double)j, (double)i), 
+                         Vector((double)j + 1.0, (double)i + 1.0));
+
+                double dx = x_flows[cur_frame - 1].flow_sum(box);
+                double dy = y_flows[cur_frame - 1].flow_sum(box);
+                Vector src((double)j, (double(i)));
+                Vector dest(src[0] + dx, src[1] + dy);
+                standardize(src, img_width, img_height);
+                standardize(dest, img_width, img_height);
+                draw_arrow(src, dest);
+
+            }
+        }
+
+        // Draw the average flow 
+        glColor3d(1.0, 0.0, 0.0);
+        Bbox box(*cur_box_p);
+        unstandardize(box, img_width, img_height);
+        double dx = x_flows[cur_frame - 1].flow_sum(box);
+        double dy = y_flows[cur_frame - 1].flow_sum(box);
+        double area = box.get_width() * box.get_height();
+        Vector src(box.get_center());
+        Vector dest = src + Vector(dx, dy)/area;
+        standardize(src, img_width, img_height);
+        standardize(dest, img_width, img_height);
+        draw_arrow(src, dest);
+
+        /*string feat_dp = "/home//jinyan/.local/data/psi/Y2Clips/Y106/features/optical_flow/brox/";
+        boost::format real_flow_x_fmt(feat_dp + "/x/%05d.txt.gz");
+        boost::format real_flow_y_fmt(feat_dp + "/y/%05d.txt.gz");
+        Matrix real_flow_x(boost::str(real_flow_x_fmt % (cur_frame)));
+        Matrix real_flow_y(boost::str(real_flow_y_fmt % (cur_frame)));
+        cout << "cur_frame : " << cur_frame << endl;
+
+        for(size_t i = 0; i < img_height; i = i + 4)
+        {
+            for(size_t j = 0; j < img_width; j = j + 4)
+            {
+                double dx = real_flow_x(i, j);
+                double dy = real_flow_y(i, j);
+                Vector src((double)j, (double(i)));
+                Vector dest = src + Vector(dx, dy);
+                standardize(src, img_width, img_height);
+                standardize(dest, img_width, img_height);
+                draw_arrow(src, dest);
+            }
+        }
+        */
+
+        /*BOOST_FOREACH(const Feature_pair& fp, feature_sets[cur_frame - 1])
+        {
+            Vector src = fp.first;
+            Vector dest = fp.second;
+            standardize(src, img_width, img_height);
+            standardize(dest, img_width, img_height);
+            draw_arrow(src, dest);
+        }
+        */
+    }
+
+    // display boxes
+    glLineWidth(2.0);
+    if(cur_box_p == &cur_box)
+    {
+        glColor3d(1.0, 0.0, 0.0);
+        draw_box(cur_box);
+        glColor3d(0.0, 0.0, 1.0);
+        draw_box(next_box);
+    }
+    else
+    {
+        glColor3d(0.0, 0.0, 1.0);
+        draw_box(cur_box);
+        glColor3d(1.0, 0.0, 0.0);
+        draw_box(next_box);
+    }
+    draw_arrow(cur_box.get_center(), next_box.get_center());
+
+    // display likelihood
+    Visibility vis;
+    vis.visible = 1.0;
+    double ol = of_lh_p->at_box(cur_box, next_box, vis, cur_frame);
+    string ol_str = "of(x) = " + boost::lexical_cast<string>(ol);
+
+    glColor3d(1.0, 1.0, 1.0);
+    bitmap_string(ol_str, left_edge + 2, bot_edge + 5);
+    //cout << ol_str << endl;
+
+    glutSwapBuffers();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void reshape(int w, int h)
+{
+    glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(left_edge, right_edge, bot_edge, top_edge, -1.0, 10.0);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void handle_key(unsigned char key, int, int)
+{
+    switch(key)
+    {
+        case 'f':
+        {
+            display_flow = !display_flow;
+            break;
+        }
+
+        case 'n': 
+        {
+            cur_box_p = cur_box_p == &cur_box ? &next_box : &cur_box; 
+            break;
+        }
+
+        case 'x':
+        {
+            cur_box_p->set_centre_x(cur_box_p->get_centre_x() - dx);
+            break;
+        }
+        case 'X':
+        {
+            cur_box_p->set_centre_x(cur_box_p->get_centre_x() + dx);
+            break;
+        }
+
+        case 'y':
+        {
+            cur_box_p->set_centre_y(cur_box_p->get_centre_y() - dy);
+            break;
+        }
+        case 'Y':
+        {
+            cur_box_p->set_centre_y(cur_box_p->get_centre_y() + dy);
+            break;
+        }
+
+        case 'w': 
+        {
+            cur_box_p->set_width(cur_box_p->get_width() - dw);
+            break;
+        }
+
+        case 'W': 
+        {
+            cur_box_p->set_width(cur_box_p->get_width() + dw);
+            break;
+        }
+
+        case 'h': 
+        {
+            cur_box_p->set_height(cur_box_p->get_height() - dh);
+            break;
+        }
+
+        case 'H': 
+        {
+            cur_box_p->set_height(cur_box_p->get_height() + dh);
+            break;
+        }
+
+        case 'q':
+        case 'Q':
+        {
+            exit(EXIT_SUCCESS);
+        }
+    }
+
+    glutPostRedisplay();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void draw_box(const Bbox& box)
+{
+    glBegin(GL_LINE_LOOP);
+    glVertex2d(box.get_left(), box.get_top());
+    glVertex2d(box.get_right(), box.get_top());
+    glVertex2d(box.get_right(), box.get_bottom());
+    glVertex2d(box.get_left(), box.get_bottom());
+    glEnd();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void draw_arrow(const Vector& src, const Vector& dest)
+{
+    Vector dir(dest - src);
+    double mag = dir.magnitude();
+
+    Vector l(0.8 * mag, -0.2 * mag);
+    Vector r(0.8 * mag, 0.2 * mag);
+
+    double angle = acos(dir[0] / mag);
+    if(dir[1] < 0)
+    {
+        angle = -angle;
+    }
+
+    Matrix R = geometry::get_rotation_matrix(angle);
+
+    glBegin(GL_LINES);
+        // shaft of arrow
+        glVertex(src);
+        glVertex(dest);
+
+        // left arrow half
+        glVertex(dest);
+        glVertex(src + R*l);
+
+        // right arrow half
+        glVertex(dest);
+        glVertex(src + R*r);
+    glEnd();
+}
+

@@ -1,0 +1,25 @@
+<<TEST>> Parent process in create_system_command_process() is 50821 (IL4RT).
+<<TEST>> Child process in create_system_command_process() is 50822 (IL4RT).
+
+Error reported during non-interactive run.
+failure: test 2 error
+(EPETB on line 108 of mat_convolve.c.)
+
+<<TEST>> Begin cleaning up system command process (50822) (IL4RT).
+<<TEST>> Wait result is 0 (IL4RT).
+<<TEST>> Done waiting for system command  process to finish (IL4RT).
+
+Residual memory allocation for process 50821 (fork depth 0): 
+      7fe5d7d003a0          32    m_convolve.c                     616
+      7fe5d7d003f0          56    m_convolve.c                     616
+      7fe5d7d00460         392    m_convolve.c                     616
+      7fe5d7d00960          32    m_convolve.c                     341
+      7fe5d7d009b0          56    m_convolve.c                     341
+      7fe5d7d00a20         392    m_convolve.c                     341
+      7fe5d7d00660          32    m_convolve.c                     616
+      7fe5d7d006b0          56    m_convolve.c                     616
+      7fe5d7d00720         392    m_convolve.c                     616
+
+Sum of allocated (excluding inherited): 1440
+Sum of allocated (total):               1440
+

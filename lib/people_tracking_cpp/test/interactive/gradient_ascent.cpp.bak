@@ -1,0 +1,791 @@
+/* =========================================================================== *
+|
+|  Copyright (c) 1994-2008 by Kobus Barnard (author).
+|
+|  Personal and educational use of this code is granted, provided that this
+|  header is kept intact, and that the authorship is not misrepresented, that
+|  its use is acknowledged in publications, and relevant papers are cited.
+|
+|  For other use contact the author (kobus AT cs DOT arizona DOT edu).
+|
+|  Please note that the code in this file has not necessarily been adequately
+|  tested. Naturally, there is no guarantee of performance, support, or fitness
+|  for any particular task. Nonetheless, I am interested in hearing about
+|  problems that you encounter.
+|
+| Authors:
+|     Ernesto Brau, Jinyan Guan
+|
+* =========================================================================== */
+
+/* $Id: gradient_ascent.cpp.bak 16928 2014-05-30 00:05:48Z ernesto $ */
+
+#include <people_tracking_cpp/pt_scene.h>
+#include <people_tracking_cpp/pt_association.h>
+#include <people_tracking_cpp/pt_target.h>
+#include <people_tracking_cpp/pt_complete_trajectory.h>
+#include <people_tracking_cpp/pt_box_trajectory.h>
+#include <people_tracking_cpp/pt_data.h>
+#include <people_tracking_cpp/pt_box_likelihood.h>
+#include <people_tracking_cpp/pt_optical_flow_likelihood.h>
+#include <people_tracking_cpp/pt_position_prior.h>
+#include <people_tracking_cpp/pt_scene_posterior.h>
+#include <people_tracking_cpp/pt_scene_adapter.h>
+#include <people_tracking_cpp/pt_util.h>
+#include <people_tracking_cpp/pt_visibility.h>
+#include <people_tracking_cpp/pt_scene_diff.h>
+#include <st_cpp/st_perspective_camera.h>
+#include <flow_cpp/flow_feature_set.h>
+#include <m_cpp/m_vector.h>
+#include <m_cpp/m_matrix.h>
+#include <prob_cpp/prob_distribution.h>
+#include <prob_cpp/prob_sample.h>
+#include <gp_cpp/gp_base.h>
+#include <gp_cpp/gp_mean.h>
+#include <gp_cpp/gp_covariance.h>
+#include <gp_cpp/gp_distribution.h>
+#include <g_cpp/g_util.h>
+#include <gr_cpp/gr_opengl.h>
+#include <gr_cpp/gr_glut.h>
+#include <gr_cpp/gr_plot.h>
+#include <l_cpp/l_filesystem.h>
+#include <l_cpp/l_functors.h>
+#include <l/l_sys_mal.h>
+#include <detector_cpp/d_bbox.h>
+#include <vector>
+#include <algorithm>
+#include <functional>
+#include <iterator>
+#include <boost/foreach.hpp>
+#include <boost/bind.hpp>
+#include <boost/lexical_cast.hpp>
+
+using namespace std;
+using namespace kjb;
+using namespace kjb::pt;
+using namespace kjb::opengl;
+
+enum Gradient_type
+{
+    STANDARD_GRADIENT,
+    FOURIER_GRADIENT,
+    IMAGE_GRADIENT,
+    NUM_GRADIENT_TYPES
+};
+
+double img_width;
+double img_height;
+
+const double m_thresh = 0.5;
+const double scale_x = 0.34990;
+const double scale_y = 0.17581;
+const double gp_scale = 10.0;
+const double gp_svar = 100.0;
+double grad_pos_step_size = 0.00001;
+double grad_dim_step_size = 0.00001;
+double grad_fft_step_size = 0.25;
+const double pos_step_size = 0.00001;
+//const double pos_step_size = 1e-8;
+const double dim_step_size = 0.00001;
+size_t frame_rate;
+
+Scene* scene_p;
+const vector<Flow_feature_set>* feature_sets_p;
+Trajectory_map* gt_trajs_p;
+const vector<double>* step_sizes_p;
+const Box_likelihood* box_lh_p; 
+const Optical_flow_likelihood* of_lh_p; 
+const Position_prior* pos_prior_p;
+const Scene_posterior* posterior_p;
+const Scene_gradient* gradient_std_p;
+const Scene_gradient_fourier* gradient_fft_p;
+const Scene_gradient_image* gradient_img_p;
+Vector* grad_vec_p;
+Vector* grad_plotx_p;
+Vector* grad_plotz_p;
+Vector* move_plotx_p;
+Vector* move_plotz_p;
+Glut_plot_window* plotx_win_p;
+Glut_plot_window* plotz_win_p;
+Glut_plot_window* plotx_move_win_p;
+Glut_plot_window* plotz_move_win_p;
+
+Gradient_type grad_type;
+string grad_names[NUM_GRADIENT_TYPES] = { "standard", "Fourier", "image" };
+
+bool display_flow;
+bool display_data;
+bool display_boxes;
+bool grad_utd;
+bool estimate_grad_pos_step_sizes;
+bool use_propagated = true;
+
+/** @brief  Display scene. */
+void display();
+
+/** @brief  Reshape scene. */
+void reshape(int, int);
+
+/** @brief  Handle key input. */
+void handle_key(unsigned char, int, int);
+
+/** @brief  Render a box. */
+void draw_box(const Bbox&);
+
+/** @brief  Render an arrow from src to dest. */
+void draw_arrow(const Vector& src, const Vector& dest);
+
+/** @brief  Move trajectories in the direction of the gradient. */
+void move_scene();
+
+/** @brief  Main -- all the magic happens here. */
+int main(int argc, char** argv)
+{
+#ifdef TEST
+    kjb_c::kjb_init();
+    kjb_c::kjb_l_set("heap-checking", "off");
+    kjb_c::kjb_l_set("initialization-checking", "off");
+#endif
+
+    string data_dp;
+    string feat_dp;
+    string cam_fp;
+    string gt_dp;
+    string image_fp;
+    string scene_dp;
+    string gt_traj_dp;
+
+    if(argc == 7)
+    {
+        data_dp = argv[1];
+        feat_dp = argv[2];
+        scene_dp = argv[3];
+        image_fp = argv[4];
+        frame_rate = boost::lexical_cast<size_t>(argv[5]);
+        gt_traj_dp = argv[6];
+    }
+    else if(argc == 8)
+    {
+        data_dp = argv[1];
+        feat_dp = argv[2];
+        cam_fp = argv[3];
+        gt_dp = argv[4];
+        image_fp = argv[5];
+        frame_rate = boost::lexical_cast<size_t>(argv[6]);
+        gt_traj_dp = argv[7];
+    }
+    else
+    {
+        cout << "Usage: gradient_ascent "
+             << "DATA-DIR FEAT-DIR "
+             << "[ CAM-FILE GT-DIR | SCENE-DIR ] IMG-FILE FRAME-RATE GT-TRAJ"
+             << endl;
+        return EXIT_FAILURE;
+    }
+
+    try
+    {
+        // read images, box data, camera and OF features
+        Image tmp_img(image_fp);
+        img_width = tmp_img.get_num_cols();
+        img_height = tmp_img.get_num_rows();
+
+        vector<string> x_of_fps = 
+            file_names_from_format(feat_dp + "/x_int_s4/%05d.txt");
+        vector<string> y_of_fps = 
+            file_names_from_format(feat_dp + "/y_int_s4/%05d.txt");
+        vector<string> back_x_of_fps = 
+            file_names_from_format(feat_dp + "/back_x_int_s4/%05d.txt", 2);
+        vector<string> back_y_of_fps = 
+            file_names_from_format(feat_dp + "/back_y_int_s4/%05d.txt", 2);
+
+        vector<Integral_flow> flows_x;
+        vector<Integral_flow> flows_y;
+        vector<Integral_flow> back_flows_x;
+        vector<Integral_flow> back_flows_y;
+
+        KJB(ASSERT(x_of_fps.size() == y_of_fps.size()));
+        assert(back_flows_x.size() == back_flows_y.size());
+        assert(back_flows_x.size() == flows_x.size());
+        size_t num_frames = x_of_fps.size();
+        //const size_t ss_rate = 4;
+        //double time;
+        for(size_t i = 0; i < num_frames; i++)
+        {
+            cout << " read in flow " << back_x_of_fps[i] << endl;
+            back_flows_x.push_back(Integral_flow(back_x_of_fps[i]));
+            back_flows_y.push_back(Integral_flow(back_y_of_fps[i]));
+            flows_x.push_back(Integral_flow(x_of_fps[i]));
+            flows_y.push_back(Integral_flow(y_of_fps[i]));
+        }
+
+        Box_data data(img_width, img_height, 0.99);
+        data.read(file_names_from_format(data_dp + "/%05d.txt"));
+
+        /*vector<Flow_feature_set> feature_sets(of_fps.size());
+        transform(
+            of_fps.begin(),
+            of_fps.end(),
+            feature_sets.begin(),
+            read_flow_features);
+            */
+
+        // create empty scene and target
+        Scene scene(Ascn(data), Perspective_camera(), 0.0, 0.0, 0.0);
+
+        if(gt_dp == "")
+        {
+            read_scene(scene, scene_dp);
+        }
+        else
+        {
+            // read camera
+            scene.camera.read(cam_fp.c_str());
+
+            // create ground truth association
+            Box_trajectory_map gt_box_trajs;
+            gt_box_trajs.parse(gt_dp, "person");
+
+            Target empty_target(1.85, 0.4, 0.3, data.size());
+            scene.association = make_gt_association(data, gt_box_trajs,
+                                   empty_target, img_width, img_height,
+                                   scene.camera);
+        }
+
+        Trajectory_map gt_trajs;
+        gt_trajs.parse(gt_traj_dp, "person");
+        gt_trajs_p = & gt_trajs;
+
+        IFT(!scene.association.empty(), Runtime_error,
+            "Association is empty. Check association file or GT trajectories.");
+
+        Ascn::iterator tg_p = scene.association.begin();
+        scene.association.erase(++tg_p, scene.association.end());
+
+        if(use_propagated)
+        {
+            cout << "Use propagated box to initialize the trajectory." << endl;
+            BOOST_FOREACH(const Target& target, scene.association)
+            {
+                target.update_trajectory(scene.camera, 
+                                        flows_x, flows_y, 
+                                        back_flows_x, back_flows_y, 
+                                        frame_rate);
+            }
+        }
+        else
+        {
+            for_each(scene.association.begin(), scene.association.end(),
+                bind2nd(mem_fun_ref(&Target::update_trajectory), scene.camera));
+        }
+
+        // smooth out trajectories
+        BOOST_FOREACH(const Target& target, scene.association)
+        {
+            Trajectory& traj = target.trajectory();
+            //target.smooth_trajectory();
+            initialize_directions(traj);
+        }
+
+        update_visibilities(scene);
+
+        // create gradient steps
+        vector<double> grad_step_sizes;
+        estimate_grad_pos_step_sizes = true;
+        if(estimate_grad_pos_step_sizes)
+        {
+            grad_step_sizes = trajectory_gradient_step_sizes(scene);
+            copy(
+                grad_step_sizes.begin(),
+                grad_step_sizes.end(),
+                ostream_iterator<double>(cout, "\t"));
+            cout << endl;
+            cout << "step sizes: " << grad_step_sizes.size() << endl;
+        }
+        else
+        {
+            size_t cur_pos = 0;
+            BOOST_FOREACH(const Target& target, scene.association)
+            {
+                size_t tg_sz = target.get_end_time()
+                                - target.get_start_time() + 1;
+                grad_step_sizes.resize(grad_step_sizes.size() + 2*tg_sz);
+
+                fill(grad_step_sizes.begin() + cur_pos,
+                     grad_step_sizes.begin() + cur_pos + 2*tg_sz,
+                     pos_step_size);
+                cur_pos += 2*tg_sz;
+            }
+            cout << " not estimating grad pos step size" << endl;
+            cout << " fixed step sizes size: " << grad_step_sizes.size() << endl;
+        }
+
+        vector<double> step_sizes;
+        size_t cur_pos = 0;
+        BOOST_FOREACH(const Target& target, scene.association)
+        {
+            size_t tg_sz = target.get_end_time() - target.get_start_time() + 1;
+            //step_sizes.resize(step_sizes.size() + 2*tg_sz + 3);
+            step_sizes.resize(step_sizes.size() + 2*tg_sz);
+
+            fill(step_sizes.begin() + cur_pos,
+                 step_sizes.begin() + cur_pos + 2*tg_sz,
+                 pos_step_size);
+            cur_pos += 2*tg_sz;
+
+            //*(step_sizes.begin() + cur_pos++) = dim_step_size;
+            //*(step_sizes.begin() + cur_pos++) = dim_step_size;
+            //*(step_sizes.begin() + cur_pos++) = dim_step_size;
+        }
+
+        // make optimizer object (which, in turn contains gradient)
+        Box_likelihood box_likelihood(
+            *data[0].begin(), 1.0, img_width, img_height);
+
+        Optical_flow_likelihood of_likelihood(
+            flows_x, flows_y, img_width, img_height,
+            scale_x, scale_y, 2*scale_x, 2*scale_y);
+
+        Color_likelihood color_likelihood; 
+
+        Position_prior pos_prior(gp_scale, gp_svar);
+        Scene_posterior posterior(box_likelihood, of_likelihood, 
+                                  color_likelihood, pos_prior);
+
+        Scene_gradient gradient_std(posterior, grad_step_sizes);
+
+        Scene_gradient_fourier gradient_fft(
+                                    posterior,
+                                    grad_fft_step_size,
+                                    scene,
+                                    3);
+
+        Scene_gradient_image gradient_img(
+                                    posterior,
+                                    grad_dim_step_size,
+                                    grad_dim_step_size,
+                                    grad_dim_step_size);
+
+        grad_type = STANDARD_GRADIENT;
+
+        Vector grad_vec;
+
+        // prepare plot vectors
+        size_t sf = scene.association.begin()->get_start_time();
+        size_t ef = scene.association.begin()->get_end_time();
+        Vector t_plot(static_cast<int>(ef - sf + 1));
+        generate(t_plot.begin(), t_plot.end(), Increment<double>(sf));
+        Vector grad_plotx(static_cast<int>(ef - sf + 1), 0.0);
+        Vector grad_plotz(static_cast<int>(ef - sf + 1), 0.0);
+        Vector move_plotx(static_cast<int>(ef - sf + 1), 0.0);
+        Vector move_plotz(static_cast<int>(ef - sf + 1), 0.0);
+
+        // set global pointers
+        scene_p =  &scene;
+        //feature_sets_p = &feature_sets;
+        step_sizes_p = &step_sizes;
+        box_lh_p = &box_likelihood;
+        of_lh_p = &of_likelihood; 
+        pos_prior_p = &pos_prior;
+        posterior_p = &posterior;
+        gradient_std_p = &gradient_std;
+        gradient_fft_p = &gradient_fft;
+        gradient_img_p = &gradient_img;
+        grad_vec_p = &grad_vec;
+        grad_plotx_p = &grad_plotx;
+        grad_plotz_p = &grad_plotz;
+        move_plotx_p = &move_plotx;
+        move_plotz_p = &move_plotz;
+
+        // misc stuff
+        grad_utd = false;
+        display_flow = true;
+        display_data = true;
+        display_boxes = true;
+        posterior.use_box_lh() = true;
+        posterior.use_of_lh() = true;
+        posterior.use_pos_prior() = false;
+
+        // GL stuff
+        Glut_window win(img_width, img_height);
+        win.set_display_callback(display);
+        win.set_reshape_callback(reshape);
+        win.set_keyboard_callback(handle_key);
+
+        Glut_plot_window plotx_win(800, 500, "gradient x");
+        plotx_win.add_plot(&t_plot, grad_plotx_p);
+        plotx_win_p = &plotx_win;
+
+        Glut_plot_window plotz_win(800, 500, "gradient z");
+        plotz_win.add_plot(&t_plot, grad_plotz_p);
+        plotz_win_p = &plotz_win;
+
+        Glut_plot_window plotx_move_win(800, 500, "move x");
+        plotx_move_win.add_plot(&t_plot, move_plotx_p);
+        plotx_move_win_p = &plotx_move_win;
+
+        Glut_plot_window plotz_move_win(800, 500, "move z");
+        plotz_move_win.add_plot(&t_plot, move_plotz_p);
+        plotz_move_win_p = &plotz_move_win;
+
+        glEnable(GL_DEPTH_TEST);
+        glutMainLoop();
+    }
+    catch(const kjb::Exception& ex)
+    {
+        ex.print_details();
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void display()
+{
+    const Scene& scene = *scene_p;
+
+    // clear stuff
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+
+    // display data boxes
+    if(display_data)
+    {
+        glColor3d(1.0, 1.0, 1.0);
+        glLineWidth(1.0);
+        BOOST_FOREACH(const Target& target, scene.association)
+        {
+            BOOST_FOREACH(const Target::value_type& pr, target)
+            {
+                draw_box(pr.second->bbox);
+            }
+        }
+    }
+
+    // display flow features
+    /*if(display_flow)
+    {
+        glColor3d(1.0, 1.0, 0.0);
+        glLineWidth(1.0);
+        const vector<Flow_feature_set>& feature_sets = *feature_sets_p;
+        for(size_t i = 0; i < feature_sets.size(); i++)
+        {
+            BOOST_FOREACH(const Feature_pair& fp, feature_sets[i])
+            {
+                Vector src = fp.first;
+                Vector dest = fp.second;
+                standardize(src, img_width, img_height);
+                standardize(dest, img_width, img_height);
+                //draw_arrow(src, dest);
+                glBegin(GL_LINES);
+                glVertex(src);
+                glVertex(dest);
+                glEnd();
+            }
+        }
+    }
+    */
+
+    // display scene
+    //size_t j = 0;
+    glLineWidth(2.0);
+    BOOST_FOREACH(const Target& target, scene.association)
+    {
+        const Trajectory& traj = target.trajectory();
+        glColor3d(0.0, 1.0, 0.0);
+
+        const Box_trajectory& box_traj
+                                = get_body_box_trajectory(traj, scene.camera);
+        int sf = box_traj.start_time();
+        int ef = box_traj.end_time();
+        for(size_t f = sf - 1; f <= ef - 1; f++)
+        {
+            if(display_boxes) draw_box(box_traj[f]->value);
+            if(f != ef - 1)
+            {
+                glBegin(GL_LINES);
+                glVertex(box_traj[f]->value.get_bottom_center());
+                glVertex(box_traj[f + 1]->value.get_bottom_center());
+                glEnd();
+            }
+        }
+    }
+    // display the ground truth trajectory
+    const Trajectory_map& gt_trajs = *gt_trajs_p;
+    glLineWidth(2.0);
+    BOOST_FOREACH(const Trajectory_map::value_type& p, gt_trajs)
+    {
+        const Trajectory& traj = p.second;
+        glColor3d(1.0, 0.0, 1.0);
+
+        const Box_trajectory& box_traj
+                                = get_body_box_trajectory(traj, scene.camera);
+        int sf = box_traj.start_time();
+        int ef = box_traj.end_time();
+        for(size_t f = sf - 1; f <= ef - 1; f++)
+        {
+            if(display_boxes) draw_box(box_traj[f]->value);
+            if(f != ef - 1)
+            {
+                glBegin(GL_LINES);
+                glVertex(box_traj[f]->value.get_bottom_center());
+                glVertex(box_traj[f + 1]->value.get_bottom_center());
+                glEnd();
+            }
+        }
+    }
+
+    // display text
+    using boost::lexical_cast;
+    using boost::bind;
+
+    string lh_str = "L(x) = ";
+    string ol_str = "of(x) = " ;
+    string bl_str = "box(x) = "; 
+    string pr_str = "prior = " ;
+
+    double bl = accumulate(
+        scene_p->association.begin(), scene_p->association.end(), 0.0,
+        bind(plus<double>(), _1,
+            bind(target_box_likelihood, *box_lh_p, _2)));
+
+    lh_str += lexical_cast<string>((*posterior_p)(scene));
+    ol_str += lexical_cast<string>((*of_lh_p)(scene));
+    bl_str += lexical_cast<string>(bl);
+    pr_str += lexical_cast<string>((*pos_prior_p)(scene));
+
+    double text_col = 1.0;
+    glColor3d(text_col, text_col, text_col);
+    bitmap_string(lh_str, img_width/2 - 250, img_height/2 - 30);
+
+    text_col = posterior_p->use_of_lh() ? 1.0 : 0.5;
+    glColor3d(text_col, text_col, text_col);
+    bitmap_string(ol_str, img_width/2 - 250, img_height/2 - 45);
+
+    text_col = posterior_p->use_box_lh() ? 1.0 : 0.5;
+    glColor3d(text_col, text_col, text_col);
+    bitmap_string(bl_str, img_width/2 - 250, img_height/2 - 60);
+
+    text_col = posterior_p->use_pos_prior() ? 1.0 : 0.5;
+    glColor3d(text_col, text_col, text_col);
+    bitmap_string(pr_str, img_width/2 - 250, img_height/2 - 75);
+
+    glColor3d(1.0, 1.0, 1.0);
+    bitmap_string("Gradient type: " + grad_names[grad_type],
+                  img_width/2 - 250, img_height/2 - 90);
+
+    if(!grad_utd)
+    {
+        glColor3d(1.0, 0.0, 0.0);
+        bitmap_string("gradient is out of date",
+                      img_width/2 - 250,
+                      img_height/2 - 105);
+    }
+
+    glutSwapBuffers();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void reshape(int w, int h)
+{
+    glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-img_width / 2.0, img_width / 2.0,
+            -img_height / 2.0, img_height / 2.0,
+            -1.0, 10.0);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void handle_key(unsigned char key, int, int)
+{
+    switch(key)
+    {
+        case 'f':
+        {
+            display_flow = !display_flow;
+            break;
+        }
+
+        case 'd':
+        {
+            display_data = !display_data;
+            break;
+        }
+
+        case 'b':
+        {
+            display_boxes = !display_boxes;
+            break;
+        }
+
+        case 'g':
+        {
+            if(!grad_utd)
+            {
+                switch(grad_type)
+                {
+                    case STANDARD_GRADIENT:
+                        *grad_vec_p = (*gradient_std_p)(*scene_p);
+                        //std::cout << " gradients: " << std::endl;
+                        /*for(size_t t = 0; t < grad_vec_p->size(); t++)
+                        {
+                            std::cout << (*grad_vec_p)[t] << "\t";
+                        }
+                        std::cout << std::endl << std::endl;
+                        */
+                        break;
+
+                    case FOURIER_GRADIENT:
+                        *grad_vec_p = (*gradient_fft_p)(*scene_p);
+                        break;
+
+                    case IMAGE_GRADIENT:
+                        *grad_vec_p = (*gradient_img_p)(*scene_p);
+                        break;
+                }
+
+                assert(grad_vec_p->size()
+                        == grad_plotx_p->size() + grad_plotz_p->size());
+
+                for(size_t i = 0; i < grad_plotx_p->size(); i++)
+                {
+                    (*grad_plotx_p)[i] = (*grad_vec_p)[2*i];
+                    (*grad_plotz_p)[i] = (*grad_vec_p)[2*i + 1];
+                    (*move_plotx_p)[i] = (*grad_plotx_p)[i]*pos_step_size;
+                    (*move_plotz_p)[i] = (*grad_plotz_p)[i]*pos_step_size;
+                }
+
+                plotx_win_p->update_bounds();
+                plotz_win_p->update_bounds();
+                plotx_move_win_p->update_bounds();
+                plotz_move_win_p->update_bounds();
+
+                grad_utd = true;
+            }
+            break;
+        }
+
+        case 'm':
+        {
+            if(grad_utd)
+            {
+                move_scene();
+                grad_utd = false;
+            }
+            break;
+        }
+
+        case 't':
+        {
+            switch(grad_type)
+            {
+                case STANDARD_GRADIENT:
+                    grad_type = FOURIER_GRADIENT;
+                    break;
+
+                case FOURIER_GRADIENT:
+                    grad_type = IMAGE_GRADIENT;
+                    break;
+
+                case IMAGE_GRADIENT:
+                    grad_type = STANDARD_GRADIENT;
+                    break;
+            }
+
+            grad_utd = false;
+            break;
+        }
+
+        case 'w':
+        {
+            write_scene(*scene_p, "output/gradient/tracks");
+            break;
+        }
+
+        case 'q':
+        case 'Q':
+        {
+            exit(EXIT_SUCCESS);
+        }
+    }
+
+    glutPostRedisplay();
+    plotx_win_p->redisplay();
+    plotz_win_p->redisplay();
+    plotx_move_win_p->redisplay();
+    plotz_move_win_p->redisplay();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void draw_box(const Bbox& box)
+{
+    glBegin(GL_LINE_LOOP);
+    glVertex2d(box.get_left(), box.get_top());
+    glVertex2d(box.get_right(), box.get_top());
+    glVertex2d(box.get_right(), box.get_bottom());
+    glVertex2d(box.get_left(), box.get_bottom());
+    glEnd();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void draw_arrow(const Vector& src, const Vector& dest)
+{
+    Vector dir(dest - src);
+    double mag = dir.magnitude();
+
+    Vector l(0.9 * mag, -0.1 * mag);
+    Vector r(0.9 * mag, 0.1 * mag);
+
+    double angle = acos(dir[0] / mag);
+    if(dir[1] < 0)
+    {
+        angle = -angle;
+    }
+
+    Matrix R = geometry::get_rotation_matrix(angle);
+
+    glBegin(GL_LINES);
+        // shaft of arrow
+        glVertex(src);
+        glVertex(dest);
+
+        // left arrow half
+        glVertex(dest);
+        glVertex(src + R*l);
+
+        // right arrow half
+        glVertex(dest);
+        glVertex(src + R*r);
+    glEnd();
+}
+
+/* \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ */
+
+void move_scene()
+{
+    Scene& scene = *scene_p;
+    Scene_adapter adapter(scene_p);
+
+    const Vector& grad = *grad_vec_p;
+    double scene_sz = adapter.size(&scene);
+    cout << "scene_sz: " << scene_sz << endl;
+
+    assert(grad.size() == scene_sz);
+
+    for(size_t i = 0; i < scene_sz; i++)
+    {
+        double x = adapter.get(&scene, i);
+        double dx = (*step_sizes_p)[i] * grad[i];
+        adapter.set(&scene, i, x + dx);
+    }
+}
+

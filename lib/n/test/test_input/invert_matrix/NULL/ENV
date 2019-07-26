@@ -1,0 +1,11 @@
+# Values of environment variables that might affect output.
+# It might be tempting to dump all environment variables settings here, but this could break things.
+# Hence, if we more of these, they need to be added manually.
+# 
+# Do NOT do thus by editing this file.
+# Rather, edit the list at the top of the scipt 'test_program_2' in ${MAKE_SCRIPT_DIR}
+# 
+### set echo
+unsetenv KJB_VERBOSE
+unsetenv KJB_OPTIONAL_ABORT
+unset echo

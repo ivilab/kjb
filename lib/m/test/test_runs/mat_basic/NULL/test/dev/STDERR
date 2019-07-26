@@ -1,0 +1,5 @@
+<<TEST>> Parent process in create_system_command_process() is 40956 (IL4RT).
+<<TEST>> Child process in create_system_command_process() is 40957 (IL4RT).
+<<TEST>> Begin cleaning up system command process (40957) (IL4RT).
+<<TEST>> Wait result is 0 (IL4RT).
+<<TEST>> Done waiting for system command  process to finish (IL4RT).

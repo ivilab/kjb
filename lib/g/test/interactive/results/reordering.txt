@@ -1,0 +1,7 @@
+This is a way to reorder the points and lines spit out by generate correspondences such that a good camera can always be found for any pair of 6 correspondences.
+
+points
+6 0 4 1 5 7 2 3
+lines
+6 3 9 4 11 2 7 5 8 10 0 1
+

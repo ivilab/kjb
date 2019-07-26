@@ -1,0 +1,16 @@
+
+# 
+# Machine generated file to set make targets
+#
+
+PROGRAMS = \
+        $(OBJ_DIR)normalize_cluster_data \
+        $(OBJ_DIR)perturb
+
+
+
+
+MAN_FROM_HELP_FILES = \
+
+
+MAN_FROM_WRITEUP_FILES = \

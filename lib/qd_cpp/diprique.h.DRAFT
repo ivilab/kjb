@@ -1,0 +1,106 @@
+/**
+ * @file
+ * @brief interface for priority queues used by Dijkstra's algorithm
+ * @author Andrew Predoehl
+ */
+/*
+ * $Id: diprique.h.DRAFT 19925 2015-10-22 20:40:51Z predoehl $
+ */
+
+#ifndef DIPRIQUEUE_H_INCLUDED_PREDOEHL_UOFARIZONAVISION
+#define DIPRIQUEUE_H_INCLUDED_PREDOEHL_UOFARIZONAVISION 1
+
+namespace kjb
+{
+namespace qd
+{
+
+/**
+ * @brief pure virtual interface for priority queue in Dijkstra's algorithm
+ *
+ * This class supports the interface requirements of a priority queue used by
+ * Dijkstra's algorithm.  We can mildly tweak the behavior of the algorithm by
+ * tweaking the behavior of the queue, but we won't say more about such tweaks
+ * except to point to two classes:
+ * - @ref Redblack_subtree_sum, a standard priority queue
+ * - @ref StochasticPriorityQueue, a nonstandard, stochastic queue
+ *
+ * Obviously if you put a nonstandard priority queue, then you don't really
+ * have Dijkstra's algorithm anymore, but I don't want to fuss about details.
+ * I commend the term "quasi-Dijkstra" to describe such an algorithm.
+ *
+ * Like any container, SATELLITE_TYPE must be copyable.  It does not need to be
+ * ordered.
+ *
+ * @section dpq_pri Priority
+ *
+ * Dijkstra's algorithm requires nodes (graph vertices) in the queue to have a
+ * key, which in graph terms is called "distance" but also could be called
+ * "energy," since it could represent the energy required to go from the source
+ * to the given node.  Each iteration of a standard implementation extracts a
+ * node keyed with minimum energy from the queue.  A tweaked queue might do
+ * something else; this abstract interface takes no position.  Any
+ * implementation of this interface should make the desired behavior available
+ * in the form of the Dijkstra_extraction() method.
+ *
+ * When a node is inserted, it is keyed with an energy value that must be
+ * nonnegative.  We also want to allow for an "infinity" key value.  The latter
+ * operation is ins_max_key( node ), and the former is insert( energy, node ).
+ * Each of those operations returns an iterator.
+ *
+ * @section dpq_loc Iterators
+ *
+ * As you surely know, Dijkstra's algorithm requires one to alter (aka relabel,
+ * aka rekey) the energies of nodes still in the queue.  This is implemented
+ * via iterators.  Each insert operation returns an iterator, which the
+ * caller can later use to revise the node's energy, using the rekey_loc()
+ * method.  So you will probably want to store all those iterators in an array.
+ *
+ * Given an iterator, you can retrieve the node representation and its energy
+ * using the star operator method.  You can erase the node using erase().
+ * To rekey a node use the rekey_loc() method.
+ *
+ * Like a pointer, a stale iterator is not safe to dereference.
+ *
+ * Like a std::map, the begin() and end() functions return iterators to a range
+ * of tree nodes.  You can increment an iterator with the increment operator,
+ * ++, to enumerate all nodes.  However, there is no decrement operator.
+ */
+template< typename SATELLITE_TYPE, typename Iter >
+class DijkstraPriorityQueue {
+public:
+    typedef SATELLITE_TYPE  Sat_tp; ///< type of satellite data
+    typedef float           Key_tp; ///< type that we use for keys
+
+    /// @brief obligatory virtual destructor
+    virtual ~DijkstraPriorityQueue() {}
+
+    /// @brief we must be able to clear the queue and reuse it
+    virtual void clear() = 0;
+
+    /// @brief we must be able to insert a record associated with a key value
+    virtual Iter insert( const Key_tp&, const Sat_tp& ) = 0;
+
+    /// @brief we must be able to insert a record with key value of "infinity"
+    virtual Iter ins_max_key( const Sat_tp& ) = 0;
+
+    /// @brief we want to erase a record via its locator value
+    virtual bool erase( Iter ) = 0;
+
+    /// @brief get the locator of the record with min (or near min) key
+    virtual Iter Dijkstra_extraction() const = 0;
+
+    /// @brief get the number of elements in the queue
+    virtual size_t size() const = 0;
+
+    /// @brief predicate tests whether the queue is void of elements
+    virtual bool is_empty() const = 0;
+
+    /// @brief we must be able to change (reduce) the key value for a record
+    virtual bool rekey_loc( Iter, const Key_tp& ) = 0;
+};
+
+}
+}
+
+#endif /* DIPRIQUEUE_H_INCLUDED_PREDOEHL_UOFARIZONAVISION */

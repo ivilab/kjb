@@ -1,0 +1,10 @@
+# Please contact Kobus if this line is causing issues. It should only have an
+# effect if the directory /bin_gcc-4.8 exists, e.g., Laplace.
+#
+setenv COMPILER_SEARCH_DIR /bin_gcc-4.8
+setenv BOOST_VERSION 1_58:1_54
+
+# setenv KJB_CC  gcc
+# setenv KJB_CXX g++
+# setenv KJB_F77 gcc
+# setenv KJB_LD  g++
