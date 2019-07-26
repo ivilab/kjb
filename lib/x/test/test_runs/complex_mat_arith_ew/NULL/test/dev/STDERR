@@ -1,6 +1,0 @@
-(no-kjb) dbs: kjb_verbose_str is -><- on source line 118 of /Volumes/home/kobus/src/lib/l/l_init.c
-<<TEST>> Executing untested code on line 193 of file /Volumes/home/kobus/src/lib/x/x_complex.c.
-<<TEST>> Executing untested code on line 216 of file /Volumes/home/kobus/src/lib/x/x_complex.c.
-<<TEST>> Begin cleaning up system command process (91245) (ignore line for regression testing).
-<<TEST>> Wait result is 0 (ignore line for regression testing).
-<<TEST>> Done waiting for system command  process to finish (ignore line for regression testing).

@@ -1,6 +1,0 @@
-#!/bin/csh -f
-
-chmod u+w $2
-cat $1 | sed '/^:* *$/d' | sed '/^:*\"/d' > $2
-chmod u-w $2
-

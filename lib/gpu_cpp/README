@@ -1,7 +1,0 @@
--- Compiling Cuda Kernels --
-Cuda kernels (files with ".cu" extension) can be compiled into .ptx bytecode files by using the "nvcc" command (the nvidia c compiler).  However, the preferred method is to use the build_cuda_kernel script in this directory.  In addition to creating the .ptx file, this script will also produce a .ptx.inc file, which is suitable for including into c/c++ code using an #include statment.  Many Cuda module objects include their own bytecode as string literals, so no filesystem call are required to read the bytecode file at runtime.
-
-Usage:
-    #build the reduce.cu cuda kernel and create an include file
-    build_cuda_kernel reduce.cu 
-

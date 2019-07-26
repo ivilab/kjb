@@ -1,3 +1,0 @@
-
-This directory probably should be broken up into the part that actually using WordNet to compile, and a new directory of word manipulation code. 
-

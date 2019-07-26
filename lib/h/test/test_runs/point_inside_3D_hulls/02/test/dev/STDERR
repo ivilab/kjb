@@ -1,7 +1,0 @@
-(no-kjb) dbe: error is 1.692787e-02 on source line 950 of /Volumes/home/kobus/src/lib/h/h_hull.c
-(no-kjb) dbe: error is 1.692787e-02 on source line 723 of /Volumes/home/kobus/src/lib/h/h_hull.c
-(no-kjb) dbe: error is 1.247698e-02 on source line 950 of /Volumes/home/kobus/src/lib/h/h_hull.c
-(no-kjb) dbe: error is 1.247698e-02 on source line 723 of /Volumes/home/kobus/src/lib/h/h_hull.c
-<<TEST>> Begin cleaning up system command process (46713) (ignore line for regression testing).
-<<TEST>> Wait result is 0 (ignore line for regression testing).
-<<TEST>> Done waiting for system command  process to finish (ignore line for regression testing).

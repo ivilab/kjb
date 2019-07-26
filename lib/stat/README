@@ -1,8 +1,0 @@
-This directory contains fancy stat routines. It forces the loading of external
-libraries such as gsl.
-
-It should *not* be used for simple calculations such as means, variances, and
-normal distribution. Such things are currently in the "m" library, and should be
-maintained/improved there. Otherwise we will be linking against external
-routines un-necessarily. 
-

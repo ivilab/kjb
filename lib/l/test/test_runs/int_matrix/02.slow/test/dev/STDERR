@@ -1,7 +1,0 @@
-(no-kjb) dbs: kjb_verbose_str is -><- on source line 117 of /Volumes/home/kobus/src/lib/l/l_init.c
-<<TEST>> Parent process in create_system_command_process() is 15932 (IL4RT).
-<<TEST>> Child process in creadbx: mp->elements is te_system_command_process() is 159330  on source line (IL424RT).
- of int_matrix.c
-<<TEST>> Begin cleaning up system command process (15933) (IL4RT).
-<<TEST>> Wait result is 0 (IL4RT).
-<<TEST>> Done waiting for system command  process to finish (IL4RT).

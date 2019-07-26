@@ -1,1 +1,0 @@
-Overnight tests were done assuming about 7 minutes and 50 seconds per million iterations of ransac.

@@ -1,6 +1,0 @@
-<<  2 >> Verbose level at program startup is 5.
-<<  1 >> Test 1: [ 1 eq, 1 unknowns] ==> 0.000e+00 (rel 0.000e+00). Fit error diff: 0.000e+00
-<<  1 >> Test 2: [ 9 eq, 8 unknowns] ==> 2.238e-14 (rel 1.802e-13). Fit error diff: -3.192e-16
-<<  1 >> Test 3: [ 16 eq, 14 unknowns] ==> 1.604e-15 (rel 6.630e-15). Fit error diff: 1.388e-17
-<<  1 >> Test 4: [ 20 eq, 1 unknowns] ==> 2.220e-16 (rel 3.075e-16). Fit error diff: 0.000e+00
-<<  1 >> Test 5: [ 33 eq, 16 unknowns] ==> 1.023e-15 (rel 3.934e-14). Fit error diff: -5.551e-17

@@ -1,6 +1,0 @@
-#!/bin/csh -f
-
-if (! $?KJB_QUIET) then
-    echo $*
-endif 
-

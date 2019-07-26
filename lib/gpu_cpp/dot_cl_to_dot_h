@@ -1,3 +1,0 @@
-#!/bin/bash
-# Convert all opencl "*.cl" files to string literals inside c/c++ header files 
-ls *.cl | while read file; do out_fname=`echo $file | sed 's/\./_/g'`; xxd -i $file $out_fname.h; done
