@@ -1,0 +1,1232 @@
+################################################################################
+# 
+# Build scripts  
+# =============
+#
+# This file (${KJB_SRC_PATH}Make/scripts/build-2) is sourced by the script "build"
+# after it has determined the value of KJB_SRC_PATH. In order to be able to move src
+# directories without problem, each source directory has a copy of the script
+# "build", but once KJB_SRC_PATH is known, then we know where to find the build
+# tools. 
+#
+# The main purpose of the build scripts is to normalize the make environment,
+# and to implement some functionality that is difficult to do in a robust
+# portable way for all flavors of make. 
+#
+# We first set up the environment for the compile using the scripts init_machine
+# and init_compile. 
+#
+# Sourcing init_machine and init_compile is often redundant. It is safest to do
+# it every compile, but this takes a bit of time. If we are using Kobus's
+# environment  we compile faster by not sourcing those files everytime. In this
+# case, we can use set_gcc to update things if we expect that the external
+# enviroment has changed. To force sourcing init_machine and init_compile
+# everytime, one can set the environment variable KJB_FORCE_INIT. 
+#
+# Kobus's environment also provides an alternative way to compile through "mk"
+# which assumes that Makefiles are up to date and calls make directly and also
+# provides additional control over where errors go and some filtering of them.
+# (Some of the capability is making its way into this script). 
+#
+# On the subject of faster compiline, if we call make with the target "code"
+# then the makefiles are not checked for being up to date.
+#
+if ($?KJB_HAVE_MACHINE) then
+    # Do not use VERBOSE_ECHO_2 as we may not have it yet. 
+    if ($?KJB_VERBOSE_2) then
+        echo "Script build-2 is not sourcing ${KJB_SRC_PATH}Make/init_machine because KJB_HAVE_MACHINE is set."
+    endif 
+else 
+    # Do not use VERBOSE_ECHO as we may not have it yet. 
+    if ($?KJB_VERBOSE) then
+        echo "Script build-2 is sourcing ${KJB_SRC_PATH}Make/init_machine."
+    endif 
+
+    source ${KJB_SRC_PATH}Make/init_machine
+    if ($status) exit $status
+endif 
+
+##################################################################################
+#
+#                      Manipulating the build
+#                      ----------------------
+#
+# Build options can be manipulated by changing environment variables, some of
+# which are documented in this file. If you prefer, these can be set in the
+# BUILD_ENV* files. One way to get started with this plan is to copy BUILD_ENV
+# from ${KJB_SRC_PATH}/Make/ into this directory. 
+#
+# If any relevant BUILD_ENV* file exits, they will source now, before calling
+# ${KJB_SRC_PATH}/Make/build-2 which does the heavy lifting in setting up calls to
+# "make".
+#
+# Some choices here depend on knowing the machine, so we make sure this is known
+# at this point. 
+#
+# if ($?KJB_HAVE_MACHINE) then
+#     # Do not use VERBOSE_ECHO_2 as we may not have it yet. 
+#     if ($?KJB_VERBOSE_2) then
+#         echo "Script build is not sourcing ${KJB_SRC_PATH}Make/init_machine because KJB_HAVE_MACHINE is set."
+#     endif 
+# else 
+#     # Do not use VERBOSE_ECHO as we may not have it yet. 
+#     if ($?KJB_VERBOSE) then
+#         echo "Script build is sourcing ${KJB_SRC_PATH}Make/init_machine"
+#     endif 
+# 
+#     source ${KJB_SRC_PATH}Make/init_machine
+#     if ($status) exit $status
+# endif 
+
+set shared_build_env_dirs = "BUILD_ENV BUILD_ENV.${OS} BUILD_ENV.${MACHINE}"
+
+if ("${OS2}" != "") then 
+    set shared_build_env_dirs = "${shared_build_env_dirs} BUILD_ENV.${OS2} BUILD_ENV.${OS2}${CPU}"
+endif 
+
+set build_env_dirs = ""
+
+foreach shared_build_env_dir (${shared_build_env_dirs}) 
+    set build_env_dirs = "${build_env_dirs} ${shared_build_env_dir}"
+
+    if ($?USER) then
+        set build_env_dirs = "${build_env_dirs} ${shared_build_env_dir}.${USER}"
+    endif 
+end
+
+# Do not use VERBOSE_ECHO as we may not have it yet. 
+if ($?KJB_VERBOSE) then
+    echo "Checking for build option files in (${build_env_dirs})."
+endif
+
+foreach build_env_dir (${build_env_dirs})
+    if (-e "${build_env_dir}") then
+        # Do not use VERBOSE_ECHO as we may not have it yet. 
+        if ($?KJB_VERBOSE) then
+            echo "Sourcing ${build_env_dir} in directory ${cwd}, which can overide shell settings."
+        endif 
+        source ${build_env_dir}
+
+        # Do not use VERBOSE_ECHO as we may not have it yet. 
+        if ($?KJB_VERBOSE) then
+            echo "Back from ${build_env_dir} in directory ${cwd}."
+        endif 
+        if (${status}) exit ${status}
+    else if ($?KJB_VERBOSE_2) then
+        echo "No optional build file ${build_env_dir} in directory ${cwd}."
+    endif 
+end
+
+##################################################################################
+
+# Do not use VERBOSE_ECHO as we may not have it yet. 
+if ($?KJB_VERBOSE) then
+    echo "Script build-2 is sourcing ${KJB_SRC_PATH}Make/init_compile"
+endif 
+
+set multiple_boost = 0
+
+if ($?BOOST_VERSION) then
+    if ("${BOOST_VERSION}" != "") then
+        # If BOOST_VERSION points to more then one option, we need to choose it
+        # here. It would conceptually be simpler to wrap this into finding boost as
+        # we do below, but since it is tied to the build string, cache dirs, etc.,
+        # we need to peek at what bosts we may be able to find. We will assume that
+        # the first headers 
+
+        set multiple_boost = `echo ${BOOST_VERSION} | grep -c ':'`
+    endif
+endif
+
+if (${multiple_boost}) then
+    set boost_candidates = `echo ${BOOST_VERSION} | sed 's/:/ /g'`
+
+    set found_workable_boost = 0 
+
+    foreach boost_candidate (${boost_candidates}) 
+        if (! $?KJB_QUIET ) then
+            echo "Script build-2 is trying boost_candidate ${boost_candidate} by setting BUILD_VERSION to that and sourcing build-2."
+        endif 
+
+        setenv BOOST_VERSION "${boost_candidate}"
+
+        source ${KJB_SRC_PATH}Make/init_compile
+        if (! ${status}) then
+            set found_workable_boost = 1
+            break
+        endif 
+    end
+
+    if (! ${found_workable_boost}) then
+        echo "Not able to find any of the boost candidates in (${boost_candidates})."
+        exit 1
+    else if ($?KJB_VERBOSE) then
+        
+    endif 
+else
+    source ${KJB_SRC_PATH}Make/init_compile
+    if (${status}) exit ${status}
+endif 
+
+setenv CWD "${cwd}"
+
+################################################################################
+
+if ($?KJB_VERBOSE) then
+   set suppress_jobserver_msg = " cat "
+else if ( $?KJB_QUIET ) then
+   # Get ride of some annoying messages. However, this is a hack.  We cannot use
+   # grep because it can exit with 1. We also have yet to control how spaces in
+   # the search string can get parsed properly. So we do without for now. 
+   set suppress_jobserver_msg = ' sed /jobserver/d' 
+else 
+   set suppress_jobserver_msg = ' sed /jobserver/d' 
+endif 
+
+################################################################################
+
+# We adjust the build and the compile for things like output control because it
+# is not reasonable to have a special cache or compile dir for them as the
+# object code should not change. But then, switching the effect in init_compile
+# cannot work (very well). 
+
+set make_extra_opts = ""
+
+if ($?KJB_MAKE_DEBUG) then 
+    set make_extra_opts = "${make_extra_opts} ${KJB_MAKE_OPTS_DEBUG}"
+endif 
+
+if ($?FORCE_STOP) then
+    if ($?KJB_VERBOSE) then
+        echo "Forcing stopping after an error due to env var FORCE_STOP being set"
+    endif 
+
+    set make_extra_opts = "${make_extra_opts} ${KJB_MAKE_OPTS_STOP}"
+endif 
+
+if ($?KJB_QUIET) then
+    set make_extra_opts = "${make_extra_opts} ${KJB_MAKE_OPTS_SILENT}"
+endif 
+
+setenv KJB_MAKE_SERIAL "${KJB_MAKE_SERIAL} ${make_extra_opts}"
+setenv KJB_MAKE_PAR    "${KJB_MAKE_PAR} ${make_extra_opts}"
+
+if ($?FORCE_SERIAL) then
+    if ($?KJB_VERBOSE) then
+        echo "Forcing serial make due to env var FORCE_SERIAL being set"
+    endif 
+
+    setenv KJB_MAKE "${KJB_MAKE_SERIAL}"
+else 
+    setenv KJB_MAKE "${KJB_MAKE_PAR}"
+endif  
+
+################################################################################
+
+if ($?FORCE_C99) then
+    setenv CC_BASE_FLAGS "${CC_C99_BASE_FLAGS}" 
+else if ($?FORCE_C89) then
+    setenv CC_BASE_FLAGS "${CC_C89_BASE_FLAGS}" 
+else if ($?FORCE_NULL_STD) then
+    setenv CC_BASE_FLAGS "${CC_NULL_STD_BASE_FLAGS}" 
+endif 
+
+################################################################################
+
+# The default warn level is 2. To simplify changing the warn level, we check it
+# everytime, which is a bit excessive. However, it is better than forcing
+# cleaning the cache. Changes here should be paralleled in init_compile. 
+
+if (${KJB_WARN_LEVEL} == 0) then
+    setenv CC_KJB_WARNINGS "${CC_KJB_WARN_0}"
+    setenv CXX_KJB_WARNINGS "${CXX_KJB_WARN_0}"
+    setenv F77_KJB_WARNINGS "${F77_KJB_WARN_0}"
+    setenv KJB_CPP_MESSAGE_FILTER "${KJB_CPP_DEFAULT_MSG_FILTER}"
+else if (${KJB_WARN_LEVEL} == 1) then
+    setenv CC_KJB_WARNINGS "${CC_KJB_WARN_1}"
+    setenv CXX_KJB_WARNINGS "${CXX_KJB_WARN_1}"
+    setenv F77_KJB_WARNINGS "${F77_KJB_WARN_1}"
+    setenv KJB_CPP_MESSAGE_FILTER "${KJB_CPP_DEFAULT_MSG_FILTER}"
+else if (${KJB_WARN_LEVEL} == 2) then
+    setenv CC_KJB_WARNINGS "${CC_KJB_WARN_2}"
+    setenv CXX_KJB_WARNINGS "${CXX_KJB_WARN_2}"
+    setenv F77_KJB_WARNINGS "${F77_KJB_WARN_2}"
+    setenv KJB_CPP_MESSAGE_FILTER "${KJB_CPP_DEFAULT_MSG_FILTER}"
+else if (${KJB_WARN_LEVEL} == 3) then
+    setenv CC_KJB_WARNINGS "${CC_KJB_WARN_3}"
+    setenv CXX_KJB_WARNINGS "${CXX_KJB_WARN_3}"
+    setenv F77_KJB_WARNINGS "${F77_KJB_WARN_3}"
+    setenv KJB_CPP_MESSAGE_FILTER "${KJB_CPP_DEFAULT_MSG_FILTER}"
+else if (${KJB_WARN_LEVEL} == 4) then
+    setenv CC_KJB_WARNINGS "${CC_KJB_WARN_4}"
+    setenv CXX_KJB_WARNINGS "${CXX_KJB_WARN_4}"
+    setenv F77_KJB_WARNINGS "${F77_KJB_WARN_4}"
+    setenv KJB_CPP_MESSAGE_FILTER "${KJB_CPP_ALLPASS_MSG_FILTER}"
+else if (${KJB_WARN_LEVEL} >= 5) then
+    setenv CC_KJB_WARNINGS "${CC_KJB_WARN_5}"
+    setenv CXX_KJB_WARNINGS "${CXX_KJB_WARN_5}"
+    setenv F77_KJB_WARNINGS "${F77_KJB_WARN_5}"
+    setenv KJB_CPP_MESSAGE_FILTER "${KJB_CPP_ALLPASS_MSG_FILTER}"
+endif 
+
+if ($USE_SHARED_WARNINGS) then 
+    kjb_setenv CC_SHARED_WARNINGS "${CC_KJB_WARNINGS}"
+endif 
+
+################################################################################
+
+set is_parallel = 0
+set have_job_arg = `echo ${KJB_MAKE} | grep -c '\-j [1-9]'`
+if (${have_job_arg}) then
+    set job_arg_val = `echo ${KJB_MAKE} | sed 's/^.*-j \([1-9][0-9]*\)[^0-9]*$/\1/'`
+    if (${job_arg_val} > 1) then
+        set is_parallel = 1
+    endif 
+endif 
+
+################################################################################
+
+if ($?KJB_VERBOSE) then
+    echo "" 
+    echo =================  variable values in build-2 =========================
+    echo "" 
+
+    echo "MACHINE:                ${MACHINE}"
+    echo "OS:                     ${OS}"
+
+    if ($?UBUNTU_RELEASE) then
+       if ("${UBUNTU_RELEASE}" == "14.04") then
+            echo "UBUNTU_RELEASE:         ${UBUNTU_RELEASE}"
+       endif 
+    endif 
+
+    echo " "
+    echo "SHELL_FOR_MAKE:         ${SHELL_FOR_MAKE}"
+    echo "CWD:                    ${CWD}"
+    echo "KJB_SRC_PATH:           ${KJB_SRC_PATH}"
+    echo "KJB_LIB_PATH:           ${KJB_LIB_PATH}"
+    echo "MAKE_PATH:              ${MAKE_PATH}"
+    echo "MAKE_SCRIPT_PATH:       ${MAKE_SCRIPT_PATH}"
+    echo "MAKE_FLAVOR:            ${MAKE_FLAVOR}"
+    echo "KJB_DIFF_TEST:          ${KJB_DIFF_TEST}"
+    echo "KJB_STAT_FLAVOR:        ${KJB_STAT_FLAVOR}"
+    echo "VIM_FOR_MAKE:           ${VIM_FOR_MAKE}"
+    echo "VIM_SUFFIX:             ${VIM_SUFFIX}"
+    echo "PRODUCTION:             ${PRODUCTION}"
+    echo "OBJ_DIR:                ${OBJ_DIR}"
+    echo "CXX_OBJ_DIR:            ${CXX_OBJ_DIR}"
+    echo "LD_OBJ_DIR:             ${LD_OBJ_DIR}"
+    echo "REAL_OBJ_DIR:           ${REAL_OBJ_DIR}"
+    echo "LOAD_DIRS:              ${LOAD_DIRS}"
+    echo "DOC_DIR:                ${DOC_DIR}"
+    echo "MAN_DIR:                ${MAN_DIR}"
+    echo "HTML_MAN_DIR:           ${HTML_MAN_DIR}"
+    echo "KJB_WARN_LEVEL:         ${KJB_WARN_LEVEL}"
+    echo "CC_KJB_WARNINGS:        ${CC_KJB_WARNINGS}"
+    echo "CXX_KJB_WARNINGS:       ${CXX_KJB_WARNINGS}"
+    echo "KJB_CPP_MESSAGE_FILTER: ${KJB_CPP_MESSAGE_FILTER}"
+    echo "ECHO_IF_VERBOSE;        ${ECHO_IF_VERBOSE}" 
+    echo "" 
+    echo "ALL_BASE_INCLUDES:      ${ALL_BASE_INCLUDES}"
+    echo "LIB_BASE_INCLUDES:      ${LIB_BASE_INCLUDES}"
+    echo "DEFAULT_OPT_INCLUDES:   ${DEFAULT_OPT_INCLUDES}"
+    echo "LOAD_DIRS:              ${LOAD_DIRS}"
+    echo "" 
+    echo "Default make command:   ${KJB_MAKE}" 
+    echo "Serial make command:    ${KJB_MAKE_SERIAL}" 
+    echo "Default make is parallel: ${is_parallel}" 
+    echo "" 
+    echo =======================================================================
+    echo "" 
+endif 
+
+################################################################################
+
+# We may just be sourcing this script via sourcing build just to get the
+# environment. However, argv, might already be set in the calling script, and
+# probably should not be disturbed. So, we want another way to exit now. 
+# (This is a hack, and probably should be fixed.)
+
+if ($?ONLY_GET_BUILD_ENV) exit
+
+################################################################################
+
+# This is somewhat misleading. We never get anything other than 1 argument when
+# this is called via "Make"(*). Also, if the user simply enters "make", we will
+# get the argument "all" due to way we ask make to call this script. However, we
+# might want to call this script directly on occasion, so we keep the capability
+# of dealing with any number of arguments.
+#
+# (*) To finish the story, if we call make with multiple arguments, then make will
+# call us with each of those arguments separately, either serially or in parallel,
+# depending on options given to make. 
+
+set num_args = $#argv
+
+if (${num_args} == 0) then
+    set args = ""
+#     set argv = "all"
+#     set num_args = 1
+else 
+    set args = "$*"
+endif 
+
+if (! $?KJB_QUIET ) then
+    set start_time = `date`
+
+    echo " "
+    echo "Build start for '${args}' at ${start_time}"
+    echo " "
+endif 
+
+################################################################################
+
+if ($?KJB_VERBOSE) then
+    setenv KJB_VERBOSE_INDENT ""
+endif 
+
+if (! $?KJB_QUIET ) then
+    set build_verbose = 1
+else 
+    set build_verbose = 0
+endif 
+
+################################################################################
+
+# It is OK if TMP_SUB_DIRS_VISITED is not set, but if it is set to a list of sub
+# direcotory names for some bizarre reason, then things might break. 
+#
+setenv TMP_SUB_DIRS_VISITED ""
+
+################################################################################
+
+# Currently, at least for me (Kobus), the error messages from gcc are a bit
+# screwed up due to some LOCALE inconsistency. Until I get time to figure it
+# out, we will just have gcc run in the simplest local environment. 
+#
+setenv LC_ALL C 
+
+################################################################################
+
+# set echo 
+
+set save_production = "${PRODUCTION}"
+set save_kjb_cc = "${KJB_CC}"
+
+# Check for obsolete files that could confuse things. 
+if (-e "Makefile-depend") then
+    set old_rule = `cat Makefile-depend | grep -c 'Makefile-depend : input'`
+    if (! ${old_rule} ) then
+        set old_rule = `cat Makefile-depend | grep -c 'Makefile-depend : test_input'`
+    endif 
+
+    if (${old_rule}) then 
+        if ($?KJB_VERBOSE) then
+            echo "Script build-2 is removing an obsolete Makefile-depend."
+        endif 
+        ${KJB_RM} Makefile-depend
+    endif 
+endif  
+
+# Some targets we allow TARGET_TYPE.PROGRAM and want it to mean the same thing
+# as PROGRAM.TARGET_TYPE. We want deal with the TARGET_TYPE.PROGRAM format
+# initially, even though for TARGETS_TYPE in test_target_suffixes we switch the
+# order (potentially twice) for make.
+#
+set test_target_prefixes = "test regress test_svn"
+set test_target_suffixes = "test_clean test_very_clean check_clean regress_clean"
+
+# Helps get around substitution rules.
+set dollar = '$'
+
+set adjusted_args = ""
+set count = 1
+
+set need_depend_bootstrap = 0
+set need_depend = 0
+
+while ($count <=  ${num_args}) 
+    set arg = $argv[${count}]
+
+    foreach test_target_type (${test_target_prefixes} ${test_target_suffixes})
+        set part_one = `echo $arg | sed "s/\.${test_target_type}${dollar}//"`
+        if ("${part_one}" != "${arg}") then
+            ${VERBOSE_ECHO} "Changing arg '${arg}' to '${test_target_type}.${part_one}'"
+            set arg = "${test_target_type}.${part_one}"
+            break
+        endif
+    end
+
+    foreach test_target_type (${test_target_prefixes} ${test_target_suffixes})
+        set next_arg = `echo $arg | sed "s/${test_target_type}\.//"`
+        if ("${next_arg}" != "${arg}") then
+            ${VERBOSE_ECHO} "Breaking arg '${arg}' into '${test_target_type}' and '${next_arg}'"
+            set arg = "${test_target_type}"
+            break
+        else 
+            set next_arg = ""
+        endif 
+    end
+
+    @ count ++
+
+    # If multiple make targets are being processed, then we need to make sure
+    # that ones that forced settings do not affect the others. 
+    #
+    if (("${PRODUCTION}" != "${save_production}") || ("${KJB_CC}" != "${save_kjb_cc}")) then
+        setenv KJB_CC "${save_kjb_cc}" 
+        setenv PRODUCTION "${save_production}"
+        setenv FORCE_INIT_COMPILE
+        source ${KJB_SRC_PATH}Make/init_compile
+    endif 
+
+    if ("${arg}" == "all") then
+        set need_depend = 1
+        # Do nothing special. Common case that would fall through, but we skip
+        # all the processing. 
+    else if ("${arg}" == "confess") then
+        setenv KJB_VERBOSE 1
+        
+        echo " "
+        echo "Cleaning the cache because of target confess."
+        echo " "
+
+        source ${MAKE_SCRIPT_PATH}clean_cache
+        source ${KJB_SRC_PATH}Make/init_compile
+
+        continue
+    else if ( ("${arg}" == "clean_cache") || ("${arg}" == "cache_clean") ) then
+        source ${MAKE_SCRIPT_PATH}clean_cache
+        continue
+    else if (("${arg}" == "depend_dirs") || ("${arg}" == "depend_dir") || ("${arg}" == "depend_depend")) then
+        echo "Argument ${arg} is obsolete. Proceeding as though it were 'depend'."
+        set need_depend = 1
+        set arg = depend
+    else if ("${arg}" == "depend")  then
+        set need_depend = 1
+    else if ("${arg}" == "code") then
+        # We have the target "code" to do "all" without any depend stuff. So no
+        # setting of "need_depend". 
+        set arg = all
+    else if ("${arg}" == "obj_clean") then
+        echo " "
+        echo "Build script is cleaning up object directories in the current directory and below."
+        echo " "
+
+        source ${MAKE_SCRIPT_PATH}clean_obj
+
+        continue
+    else if ("${arg}" == "depend_very_clean") then
+        echo " "
+        echo "Build script is cleaning up Makefiles in current dir, lib, and all KJB libs."
+        echo " "
+
+        source ${MAKE_SCRIPT_PATH}clean_global
+
+        continue
+    else if ("${arg}" == "depend_clean") then
+        echo " "
+        echo "Build script is cleaning up Makefiles in current dir (only)."
+        echo " "
+
+        source ${MAKE_SCRIPT_PATH}clean_local
+  
+        continue
+    else if (("${arg}" == "static") || ("${arg}" == "dynamic") || ("${arg}" == "shared")) then
+        set need_depend = 1
+ 
+        if ("${arg}" == "dynamic") then
+            if (! $?KJB_QUIET ) then
+                echo ""; echo "Build script is switching target dyanamic to 'shared'"; echo ""
+                set arg = "shared"
+            endif
+        endif 
+
+    else if ("${arg}" == "doc") then
+        set need_depend = 1
+        set have_cpp = `${MAKE_SCRIPT_PATH}stream_file_names -doxygen -t`
+        
+        if ("${have_cpp}" == "1") then
+            echo "Changing target doc to doxygen."
+            set arg = doxygen
+        endif 
+    else if ("${arg}" == "test") then
+        # No need_depend because the test Makefiles are separated. But they do
+        # include Makefile-program, and so best to ensure that included files
+        # such as Makefile-dirs exist.  
+        set need_depend_bootstrap = 1
+
+        if ("${next_arg}" != "") then
+            set arg = ""
+            set prog = `echo ${next_arg} | sed 's/\(.*\)\.c.*$/\1/'`
+
+            if (-d "test_input/${prog}") then
+                pushd "test_input/${prog}" > /dev/null 
+                set test_instances = `find . -maxdepth 1 -mindepth 1 -type d \! \( -name '.*' \) |& sed 's#./##'`
+                popd > /dev/null
+
+                foreach test_instance (${test_instances})
+                    set arg = "${arg} test_runs/${prog}/${test_instance}/test/${CODE}/output_checked"
+                end
+            endif
+
+            if ("${arg}" == "") then
+                ${P_STDERR} "No test instances found for ${prog}"
+                ${P_STDERR} " "
+                exit 1
+            endif 
+        endif 
+    else if ("${arg}" == "regress") then
+        # No need_depend because the test Makefiles are separated. But they do
+        # include Makefile-program, and so best to ensure that included files
+        # such as Makefile-dirs exist.  
+        set need_depend_bootstrap = 1
+        if ("${next_arg}" != "") then
+            set arg = ""
+            set prog = `echo ${next_arg} | sed 's/\(.*\)\.c.*$/\1/'`
+
+            if (-d "test_input/${prog}") then
+                pushd "test_input/${prog}" > /dev/null 
+                set test_instances = `find . -maxdepth 1 -mindepth 1 -type d \! \( -name '.*' \) |& sed 's#./##'`
+                popd > /dev/null
+
+                foreach test_instance (${test_instances})
+                    set arg = "${arg} test_runs/${prog}/${test_instance}/regress/${LD_OBJ_DIR}regression_test_passed"
+                end
+            endif
+        endif 
+    else if ("${arg}" == "test_svn")  then
+        # No need_depend because the test Makefiles are separated. But they do
+        # include Makefile-program, and so best to ensure that included files
+        # such as Makefile-dirs exist.  
+        set need_depend_bootstrap = 1
+
+        if ("${next_arg}" != "") then
+            set arg = ""
+            set prog = `echo ${next_arg} | sed 's/\(.*\)\.c.*$/\1/'`
+
+            if (-d "test_input/${prog}") then
+                pushd "test_input/${prog}" > /dev/null 
+                set test_instances = `find . -maxdepth 1 -mindepth 1 -type d \! \( -name '.*' \) |& sed 's#./##'`
+                popd > /dev/null
+
+                foreach test_instance (${test_instances})
+                    set arg = "${arg} test_runs/${prog}/${test_instance}/test/${CODE}/svn_phony"
+                end
+            endif
+
+            if ("${arg}" == "") then
+                ${P_STDERR} "No test instances found for ${prog}"
+                ${P_STDERR} " "
+                exit 1
+            endif 
+        endif 
+    else if ( ("${arg}" == "regress")  || ("${arg}" == "regress_clean") )  then
+        # Probably need_depend_bootstrap would suffice. 
+        set need_depend = 1
+    else if (("${arg}" == "test_clean") || ("${arg}" == "test_very_clean") || ("${arg}" == "check_clean")  || ("${arg}" == "regress_clean"))  then
+        set need_depend_bootstrap = 1
+        
+        # These targets, when qualified, are implemented in Makefile-test using
+        # %.SUFFIX, where SUFFIX is one of test_clean, test_very_clean, etc.
+        # We want X.Y == Y.X for these, so here we switch the order.
+        #
+        if ("${next_arg}" != "") then
+           set arg = ${next_arg}.${arg}
+        endif
+    else if ("${arg}" == "file_list") then
+        set arg = "file_list.new"
+        set need_depend = 1
+        if (! $?KJB_QUIET ) then
+            echo "Script build-2 is switching target file_list to file_list.new"
+        endif 
+    else if ("${arg}" == "file_list") then
+        set arg = "file_list.new"
+        set need_depend = 1
+        if (! $?KJB_QUIET ) then
+            echo "Script build-2 is switching target file_list to file_list.new"
+        endif 
+    else if ("${arg}" == "include_lines") then
+        set arg = "include_lines.new"
+        set need_depend = 1
+        if (! $?KJB_QUIET ) then
+            echo "Script build-2 is switching target include_lines to include_lines.new"
+        endif 
+    else if (("${arg}" == "file_list".new") || ("${arg}" == "include_lines".new")  || ("${arg}" == "depend") || ("${arg}" == "depend_again")) then
+        set need_depend = 1
+    else
+        set need_depend = 1
+
+        set arg_with_dot_c = ""
+        set obj_dir = "${OBJ_DIR}" 
+
+        set arg_without_dot_c1 = `echo ${arg} | sed 's/\(.*\)\.c$/\1/'`
+        set arg_without_dot_c2 = `echo ${arg} | sed 's/\(.*\)\.cpp$/\1/'`
+        set arg_without_dot_c3 = `echo ${arg} | sed 's/\(.*\)\.cxx$/\1/'`
+        set arg_without_dot_c4 = `echo ${arg} | sed 's/\(.*\)\.cc$/\1/'`
+    
+        if (("${arg}" != "${arg_without_dot_c1}") && (-e "${arg}")) then
+            set arg_with_dot_c = "${arg}"
+            set arg_without_dot_c = "${arg_without_dot_c1}"
+        else if (("${arg}" != "${arg_without_dot_c2}") && (-e "${arg}")) then
+            set arg_with_dot_c = "${arg}"
+            set obj_dir = "${CXX_OBJ_DIR}" 
+            set arg_without_dot_c = "${arg_without_dot_c2}"
+        else if (("${arg}" != "${arg_without_dot_c3}") && (-e "${arg}")) then
+            set arg_with_dot_c = "${arg}"
+            set arg_without_dot_c = "${arg_without_dot_c3}"
+            set obj_dir = "${CXX_OBJ_DIR}" 
+        else if (("${arg}" != "${arg_without_dot_c4}") && (-e "${arg}")) then
+            set arg_with_dot_c = "${arg}"
+            set arg_without_dot_c = "${arg_without_dot_c4}"
+            set obj_dir = "${CXX_OBJ_DIR}" 
+        else 
+            if ((-e ${arg}.c) && (${OBJ_DIR} != "")) then
+                set arg_without_dot_c = "${arg}"
+                set arg_with_dot_c = "${arg}.c"
+            else 
+                foreach suffix (cpp cxx C cc)
+                    if ((-e ${arg}.${suffix}) && (${OBJ_DIR} != "")) then
+                        set arg_without_dot_c = "${arg}"
+                        set arg_with_dot_c = "${arg}.${suffix}"
+                        set obj_dir = "${CXX_OBJ_DIR}" 
+                        break
+                    endif 
+                end 
+            endif 
+        endif 
+
+        if ("${arg_with_dot_c}" == "") then
+            if (-e "${arg}.c") then
+                set arg_with_dot_c = "${arg}.c"
+            else if (-e "${arg}.cpp") then
+                set arg_with_dot_c = "${arg}.cpp"
+            else if (-e "${arg}.cxx") then
+                set arg_with_dot_c = "${arg}.cxx"
+            else if (-e "${arg}.cc") then
+                set arg_with_dot_c = "${arg}.cc"
+            else if (-e "${arg}.C") then
+                set arg_with_dot_c = "${arg}.C"
+            endif 
+
+            if ("${arg_with_dot_c}" != "") then
+                set arg_without_dot_c = "${arg}" 
+            endif 
+        endif
+
+        if ("${arg_with_dot_c}" != "") then
+            set noglob 
+
+            set old_arg = "${arg}"
+
+            set test_main = `${MAKE_SCRIPT_PATH}stream_file_names -m -t ${arg_with_dot_c}`
+
+            if ("${test_main}") then
+                set arg = "${LD_OBJ_DIR}${arg_without_dot_c}"
+            else
+                # A bit of a hack. Currently, our makefiles use full paths for
+                # lib dirs, and relative paths for non lib dirs. This is
+                # potentially a sign that we need a bit of design adjustment.
+                # However, for now, we hack around it for the purpose of
+                # switching source file args to object args. 
+                #
+                set test_lib_dir = `echo ${cwd} | grep -c 'lib/[^/][^/]*$'`
+
+                if (${test_lib_dir}) then
+                    set arg = "${cwd}/${obj_dir}${arg_without_dot_c}.o"
+                else
+                    set arg = "${obj_dir}${arg_without_dot_c}.o"
+                endif 
+            endif 
+
+            echo "Switching target ${old_arg} to ${arg}"
+
+            unset noglob 
+        endif 
+    endif 
+
+    if ("${adjusted_args}" != "") then
+        set adjusted_args = "${adjusted_args} ${arg}"
+    else
+        set adjusted_args = "${arg}"
+    endif 
+end
+
+${VERBOSE_ECHO} "Script build-2 adjusted args is '${adjusted_args}'."
+
+if (${need_depend}) then
+    set need_depend_bootstrap = 1
+endif 
+
+if (${need_depend_bootstrap}) then
+    if (! -e Makefile-dirs) then
+        # This is not needed with gmake, but it is the same thing that gmake
+        # would do first so it is OK to keep. 
+        #
+        # We cannot have an empty Makefile-dirs if we are in a library
+        # directory. We need the first part which can be built without
+        # Include_lines/sub_libs_needed, although the implementation below builds
+        # that also.  Hence if Makefile-dirs does not exist, we need to build it
+        # here, especially for versions of make that break when we include
+        # non-existent files.
+        #
+        ${VERBOSE_ECHO} "Script build-2 is building Makefile-dirs indirectly using scripts build_file_list and build_include_lines."
+
+        # Makefile-dirs is made as a side effect of the following.
+        ${MAKE_SCRIPT_PATH}kjb_lock ${MAKE_SCRIPT_PATH}build_file_list
+        if (${status}) then
+            ${P_STDERR} "Building initial Makefile-dirs with script build_file_list failed."
+            exit 1
+        endif
+
+        ${MAKE_SCRIPT_PATH}kjb_lock ${MAKE_SCRIPT_PATH}build_include_lines
+        if (${status}) then
+            ${P_STDERR} "Building initial Makefile-dirs with script build_include_lines failed."
+            exit 1
+        endif
+
+        ${VERBOSE_ECHO} "Script build-2 has finished building Makefile-dirs in advance of calling make."
+    endif
+
+    # Some flavors of make will die if files that are included don't exist.
+    # Others like gmake are happy to try to build them for you if it can find a
+    # rule after reading in the whole works. If this is the behaviour, it is
+    # better for us so we only do this if we are not using gmake, or testing
+    # with FORCE_MAKEFILE_CREATION. 
+    #
+    if (("${MAKE_FLAVOR}" != "gmake") || ($?FORCE_MAKEFILE_CREATION)) then
+        ${VERBOSE_ECHO} "Due to non gmake make, or testing with FORCE_MAKEFILE_CREATION: "
+        ${VERBOSE_ECHO} "    Script build-2 is asking build_include_lines to build Makefile-libs-needed as it goes."
+        ${VERBOSE_ECHO} "    Script build-2 is ensuring the existance of certain Makefiles with old timestamps."
+        # This is consulted in build_include_lines_2
+        setenv SHADOW_BUILD_MAKEFILE_LIBS 1
+
+        if (! -e Makefile-depend) then
+            ${KJB_TOUCH_1990} Makefile-depend
+        endif
+
+        if (! -e Makefile-libs-needed) then
+            ${KJB_TOUCH_1990} Makefile-libs-needed
+        endif
+
+        if (-e Makefile-include) then
+            if (! -e Makefile-library) then
+                ${KJB_TOUCH_1990} Makefile-library
+            endif 
+
+            if (! -e Include_lines/Makefile-include-lines) then
+                ${KJB_MKDIR} Include_lines
+                ${KJB_TOUCH_1990} Include_lines/Makefile-include-lines
+            endif 
+
+            if (! -e Include_lines/Makefile-depend-incl-dot-h) then
+                ${KJB_MKDIR} Include_lines
+                ${KJB_TOUCH_1990} Makefile-depend-incl-dot-h
+            endif
+        endif 
+    endif 
+endif 
+
+# If need_depend is set to true (usually the case) we build each of the depend
+# targets listed in temp_depend_targets below. But if the target specified is
+# actually one of these, then we build all the ones up to that target. 
+#
+if (( ! $?KJB_SKIP_DEPEND) && (${need_depend}) ) then
+    set build_adjusted_args = ""
+    foreach arg (${adjusted_args}) 
+        # set temp_depend_targets = "Include_lines/file_list.new Include_lines/include_lines.new Include_lines/sub_libs_needed depend"
+        # set temp_depend_targets = "file_list.new include_lines.new sub_libs_needed depend"
+        #
+        # The target "depend_again" is a self-documenting way to do "depend" a
+        # second time. We duplicate the target "depend" because in a few cases,
+        # the first build of Makefile-depend creates dependencies for itself via
+        # the variable DEPEND_DEPENDENCIES.
+        #
+        set temp_depend_targets = "file_list.new include_lines.new depend depend_again"
+
+        # If we ask for one of the targets listed above, we interpret that as
+        # building only the depends, and only up to the target asked for. 
+        #
+        set depend_targets = ""
+
+        set is_depend_target = 0 
+
+        foreach temp_depend_target (${temp_depend_targets})
+            set depend_targets = "${depend_targets} ${temp_depend_target}"
+
+            if ("${arg}" == "${temp_depend_target}") then
+                set is_depend_target = 1
+                break
+            endif 
+        end
+
+        if (! ${is_depend_target}) then
+            set build_adjusted_args = "${build_adjusted_args} ${arg}"
+        endif 
+
+        # echo depend_targets: $depend_targets
+
+        set kjb_depend_make = "${KJB_MAKE} ${KJB_MAKE_OPTS_STOP}"
+
+        set try = 0
+
+        while (${try} < 3) 
+            set iteration = 0
+            set error_found = 0
+
+            while (1) 
+                set do_it_again = 0
+
+                @ iteration += 1
+
+                foreach depend_target (${depend_targets})
+                    if ($?KJB_VERBOSE) then
+                        echo " "
+                        echo "Script build-2 is building depend target: ${depend_target} in directory ${cwd}."
+                        echo "Make command is: ${kjb_depend_make} -f Makefile-2 ${depend_target} "
+                    endif 
+
+                    ${kjb_depend_make} -f Makefile-2 ${depend_target} |& ${suppress_jobserver_msg}
+
+                    if ($status) then 
+                        echo "Failed to make target ${depend_target} in ${cwd}"
+                        set error_found = 1
+                        break
+                    endif 
+
+                    # If we need to do it again, then no point in building the
+                    # rest. Start from scratch.
+                    #
+                    if (${do_it_again}) then
+                        break
+                    endif 
+                end 
+
+                if (${error_found}) then 
+                    break
+                else if (${do_it_again}) then
+                    if (${iteration} > 3) then
+                        ${P_STDERR} "Too many iterations in making depend. This is likely a bug."
+                        exit 1 
+                    else 
+                        echo "#############################################################"
+                        echo "Re-building depends because Makefile-dirs got updated."
+                        echo "#############################################################"
+                        continue
+                    endif 
+                else 
+                    break
+                endif 
+            end
+
+            if (${error_found}) then
+                if ($?SKIP_DEPEND_RETRY) then
+                    ${P_STDERR} " "
+                    ${P_STDERR} "Skipping retry of building makefiles, as SKIP_DEPEND_RETRY is set."
+                    ${P_STDERR} "Perhaps a 'make depend_clean' is needed, and/or cache cleaning."
+                    ${P_STDERR} " "
+                    exit 1 
+                else if (${try} < 2) then
+                    echo " "
+                    echo "Forcing rebuild of some files, and trying again."
+                    
+                    if (${try} == 1) then
+                        echo "This time forcing serial make."
+                        set kjb_depend_make = "${KJB_MAKE_SERIAL} ${KJB_MAKE_OPTS_STOP}" 
+                    endif 
+
+                    echo "Disable with SKIP_DEPEND_RETRY"
+                    echo " "
+
+                    source ${MAKE_SCRIPT_PATH}clean_global
+
+                    ${MAKE_SCRIPT_PATH}build_file_list
+                    ${MAKE_SCRIPT_PATH}build_include_lines
+                    ${KJB_TOUCH_1990} Makefile-depend
+                    ${KJB_TOUCH_1990} Makefile-libs-needed
+
+                    if (! -e Makefile-library) then
+                        ${KJB_TOUCH_1990} Makefile-library
+                        ${KJB_TOUCH_1990} Makefile-depend-incl-dot-h
+                    endif 
+                else 
+                    ${P_STDERR} " "
+                    ${P_STDERR} "Unable to build makefiles."
+                    ${P_STDERR} " "
+                    exit 1
+                endif 
+            else 
+                break
+            endif 
+
+            @ try += 1 
+        end
+    end
+else 
+    set build_adjusted_args = "${adjusted_args}" 
+endif 
+
+if ($?KJB_VERBOSE) then
+    if ("${build_adjusted_args}" != "") then 
+        echo "Script build-2 args continuing with build_adjusted_targets: ${build_adjusted_args}"
+    else 
+        echo "Script build-2 is done processing targets/"
+    endif
+endif
+
+foreach arg (${build_adjusted_args}) 
+    set makefile_to_use = "Makefile-2"
+
+    if (("${arg}" == "all") || ("${arg}" == "code")) then
+        # We should revisit building "dir_made", but certainly we only need it
+        # if we are building KJB code, so we need to able to skip doing it. 
+        #
+        if ((${is_parallel}) && (! $?KJB_SKIP_DIR_MADE)) then
+            if ($?KJB_VERBOSE) then
+                echo " "
+                echo "Script build-2 is building dir_made in ${cwd} due to parallel make." 
+                echo ${KJB_MAKE_SERIAL} -f Makefile-2 dir_made 
+            endif 
+            ${KJB_MAKE_SERIAL} -f Makefile-2 dir_made |& ${suppress_jobserver_msg}
+            if (${status}) then 
+                ${P_STDERR} "Failed to make target 'dir_made' in ${cwd}"
+                exit 1
+            endif
+        endif
+    else if (("${arg}" == "doc") || ("${arg}" == "doc_program") || ("${arg}" == "make_bin_aux")) then
+        pushd ${MAKE_PATH} > /dev/null
+            pushd util > /dev/null
+                pushd c2man-2.40-kobus > /dev/null
+                    if ($?KJB_VERBOSE) then
+                        echo " "
+                        echo "Script build-2 is building utilities in ${cwd}." 
+                    endif 
+                     
+                    # We only want to make the documentation tools using the default C
+                    # compiler and production mode. The setting of KJB_CC to empty asks
+                    # init_comple to choose the compiler. 
+                    #
+                    (setenv KJB_CC ""; setenv PRODUCTION 1; setenv FORCE_INIT_COMPILE; source ${KJB_SRC_PATH}Make/init_compile; ${KJB_MAKE_SERIAL} make_bin |& ${suppress_jobserver_msg} ) 
+                    
+                    if (${status}) then 
+                        ${P_STDERR} "Failed to make target 'make_bin' in ${cwd}"
+                        exit 1
+                    endif 
+                popd > /dev/null
+
+                if ($?KJB_VERBOSE) then
+                    echo " "
+                    echo "Script build-2 is building utilities in ${cwd}." 
+                endif 
+
+                # We only want to make the documentation tools using the default C
+                # compiler and production mode. The setting of KJB_CC to empty asks
+                # init_comple to choose the compiler. 
+                #
+                (setenv KJB_CC ""; setenv PRODUCTION 1; setenv FORCE_INIT_COMPILE; source ${KJB_SRC_PATH}Make/init_compile; ${KJB_MAKE_SERIAL} make_bin |& ${suppress_jobserver_msg} ) 
+                
+                if (${status}) then 
+                    ${P_STDERR} "Failed to make target 'make_bin' in ${cwd}"
+                    exit 1
+                endif 
+            popd > /dev/null
+        popd > /dev/null
+
+        if ("${arg}" == "make_bin_aux") continue
+
+        if (${is_parallel}) then
+            if ($?KJB_VERBOSE) then
+                echo "Script build-2 is building doc_dir_made in ${cwd} due to parallel make." 
+            endif 
+            ${KJB_MAKE_SERIAL} -f Makefile-2 doc_dir_made |& ${suppress_jobserver_msg}
+            if (${status}) then 
+                ${P_STDERR} "Failed to make target doc_dir_made in ${cwd}"
+                exit 1
+            endif 
+        endif 
+    else if (("${arg}" == "bin") || ("${arg}" == "misc_bin") || ("${arg}" == "load") || ("${arg}" == "misc_load")) then
+        set force_prod_bin = 1
+        if ($?DONT_FORCE_PROD_BIN) then
+            if ($DONT_FORCE_PROD_BIN) then
+                set force_prod_bin = 0
+            endif 
+        endif 
+
+        if (${force_prod_bin}) then
+            echo " "
+            echo "Forcing production build for target ${arg}."
+            echo "To disable this default behaviour, use 'setenv DONT_FORCE_PROD_BIN 1'."
+            echo " "
+            setenv PRODUCTION 1
+            source ${KJB_SRC_PATH}Make/init_compile
+            echo " "
+        endif 
+    else 
+        # If we are testing a particular program (not necessarily all that is in
+        # a directory) then arg will have been switched to the more specific
+        # target as arranged above. 
+        #
+        set prog = ""
+        if (("${arg}" == "test") || ("${arg}" == "regress")) then
+            set test_arg = 1
+            set prog = "all"
+        else if ( ("${arg}" == "check")  || ("${arg}" == "test_svn") )  then
+            set test_arg = 1
+        else if (("${arg}" == "test_clean") || ("${arg}" == "test_very_clean") || ("${arg}" == "regress_clean")  || ("${arg}" == "check_clean") )  then
+            set test_arg = 1
+        else 
+            set test_arg = `echo ${arg} | grep -c '/output_checked$'`
+            if (${test_arg}) then
+                set prog =  `echo ${arg} | sed 's#test_runs//*\([^/]*\).*#\1#'`
+                set prog = "${LD_OBJ_DIR}${prog}"
+            else 
+                set test_arg = `echo ${arg} | grep -c '/regression_test_passed$'`
+
+                if (${test_arg}) then
+                    set prog =  `echo ${arg} | sed 's#test_runs//*\([^/]*\).*#\1#'`
+                    set prog = "${LD_OBJ_DIR}${prog}"
+                else 
+                    set test_arg = `echo ${arg} | grep -c '/svn_phony$'`
+                endif 
+            endif 
+        endif 
+
+        if (! ${test_arg}) then
+            foreach test_target_suffix (${test_target_suffixes})
+                set test_arg = `echo ${arg} | grep -c "\.${test_target_suffix}${dollar}"`
+                if (${test_arg}) then 
+                    ${VERBOSE_ECHO} "Target $arg matches test target suffix '$test_target_suffix'"
+                    break
+                endif
+            end
+        endif 
+
+        if (${test_arg}) then
+            if (! -e "Makefile-test-depend") then
+                set make_tmp_dir = "${TMPDIR}/${USER}/Makefile-test-depend/make"
+                ${KJB_MKDIR} "${make_tmp_dir}"
+                if (${status}) then
+                    ${P_STDERR} "Unable to make directory ${make_tmp_dir}"
+                    exit 1
+                endif 
+                ${MAKE_SCRIPT_PATH}build_test_depend > ${make_tmp_dir}/Makefile-test-depend
+                if (${status}) then
+                    ${P_STDERR} "Unable to build Makefile-test-depend."
+                    exit 1
+                else 
+                    ${KJB_CP} ${make_tmp_dir}/Makefile-test-depend .
+                    if (${status}) then
+                        ${P_STDERR} "Unable to copy ${make_tmp_dir}Makefile-test-depend to `pwd`."
+                        exit 1
+                    endif 
+                endif 
+            endif 
+
+            if ("${prog}" != "") then
+                if ($?KJB_VERBOSE) then
+                    echo " "
+                    echo "Script build-2 is checking whether target ${prog} is up to date, using: "
+                    echo "    ${KJB_MAKE} -q ${prog} -f Makefile-2  "
+                endif 
+
+                # Not all makes necessarily have '-q', but then, they might have '-n'
+                # whose output we can grep. Currently, we only use gmake. The
+                # consequence of not being able to check in advance if things are up
+                # to date is to simply do extra processing, so if the script breaks
+                # here, and the version of make cannot be made to confess, then
+                # skipping this part is fine.
+
+                ${KJB_MAKE} -q ${prog} -f Makefile-2 |& ${suppress_jobserver_msg}
+                if (! ${status}) then
+                    if ( ! $?KJB_QUIET ) then
+                        echo "Script build-2 reports target [ ${prog} ] is up to date."
+                    endif 
+                else 
+                    ${KJB_MAKE} -f Makefile-2 ${prog} |& ${suppress_jobserver_msg}
+
+                    if (${status}) then
+                        ${P_STDERR} " "
+                        ${P_STDERR} "Making of ${prog} failed."
+                        ${P_STDERR} " "
+                        exit 1 
+                    endif 
+                endif 
+            endif 
+
+            set makefile_to_use = "${MAKE_PATH}Makefile-test"
+
+            # We may need to build Makefile-test-depend twice.
+            foreach target ( Makefile-test-depend  Makefile-test-depend)
+                if ($?KJB_VERBOSE) then
+                    echo " "
+                    echo "Script build-2 is checking whether target ${target} is up to date."
+                endif 
+
+                # Not all makes necessarily have '-q', but then, they might have '-n'
+                # whose output we can grep. Currently, we only use gmake. The
+                # consequence of this failing is simply to run make for real.
+
+                ${KJB_MAKE} -q ${target} -f ${makefile_to_use} |& ${suppress_jobserver_msg}
+                if (! ${status}) then
+                    if ( ! $?KJB_QUIET ) then
+                        echo "Script build-2 reports target [ ${target} ] is up to date."
+                    endif 
+                else 
+                    set make_command = "${KJB_MAKE} ${target} -f ${makefile_to_use}"
+
+                    if ($?KJB_VERBOSE) then
+                        echo " "
+                        echo "Script build-2 is building target: ${target} in directory ${cwd}."
+                        echo "Make command is: ${make_command}"
+                        echo " "
+                    endif 
+
+                    ${make_command} |& ${suppress_jobserver_msg}
+
+                    if ($status) then
+                        ${P_STDERR} "Failed to make target(s) ${target} in ${cwd}"
+                        exit 1
+                    endif 
+                endif 
+            end
+        endif 
+    endif 
+
+    if ($?KJB_VERBOSE) then
+        echo " "
+        echo "Script build-2 is building target: ${arg} in directory ${cwd}."
+        echo "Make command is: ${KJB_MAKE} -f ${makefile_to_use} ${arg}"
+        echo " "
+    endif 
+
+    # ${KJB_MAKE} ${KJB_MAKE_OPTS_KEEP} -f Makefile-2 ${arg} 
+    ${KJB_MAKE} -f ${makefile_to_use} ${arg} |& ${suppress_jobserver_msg}
+
+    if (${status}) then 
+        ${P_STDERR} "Failed to make target(s) ${arg} in ${cwd}."
+        exit 1
+    endif 
+end
+
+if ( ! $?KJB_QUIET ) then
+    set end_time = `date`
+
+    echo " "
+    echo "Build end for adjusted targets [ ${adjusted_args} ] completed at ${end_time}"
+    echo " "
+
+    if ( ! $?SKIP_SVN_MESSAGES ) then
+        $VERBOSE_ECHO "Checking for pending SVN commits."
+        svn info >& /dev/null
+        if (! $status) then 
+            set have_changes = `svn status | grep -v -c '^?'`
+            if ($have_changes) then
+                echo "Pending SVN commits: " 
+                svn status | grep -v '^?' | sed 's/^/    /'
+            endif 
+        endif 
+
+        $VERBOSE_ECHO "Done checking for pending SVN commits."
+    endif 
+endif 
+

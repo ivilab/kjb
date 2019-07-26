@@ -1,0 +1,20 @@
+
+#
+# Things that seem too difficult to handle the same in all flavors
+# of make:
+#     wildcard expansion
+
+#
+# The patterns here need to be manually be kept consistent with those in
+# Makfile-library.   
+#
+
+# REAL_SRC_DIR vs DIR needs to be consistent with Makefile-library. 
+
+LIB_COMPONENT_SOURCE_FILES := $(wildcard $(LIB_COMPONENT_REAL_SRC_DIR)*.[cC] $(LIB_COMPONENT_REAL_SRC_DIR)*.cpp $(LIB_COMPONENT_REAL_SRC_DIR)*.cxx)
+LIB_COMPONENT_HEADER_FILES := $(wildcard $(LIB_COMPONENT_REAL_SRC_DIR)*.h $(LIB_COMPONENT_REAL_SRC_DIR)*.[hit]pp $(LIB_COMPONENT_REAL_SRC_DIR)*.[hit]xx)
+LIB_COMPONENT_FILES := $(wildcard $(LIB_COMPONENT_REAL_SRC_DIR)*.[chC] $(LIB_COMPONENT_REAL_SRC_DIR)*.[chit]pp $(LIB_COMPONENT_REAL_SRC_DIR)*.[chit]xx)
+
+
+FORCE_WITH_GMAKE = FORCE
+

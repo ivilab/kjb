@@ -1,0 +1,462 @@
+#!/bin/tcsh -f 
+
+##############################################################################
+#
+# Identification:
+#     Lists names of files and dirs corresponding to various criteria.
+#
+# Description:
+#     This script is a collection of hacks to produce a sequence of lines of
+#     file or directory names that satisfy various conditions. Various flavors
+#     of various unix tools that one might use for this have trouble if the
+#     answer is empty.  This script will simply output nothing if there is no
+#     match.
+#
+# Arguments:
+#     If an argument is given that is not identified as an option, then it is
+#     assumed to be a directory name to perform the action. Otherwise the
+#     current directory is used. 
+#
+#     If the option "-t" is given (for "test") then the script outputs "1" if
+#     there is a match, and nothing if there is no match.
+#
+#     If the option "-v" is given, then the script outputs all files that do not
+#     match certain conditions after the files have been initially gathered under
+#     all options other than "-m", "-c_lib_dir", and -"cxx_lib_dir". For example,
+#     "-m -v" gives non-main files after the type has been specified. The
+#     behavior in more complex situations needs to be defined/studied further.
+#
+#     The option "-no_path" asks for filenames only.
+#
+#     If the option "-l" is given, then the file contents are streamed. 
+#
+# Current tests (most are exclusive, which is a bit obscure) :
+# |    -m           Files with a main() module. If source type is not given,
+# |                     then -s is implied. 
+# |    -c           C files
+# |    -x           Cpp files
+# |    -s           Source files (C or Cpp)
+# |    -h           Header files 
+# |    -a           All files
+# |    -c2man       Files that we want to give to c2man
+# |    -doxygen     Files that we want to give to doxygen
+# |    -all_kjb     Dirs that we want for KJB or KJB_cpp
+# |    -c_lib_dir   C library directories 
+# |    -cxx_lib_dir Cpp library directories 
+# |    -skip_incl   Skip files with names of the form *_incl.h
+# |    -skip_all    Skip files with names of the form kjb_all_*.h
+# |    -skip_export Skip files with names of the form kjb_export_*.h
+#
+# Author:
+#     Kobus Barnard
+#
+##############################################################################
+
+# set echo 
+
+# echo ---- > /dev/stderr
+# echo $* > /dev/stderr
+
+set dir_or_file = ""
+set dir = ""
+set file_arg = ""
+set reverse = 0
+set filter_main = 0
+set include_source = 0
+set include_c = 0
+set include_cxx = 0
+set include_header = 0 
+set dot_new = 0
+set c2man = 0
+set doxygen = 0
+set test_only = 0
+set all = 0
+set c_lib_dir = 0
+set cxx_lib_dir = 0
+set all_kjb = 0
+set no_path = 0
+set list_file_contents = 0
+set skip_incl = 0
+set skip_all = 0
+set skip_export = 0
+
+foreach arg ($*)
+    if ("${arg}" == "-v") then
+        set reverse = 1
+    else if ("${arg}" == "-m") then
+        set filter_main = 1
+    else if ("${arg}" == "-c") then
+        set include_c = 1
+    else if ("${arg}" == "-x") then
+        set include_cxx = 1
+    else if ("${arg}" == "-s") then
+        set include_source = 1
+    else if ("${arg}" == "-h") then
+        set include_header = 1
+    else if ("${arg}" == "-a") then
+        set all = 1
+    else if ("${arg}" == "-n") then
+        set dot_new = 1
+    else if ("${arg}" == "-l") then
+        set list_file_contents = 1
+    else if ("${arg}" == "-t") then
+        set test_only = 1
+    else if ("${arg}" == "-c2man") then
+        set c2man = 1
+    else if ("${arg}" == "-doxygen") then
+        set doxygen = 1
+    else if ("${arg}" == "-c_lib_dir") then
+        set all = 1
+        set c_lib_dir = 1
+    else if ("${arg}" == "-cxx_lib_dir") then
+        set all = 1
+        set cxx_lib_dir = 1
+    else if ("${arg}" == "-all_kjb") then
+        set all = 1
+        set all_kjb = 1
+    else if ("${arg}" == "-no_path") then
+        set no_path = 1
+    else if ("${arg}" == "-skip_incl") then
+        set skip_incl = 1
+    else if ("${arg}" == "-skip_all") then
+        set skip_all = 1
+    else if ("${arg}" == "-skip_export") then
+        set skip_export = 1
+    else 
+        # Likely we will expand this to allow multiple file or directory
+        # arguments. For now, we only have one, and we overwrite if the user
+        # provides two of them.  
+        # 
+        if ("${dir_or_file}" != "") then 
+            ${P_STDERR} "Warning: Directory argument ${arg} is overiding ${dir_or_file} in script stream_file_names"
+        endif 
+        
+        set dir_or_file = "${arg}" 
+    endif 
+end
+
+# If we do not specify the kind of source, but we care about main(), then we include all
+# source types. Otherwise, just the specfic types are considered.
+if (${filter_main}) then
+    if ( ! ( (${include_source}) || (${include_c}) || (${include_cxx}) || (${include_header}) ) ) then
+        set include_source = 1
+    endif 
+endif
+
+if ("${dir_or_file}" != "") then
+    if (-f "${dir_or_file}") then
+        set file_arg = "${dir_or_file}"
+    else if (-d "${dir_or_file}") then
+        set dir = `echo ${dir_or_file} | sed 's/ *$//g' | sed 's#///*#/#g' | sed 's#//*$##'`
+
+        if ("${dir}" != "") then 
+            #
+            # If the directory does not exist, then the answer is NULL. 
+            #
+            if (! -d "${dir}") then
+                exit 0
+            else 
+                cd "${dir}" 
+                if (${status}) exit ${status} 
+                set dir = "${dir}/"
+            endif 
+        endif
+    else 
+        #
+        # If the dir_or_file argument is not null, and is not a file or a
+        # directory, then the answer is NULL. 
+        #
+        exit 0
+    endif 
+endif 
+
+# For c2man/doxygen. Currently we are only interested in generic library code
+# (i.e., not program specfic) libraries. 
+#
+set is_generic_lib = `echo ${cwd} | sed "s#^${KJB_SRC_PATH}lib/##" | grep -c '^[^/][^/]*$'`
+
+set cpp_lib_str = `echo ${cwd} | grep /lib/ | grep '_cpp$'`
+set cpp_file_count = `${KJB_LS} -1 | ${KJB_EGREP} -c '.*\.C$|.*\.cxx$|.*\.cpp$'`
+# set c_and_h_file_count = `${KJB_LS} -1 | ${KJB_EGREP} -c '.*\.[ch]$'`
+
+set noglob
+
+if (${skip_incl}) then
+    set prune_incl = "grep -v _incl\.h "
+else
+    set prune_incl = "cat"
+endif 
+
+if (${skip_export}) then
+    set prune_export = "grep -v kjb_export_ "
+else
+    set prune_export = "cat"
+endif 
+
+if (${skip_all}) then
+    set prune_all = "grep -v kjb_all_ "
+else
+    set prune_all = "cat"
+endif 
+
+set test_files = ""
+
+if (${all}) then
+    set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export}`
+else if (${c2man}) then 
+    if ((-e FORCE_C2MAN) ||((${is_generic_lib}) && (! -e FORCE_DOXYGEN) && (! -e SKIP_C2MAN) && ("${cpp_lib_str}" == "") && (${cpp_file_count} == 0))) then
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.[ch]$' | grep -v "_gen.h" | grep -v "_gen_f.h" | grep -v "_incl.h"  | grep -v "_incl_f.h" `
+    endif 
+else if (${doxygen}) then 
+    if ((-e FORCE_DOXYGEN) || (-e Doxyfile) || ((${is_generic_lib}) && (! -e SKIP_DOXYGEN) && (! -e FORCE_C2MAN) && (("${cpp_lib_str}" != "") || (${cpp_file_count} > 0)))) then
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.[chC]$|.*\.[chit]xx$|.*\.[chit]pp$' | grep -v "_gen.h" | grep -v "_gen_f.h" | grep -v "_incl.h"  | grep -v "_incl_f.h" `
+    endif 
+#
+# Filtering main forces source files only, even if header files is eroneously
+# set by the user. 
+#
+else if (${include_source} && ${include_header}) then
+    if (${dot_new}) then
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.[chC]\.new$|.*\.[chit]xx\.new$|.*\.[chit]pp\.new$|.*\.cc.new$'`
+    else
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.[chC]$|.*\.[chit]xx$|.*\.[chit]pp$|.*\.cc$'`
+    endif 
+else if (${include_source}) then
+    if (${dot_new}) then
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.[cC]\.new$|.*\.cxx\.new$|.*\.cpp\.new$|.*\.cc.new$'`
+    else
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.[cC]$|.*\.cxx$|.*\.cpp$|.*\.cc$'`
+    endif 
+else if (${include_c} && ${include_header}) then
+    if (${dot_new}) then
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.[ch]\.new$'`
+    else
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.[ch]$'`
+    endif 
+else if (${include_c}) then
+    if (${dot_new}) then
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.c\.new$'`
+    else
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.c$'`
+    endif 
+else if (${include_cxx} && ${include_header}) then
+    if (${dot_new}) then
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.[hC]\.new$|.*\.[chit]xx\.new$|.*\.[chit]pp\.new$|.*\.cc.new$'`
+    else
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.[hC]$|.*\.[chit]xx$|.*\.[chit]pp$|.*\.cc$'`
+    endif 
+else if (${include_cxx}) then
+    if (${dot_new}) then
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.C\.new$|.*\.cxx\.new$|.*\.cpp\.new$|.*\.cc.new$'`
+    else
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.C$|.*\.cxx$|.*\.cpp$|.*\.cc$'`
+    endif 
+else if (${include_header}) then
+    if (${dot_new}) then
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.h\.new$|.*\.[hit]xx\.new$|.*\.[hit]pp\.new$'`
+    else
+        set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.h$|.*\.[hit]xx$|.*\.[hit]pp$'`
+    endif 
+else if (${dot_new}) then
+    set test_files = `${KJB_LS} -1 ${file_arg} | ${prune_incl} | ${prune_all} | ${prune_export} | ${KJB_EGREP} '.*\.new$'`
+endif 
+
+foreach test_file (${test_files}) 
+    set matched_file_name = ""
+
+    if (${filter_main}) then
+        #
+        # This needs to be very dumb because old greps cannot handle much. 
+        #
+
+        # 
+        # This is a bit slow and also can give error messages from cpp which are
+        # not relevant. Hence we check for main with grep, and if that succeeds,
+        # we then use cpp to ensure that it is not in a comment. 
+        #
+
+        set test_main = ""
+        set main_count = `grep -c 'main[ 	]*(' ${test_file}`
+
+        if (${main_count} > 0) then 
+            # Using the current directory for intermediate results can be
+            # confusing because it changes the time stamp of that directory. So
+            # we use /tmp and only copy to the current directory if a problem is
+            # found. 
+            
+            set temp_dir = "${TMPDIR}/${USER}/stream_file_names_temp_dir/"
+            ${KJB_MKDIR} ${temp_dir}
+            if ($status) then
+                ${P_STDERR} "Script stream_file_names unable to make directory ${temp_dir}."
+                exit 1 
+            endif 
+
+            #
+            # We should keep the test for main consistent with the one in build-2. 
+            #
+            set file_suffix = `echo ${test_file} | sed 's/.*\.//'`
+
+            # We want to find main() after preprocessing that ensures that if
+            # the main() is #ifdef'd out, then it is ignored. Note that there is
+            # no good solution for the main() to be #ifdef'd out based on the
+            # environment. If that is indeed the case, we are doomed to fail
+            # under some conditions. We should document this, and perhaps even
+            # check for it here. 
+            #
+            # Because there is no relevance of incorperating included files, and
+            # since those files might not exist causing spurious error messages,
+            # we strip them before passing the file onto the preprocessor. This
+            # means that we do not need "-I" arguments which used to be:
+            #    ${ALL_LOCAL_INCLUDES} ${OPTIONAL_INCLUDES} ${GENERIC_AFT_INCLUDES}
+            # However, our pattern for stripping include lines is not perfect
+            # (e.g., it does not deal with tabs, so we use ${ALL_LOCAL_INCLUDES}
+            # to avoid potentially confusing error messages. 
+            #
+            set test_main_flags = "${MD_DEFINES} ${KJB_HAVE} ${ALL_LOCAL_INCLUDES}"
+
+            # We want to ignore #include and #error, but it is tricky because of
+            # constructions like:
+            #     /* #include ... 
+            #     #include ...  */
+            # Ideally we would find a very safe way to strip comments first, but
+            # this seems hard. One possiblity ... 
+            # 
+
+            sed 's/^[ 	]*#[ 	]*include[ 	]*[<"][^"<>]*[>"][ 	]*//' < ${test_file} > ${temp_dir}.test_file_${$}_s1.${file_suffix}
+            sed 's/^[ 	]*#[ 	]*error[ 	]*"[^"/]*"[ 	]*//' < ${temp_dir}.test_file_${$}_s1.${file_suffix} > ${temp_dir}.test_file_${$}_s2.${file_suffix}
+            (${KJB_CPP} ${test_main_flags} ${temp_dir}.test_file_${$}_s2.${file_suffix} > ${temp_dir}.test_file_${$}.${file_suffix} ) >&  ${temp_dir}.test_file_${$}_s2.${file_suffix}.err
+
+            if ($status) then
+                ${P_STDERR} "Preprocessing while testing ${test_file} for main has non zero exit status."
+
+                if (-s "${temp_dir}.test_file_${$}_s2.${file_suffix}.err") then
+                    ${P_STDERR} "Error messages follow:"
+                    cat ${temp_dir}.test_file_${$}_s2.${file_suffix}.err |& sed 's/^/    /' >> /dev/stderr
+                    ${P_STDERR} " "
+                endif 
+
+                ${P_STDERR} "Comand executed was:"
+                ${P_STDERR} "    ${KJB_CPP} ${test_main_flags} ${temp_dir}.test_file_${$}_s2.${file_suffix}"
+                ${P_STDERR} " "
+                ${P_STDERR} "While executing (in `pwd`): "
+                ${P_STDERR} "    stream_file_names $*"
+                ${P_STDERR} " "
+                ${P_STDERR} "Saving ${temp_dir}.test_file_${$}_s2.${file_suffix} into .debug_test_file_${$}_s2.${file_suffix}"
+                ${P_STDERR} " "
+                ${KJB_CPP} ${temp_dir}.test_file_${$}_s2.${file_suffix} .debug_test_file_${$}_s2.${file_suffix}
+                ${P_STDERR} "Reproduce with:"
+                ${P_STDERR} "     ${KJB_CPP} ${test_main_flags} .debug_test_file_${$}_s2.${file_suffix} > /dev/null"
+                ${P_STDERR} " "
+                ${P_STDERR} "Command failed: ${KJB_CPP} ${test_main_flags} ${temp_dir}.test_file_${$}_s2.${file_suffix} > ${temp_dir}.test_file_${$}.${file_suffix}"
+                ${P_STDERR} " "
+
+                if ("${USER}" != "kobus") then
+                    ${P_STDERR} "Proceeding optimistically to determine main modules without preprocessing."
+                    ${P_STDERR} " "
+                    ${KJB_CP} ${test_file} ${temp_dir}.test_file_${$}.${file_suffix}
+                else
+                    exit 1 
+                endif 
+            endif 
+
+            ${KJB_RM} ${temp_dir}.test_file_${$}_s1.${file_suffix} 
+            ${KJB_RM} ${temp_dir}.test_file_${$}_s1.${file_suffix}.err
+            ${KJB_RM} ${temp_dir}.test_file_${$}_s2.${file_suffix} 
+            ${KJB_RM} ${temp_dir}.test_file_${$}_s2.${file_suffix}.err
+
+            # We grep for main to cut down on the size of ${temp_dir}.test_main_${$}.${file_suffix}. The
+            # "sed" command changes tabs to blanks. 
+            #
+            ${KJB_CAT} ${temp_dir}.test_file_${$}.${file_suffix} | ${KJB_GREP} 'main' | ${KJB_SED} 's/	/ /g'  > ${temp_dir}.test_main_${$}.${file_suffix}
+            ${KJB_RM}  ${temp_dir}.test_file_${$}.${file_suffix} 
+            
+            # Test some possibilities. This can succeed for some lines that are not
+            # syntatically correct main routine beginings; update as time permits.
+            #
+            set test_main = `${KJB_CAT} ${temp_dir}.test_main_${$}.${file_suffix} | ${KJB_GREP} '^ *main *(.*[,)]'`
+
+            if ("${test_main}" == "") then
+                set test_main = `${KJB_CAT} ${temp_dir}.test_main_${$}.${file_suffix} | ${KJB_GREP} '^ *int *main *(.*[,)]'`
+            endif 
+
+            if ("${test_main}" == "") then
+                set test_main = `${KJB_CAT} ${temp_dir}.test_main_${$}.${file_suffix} | ${KJB_GREP} '^ *void *main *(.*[,)]'`
+            endif 
+
+            if ("${test_main}" != "") then
+                set matched_file_name = "${dir}${test_file}"
+            endif 
+
+            ${KJB_RM} ${temp_dir}.test_main_${$}.${file_suffix} 
+        endif 
+    else if ((${c_lib_dir}) || (${cxx_lib_dir})) then
+        # If we are here, test_file is a test directory. 
+        if (-e ${dir}${test_file}/Makefile-include) then
+            # If all_kjb is set, then SKIP_ALL_KJB is checked.  
+            if ((! ${all_kjb}) || ((! -e ${dir}${test_file}/SKIP_ALL_KJB) && (! -e ${dir}${test_file}/SKIP_ALL_KJB.${OS}))) then
+                # set cpp_lib_str = `echo ${test_file} | grep '_cpp$'`
+                
+                set have_cpp = `/bin/ls ${dir}${test_file} | ${KJB_EGREP} -c '.*\.cpp$|.*\.cxx$|.*\.C$'`
+                set have_c = `/bin/ls ${dir}${test_file} | ${KJB_EGREP} -c  '.*\.c$'`
+                
+#                 if (("${cpp_lib_str}" != "") && (${cxx_lib_dir})) then 
+#                     set matched_file_name = "${dir}${test_file}"
+#                 else if (("${cpp_lib_str}" == "") && (${c_lib_dir})) then
+#                     set matched_file_name = "${dir}${test_file}"
+#                 endif 
+                if (("${cxx_lib_dir}") && (${have_cpp})) then 
+                    set matched_file_name = "${dir}${test_file}"
+                else if (("${c_lib_dir}") && (${have_c}) && (! ${have_cpp})) then
+                    set matched_file_name = "${dir}${test_file}"
+                endif 
+            endif 
+        endif 
+    else
+        set matched_file_name = "${dir}${test_file}"
+    endif 
+
+#     if ((${skip_incl}) && ("${matched_file_name}" != "")) then
+#         set is_incl = `echo ${matched_file_name} | grep -c "_incl.h"`
+# 
+#         if (${is_incl}) then
+#             set  matched_file_name = ""
+#         endif
+#     endif 
+
+    if (${reverse}) then
+        if ("${matched_file_name}" == "") then
+             set matched_file_name = "${dir}${test_file}"
+        else 
+             set matched_file_name = ""
+        endif
+    endif 
+
+    if ("${matched_file_name}" != "") then
+        if (${test_only}) then
+            echo 1
+            exit
+        endif 
+
+        if (${list_file_contents}) then
+            ${KJB_CAT} ${matched_file_name}
+        else 
+            if (${no_path}) then
+                # First two seds should not really be needed. The first deals with
+                # double slashes, and the second deals with trailing slashes and
+                # spaces.  Neither should occur here. 
+                set matched_file_name = `echo "${matched_file_name}" | sed s'#//*#/#' | sed s'#/ *$##' | sed s'#.*/\([^/]*\)$#\1#'`
+            endif 
+
+            echo ${matched_file_name}
+        endif 
+    endif 
+end
+
+# A false result is NULL, not 0. 
+#
+# # if (${test_only}) then
+# #     echo 0
+# #     exit
+# # endif 
+
+# echo +++ > /dev/stderr

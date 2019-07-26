@@ -1,0 +1,27 @@
+#!/bin/csh -f
+
+#
+# This script is generally obsolete because "which" is preferred, but on some
+# older systems (e.g. older sun5's), "which" is a script which sources .cshrc,
+# which leads problems especially when used in setup files. 
+#
+# We cannot actually echo this stuff becase of the way 'can_execute' is normally
+# used.
+#
+# echo  " "
+# echo "Script 'can_execute' is obsolete. Use 'which' instead."
+# echo "Originally we wanted more functionality, and a way not to rely on 'which'."
+# echo "But currently this is not relevent, and 'can_execute' degrades peformance."
+# echo "  "
+
+set path_dirs = `echo $PATH | sed "s/:/ /g"`
+
+foreach dir ($path_dirs)
+    if (-x $dir/$1) then
+        echo 1
+        exit 0
+    endif 
+end 
+
+echo 0 
+

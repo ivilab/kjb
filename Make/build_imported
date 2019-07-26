@@ -1,0 +1,125 @@
+#!/bin/csh -f
+
+# Not recently TESTED, but quite a few changes have been made! 
+
+##################################################################################
+#
+# Build script for imported libraries and utilities where mimimal build
+# infrastracture exists. Unless the code is very simple, usually there is some
+# infrastructure, and typically we want to leverage that using a different
+# script (perhaps yet to be written). However: 
+#    For code that comes with "configure", use the template build_with_configure
+#    For code that comes with "cmake", use the template build_with_cmake
+#
+# ================================================================================
+#
+# This file started its life as a copy of 
+#     ${KJB_SRC_PATH}/Make/scripts/build_imported
+# Typically it gets renamed as "build" or "build_ivilab". Sometimes it gets some
+# tweaks for the particular libraries. 
+#
+# The file
+#     ${KJB_SRC_PATH}/Make/scripts/build_imported
+# is a template for a build script for imported library code which comes with
+# some makefiles which we typically move to Makefile-2, and tweak. Having done
+# that, we can (optionally) add a copy of  ${KJB_SRC_PATH}/Make/scripts/Makefile. 
+#
+#
+# This file is generally called by "make". It can also be called directly. The
+# main purpose is to normalize the make environment, and to implement some
+# functionality that is difficult to do in a robust portable way for all flavors
+# of make. 
+#
+# The chief functionallity implemented here is to determine the value of
+# KJB_SRC_PATH, and then call build-2 to continue setting up the environment,
+# and the call make with "-f Makefile-2", but often that part will
+# be replaced with the specific commands for the imported package. We tell
+# build-2 not to build additional makefiles by setting KJB_SKIP_DEPEND.
+#
+##################################################################################
+#
+# This next part is shared by all files in Make whose names begin with "build".
+# Updates should be propogated. 
+#
+# Find out where we are in the source tree. In particular, we want to find a dir
+# that has Make as a sub-dir and Make/init_compile as a file in that (to further
+# check that we have the right one). 
+
+if ($?FORCE_KJB_DIR) then
+    set kjb_dirs = "${FORCE_KJB_DIR}"
+else
+    set kjb_dirs = ". kjb KJB ivi IVI "
+endif 
+
+set found = 0
+set kjb_top = ""
+
+pushd `pwd` > /dev/null
+
+while ("`pwd`" != "/")
+    foreach kjb_dir (${kjb_dirs}) 
+        if ("${kjb_dir}" == ".") then
+            set kjb_dir = ""
+        else
+            set kjb_dir = "${kjb_dir}/"
+        endif 
+
+        if (-e "${kjb_dir}Make/init_compile") then
+            set found = 1
+            break
+        endif 
+    end
+
+    if (${found}) break
+
+    set kjb_top = "../${kjb_top}"
+
+    cd ..
+end
+
+popd > /dev/null
+
+if (${found}) then
+    if ("${kjb_dir}" == "") then
+        set kjb_dir = "./"
+    endif 
+
+    setenv KJB_SRC_PATH "${kjb_top}${kjb_dir}"
+else 
+    # We cannot use P_STDERR here because we might not have defined it yet.
+    bash -c 'echo " " >&2'
+    bash -c 'echo "This directory does not seem to be below a src directory with KJB installed." >&2'
+
+    if ($?KJB_DEBUG) then
+        # We cannot use P_STDERR here because we might not have defined it yet.
+        bash -c 'echo "Exiting because KJB_DEBUG is set." >&2'
+        bash -c 'echo " " >&2'
+        exit 1
+    else 
+        if ($?KJB_SRC_PATH) then 
+            bash -c 'echo "Trying the value of KJB_SRC_PATH: ${KJB_SRC_PATH}. " >&2'
+        else
+            setenv KJB_SRC_PATH "${HOME}/src/"
+            bash -c 'echo "Trying ${KJB_SRC_PATH}. " >&2'
+        endif 
+
+       if (! -e ${KJB_SRC_PATH}/Make/init_compile) then
+           bash -c 'echo "${KJB_SRC_PATH}/Make/init_compile exist. " >&2'
+           bash -c 'echo "Hence this build will fail." >&2'
+           bash -c 'echo " " >&2'
+
+           exit 1 
+       endif 
+    endif 
+endif 
+
+pushd ${KJB_SRC_PATH} > /dev/null
+    setenv KJB_SRC_PATH "${cwd}/"
+popd > /dev/null
+
+setenv KJB_SKIP_DEPEND
+setenv KJB_SKIP_DIR_MADE
+source ${KJB_SRC_PATH}Make/scripts/build-2 
+
+
+

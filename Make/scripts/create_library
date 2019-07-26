@@ -1,0 +1,241 @@
+#!/bin/csh -f
+
+#
+# Identification
+#     A script to create a new kjb library component
+#
+# Arguments:
+#      A name of a subdirectory to be added to the directory "lib".
+#      This script must be run in the directory "lib". 
+#
+# Description
+#     This script creates a new kjb library component with a few template files
+#     and associated makefiles. It assumes that "Make" and "lib" are up to date.
+#     Use "svn" to achieve this. 
+#
+#     The new component is built using the directory
+#     src/examples/templates/library_template, which should exist if "examples"
+#     is up to date. If that directory cannot be found in your src tree, then
+#     various other places are searched, including remotely. 
+#
+#     To make a test directory for the component, use the following in the
+#     component directory:
+#          create_program test program_group_template
+#
+
+set echo
+
+set remote_user = ""
+
+set num_args = ${#argv}
+
+
+set target_name = ""
+set source_dir = ""
+
+set source_name = "template"
+
+set count = 1
+while ($count <= $num_args)
+    if ("${argv[$count]}" == "-u") then
+        @ count += 1
+        if (${count} > $num_args) then
+            ${P_STDERR} "Missing user name after -u"
+            exit 1 
+        else 
+            set remote_user = "${argv[$count]}@"
+        endif 
+    else if ("${target_name}" == "") then
+        set target_name = "${argv[$count]}"
+    else 
+        echo "Extra argument ${argv[$count]} ignored" 
+    endif 
+
+    @ count += 1
+end 
+
+if ("${target_name}" == "") then
+    ${P_STDERR} "This script needs exactly one non-option parameter for the library name."
+    exit 1
+endif 
+
+set source_dir = "library_template/lib/template"
+
+# echo $target_name
+# echo $source_dir
+# echo $remote_user
+
+set kjb_environment = 0
+
+if ($?KJB_ENVIRONMENT) then
+    if ($KJB_ENVIRONMENT) then
+        set kjb_environment = 1
+    else 
+        set kjb_environment = 0
+    endif
+endif 
+
+if ( ! $kjb_environment) then
+    setenv PATH "/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin:${PATH}"
+endif 
+
+set use_remote = 1
+
+set src_dist_dirs = "~/src/examples/templates /net/v04/work/kobus/src/examples/templates ~kobus/src/examples/templates ~kobus/src_dist/latest/examples/templates"
+
+foreach src_dist_dir (${src_dist_dirs}) 
+    if (-e "${src_dist_dir}/${source_dir}") then
+        set use_remote = 0
+        break
+    endif
+end
+
+if (${use_remote}) then
+    set src_dist_dir = "${remote_user}v01.cs.arizona.edu:/home/kobus/src_dist/latest/examples/templates"
+endif 
+
+echo src_dist_dir is ${src_dist_dir}
+echo ""
+
+set dir = `pwd`
+set dir = `echo $dir | sed 's/\/*$//'`
+set dir = `echo $dir | sed 's/.*\///'`
+
+if ("${dir}" != "lib") then
+    ${P_STDERR} "You need to be in a directory \'lib\'"
+    exit 1 
+endif 
+
+#############################################################################
+##############################################################################
+
+set KJB_SRC_PATH = ""
+
+# We want to use pure "cd", and so if cd has been aliase'd we want to save that
+# fact and unalias cd. 
+#
+set cd_alias = `alias cd`
+
+if ("${cd_alias}" != "") then
+   # echo removing cd alias
+   unalias cd
+endif 
+
+# We want to block going above the user's home directory because it might cause
+# a mount request that we don't want.  
+#
+pushd ${HOME} >& /dev/null
+set home_pwd = `pwd`
+popd >& /dev/null
+
+# Save were we are. 
+pushd `pwd` >& /dev/null
+
+while (("`pwd`" != "/") && ("`pwd`" != "${home_pwd}")) 
+    # echo pwd: `pwd`
+    if ((-d Make) && (-d lib)) then 
+        if ((-e Make/init_compile) && (-e Make/init_machine)) then
+            set KJB_SRC_PATH = `pwd`
+            break
+        endif 
+    endif
+
+    cd ..
+end
+
+# Reset were we were. 
+popd >& /dev/null
+
+# Restore cd alias.
+
+if ("${cd_alias}" != "") then
+   # echo restoring cd alias
+   alias cd "$cd_alias"
+   # alias cd 
+endif 
+
+# echo init_compile: ${init_compile}
+
+if ("${KJB_SRC_PATH}" == "") then
+    ${P_STDERR} "Cannot find dirs lib and Make \(and files Make/init_machine and Make/init_compile\) in higher dirs."
+    ${P_STDERR} "Either you are not in a source directory or you need to check these out using svn."
+    exit 1
+endif 
+
+set echo 
+setenv KJB_SRC_PATH "${KJB_SRC_PATH}/"
+
+set need_init = 1
+
+if (! $?FORCE_INIT_COMPILE) then 
+    if (($?KJB_HAVE_MACHINE) && ($?INIT_SRC_DIR)) then
+        if ("${KJB_SRC_PATH}" == "${INIT_SRC_DIR}") then 
+            if ($?KJB_VERBOSE) then
+                echo "" 
+                echo "Skipping source of init_machine and init_compile."
+            endif 
+
+            set need_init = 0
+        endif 
+    endif 
+endif 
+     
+if (${need_init}) then
+    if ($?KJB_VERBOSE) then
+        echo "" 
+        echo "Sourcing ${KJB_SRC_PATH}Make/init_machine"
+    endif 
+
+    source ${KJB_SRC_PATH}Make/init_machine
+
+    if ($?KJB_VERBOSE) then
+        echo "Sourcing ${KJB_SRC_PATH}Make/init_compile"
+    endif 
+
+    source ${KJB_SRC_PATH}Make/init_compile
+endif 
+
+unset echo
+
+echo "Now:"
+echo "   SRC_PATH: ${SRC_PATH}"
+echo "   MAKE_PATH: ${MAKE_PATH}"
+echo "   MAKE_SCRIPT_PATH: ${MAKE_SCRIPT_PATH}"
+echo " "
+
+##############################################################################
+#############################################################################
+
+if (-e "${target_name}") then
+    ${P_STDERR} "${target_name} already exists. Giving up."
+    exit 1
+endif 
+
+mkdir -p ${target_name}
+
+echo ${source_dir}
+echo ${target_name}
+pwd
+
+rsync -e ssh -v -rlpgoDu --include='*.[ch]' --exclude='*' ${src_dist_dir}/${source_dir}/ ${target_name}
+
+if (${status}) then
+    ${P_STDERR} "rsync failed in create_library."
+    exit 1
+endif 
+
+pushd ${target_name} > /dev/null
+
+set uc_source_name = `echo $source_name | sed "y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/"`
+set uc_target_name = `echo $target_name | sed "y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/"`
+
+foreach file (${source_name}*)
+    set new_file = `echo $file | sed "s/${source_name}/${target_name}/"`
+    ${KJB_MV} $file $new_file
+    ${VIM_FOR_MAKE} -e -s -c ':%s/'${source_name}'/'${target_name}'/g' -c :wq ${new_file} < /dev/null >& /dev/null
+    ${VIM_FOR_MAKE} -e -s -c ':%s/'${uc_source_name}'/'${uc_target_name}'/g' -c :wq ${new_file}  < /dev/null >& /dev/null
+end
+
+${MAKE_SCRIPT_PATH}kjb_add_makefiles
+
+
