@@ -1,1 +1,0 @@
-link ncurses/curses.h
