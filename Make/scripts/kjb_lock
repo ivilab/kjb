@@ -51,6 +51,14 @@
 #     its value as a directory to create lockfiles in. Otherwise, this script
 #     will use ${TMPDIR}/${USER}/lockfiles/, creating it if needed.
 #
+#     Finally, if the environment variable KJB_DONT_LOCK is set, then ths
+#     script runs the argument without any locking. The main purpose of this is
+#     to avoid deadlock when we effectively call scripts recursively. Normally
+#     there is a better way to accomplish what you want to do, but one instance
+#     where such a way is yet to be discovered is in repository synching where
+#     we want 'to' and 'from' processes to share locks, but also call each
+#     other.
+#
 # Deficiencies
 #     The current implementation locks all runs of a command operating in a
 #     given sub-directory, irrespective of arguments or parent directory, which
@@ -85,6 +93,12 @@ if ($?KJB_VERBOSE) then
         set verbose_indent = ""
     endif
 endif 
+
+if ($?KJB_DONT_LOCK) then
+    ${VERBOSE_ECHO} "${verbose_indent}KJB_DONT_LOCK is set, so kjb_lock is not locking: $*"
+    $*
+    exit ${status}
+endif
 
 if (! $?KJB_LOCKING_METHOD) then
     # Sync this code with that in init_compile!

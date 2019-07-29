@@ -4,9 +4,9 @@
 
 # Using stderr for unbuffered output. 
 
-${P_STDERR} "--- Process $$ is in test_kjb_lock_2 (lockfile is ${KJB_LOCKFILE_PATH}."
+${P_STDERR} "--- Process $$ is in test_kjb_lock_2."
 
-if (($?KJB_LOCK_TIME_STAMP) && (-e test_kjb_lock,result)) then
+if (($?KJB_LOCK_TIME_STAMP) && (-e test_kjb_lock.result)) then
     set can_skip = `${MAKE_SCRIPT_PATH}test_older_than ${KJB_LOCK_TIME_STAMP} "test_kjb_lock.result"`
 
     if (${can_skip}) then
